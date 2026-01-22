@@ -611,8 +611,8 @@ Remaining for the day = 1,884 - 1,539 = 345 cal
 
 ### Calculation Steps
 1. **Convert units**
-   - Weight: lbs → kg
-   - Height: feet & inches → cm
+   - Weight: lbs  kg
+   - Height: feet & inches  cm
 
 2. **Calculate BMR**
    - Use male or female Mifflin-St Jeor formula

@@ -1,17 +1,17 @@
-# 📊 Weekly Graph Feature - Complete Guide
+#  Weekly Graph Feature - Complete Guide
 
 ## Overview
 
 Hawk Fuel now includes a **7-day line graph** that visualizes your calorie trends over the past week!
 
 **What it shows:**
-- 🔴 **Red line** - Calories eaten each day
-- 🟠 **Orange line** - Calories burned through exercise
-- 🔵 **Blue dashed line** - Your daily target (goal)
+-  **Red line** - Calories eaten each day
+-  **Orange line** - Calories burned through exercise
+-  **Blue dashed line** - Your daily target (goal)
 
 ---
 
-## 📚 Table of Contents
+##  Table of Contents
 
 1. [How to Use](#how-to-use)
 2. [Data Structure Explained](#data-structure-explained)
@@ -44,20 +44,20 @@ If Wednesday shows:
 - Orange line at 450 = You burned 450 calories
 - Blue line at 2000 = Your target was 2000 calories
 
-Net intake: 2100 - 450 = 1650 calories (under target ✅)
+Net intake: 2100 - 450 = 1650 calories (under target )
 ```
 
 ### Understanding Patterns
 
 **Good patterns:**
-- 🟢 Red line close to blue target = Consistent eating
-- 🟢 Orange line steady = Regular exercise
-- 🟢 Lines smooth (not jagged) = Stable routine
+-  Red line close to blue target = Consistent eating
+-  Orange line steady = Regular exercise
+-  Lines smooth (not jagged) = Stable routine
 
 **Watch for:**
-- 🟡 Red line frequently above blue = Eating over target
-- 🟡 Red line at 0 = Forgot to log food
-- 🟡 Orange line at 0 = No exercise logged
+-  Red line frequently above blue = Eating over target
+-  Red line at 0 = Forgot to log food
+-  Orange line at 0 = No exercise logged
 
 ---
 
@@ -112,15 +112,15 @@ Net intake: 2100 - 450 = 1650 calories (under target ✅)
 ### Why This Structure?
 
 **Date as key (YYYY-MM-DD):**
-- ✅ Sorts correctly alphabetically
-- ✅ No timezone confusion
-- ✅ International standard (ISO 8601)
-- ✅ Easy to look up specific dates
+-  Sorts correctly alphabetically
+-  No timezone confusion
+-  International standard (ISO 8601)
+-  Easy to look up specific dates
 
 **Values as object:**
-- ✅ Groups related data together
-- ✅ Easy to add new fields later
-- ✅ Clear what each number means
+-  Groups related data together
+-  Easy to add new fields later
+-  Clear what each number means
 
 ### Chart.js Data Format
 
@@ -166,65 +166,65 @@ The graph component converts the above into Chart.js format:
 ### The Complete Flow
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│ USER ACTION: Logs food or exercise                      │
-└────────────────────┬────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────┐
-│ Dashboard.js: addFoodEntry() or addExerciseEntry()      │
-│ - Saves to food_log or exercise_log                     │
-│ - Updates foodLog or exerciseLog state                  │
-└────────────────────┬────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────┐
-│ useEffect Hook: Detects state change                    │
-│ - foodLog or exerciseLog changed!                       │
-│ - Triggers calculateTotals()                            │
-│ - Triggers saveDailyDataToHistory() ← NEW!              │
-└────────────────────┬────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────┐
-│ saveDailyDataToHistory() function                       │
-│ 1. Get today's date (YYYY-MM-DD)                        │
-│ 2. Calculate today's totals:                            │
-│    - eaten = getTotalCaloriesEaten()                    │
-│    - burned = getTotalCaloriesBurned()                  │
-│    - target = loadDailyTarget()                         │
-│ 3. Load existing weekly_history                         │
-│ 4. Update today's data: history[today] = {...}          │
-│ 5. Keep only last 7 days (delete older)                 │
-│ 6. Save back to localStorage                            │
-└────────────────────┬────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────┐
-│ WeeklyGraph component: Detects change                   │
-│ - onRefresh prop changed (counts food + exercise)       │
-│ - Calls loadGraphData()                                 │
-└────────────────────┬────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────┐
-│ getWeeklyGraphData() function                           │
-│ 1. Load weekly_history from localStorage                │
-│ 2. Get last 7 days (including today)                    │
-│ 3. Create day labels (Sun, Mon, Tue, etc.)              │
-│ 4. Extract data for each dataset                        │
-│ 5. Format for Chart.js                                  │
-│ 6. Return chartData object                              │
-└────────────────────┬────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────┐
-│ Chart.js renders the graph                              │
-│ - Three lines drawn                                     │
-│ - Tooltips configured                                   │
-│ - Axes labeled                                          │
-│ - User sees updated graph! ✅                            │
-└─────────────────────────────────────────────────────────┘
+
+ USER ACTION: Logs food or exercise                      
+
+                     
+                     
+
+ Dashboard.js: addFoodEntry() or addExerciseEntry()      
+ - Saves to food_log or exercise_log                     
+ - Updates foodLog or exerciseLog state                  
+
+                     
+                     
+
+ useEffect Hook: Detects state change                    
+ - foodLog or exerciseLog changed!                       
+ - Triggers calculateTotals()                            
+ - Triggers saveDailyDataToHistory()  NEW!              
+
+                     
+                     
+
+ saveDailyDataToHistory() function                       
+ 1. Get today's date (YYYY-MM-DD)                        
+ 2. Calculate today's totals:                            
+    - eaten = getTotalCaloriesEaten()                    
+    - burned = getTotalCaloriesBurned()                  
+    - target = loadDailyTarget()                         
+ 3. Load existing weekly_history                         
+ 4. Update today's data: history[today] = {...}          
+ 5. Keep only last 7 days (delete older)                 
+ 6. Save back to localStorage                            
+
+                     
+                     
+
+ WeeklyGraph component: Detects change                   
+ - onRefresh prop changed (counts food + exercise)       
+ - Calls loadGraphData()                                 
+
+                     
+                     
+
+ getWeeklyGraphData() function                           
+ 1. Load weekly_history from localStorage                
+ 2. Get last 7 days (including today)                    
+ 3. Create day labels (Sun, Mon, Tue, etc.)              
+ 4. Extract data for each dataset                        
+ 5. Format for Chart.js                                  
+ 6. Return chartData object                              
+
+                     
+                     
+
+ Chart.js renders the graph                              
+ - Three lines drawn                                     
+ - Tooltips configured                                   
+ - Axes labeled                                          
+ - User sees updated graph!                             
+
 ```
 
 ### Step-by-Step Example
@@ -256,7 +256,7 @@ The graph component converts the above into Chart.js format:
    ```javascript
    useEffect(() => {
      calculateTotals();        // Update summary cards
-     saveDailyDataToHistory(); // Update weekly history ← NEW!
+     saveDailyDataToHistory(); // Update weekly history  NEW!
    }, [foodLog])
    ```
 
@@ -317,24 +317,24 @@ npm install chart.js react-chartjs-2
 ### What is Chart.js?
 
 **Chart.js** is the most popular JavaScript charting library:
-- ⭐ 60,000+ GitHub stars
-- 📦 Lightweight (40kb minified)
-- 📊 8 chart types (Line, Bar, Pie, etc.)
-- 📱 Fully responsive
-- ♿ Accessible
-- 🎨 Highly customizable
-- 📚 Excellent documentation
+-  60,000+ GitHub stars
+-  Lightweight (40kb minified)
+-  8 chart types (Line, Bar, Pie, etc.)
+-  Fully responsive
+-  Accessible
+-  Highly customizable
+-  Excellent documentation
 
 **react-chartjs-2** is a React wrapper that makes Chart.js work seamlessly with React components.
 
 ### Why Chart.js?
 
 **For beginners:**
-- ✅ Simple API
-- ✅ Great documentation
-- ✅ Lots of examples
-- ✅ Active community
-- ✅ Easy to customize
+-  Simple API
+-  Great documentation
+-  Lots of examples
+-  Active community
+-  Easy to customize
 
 **Alternatives considered:**
 - Recharts - More complex, React-specific
@@ -364,20 +364,20 @@ Chart.js uses a modular system. You only load what you need, keeping bundle size
 ### Line Chart Anatomy
 
 ```
-┌────────────────────────────────────────────────┐
-│            7-Day Calorie Trends                │  ← Title
-│  🔴 Eaten  🟠 Burned  🔵 Target                │  ← Legend
-├────────────────────────────────────────────────┤
-│ 2500                                    ◄      │
-│ 2000        🔵━━━━━━━━━━━━━━━━━━━━━    ◄ Y-Axis
-│ 1500   🔴●━━●━━●━━●━━●━━●━━●          │  (Calories)
-│ 1000                                    ◄      │
-│  500      🟠●━●━●━●━●━●━●━●            ◄      │
-│    0                                    ◄      │
-│     Sun Mon Tue Wed Thu Fri Sat               │
-│     ▲─────────────────────────────▲           │
-│            X-Axis (Days)                       │
-└────────────────────────────────────────────────┘
+
+            7-Day Calorie Trends                   Title
+   Eaten   Burned   Target                   Legend
+
+ 2500                                          
+ 2000             Y-Axis
+ 1500               (Calories)
+ 1000                                          
+  500                        
+    0                                          
+     Sun Mon Tue Wed Thu Fri Sat               
+                
+            X-Axis (Days)                       
+
 ```
 
 ---
@@ -708,16 +708,16 @@ if (dates.length > 14) { // Changed from 7 to 14
 
 ### Verification Checklist
 
-✅ Graph loads on Dashboard
-✅ Shows last 7 days (even if some empty)
-✅ Red line matches calories eaten
-✅ Orange line matches calories burned
-✅ Blue line shows target
-✅ Hover tooltips work
-✅ Data persists after refresh
-✅ Updates when logging food/exercise
-✅ Responsive on mobile
-✅ No console errors
+ Graph loads on Dashboard
+ Shows last 7 days (even if some empty)
+ Red line matches calories eaten
+ Orange line matches calories burned
+ Blue line shows target
+ Hover tooltips work
+ Data persists after refresh
+ Updates when logging food/exercise
+ Responsive on mobile
+ No console errors
 
 ---
 
@@ -739,7 +739,7 @@ npm install chart.js react-chartjs-2
 
 **Check:**
 1. Is saveDailyDataToHistory() being called?
-2. Check localStorage: DevTools → Application → Local Storage
+2. Check localStorage: DevTools  Application  Local Storage
 3. Look for 'hawkfuel_weekly_history' key
 
 **Debug:**
@@ -832,28 +832,28 @@ tension: 0.5 // More curved
 ### What You Learned
 
 **React Concepts:**
-- ✅ Component integration
-- ✅ useEffect for data loading
-- ✅ Props for triggering updates
-- ✅ Conditional rendering
+-  Component integration
+-  useEffect for data loading
+-  Props for triggering updates
+-  Conditional rendering
 
 **JavaScript Concepts:**
-- ✅ Date manipulation
-- ✅ Array methods (map, filter, sort, slice)
-- ✅ Object operations
-- ✅ Data transformation
+-  Date manipulation
+-  Array methods (map, filter, sort, slice)
+-  Object operations
+-  Data transformation
 
 **Chart.js:**
-- ✅ Module registration
-- ✅ Dataset configuration
-- ✅ Options customization
-- ✅ Responsive design
+-  Module registration
+-  Dataset configuration
+-  Options customization
+-  Responsive design
 
 **Data Management:**
-- ✅ localStorage structure
-- ✅ Historical data storage
-- ✅ Data retention policies
-- ✅ Format conversion
+-  localStorage structure
+-  Historical data storage
+-  Data retention policies
+-  Format conversion
 
 ### Key Takeaways
 
@@ -878,4 +878,4 @@ tension: 0.5 // More curved
 
 ---
 
-**Congratulations!** You now have a fully functional 7-day calorie tracking graph! 📊🎉
+**Congratulations!** You now have a fully functional 7-day calorie tracking graph! 

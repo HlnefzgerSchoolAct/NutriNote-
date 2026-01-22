@@ -22,10 +22,10 @@ import {
  * Main application component that manages the entire user flow:
  *
  * FLOW:
- * Step 1: User Profile → Collect personal info and goals
- * Step 2: Activity Tracker → Log planned activities
- * Step 3: Results → Show BMR, TDEE, calorie targets
- * Step 4: Dashboard → Daily calorie logging (NEW!)
+ * Step 1: User Profile - Collect personal info and goals
+ * Step 2: Activity Tracker - Log planned activities
+ * Step 3: Results - Show BMR, TDEE, calorie targets
+ * Step 4: Dashboard - Daily calorie logging (NEW!)
  *
  * All data is saved to localStorage automatically
  */
@@ -163,7 +163,7 @@ function App() {
               <h3>Android (Chrome):</h3>
               <ol>
                 <li>
-                  Tap the <strong>three dots</strong> menu (⋮)
+                  Tap the <strong>three dots menu</strong>
                 </li>
                 <li>
                   Tap <strong>"Add to Home screen"</strong> or{" "}

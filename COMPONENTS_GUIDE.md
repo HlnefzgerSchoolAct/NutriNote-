@@ -1,4 +1,4 @@
-# 📘 React Components Guide - Hawk Fuel
+#  React Components Guide - Hawk Fuel
 
 ## For Complete Beginners
 
@@ -6,7 +6,7 @@ This guide explains the 3 main React components in Hawk Fuel and how they work.
 
 ---
 
-## 🎯 What is a Component?
+##  What is a Component?
 
 Think of a component like a **LEGO block** for your website:
 - Each component is a reusable piece of UI
@@ -16,7 +16,7 @@ Think of a component like a **LEGO block** for your website:
 
 ---
 
-## 📦 Component #1: UserProfile
+##  Component #1: UserProfile
 
 **File:** `src/components/UserProfile.js`
 
@@ -138,7 +138,7 @@ const handleChange = (e) => {
 
 ---
 
-## 📦 Component #2: ActivityTracker
+##  Component #2: ActivityTracker
 
 **File:** `src/components/ActivityTracker.js`
 
@@ -160,8 +160,8 @@ Lets users enter minutes for each physical activity.
 #### 1. **Array of Objects (Data)**
 ```javascript
 const ACTIVITIES = [
-  { id: 'walking', name: 'Walking', met: 3.5, emoji: '🚶' },
-  { id: 'running', name: 'Running', met: 10.0, emoji: '🏃' },
+  { id: 'walking', name: 'Walking', met: 3.5, emoji: '' },
+  { id: 'running', name: 'Running', met: 10.0, emoji: '' },
   // ... more activities
 ];
 ```
@@ -255,7 +255,7 @@ const handleActivityChange = (activityId, minutes) => {
 
 ---
 
-## 🔄 How Components Work Together
+##  How Components Work Together
 
 ### Parent Component: App.js
 
@@ -305,28 +305,28 @@ function App() {
 
 ```
 App.js (Parent)
-    ↓ passes onSubmit function
+     passes onSubmit function
 UserProfile (Child)
-    ↓ user fills form
-    ↓ calls onSubmit(formData)
+     user fills form
+     calls onSubmit(formData)
 App.js receives data
-    ↓ saves to userProfile state
-    ↓ changes currentStep to 2
-    ↓ passes userProfile & onSubmit to ActivityTracker
+     saves to userProfile state
+     changes currentStep to 2
+     passes userProfile & onSubmit to ActivityTracker
 ActivityTracker (Child)
-    ↓ user enters minutes
-    ↓ calls onSubmit(activities)
+     user enters minutes
+     calls onSubmit(activities)
 App.js receives data
-    ↓ saves to activities state
-    ↓ changes currentStep to 3
-    ↓ passes userProfile & activities to Results
+     saves to activities state
+     changes currentStep to 3
+     passes userProfile & activities to Results
 Results (Child)
-    ↓ displays calculations
+     displays calculations
 ```
 
 ---
 
-## 📚 React Concepts Cheat Sheet
+##  React Concepts Cheat Sheet
 
 ### useState
 ```javascript
@@ -374,7 +374,7 @@ const handleClick = (e) => {
 
 ---
 
-## 🎯 Common Patterns in Hawk Fuel
+##  Common Patterns in Hawk Fuel
 
 ### Pattern 1: Controlled Form Input
 ```javascript
@@ -413,9 +413,9 @@ const filtered = array.filter(item => item.property > 0);
 
 ---
 
-## 🐛 Common Beginner Mistakes
+##  Common Beginner Mistakes
 
-### ❌ Mistake #1: Mutating State Directly
+###  Mistake #1: Mutating State Directly
 ```javascript
 // WRONG
 formData.age = 16;
@@ -424,7 +424,7 @@ formData.age = 16;
 setFormData(prev => ({ ...prev, age: 16 }));
 ```
 
-### ❌ Mistake #2: Forgetting Keys in Lists
+###  Mistake #2: Forgetting Keys in Lists
 ```javascript
 // WRONG
 {array.map(item => <div>{item.name}</div>)}
@@ -433,7 +433,7 @@ setFormData(prev => ({ ...prev, age: 16 }));
 {array.map(item => <div key={item.id}>{item.name}</div>)}
 ```
 
-### ❌ Mistake #3: Not Preventing Form Submit
+###  Mistake #3: Not Preventing Form Submit
 ```javascript
 // WRONG
 const handleSubmit = () => {
@@ -446,7 +446,7 @@ const handleSubmit = (e) => {
 };
 ```
 
-### ❌ Mistake #4: Wrong onChange Syntax
+###  Mistake #4: Wrong onChange Syntax
 ```javascript
 // WRONG
 <input onChange={handleChange(value)} />
@@ -457,7 +457,7 @@ const handleSubmit = (e) => {
 
 ---
 
-## 🎓 Learning Progression
+##  Learning Progression
 
 ### Level 1: Understand the Structure
 - Read through UserProfile.js
@@ -481,7 +481,7 @@ const handleSubmit = (e) => {
 
 ---
 
-## 🔍 How to Read the Code
+##  How to Read the Code
 
 ### Step-by-Step Guide:
 
@@ -506,11 +506,11 @@ const handleSubmit = (e) => {
    - How does it use state/props?
 
 6. **Follow the data flow**
-   - User action → Event handler → State update → Re-render
+   - User action  Event handler  State update  Re-render
 
 ---
 
-## 🚀 Next Steps
+##  Next Steps
 
 1. **Run the app** - See components in action
 2. **Add console.log()** - See state changes
@@ -520,7 +520,7 @@ const handleSubmit = (e) => {
 
 ---
 
-## 📞 Questions?
+##  Questions?
 
 ### "Why do we need useState?"
 Without it, when you change a variable, React doesn't know to re-render the component.
@@ -537,4 +537,4 @@ They're shorter and don't create their own `this` context (avoids bugs).
 
 ---
 
-**You've got this! Start with UserProfile.js and read through it slowly.** 🚀
+**You've got this! Start with UserProfile.js and read through it slowly.** 

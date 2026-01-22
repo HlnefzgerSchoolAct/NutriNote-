@@ -1,15 +1,15 @@
-# 📊 Hawk Fuel - Daily Calorie Tracking Guide
+#  Hawk Fuel - Daily Calorie Tracking Guide
 
 ## Overview
 
 Hawk Fuel now includes **daily calorie tracking** with localStorage persistence! This means you can:
 
-- ✅ Log food you eat
-- ✅ Log exercise calories burned
-- ✅ See real-time daily totals
-- ✅ Track calories remaining
-- ✅ All data saves automatically (survives browser refresh!)
-- ✅ Resets daily at midnight
+-  Log food you eat
+-  Log exercise calories burned
+-  See real-time daily totals
+-  Track calories remaining
+-  All data saves automatically (survives browser refresh!)
+-  Resets daily at midnight
 
 ---
 
@@ -31,28 +31,28 @@ Hawk Fuel now includes **daily calorie tracking** with localStorage persistence!
 
 ### Dashboard Features
 
-#### 📊 Summary Cards
+####  Summary Cards
 
 Four cards at the top show:
 
-1. **🎯 Daily Target** - Your goal calories for the day
-2. **🍽️ Eaten** - Total calories consumed
-3. **🔥 Burned** - Total calories from exercise
-4. **📈 Remaining** - How many calories left to reach goal
+1. ** Daily Target** - Your goal calories for the day
+2. ** Eaten** - Total calories consumed
+3. ** Burned** - Total calories from exercise
+4. ** Remaining** - How many calories left to reach goal
 
 **Formula:**
 ```
 Remaining = Daily Target - (Eaten - Burned)
 ```
 
-#### 🍽️ Food Logging
+####  Food Logging
 
 **How to log food:**
 1. Type food name (e.g., "Grilled chicken")
 2. Enter calories (e.g., 250)
 3. Click "+ Add Food"
 4. Food appears in list below
-5. Click ✕ to delete if you made a mistake
+5. Click  to delete if you made a mistake
 
 **Example entries:**
 - Breakfast: Oatmeal - 300 cal
@@ -60,14 +60,14 @@ Remaining = Daily Target - (Eaten - Burned)
 - Snack: Apple - 95 cal
 - Dinner: Salmon with rice - 600 cal
 
-#### 🏃 Exercise Logging
+####  Exercise Logging
 
 **How to log exercise:**
 1. Type exercise name (e.g., "Running")
 2. Enter calories burned (e.g., 400)
 3. Click "+ Add Exercise"
 4. Exercise appears in list below
-5. Click ✕ to delete if needed
+5. Click  to delete if needed
 
 **How to calculate calories burned:**
 - Use the Activity Tracker (Step 2) to plan activities with MET values
@@ -79,17 +79,17 @@ Remaining = Daily Target - (Eaten - Burned)
 - Weight training - 250 cal
 - Basketball game - 500 cal
 
-#### 💡 Guidance Messages
+####  Guidance Messages
 
 The app gives you helpful messages:
 
-**✅ Under target:**
+** Under target:**
 > You can eat **500 more calories** to reach your goal!
 
-**🎯 Perfect:**
+** Perfect:**
 > Perfect! You've hit your target exactly!
 
-**⚠️ Over target:**
+** Over target:**
 > You're **200 calories over** your target.
 
 ---
@@ -148,7 +148,7 @@ Hawk Fuel saves 5 things to localStorage:
 
 ### How to Clear All Data
 
-Click the **"🔄 Start New Calculation"** button in the Dashboard to:
+Click the **" Start New Calculation"** button in the Dashboard to:
 - Clear all localStorage data
 - Return to Step 1 (User Profile)
 - Start completely fresh
@@ -247,9 +247,9 @@ const [remainingCalories, setRemainingCalories] = useState(0);
 
 **New Flow:**
 ```
-Step 1 → Step 2 → Step 3 → Step 4 (Dashboard)
-  ↑                              ↓
-  └──────── Reset Button ────────┘
+Step 1  Step 2  Step 3  Step 4 (Dashboard)
+                                
+   Reset Button 
 ```
 
 #### 2. `src/components/Results.js`
@@ -363,27 +363,27 @@ const total = foodLog.reduce((sum, entry) => sum + entry.calories, 0);
 ### What to Test
 
 1. **Food Logging**
-   - ✅ Add food entry → appears in list
-   - ✅ Delete food entry → removed from list
-   - ✅ Total updates correctly
-   - ✅ Data persists after refresh
+   -  Add food entry  appears in list
+   -  Delete food entry  removed from list
+   -  Total updates correctly
+   -  Data persists after refresh
 
 2. **Exercise Logging**
-   - ✅ Add exercise → appears in list
-   - ✅ Delete exercise → removed from list
-   - ✅ Total updates correctly
-   - ✅ Data persists after refresh
+   -  Add exercise  appears in list
+   -  Delete exercise  removed from list
+   -  Total updates correctly
+   -  Data persists after refresh
 
 3. **Calculations**
-   - ✅ Remaining = Target - (Eaten - Burned)
-   - ✅ Summary cards show correct values
-   - ✅ Guidance message updates
+   -  Remaining = Target - (Eaten - Burned)
+   -  Summary cards show correct values
+   -  Guidance message updates
 
 4. **localStorage**
-   - ✅ Refresh page → data still there
-   - ✅ Close browser → reopen → data still there
-   - ✅ New day → logs reset
-   - ✅ Reset button → all data cleared
+   -  Refresh page  data still there
+   -  Close browser  reopen  data still there
+   -  New day  logs reset
+   -  Reset button  all data cleared
 
 ### Test Scenarios
 
@@ -411,7 +411,7 @@ const total = foodLog.reduce((sum, entry) => sum + entry.calories, 0);
 
 ### Q: Where is my data stored?
 
-**A:** In your browser's localStorage. Open DevTools (F12) → Application tab → Local Storage → file:// to see it!
+**A:** In your browser's localStorage. Open DevTools (F12)  Application tab  Local Storage  file:// to see it!
 
 ### Q: Can I access my data on another computer?
 
@@ -431,7 +431,7 @@ const total = foodLog.reduce((sum, entry) => sum + entry.calories, 0);
 
 ### Q: What if I log something by mistake?
 
-**A:** Click the ✕ button next to any entry to delete it instantly.
+**A:** Click the  button next to any entry to delete it instantly.
 
 ---
 
@@ -532,16 +532,16 @@ Want to improve Hawk Fuel? Try adding:
 
 Hawk Fuel now has a **complete daily calorie tracking system** with:
 
-✅ Food logging with calorie input
-✅ Exercise logging with calories burned
-✅ Real-time daily totals and calculations
-✅ Remaining calories display
-✅ Helpful guidance messages
-✅ localStorage persistence (survives refresh!)
-✅ Automatic daily reset at midnight
-✅ Clean, beginner-friendly code with comments
-✅ Responsive design for all devices
+ Food logging with calorie input
+ Exercise logging with calories burned
+ Real-time daily totals and calculations
+ Remaining calories display
+ Helpful guidance messages
+ localStorage persistence (survives refresh!)
+ Automatic daily reset at midnight
+ Clean, beginner-friendly code with comments
+ Responsive design for all devices
 
 **All features work offline - no server required!**
 
-Ready to track your calories? Run `npm start` and complete Steps 1-3 to see the Dashboard! 🚀
+Ready to track your calories? Run `npm start` and complete Steps 1-3 to see the Dashboard! 

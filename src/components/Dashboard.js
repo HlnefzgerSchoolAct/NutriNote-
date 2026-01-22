@@ -288,7 +288,7 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
                     onClick={() => handleDeleteFood(entry.id)}
                     className="btn-delete"
                   >
-                    ✕
+                    X
                   </button>
                 </div>
               ))
@@ -343,7 +343,7 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
                     onClick={() => handleDeleteExercise(entry.id)}
                     className="btn-delete"
                   >
-                    ✕
+                    X
                   </button>
                 </div>
               ))

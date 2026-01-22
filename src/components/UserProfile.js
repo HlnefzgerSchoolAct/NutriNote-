@@ -235,7 +235,7 @@ function UserProfile({ onSubmit }) {
 
         {/* SUBMIT BUTTON */}
         <button type="submit" className="btn-primary">
-          Continue to Activities →
+          Continue to Activities
         </button>
       </form>
     </div>

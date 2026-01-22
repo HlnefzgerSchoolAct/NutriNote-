@@ -37,9 +37,9 @@ export const saveToLocalStorage = (key, data) => {
     // Save to localStorage
     localStorage.setItem(key, jsonString);
 
-    console.log(`✅ Saved to localStorage: ${key}`);
+    console.log(`- Saved to localStorage: ${key}`);
   } catch (error) {
-    console.error("❌ Error saving to localStorage:", error);
+    console.error("- Error saving to localStorage:", error);
   }
 };
 
@@ -65,10 +65,10 @@ export const loadFromLocalStorage = (key, defaultValue = null) => {
     // Convert JSON string back to JavaScript object
     const data = JSON.parse(jsonString);
 
-    console.log(`✅ Loaded from localStorage: ${key}`);
+    console.log(`- Loaded from localStorage: ${key}`);
     return data;
   } catch (error) {
-    console.error("❌ Error loading from localStorage:", error);
+    console.error("- Error loading from localStorage:", error);
     return defaultValue;
   }
 };
@@ -83,9 +83,9 @@ export const loadFromLocalStorage = (key, defaultValue = null) => {
 export const clearLocalStorage = (key) => {
   try {
     localStorage.removeItem(key);
-    console.log(`✅ Cleared from localStorage: ${key}`);
+    console.log(`- Cleared from localStorage: ${key}`);
   } catch (error) {
-    console.error("❌ Error clearing localStorage:", error);
+    console.error("- Error clearing localStorage:", error);
   }
 };
 
@@ -99,7 +99,7 @@ export const clearAllData = () => {
   Object.values(STORAGE_KEYS).forEach((key) => {
     clearLocalStorage(key);
   });
-  console.log("✅ All Hawk Fuel data cleared!");
+  console.log("- All Hawk Fuel data cleared!");
 };
 
 /**

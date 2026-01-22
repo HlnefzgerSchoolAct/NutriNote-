@@ -1,28 +1,28 @@
-# ⚡ Quick Start Guide - Hawk Fuel
+#  Quick Start Guide - Hawk Fuel
 
-## 🎯 For Complete Beginners
+##  For Complete Beginners
 
 This is a **3-step guide** to get Hawk Fuel running on your Windows computer.
 
 ---
 
-## ✅ Prerequisites
+##  Prerequisites
 
 Before starting, make sure you have:
-- ✅ Windows 10 or 11
-- ✅ Internet connection
-- ✅ VS Code installed (download from https://code.visualstudio.com/)
+-  Windows 10 or 11
+-  Internet connection
+-  VS Code installed (download from https://code.visualstudio.com/)
 
 ---
 
-## 📋 Step 1: Install Node.js (5 minutes)
+##  Step 1: Install Node.js (5 minutes)
 
 ### Download and Install:
 
 1. Go to: **https://nodejs.org/**
 2. Click the **green "LTS" button** (left side)
 3. Run the downloaded file
-4. Click "Next" → "Next" → "Install"
+4. Click "Next"  "Next"  "Install"
 5. Wait for installation to complete
 6. Click "Finish"
 
@@ -34,22 +34,22 @@ Before starting, make sure you have:
 4. Type: `node --version`
 5. You should see: `v20.x.x` or similar
 
-✅ **Done!** Node.js is installed.
+ **Done!** Node.js is installed.
 
 ---
 
-## 📋 Step 2: Install Dependencies (3 minutes)
+##  Step 2: Install Dependencies (3 minutes)
 
 ### In VS Code:
 
 1. **Open the Hawk Fuel folder:**
-   - File → Open Folder
+   - File  Open Folder
    - Select the Hawk Fuel folder
    - Click "Select Folder"
 
 2. **Open Terminal:**
    - Press: `Ctrl + ` (backtick key, above Tab)
-   - Or: View → Terminal
+   - Or: View  Terminal
 
 3. **Install Packages:**
    - Type: `npm install`
@@ -57,11 +57,11 @@ Before starting, make sure you have:
    - **Wait 2-3 minutes** (lots of text will scroll)
    - When done, you'll see a blinking cursor
 
-✅ **Done!** All packages installed.
+ **Done!** All packages installed.
 
 ---
 
-## 📋 Step 3: Start the App (10 seconds)
+##  Step 3: Start the App (10 seconds)
 
 ### In the Same Terminal:
 
@@ -70,21 +70,21 @@ Before starting, make sure you have:
 3. Wait ~10 seconds
 4. Browser opens automatically!
 
-✅ **Done!** Your app is running at http://localhost:3000
+ **Done!** Your app is running at http://localhost:3000
 
 ---
 
-## 🎉 Success!
+##  Success!
 
 You should see:
-- 🔥 Purple gradient background
+-  Purple gradient background
 - "Hawk Fuel" header at the top
 - A form asking for your age, gender, height, weight
 - 3-step progress bar
 
 ---
 
-## 🛠️ Common First-Time Issues
+##  Common First-Time Issues
 
 ### Issue: "npm is not recognized"
 **Cause:** Node.js not installed or computer needs restart  
@@ -106,7 +106,7 @@ You should see:
 
 ---
 
-## 📝 Daily Usage
+##  Daily Usage
 
 ### Starting Work:
 ```bash
@@ -125,7 +125,7 @@ npm start
 
 ---
 
-## 🎨 Try This First!
+##  Try This First!
 
 ### Change the App Color:
 
@@ -139,13 +139,13 @@ npm start
    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
    ```
 4. Save (`Ctrl + S`)
-5. Watch your app turn green! 🎨
+5. Watch your app turn green! 
 
 ---
 
-## 📚 What to Learn Next
+##  What to Learn Next
 
-### Day 1: ✅ Get it running (you just did this!)
+### Day 1:  Get it running (you just did this!)
 
 ### Day 2: Explore the files
 - Open `src/App.js` - Read the code
@@ -164,7 +164,7 @@ npm start
 
 ---
 
-## 📞 Need Help?
+##  Need Help?
 
 1. **Check README.md** - Detailed documentation
 2. **Check WINDOWS_SETUP.md** - Windows-specific help
@@ -174,19 +174,19 @@ npm start
 
 ---
 
-## 🎯 Next Steps
+##  Next Steps
 
 After getting it running:
 
-1. ✅ Play with the app - Enter your info, track activities
-2. 📖 Read `README.md` for full documentation
-3. 🎨 Customize colors and text
-4. 📚 Learn React basics
-5. 🚀 Build your own features!
+1.  Play with the app - Enter your info, track activities
+2.  Read `README.md` for full documentation
+3.  Customize colors and text
+4.  Learn React basics
+5.  Build your own features!
 
 ---
 
-## ⌨️ Essential Keyboard Shortcuts
+##  Essential Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
@@ -199,7 +199,7 @@ After getting it running:
 
 ---
 
-## 🎉 You Did It!
+##  You Did It!
 
 Your Hawk Fuel app is now running!
 
@@ -210,14 +210,14 @@ npm start
 
 **Browser opens to:** http://localhost:3000
 
-Happy coding! 🚀
+Happy coding! 
 
 ---
 
-## 📖 More Resources
+##  More Resources
 
-- 📘 Full Setup Guide: `README.md`
-- 🪟 Windows Help: `WINDOWS_SETUP.md`
-- 📁 File Guide: `FOLDER_STRUCTURE.md`
-- 🧮 Formulas: `FORMULAS.md`
-- 🏃 MET System: `MET_SYSTEM_GUIDE.md`
+-  Full Setup Guide: `README.md`
+-  Windows Help: `WINDOWS_SETUP.md`
+-  File Guide: `FOLDER_STRUCTURE.md`
+-  Formulas: `FORMULAS.md`
+-  MET System: `MET_SYSTEM_GUIDE.md`

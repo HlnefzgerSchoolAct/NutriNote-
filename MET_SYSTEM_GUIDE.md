@@ -1,13 +1,13 @@
 # Activity Calorie Burn System (MET Method)
 
-## 🎯 What You'll Learn
+##  What You'll Learn
 - What MET values are and how they work
 - How to calculate calories burned during exercise
 - Real examples with activities like weight lifting, wrestling, football, running, and walking
 
 ---
 
-## 📚 What is MET?
+##  What is MET?
 
 **MET = Metabolic Equivalent of Task**
 
@@ -29,7 +29,7 @@ Think of MET as a "multiplier" that tells you how hard an activity is compared t
 
 ---
 
-## 🏃 MET Table for Your Activities
+##  MET Table for Your Activities
 
 | Activity | MET Value | How Hard? |
 |----------|-----------|-----------|
@@ -41,7 +41,7 @@ Think of MET as a "multiplier" that tells you how hard an activity is compared t
 
 ---
 
-## 🧮 The Calorie Burn Formula
+##  The Calorie Burn Formula
 
 ### Main Formula:
 ```
@@ -57,7 +57,7 @@ Calories Burned = MET × Your Weight (kg) × Time (hours)
 
 ---
 
-## 📝 Example 1: Walking
+##  Example 1: Walking
 
 **You:** 165 lbs student  
 **Activity:** Walking at moderate pace  
@@ -86,11 +86,11 @@ Calories = 3.5 × 75 × 0.5
 Calories = 131
 ```
 
-**✅ Answer: You burned 131 calories walking for 30 minutes**
+** Answer: You burned 131 calories walking for 30 minutes**
 
 ---
 
-## 📝 Example 2: Running
+##  Example 2: Running
 
 **You:** 150 lbs student  
 **Activity:** Running/jogging  
@@ -119,11 +119,11 @@ Calories = 10.0 × 68 × 0.33
 Calories = 224
 ```
 
-**✅ Answer: You burned 224 calories running for 20 minutes**
+** Answer: You burned 224 calories running for 20 minutes**
 
 ---
 
-## 📝 Example 3: Weight Lifting
+##  Example 3: Weight Lifting
 
 **You:** 180 lbs student  
 **Activity:** Weight lifting (moderate intensity)  
@@ -152,11 +152,11 @@ Calories = 5.0 × 82 × 0.75
 Calories = 308
 ```
 
-**✅ Answer: You burned 308 calories lifting weights for 45 minutes**
+** Answer: You burned 308 calories lifting weights for 45 minutes**
 
 ---
 
-## 📝 Example 4: Wrestling
+##  Example 4: Wrestling
 
 **You:** 155 lbs wrestler  
 **Activity:** Wrestling practice  
@@ -185,11 +185,11 @@ Calories = 6.0 × 70 × 1.5
 Calories = 630
 ```
 
-**✅ Answer: You burned 630 calories during wrestling practice**
+** Answer: You burned 630 calories during wrestling practice**
 
 ---
 
-## 📝 Example 5: Football Practice
+##  Example 5: Football Practice
 
 **You:** 190 lbs football player  
 **Activity:** Football practice (drills, scrimmage)  
@@ -218,11 +218,11 @@ Calories = 8.0 × 86 × 1.5
 Calories = 1,032
 ```
 
-**✅ Answer: You burned 1,032 calories during football practice**
+** Answer: You burned 1,032 calories during football practice**
 
 ---
 
-## 📝 Example 6: Full Day (Multiple Activities)
+##  Example 6: Full Day (Multiple Activities)
 
 **You:** 165 lbs student  
 **Your day:**
@@ -260,11 +260,11 @@ Calories = 1,032
 175 + 188 + 600 = 963 calories burned
 ```
 
-**✅ Answer: You burned 963 calories total today**
+** Answer: You burned 963 calories total today**
 
 ---
 
-## 🎓 Quick Reference Chart
+##  Quick Reference Chart
 
 ### Convert Your Weight:
 ```
@@ -299,7 +299,7 @@ Minutes ÷ 60 = Hours
 
 ---
 
-## 💡 Practice Problems
+##  Practice Problems
 
 Try these on your own! (Answers at the bottom)
 
@@ -317,7 +317,7 @@ You weigh 160 lbs and walk for 45 minutes. How many calories did you burn?
 
 ---
 
-## ✅ Answers to Practice Problems
+##  Answers to Practice Problems
 
 ### Problem 1 Answer:
 ```
@@ -342,7 +342,7 @@ Calories: 3.5 × 73 × 0.75 = 192 calories
 
 ---
 
-## 🔑 Key Takeaways
+##  Key Takeaways
 
 1. **Higher MET = More Calories Burned**
    - Walking (3.5) burns less than running (10.0)
@@ -357,12 +357,12 @@ Calories: 3.5 × 73 × 0.75 = 192 calories
    - MET × Weight (kg) × Time (hours) = Calories
 
 5. **Always Convert First**
-   - Pounds → Kilograms (÷ 2.2)
-   - Minutes → Hours (÷ 60)
+   - Pounds  Kilograms (÷ 2.2)
+   - Minutes  Hours (÷ 60)
 
 ---
 
-## 🌐 Use the Web Calculator
+##  Use the Web Calculator
 
 Open **activity-calories.html** in your browser to use the interactive calculator:
 - Enter your weight once
@@ -372,7 +372,7 @@ Open **activity-calories.html** in your browser to use the interactive calculato
 
 ---
 
-## 📖 Additional Resources
+##  Additional Resources
 
 For more detailed formulas and calculations, see:
 - **FORMULAS.md** - Complete mathematical documentation

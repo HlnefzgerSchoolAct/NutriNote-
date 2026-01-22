@@ -62,26 +62,26 @@ Collect user data for BMR/TDEE calculations
 **Activity Level Dropdown Options:**
 ```
 Sedentary
-  → Little to no exercise, desk job
+   Little to no exercise, desk job
   
 Lightly Active
-  → Light exercise 1-3 days/week
+   Light exercise 1-3 days/week
   
 Moderately Active
-  → Moderate exercise 3-5 days/week
+   Moderate exercise 3-5 days/week
   
 Very Active
-  → Hard exercise 6-7 days/week
+   Hard exercise 6-7 days/week
   
 Extra Active
-  → Athlete or very physical job
+   Athlete or very physical job
 ```
 
 ### Buttons
 
 | Button | Style | Action | State |
 |--------|-------|--------|-------|
-| Calculate My BMR | Primary (full width, orange bg, white text) | Validate form → Calculate → Navigate to Results | Disabled until all fields valid |
+| Calculate My BMR | Primary (full width, orange bg, white text) | Validate form  Calculate  Navigate to Results | Disabled until all fields valid |
 | Back | Secondary (black text link) | Return to Welcome | Always enabled |
 
 ### Displayed Calculations
@@ -140,13 +140,13 @@ Display calculated metabolic values with explanations
 
 **BMR (Basal Metabolic Rate):**
 ```
-┌─────────────────────────┐
-│   📊 Your BMR          │
-│                         │
-│     1,650              │
-│   calories/day         │
-│                         │
-└─────────────────────────┘
+
+    Your BMR          
+                         
+     1,650              
+   calories/day         
+                         
+
 ```
 - Value: 32px, bold, orange
 - Label: 14px, black
@@ -157,14 +157,14 @@ Display calculated metabolic values with explanations
 
 **TDEE (Total Daily Energy Expenditure):**
 ```
-┌─────────────────────────┐
-│   🔥 Maintenance        │
-│      Calories           │
-│                         │
-│     2,280              │
-│   calories/day         │
-│                         │
-└─────────────────────────┘
+
+    Maintenance        
+      Calories           
+                         
+     2,280              
+   calories/day         
+                         
+
 ```
 - Value: 32px, bold, orange
 - Label: 14px, black
@@ -182,7 +182,7 @@ Display calculated metabolic values with explanations
 
 **Informational (always shown):**
 ```
-ℹ️ What does this mean?
+ What does this mean?
 
 Your BMR is the calories your body burns at rest just to keep you alive.
 
@@ -234,8 +234,8 @@ Three large, tappable cards:
 ### Buttons
 
 | Button | Style | Action | State |
-|--------|-------|--------|-------|, orange bg, white text) | Save settings → Navigate to Dashboard | Enabled after goal selected |
-| Back | Secondary (black rimary (full width) | Save settings → Navigate to Dashboard | Enabled after goal selected |
+|--------|-------|--------|-------|, orange bg, white text) | Save settings  Navigate to Dashboard | Enabled after goal selected |
+| Back | Secondary (black rimary (full width) | Save settings  Navigate to Dashboard | Enabled after goal selected |
 | Back | Secondary (text link) | Return to Results screen | Always enabled |
 
 ### Displayed Calculations
@@ -251,13 +251,13 @@ Your maintenance: 2,280 cal/day
 
 **Dynamic Calorie Target (updates with slider):**
 ```
-┌─────────────────────────┐
-│ Your Daily Target       │
-│                         │
-│      1,780             │
-│    calories/day        │
-│                         │
-└─────────────────────────┘
+
+ Your Daily Target       
+                         
+      1,780             
+    calories/day        
+                         
+
 ```
 - 28px, bold, orange
 - Updates in real-time as slider moves
@@ -272,13 +272,13 @@ Your maintenance: 2,280 cal/day
 
 **Below each goal option:**
 ```
-🎯 Maintain Weight
+ Maintain Weight
 "Stay at your current weight"
 
-📉 Lose Weight
+ Lose Weight
 "Safe weight loss: 0.5-1.5 lbs/week"
 
-📈 Gain Weight
+ Gain Weight
 "Healthy muscle gain: 0.5-1.5 lbs/week"
 ```
 
@@ -291,12 +291,12 @@ Aggressive (-750): ~1.5 lbs/week
 
 **Warning (if aggressive selected):**
 ```
-⚠️ Consult a coach before using aggressive deficits
+ Consult a coach before using aggressive deficits
 ```
 
 ### Interactive Behavior
-- Tap goal card → Select + show slider (if applicable)
-- Drag slider → Update target in real-time
+- Tap goal card  Select + show slider (if applicable)
+- Drag slider  Update target in real-time
 - Target number animates when changed
 
 ---
@@ -313,25 +313,25 @@ Central hub showing daily progress and quick actions
 
 | Button | Style | Action |
 |--------|-------|--------|, orange bg, white text) | Navigate to Add Food screen |
-| 🏃 Add Activity | Secondary (full width, white bg, orange border, orange text) | Navigate to Add Activity screen |
-| ☰ Settings | Icon (top right header, black) | Navigate to Settings |
-| 🗑️ Delete (on each log item) | Icon (right side, blackto Settings |
-| 🗑️ Delete (on each log item) | Icon (right side) | Delete that entry |
+|  Add Activity | Secondary (full width, white bg, orange border, orange text) | Navigate to Add Activity screen |
+|  Settings | Icon (top right header, black) | Navigate to Settings |
+|  Delete (on each log item) | Icon (right side, blackto Settings |
+|  Delete (on each log item) | Icon (right side) | Delete that entry |
 
 ### Displayed Calculations
 
 **1. Daily Goal (static for the day):**
 ```
-🎯 Daily Goal: 1,780 cal
+ Daily Goal: 1,780 cal
 ```
 - 18px, semi-bold
 
 **2. Progress Bar:**
 ```
 Progress
-┌─────────────────────────┐
-│███████████░░░░░░░░░░░░░│
-└─────────────────────────┘
+
+
+
 1,230 / 1,780
 ```
 - Visual bar: Orange (primary color)
@@ -341,11 +341,11 @@ Progress
 
 **3. Summary Cards:**
 ```
-┌───────────┬────────────┐
-│ 🍽️ Eaten │ 🔥 Burned  │
-│  1,420    │    190     │
-│  calories │  calories  │
-└───────────┴────────────┘
+
+  Eaten   Burned  
+  1,420        190     
+  calories   calories  
+
 ```
 - Numbers: 24px, bold
 - Labels: 12px, gray
@@ -361,25 +361,25 @@ Net Calories: 1,230
 ```
 Remaining: 550 cal
 ```
-- FormulaOrange (positive), Black (negative with ⚠️ icon
+- FormulaOrange (positive), Black (negative with  icon
 - 20px, bold
 - Color: Green (positive), Red (negative)
 
 **6. Status Indicator:**
 ```
-✅ On Track
+ On Track
 ```
 - Conditions:
-  - ✅ On Track: Net within ±100 of goal (orange text)
-  - ⚠️ Close to Limit: Net within ±200 of goal (black text)
-  - ❌ Over Goal: Net > goal + 200 (black text)
-  - ⚠️ Under Goal: Net < goal - 200 (black text)
+  -  On Track: Net within ±100 of goal (orange text)
+  -  Close to Limit: Net within ±200 of goal (black text)
+  -  Over Goal: Net > goal + 200 (black text)
+  -  Under Goal: Net < goal - 200 (black text)
 
 ### Feedback Messages
 
 **Empty State (no entries yet):**
 ```
-👋 Ready to start tracking!
+ Ready to start tracking!
 
 Tap "Add Food" when you eat
 Tap "Add Activity" when you exercise
@@ -389,19 +389,19 @@ Your progress will appear here.
 
 **Motivational (based on progress):**
 ```
-✅ On Track
+ On Track
 Great job! You're right on target.
 (Orange badge with white text)
 
-⚠️ Close to Limit
+ Close to Limit
 Only 50 calories remaining for today.
 (Light gray badge with black text)
 
-❌ Over Goal
+ Over Goal
 You're 200 calories over today's goal.
 (Light gray badge with black text)
 
-⚠️ Under Goal
+ Under Goal
 You're 300 calories under. Make sure to fuel properly!
 (Light gray badge with black text)
 ```
@@ -417,14 +417,14 @@ Good evening! [5pm-10pm]
 
 **Each Food Entry:**
 ```
-🍳 Breakfast                      🗑️
+ Breakfast                      
 Oatmeal with berries
 450 calories
 ```
 
 **Each Activity Entry:**
 ```
-🏃 Running                        🗑️
+ Running                        
 30 minutes
 190 calories burned
 ```
@@ -459,19 +459,19 @@ Quick food/meal logging
 
 **Meal Type Options:**
 ```
-🍳 Breakfast
-🥗 Lunch
-🍽️ Dinner
-🍪 Snack
+ Breakfast
+ Lunch
+ Dinner
+ Snack
 ```
 
-### Buttons, orange bg, white text) | Validate → Save → Return to Dashboard | Disabled until calories entered |
-| Cancel | Secondary (black text link) | Discard → Return to Dashboard | Always enabled |
-| ✖ Close | Icon (top right, black State |
+### Buttons, orange bg, white text) | Validate  Save  Return to Dashboard | Disabled until calories entered |
+| Cancel | Secondary (black text link) | Discard  Return to Dashboard | Always enabled |
+|  Close | Icon (top right, black State |
 |--------|-------|--------|-------|
-| Add Food | Primary (full width) | Validate → Save → Return to Dashboard | Disabled until calories entered |
-| Cancel | Secondary (text link) | Discard → Return to Dashboard | Always enabled |
-| ✖ Close | Icon (top right) | Same as Cancel | Always enabled |
+| Add Food | Primary (full width) | Validate  Save  Return to Dashboard | Disabled until calories entered |
+| Cancel | Secondary (text link) | Discard  Return to Dashboard | Always enabled |
+|  Close | Icon (top right) | Same as Cancel | Always enabled |
 
 ### Displayed Calculations
 **None** - User enters calories directly
@@ -493,12 +493,12 @@ Meal type is required
 - `
 
 **Success (after adding):**
-- Brief toast message on Dashboard: "✓ Food added - 450 cal"
+- Brief toast message on Dashboard: " Food added - 450 cal"
 - Auto-dismiss after 2 seconds
 
 **Common Calorie Guide (optional helper):**
 ```
-💡 Common estimates:
+ Common estimates:
 Small snack: 100-200 cal
 Regular meal: 400-600 cal
 Large meal: 600-900 cal
@@ -508,11 +508,11 @@ Large meal: 600-900 cal
 - Food name: Auto-capitalize first letter
 - Calories: Numeric keyboard on mobile
 - Meal type: Defaults to current meal time:
-  - 4am-11am → Breakfast
-  - 11am-2pm → Lunch  
-  - 2pm-5pm → Snack
-  - 5pm-10pm → Dinner
-  - 10pm-4am → Snack
+  - 4am-11am  Breakfast
+  - 11am-2pm  Lunch  
+  - 2pm-5pm  Snack
+  - 5pm-10pm  Dinner
+  - 10pm-4am  Snack
 
 ---
 
@@ -530,37 +530,37 @@ Log exercise and auto-calculate calories burned
 
 **Activity Type Options (with MET values):**
 ```
-🚶 Walking (3.5 METs)
-🏃 Running (8.0 METs)
-🏀 Basketball (6.5 METs)
-⚽ Soccer (7.0 METs)
-🏋️ Weight Training (6.0 METs)
-🏊 Swimming (6.0 METs)
-🚴 Cycling (7.5 METs)
-🧘 Yoga (2.5 METs)
-💪 HIIT Training (8.0 METs)
-⚾ Sports Practice (5.0 METs)
+ Walking (3.5 METs)
+ Running (8.0 METs)
+ Basketball (6.5 METs)
+ Soccer (7.0 METs)
+ Weight Training (6.0 METs)
+ Swimming (6.0 METs)
+ Cycling (7.5 METs)
+ Yoga (2.5 METs)
+ HIIT Training (8.0 METs)
+ Sports Practice (5.0 METs)
 ```
 
 ### Buttons
 
 | Button | Style | Action | State |
-|--------|-------|--------|-------|, orange bg, white text) | Validate → Save → Return to Dashboard | Disabled until duration entered |
-| Cancel | Secondary (black text link) | Discard → Return to Dashboard | Always enabled |
-| ✖ Close | Icon (top right, blacklink) | Discard → Return to Dashboard | Always enabled |
-| ✖ Close | Icon (top right) | Same as Cancel | Always enabled |
+|--------|-------|--------|-------|, orange bg, white text) | Validate  Save  Return to Dashboard | Disabled until duration entered |
+| Cancel | Secondary (black text link) | Discard  Return to Dashboard | Always enabled |
+|  Close | Icon (top right, blacklink) | Discard  Return to Dashboard | Always enabled |
+|  Close | Icon (top right) | Same as Cancel | Always enabled |
 
 ### Displayed Calculations
 
 **Calories Burned Preview (updates in real-time):**
 ```
-┌─────────────────────────┐
-│ Calories Burned:        │
-│                         │
-│       190              │
-│     calories           │
-│                         │
-└─────────────────────────┘
+
+ Calories Burned:        
+                         
+       190              
+     calories           
+                         
+
 ```
 - Updates as user types duration
 - Formula: `MET × we
@@ -596,12 +596,12 @@ Duration must be between 1 and 300 minutes
 
 **Orange background, white text
 - Success (after adding):**
-- Brief toast on Dashboard: "✓ Activity added - 190 cal burned"
+- Brief toast on Dashboard: " Activity added - 190 cal burned"
 - Auto-dismiss after 2 seconds
 
 **Helpful Hints:**
 ```
-💡 Tip: A typical workout is 30-60 minutes
+ Tip: A typical workout is 30-60 minutes
 ```
 
 ### Interactive Behavior
@@ -639,30 +639,30 @@ View and update user information
 | Button | Style | Action |white bg, orange border, orange text) | Enter edit mode |
 | Change Goal | Secondary (white bg, orange border, orange text) | Navigate to Goal Selection |
 | Reset All Data | Destructive (white bg, black border, black text) | Show confirmation dialog |
-| ← Back | Icon/text (header, blackutlined) | Navigate to Goal Selection |
+|  Back | Icon/text (header, blackutlined) | Navigate to Goal Selection |
 | Reset All Data | Destructive (red text) | Show confirmation dialog |
-| ← Back | Icon/text (header) | Return to Dashboard |
+|  Back | Icon/text (header) | Return to Dashboard |
 
 **In Edit Mode:**
 
-| Button | Style | Action(orange bg, white text) | Validate → Recalculate → Save → Exit edit mode |
+| Button | Style | Action(orange bg, white text) | Validate  Recalculate  Save  Exit edit mode |
 | Cancel | Secondary (white bg, black border, black text)------|
-| Save Changes | Primary | Validate → Recalculate → Save → Exit edit mode |
-| Cancel | Secondary | Discard changes → Exit edit mode |
+| Save Changes | Primary | Validate  Recalculate  Save  Exit edit mode |
+| Cancel | Secondary | Discard changes  Exit edit mode |
 
 **In Reset Confirmation Dialog:**
 
 | Button | Style | Action |
-|--------|-------|--------|black bg, white text, full) | Clear all data → Return to Welcome |
-| Cancel | Secondary (white bg, orange border, orange text)ing | Destructive (red, full) | Clear all data → Return to Welcome |
+|--------|-------|--------|black bg, white text, full) | Clear all data  Return to Welcome |
+| Cancel | Secondary (white bg, orange border, orange text)ing | Destructive (red, full) | Clear all data  Return to Welcome |
 | Cancel | Secondary | Close dialog |
 
 ### Displayed Calculations
 
 **Profile Summary Section:**
 ```
-📊 Your Profile
-───────────────────────
+ Your Profile
+
 Age: 16 years
 Gender: Male
 Height: 5'10" (178 cm)
@@ -672,8 +672,8 @@ Activity: Moderately Active
 
 **Goal Summary Section:**
 ```
-🎯 Your Goal
-───────────────────────
+ Your Goal
+
 Goal: Lose Weight
 Daily Target: 1,780 cal
 
@@ -684,15 +684,15 @@ Deficit: -500 cal/day
 
 **History Section (optional v1):**
 ```
-📅 Last 7 Days
-───────────────────────
-Mon 1/20: 1,820 / 1,780 ✅
-Sun 1/19: 1,650 / 1,780 ✅
-Sat 1/18: 2,100 / 1,780 ⚠️
-Fri 1/17: 1,750 / 1,780 ✅
-Thu 1/16: 1,900 / 1,780 ⚠️
-Wed 1/15: 1,700 / 1,780 ✅
-Tue 1/14: 1,800 / 1,780 ✅
+ Last 7 Days
+
+Mon 1/20: 1,820 / 1,780 
+Sun 1/19: 1,650 / 1,780 
+Sat 1/18: 2,100 / 1,780 
+Fri 1/17: 1,750 / 1,780 
+Thu 1/16: 1,900 / 1,780 
+Wed 1/15: 1,700 / 1,780 
+Tue 1/14: 1,800 / 1,780 
 
 Average: 1,817 cal/day
 ```
@@ -712,19 +712,19 @@ All fields are required
 
 **After Saving Changes:**
 ```
-✓ Profile updated
+ Profile updated
 Your numbers have been recalculated.
 ```
 - Toast message, auto-dismiss after 3 seconds
 
 **Reset Confirmation Dialog:**
 ```
-⚠️ Reset All Data?
+ Reset All Data?
 
 This will delete:
-• Your profile
-• All food and activity logs
-• Your goal settings
+- Your profile
+- All food and activity logs
+- Your goal settings
 
 This cannot be undone.
 
@@ -736,7 +736,7 @@ This cannot be undone.
 
 **If BMR/TDEE Changed:**
 ```
-📊 Your calorie target has been updated based on your new weight.
+ Your calorie target has been updated based on your new weight.
 
 Old target: 1,780 cal
 New target: 1,750 cal
@@ -746,19 +746,19 @@ New target: 1,750 cal
 
 **Toggles and Options:**
 ```
-⚙️ App Settings
-───────────────────────
+ App Settings
+
 [ ] Dark Mode (toggle)
 
-Units: ● Imperial  ○ Metric
+Units:  Imperial   Metric
 
 Clear Today's Log [Button]
 ```
 
 ### Interactive Behavior
-- Edit Profile → Fields become editable
-- Weight change → Auto-recalculates BMR, TDEE, target
-- Activity level change → Auto-recalculates TDEE, target
+- Edit Profile  Fields become editable
+- Weight change  Auto-recalculates BMR, TDEE, target
+- Activity level change  Auto-recalculates TDEE, target
 - Toggle switches for app settings
 - Dangerous actions (reset) require confirmation
 
@@ -770,9 +770,9 @@ Clear Today's Log [Button]
 
 **Standard Header (most screens):**
 ```
-┌─────────────────────────┐
-│ ← Back    Screen Name  ☰│
-└─────────────────────────┘
+
+  Back    Screen Name  
+
 ```
 - Height: 56px
 - Background: White
@@ -783,9 +783,9 @@ Clear Today's Log [Button]
 
 **Dashboard Header:**
 ```
-┌─────────────────────────┐
-│ [logo.jpg]  Hawk Fuel  ☰ │
-└─────────────────────────┘
+
+ [logo.jpg]  Hawk Fuel   
+
 ```
 - Logo: 40px × 40px (left side)
 - App name instead of back button (black, bold)
@@ -795,9 +795,9 @@ Clear Today's Log [Button]
 
 **Add Food/Activity:**
 ```
-┌─────────────────────────┐
-│ ✖ Close    Add Food     │
-└─────────────────────────┘
+
+  Close    Add Food     
+
 ```
 - Close icon: Left
 - Title: Center
@@ -806,7 +806,7 @@ Clear Today's Log [Button]
 
 **Success Toast:**
 ```
-┌─Orange background (#EA580C)
+Orange background (#EA580C)
 - White text
 - Black border (1px)
 - Bottom of screen
@@ -814,14 +814,14 @@ Clear Today's Log [Button]
 
 **Error Toast:**
 ```
-┌─────────────────────────┐
-│ ❌ Please fill all fields│
-└─────────────────────────┘
+
+  Please fill all fields
+
 ```
 - Black background
 - White text
-- Orange border (2px)ill all fields│
-└─────────────────────────┘
+- Orange border (2px)ill all fields
+
 ```
 - Red background
 - White text
@@ -832,9 +832,9 @@ Clear Today's Log [Button]
 
 **Button Loading:**
 ```
-┌─────────────────────────┐
-│     ⟳ Calculating...    │
-└─────────────────────────┘
+
+      Calculating...    
+
 ```
 - Spinner + text
 - Button disabled
@@ -842,7 +842,7 @@ Clear Today's Log [Button]
 
 **Screen Loading:**
 ```
-      ⟳ Loading...
+       Loading...
 ```
 - Centered spinner
 - Minimal, fast
@@ -851,7 +851,7 @@ Clear Today's Log [Button]
 
 **No Food Logged:**
 ```
-🍽️
+
 
 No food logged yet today
 
@@ -860,7 +860,7 @@ Tap "Add Food" to get started
 
 **No Activities Logged:**
 ```
-🏃
+
 
 No activities logged yet today
 

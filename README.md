@@ -1,77 +1,77 @@
-# 🔥 Hawk Fuel - Calorie & Activity Tracker
+#  Hawk Fuel - Calorie & Activity Tracker
 
 A modern Progressive Web App (PWA) built with React for tracking calories, calculating BMR/TDEE, and monitoring daily activities using the MET system.
 
-**✨ NEW: Daily calorie tracking with localStorage! Log food, exercise, and track your progress in real-time.**
+** NEW: Daily calorie tracking with localStorage! Log food, exercise, and track your progress in real-time.**
 
 ---
 
-## 🎯 Features
+##  Features
 
 ### Core Features
-- 📊 **BMR & TDEE Calculator** - Based on Mifflin-St Jeor equation
-- 🎯 **Goal Setting** - Maintenance, weight loss, or weight gain
-- 🏃 **Activity Tracking** - MET-based calorie burn calculator
-- 💪 **6 Activities** - Walking, Running, Weight Lifting, Wrestling, Football, Cycling
+-  **BMR & TDEE Calculator** - Based on Mifflin-St Jeor equation
+-  **Goal Setting** - Maintenance, weight loss, or weight gain
+-  **Activity Tracking** - MET-based calorie burn calculator
+-  **6 Activities** - Walking, Running, Weight Lifting, Wrestling, Football, Cycling
 
 ### NEW: Daily Calorie Tracking
-- 🍽️ **Food Logging** - Track everything you eat
-- 🔥 **Exercise Logging** - Track calories burned
-- 📈 **Real-time Totals** - See remaining calories instantly
-- 💾 **localStorage** - All data persists (survives browser refresh!)
-- 🌅 **Daily Reset** - Automatically resets at midnight
-- 💡 **Smart Guidance** - Know exactly how much to eat/burn
+-  **Food Logging** - Track everything you eat
+-  **Exercise Logging** - Track calories burned
+-  **Real-time Totals** - See remaining calories instantly
+-  **localStorage** - All data persists (survives browser refresh!)
+-  **Daily Reset** - Automatically resets at midnight
+-  **Smart Guidance** - Know exactly how much to eat/burn
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 Hawk Fuel/
-├── public/                    # Static files
-│   ├── index.html            # Main HTML template
-│   ├── manifest.json         # PWA manifest
-│   ├── robots.txt            # Search engine rules
-│   ├── favicon.ico           # App icon (add your own)
-│   ├── logo192.png           # PWA icon 192x192 (add your own)
-│   └── logo512.png           # PWA icon 512x512 (add your own)
-│
-├── src/                      # Source code
-│   ├── components/           # React components
-│   │   ├── UserProfile.js    # User info input form
-│   │   ├── UserProfile.css   # Styling for user form
-│   │   ├── ActivityTracker.js # Activity logging
-│   │   ├── ActivityTracker.css # Activity styling
-│   │   ├── Results.js        # Calculation results
-│   │   ├── Results.css       # Results styling
-│   │   ├── Dashboard.js      # Daily calorie tracker (NEW!)
-│   │   └── Dashboard.css     # Dashboard styling (NEW!)
-│   │
-│   ├── utils/                # Utility functions (NEW!)
-│   │   └── localStorage.js   # localStorage operations (NEW!)
-│   │
-│   ├── App.js                # Main app component
-│   ├── App.css               # App-level styling
-│   ├── index.js              # React entry point
-│   ├── index.css             # Global styling
-│   ├── serviceWorkerRegistration.js  # PWA service worker
-│   ├── reportWebVitals.js    # Performance monitoring
-│   ├── App.test.js           # Tests
-│   └── setupTests.js         # Test configuration
-│
-├── package.json              # Dependencies and scripts
-├── .gitignore               # Git ignore rules
-├── README.md                # This file
-├── CALORIE_TRACKING_GUIDE.md # Daily tracking guide (NEW!)
-├── FEATURE_LIST.md          # Feature documentation
-├── FORMULAS.md              # Calculation formulas
-├── MET_SYSTEM_GUIDE.md      # MET system guide
-└── activity-calories.html   # Standalone calculator demo
+ public/                    # Static files
+    index.html            # Main HTML template
+    manifest.json         # PWA manifest
+    robots.txt            # Search engine rules
+    favicon.ico           # App icon (add your own)
+    logo192.png           # PWA icon 192x192 (add your own)
+    logo512.png           # PWA icon 512x512 (add your own)
+
+ src/                      # Source code
+    components/           # React components
+       UserProfile.js    # User info input form
+       UserProfile.css   # Styling for user form
+       ActivityTracker.js # Activity logging
+       ActivityTracker.css # Activity styling
+       Results.js        # Calculation results
+       Results.css       # Results styling
+       Dashboard.js      # Daily calorie tracker (NEW!)
+       Dashboard.css     # Dashboard styling (NEW!)
+   
+    utils/                # Utility functions (NEW!)
+       localStorage.js   # localStorage operations (NEW!)
+   
+    App.js                # Main app component
+    App.css               # App-level styling
+    index.js              # React entry point
+    index.css             # Global styling
+    serviceWorkerRegistration.js  # PWA service worker
+    reportWebVitals.js    # Performance monitoring
+    App.test.js           # Tests
+    setupTests.js         # Test configuration
+
+ package.json              # Dependencies and scripts
+ .gitignore               # Git ignore rules
+ README.md                # This file
+ CALORIE_TRACKING_GUIDE.md # Daily tracking guide (NEW!)
+ FEATURE_LIST.md          # Feature documentation
+ FORMULAS.md              # Calculation formulas
+ MET_SYSTEM_GUIDE.md      # MET system guide
+ activity-calories.html   # Standalone calculator demo
 ```
 
 ---
 
-## 🚀 Getting Started (Step-by-Step)
+##  Getting Started (Step-by-Step)
 
 ### Step 1: Install Node.js
 
@@ -124,7 +124,7 @@ This creates an optimized production build in the `build/` folder.
 
 ---
 
-## 📦 Required Packages (Already in package.json)
+##  Required Packages (Already in package.json)
 
 ### Core Dependencies:
 - **react** (^18.2.0) - UI library
@@ -139,7 +139,7 @@ This creates an optimized production build in the `build/` folder.
 
 ---
 
-## 🎯 Features
+##  Features
 
 ### 1. User Profile Setup
 - Age, gender, height, weight input
@@ -173,23 +173,23 @@ This creates an optimized production build in the `build/` folder.
 - Adjusted daily intake
 
 ### 6. Daily Calorie Tracking (NEW!)
-- 🍽️ **Food logging** with calorie input
-- 🏃 **Exercise logging** with calories burned
-- 📊 **Real-time summary cards** showing:
+-  **Food logging** with calorie input
+-  **Exercise logging** with calories burned
+-  **Real-time summary cards** showing:
   - Daily target
   - Total eaten
   - Total burned
   - Remaining calories
-- 💾 **localStorage persistence** - data survives browser refresh
-- 🌅 **Automatic daily reset** at midnight
-- 💡 **Smart guidance** - tells you exactly how much to eat/burn
-- 📈 **Progress tracking** - see if you're on target, under, or over
+-  **localStorage persistence** - data survives browser refresh
+-  **Automatic daily reset** at midnight
+-  **Smart guidance** - tells you exactly how much to eat/burn
+-  **Progress tracking** - see if you're on target, under, or over
 
 **See [CALORIE_TRACKING_GUIDE.md](CALORIE_TRACKING_GUIDE.md) for detailed usage instructions!**
 
 ---
 
-## 🎯 How to Use Hawk Fuel
+##  How to Use Hawk Fuel
 
 ### First Time Setup (Steps 1-3)
 
@@ -235,7 +235,7 @@ This creates an optimized production build in the `build/` folder.
    - Stay on target!
 
 4. **Delete Mistakes**
-   - Click ✕ button next to any entry
+   - Click  button next to any entry
    - Totals update automatically
 
 **All data saves automatically! Close browser and come back - it's still there.**
@@ -244,7 +244,7 @@ This creates an optimized production build in the `build/` folder.
 
 ---
 
-## 💻 Available Scripts
+##  Available Scripts
 
 ### `npm start`
 Runs the app in development mode.  
@@ -258,18 +258,18 @@ Builds the app for production to the `build` folder.
 The build is optimized and ready to deploy.
 
 ### `npm run eject`
-⚠️ **One-way operation!** Ejects from Create React App for full control.
+ **One-way operation!** Ejects from Create React App for full control.
 
 ---
 
-## 📱 PWA Features
+##  PWA Features
 
 This app is a Progressive Web App (PWA), which means:
 
-✅ **Install on mobile/desktop** - Add to home screen  
-✅ **Offline capability** - Works without internet (after first load)  
-✅ **Fast loading** - Cached resources  
-✅ **App-like experience** - Full screen mode  
+ **Install on mobile/desktop** - Add to home screen  
+ **Offline capability** - Works without internet (after first load)  
+ **Fast loading** - Cached resources  
+ **App-like experience** - Full screen mode  
 
 ### To Use as PWA:
 
@@ -286,7 +286,7 @@ This app is a Progressive Web App (PWA), which means:
 
 ---
 
-## 🎨 Customization Tips
+##  Customization Tips
 
 ### Change Colors:
 
@@ -306,7 +306,7 @@ Edit `src/components/ActivityTracker.js`:
 
 ```javascript
 const ACTIVITIES = [
-  { id: 'swimming', name: 'Swimming', met: 6.0, emoji: '🏊' },
+  { id: 'swimming', name: 'Swimming', met: 6.0, emoji: '' },
   // Add more here
 ];
 ```
@@ -317,7 +317,7 @@ Edit `src/components/Results.js` to modify calculations.
 
 ---
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 
 ### Problem: `npm install` fails
 
@@ -350,7 +350,7 @@ set PORT=3001 && npm start
 
 ---
 
-## 📚 Learning Resources
+##  Learning Resources
 
 ### React Basics:
 - [Official React Tutorial](https://react.dev/learn)
@@ -370,7 +370,7 @@ set PORT=3001 && npm start
 
 ---
 
-## 🗂️ File Descriptions
+##  File Descriptions
 
 ### Configuration Files:
 
@@ -400,7 +400,7 @@ set PORT=3001 && npm start
 
 ---
 
-## 🚀 Deployment Options
+##  Deployment Options
 
 ### Option 1: GitHub Pages
 ```bash
@@ -422,19 +422,19 @@ npx gh-pages -d build
 
 ---
 
-## ✅ Next Steps
+##  Next Steps
 
-1. ✅ Install Node.js and npm
-2. ✅ Run `npm install`
-3. ✅ Run `npm start`
-4. 📝 Customize colors and branding
-5. 🎨 Add your own icons (logo192.png, logo512.png, favicon.ico)
-6. 🧪 Test the app on your phone
-7. 🚀 Build and deploy
+1.  Install Node.js and npm
+2.  Run `npm install`
+3.  Run `npm start`
+4.  Customize colors and branding
+5.  Add your own icons (logo192.png, logo512.png, favicon.ico)
+6.  Test the app on your phone
+7.  Build and deploy
 
 ---
 
-## 🐛 Common Beginner Questions
+##  Common Beginner Questions
 
 **Q: What is React?**  
 A: React is a JavaScript library for building user interfaces. It breaks your UI into reusable components.
@@ -453,7 +453,7 @@ A: Create a new component in `src/components/` and import it into `App.js`.
 
 ---
 
-## 📞 Need Help?
+##  Need Help?
 
 - Check `FORMULAS.md` for calculation details
 - Check `MET_SYSTEM_GUIDE.md` for activity tracking
@@ -463,12 +463,12 @@ A: Create a new component in `src/components/` and import it into `App.js`.
 
 ---
 
-## 📄 License
+##  License
 
 See LICENSE file for details.
 
 ---
 
-## 🎉 You're Ready!
+##  You're Ready!
 
-Run `npm start` and start building! 🚀
+Run `npm start` and start building! 

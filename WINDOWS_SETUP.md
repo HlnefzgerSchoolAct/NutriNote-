@@ -1,10 +1,10 @@
-# 🪟 Windows Setup Guide for Hawk Fuel
+#  Windows Setup Guide for Hawk Fuel
 
 ## For Complete Beginners - Step by Step
 
 ---
 
-## ✅ Step 1: Install Node.js
+##  Step 1: Install Node.js
 
 ### Why?
 Node.js includes `npm`, which we need to install React and run the project.
@@ -37,11 +37,11 @@ Node.js includes `npm`, which we need to install React and run the project.
      ```
    - You should see something like: `10.2.4`
 
-✅ **If you see version numbers, Node.js is installed!**
+ **If you see version numbers, Node.js is installed!**
 
 ---
 
-## ✅ Step 2: Open Project in VS Code
+##  Step 2: Open Project in VS Code
 
 ### If You Don't Have VS Code:
 1. Download from: https://code.visualstudio.com/
@@ -49,28 +49,28 @@ Node.js includes `npm`, which we need to install React and run the project.
 
 ### Open Hawk Fuel Project:
 1. Open VS Code
-2. Click **File** → **Open Folder**
+2. Click **File**  **Open Folder**
 3. Navigate to your Hawk Fuel folder
 4. Click **Select Folder**
 
 ---
 
-## ✅ Step 3: Open Terminal in VS Code
+##  Step 3: Open Terminal in VS Code
 
 ### Method 1:
 - Press `Ctrl + ` (that's the backtick key, usually above Tab)
 
 ### Method 2:
-- Click **Terminal** menu → **New Terminal**
+- Click **Terminal** menu  **New Terminal**
 
 ### Method 3:
-- Click **View** menu → **Terminal**
+- Click **View** menu  **Terminal**
 
 You should see a panel at the bottom of VS Code with a command line.
 
 ---
 
-## ✅ Step 4: Install Project Dependencies
+##  Step 4: Install Project Dependencies
 
 In the terminal, type:
 
@@ -100,7 +100,7 @@ Press **Enter** and wait.
 
 ---
 
-## ✅ Step 5: Start the Development Server
+##  Step 5: Start the Development Server
 
 In the same terminal, type:
 
@@ -121,11 +121,11 @@ Press **Enter**.
 - "Hawk Fuel" header
 - A form asking for your information
 
-🎉 **Congratulations! Your app is running!**
+ **Congratulations! Your app is running!**
 
 ---
 
-## 🔄 Daily Workflow
+##  Daily Workflow
 
 ### Starting Your Work:
 1. Open VS Code
@@ -148,7 +148,7 @@ Press **Enter**.
 
 ---
 
-## 📁 Where to Make Changes
+##  Where to Make Changes
 
 ### Want to change colors?
 - Edit files ending in `.css`
@@ -165,7 +165,7 @@ Press **Enter**.
 
 ---
 
-## 🎨 Easy Customizations for Beginners
+##  Easy Customizations for Beginners
 
 ### Change the App Title:
 1. Open `public/index.html`
@@ -188,13 +188,13 @@ Press **Enter**.
 
 ---
 
-## 🐛 Common Windows Issues
+##  Common Windows Issues
 
 ### Issue 1: "Scripts disabled"
 **Error:** "running scripts is disabled on this system"
 
 **Fix:**
-1. Open PowerShell as Administrator (search "PowerShell" → Right-click → Run as Admin)
+1. Open PowerShell as Administrator (search "PowerShell"  Right-click  Run as Admin)
 2. Type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 3. Type `Y` and press Enter
 4. Close PowerShell
@@ -222,7 +222,7 @@ Press **Enter**.
 
 ---
 
-## 📝 Terminal Commands Cheat Sheet
+##  Terminal Commands Cheat Sheet
 
 ```bash
 # Install packages
@@ -258,7 +258,7 @@ cls
 
 ---
 
-## 🚀 Building for Production (When Done)
+##  Building for Production (When Done)
 
 ### Create Production Build:
 ```bash
@@ -289,32 +289,32 @@ npm run build
 
 ---
 
-## 🎓 Learning Path for Beginners
+##  Learning Path for Beginners
 
 ### Week 1: Get Comfortable
-- ✅ Install everything
-- ✅ Run the app
-- ✅ Change colors and text
-- ✅ Understand the file structure
+-  Install everything
+-  Run the app
+-  Change colors and text
+-  Understand the file structure
 
 ### Week 2: Learn React Basics
-- 📚 Read: https://react.dev/learn
-- 🎬 Watch: React tutorials on YouTube
-- 💡 Understand: Components, Props, State
+-  Read: https://react.dev/learn
+-  Watch: React tutorials on YouTube
+-  Understand: Components, Props, State
 
 ### Week 3: Customize Your App
-- 🎨 Add your own activities
-- 🔧 Modify calculations
-- 🌈 Create your own theme
+-  Add your own activities
+-  Modify calculations
+-  Create your own theme
 
 ### Week 4: Advanced Features
-- 📱 Test PWA features
-- 🚀 Deploy online
-- 🎉 Share with friends!
+-  Test PWA features
+-  Deploy online
+-  Share with friends!
 
 ---
 
-## 📞 Getting Help
+##  Getting Help
 
 ### If Something Breaks:
 
@@ -332,11 +332,11 @@ npm run build
 
 ---
 
-## ✨ Pro Tips for Windows Users
+##  Pro Tips for Windows Users
 
 1. **Use VS Code's integrated terminal** - Don't use Command Prompt separately
 2. **Save often** - Press `Ctrl + S` frequently
-3. **Auto-save** - Go to File → Auto Save (enable it!)
+3. **Auto-save** - Go to File  Auto Save (enable it!)
 4. **Extensions** - Install "ES7+ React/Redux/React-Native snippets" in VS Code
 5. **Prettier** - Install "Prettier" extension for auto-formatting
 6. **Keyboard shortcuts:**
@@ -347,11 +347,11 @@ npm run build
 
 ---
 
-## 🎉 You're All Set!
+##  You're All Set!
 
 Run this command to start:
 ```bash
 npm start
 ```
 
-Happy coding! 🚀
+Happy coding! 

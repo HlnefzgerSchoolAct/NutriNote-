@@ -7,21 +7,21 @@ First impression - introduce the app and get user started
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│                             │
-│      🏋️ Hawk Fuel           │
-│                             │
-│   Your Fitness Companion    │
-│                             │
-│  Track calories, reach      │
-│  your strength &            │
-│  conditioning goals         │
-│                             │
-│  ┌───────────────────────┐ │
-│  │    Get Started        │ │
-│  └───────────────────────┘ │
-│                             │
-└─────────────────────────────┘
+
+                             
+       Hawk Fuel           
+                             
+   Your Fitness Companion    
+                             
+  Track calories, reach      
+  your strength &            
+  conditioning goals         
+                             
+   
+      Get Started         
+   
+                             
+
 ```
 
 ### Elements
@@ -32,7 +32,7 @@ First impression - introduce the app and get user started
 - **"Get Started" button** (primary action)
 
 ### Actions
-- Click "Get Started" → Go to Profile Setup screen
+- Click "Get Started"  Go to Profile Setup screen
 
 ---
 
@@ -43,35 +43,35 @@ Collect user information to calculate BMR and TDEE
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│  ← Back    Profile Setup    │
-├─────────────────────────────┤
-│                             │
-│  Let's calculate your       │
-│  daily calorie needs        │
-│                             │
-│  Age (years)                │
-│  [___________]              │
-│                             │
-│  Gender                     │
-│  ( ) Male  ( ) Female       │
-│                             │
-│  Height                     │
-│  [____] ft [____] in        │
-│                             │
-│  Weight                     │
-│  [___________] lbs          │
-│                             │
-│  Activity Level             │
-│  [Dropdown ▼]               │
-│  ℹ️ How active are you      │
-│     without exercise?       │
-│                             │
-│  ┌───────────────────────┐ │
-│  │  Calculate My BMR     │ │
-│  └───────────────────────┘ │
-│                             │
-└─────────────────────────────┘
+
+   Back    Profile Setup    
+
+                             
+  Let's calculate your       
+  daily calorie needs        
+                             
+  Age (years)                
+  [___________]              
+                             
+  Gender                     
+  ( ) Male  ( ) Female       
+                             
+  Height                     
+  [____] ft [____] in        
+                             
+  Weight                     
+  [___________] lbs          
+                             
+  Activity Level             
+  [Dropdown ]               
+   How active are you      
+     without exercise?       
+                             
+   
+    Calculate My BMR      
+   
+                             
+
 ```
 
 ### Form Fields
@@ -93,8 +93,8 @@ Collect user information to calculate BMR and TDEE
 - Weight: Reasonable ranges
 
 ### Actions
-- Click "Calculate My BMR" → Show results + Go to Goal Selection screen
-- Click "Back" → Return to Welcome screen
+- Click "Calculate My BMR"  Show results + Go to Goal Selection screen
+- Click "Back"  Return to Welcome screen
 
 ---
 
@@ -105,33 +105,33 @@ Show calculated values and explain what they mean
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│  Your Calorie Numbers       │
-├─────────────────────────────┤
-│                             │
-│  📊 Your BMR                │
-│  ┌───────────────────────┐ │
-│  │      1,650 cal/day    │ │
-│  └───────────────────────┘ │
-│  Calories burned at rest    │
-│                             │
-│  🔥 Maintenance Calories    │
-│  ┌───────────────────────┐ │
-│  │      2,280 cal/day    │ │
-│  └───────────────────────┘ │
-│  Your TDEE (total daily     │
-│  energy expenditure)        │
-│                             │
-│  ℹ️ What does this mean?    │
-│  Eating 2,280 calories      │
-│  daily will maintain your   │
-│  current weight.            │
-│                             │
-│  ┌───────────────────────┐ │
-│  │    Set My Goal        │ │
-│  └───────────────────────┘ │
-│                             │
-└─────────────────────────────┘
+
+  Your Calorie Numbers       
+
+                             
+   Your BMR                
+   
+        1,650 cal/day     
+   
+  Calories burned at rest    
+                             
+   Maintenance Calories    
+   
+        2,280 cal/day     
+   
+  Your TDEE (total daily     
+  energy expenditure)        
+                             
+   What does this mean?    
+  Eating 2,280 calories      
+  daily will maintain your   
+  current weight.            
+                             
+   
+      Set My Goal         
+   
+                             
+
 ```
 
 ### Elements
@@ -143,7 +143,7 @@ Show calculated values and explain what they mean
 - **"Set My Goal" button** (primary action)
 
 ### Actions
-- Click "Set My Goal" → Go to Goal Selection screen
+- Click "Set My Goal"  Go to Goal Selection screen
 
 ---
 
@@ -154,44 +154,44 @@ Let user choose their fitness goal and set calorie target
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│  ← Back    Set Your Goal    │
-├─────────────────────────────┤
-│                             │
-│  Your maintenance: 2,280    │
-│                             │
-│  What's your goal?          │
-│                             │
-│  ┌───────────────────────┐ │
-│  │ 🎯 Maintain Weight    │ │
-│  │    2,280 calories     │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │ 📉 Lose Weight        │ │
-│  │    1,780 - 2,030 cal  │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │ 📈 Gain Weight        │ │
-│  │    2,530 - 2,780 cal  │ │
-│  └───────────────────────┘ │
-│                             │
-│  [Selected: Lose Weight]    │
-│                             │
-│  Calorie Deficit            │
-│  ┌─────────────────────┐   │
-│  │ -500 ◄─────●──────► │   │
-│  └─────────────────────┘   │
-│  -250   -500   -750         │
-│                             │
-│  Your Daily Target: 1,780   │
-│                             │
-│  ┌───────────────────────┐ │
-│  │   Start Tracking      │ │
-│  └───────────────────────┘ │
-│                             │
-└─────────────────────────────┘
+
+   Back    Set Your Goal    
+
+                             
+  Your maintenance: 2,280    
+                             
+  What's your goal?          
+                             
+   
+    Maintain Weight     
+      2,280 calories      
+   
+                             
+   
+    Lose Weight         
+      1,780 - 2,030 cal   
+   
+                             
+   
+    Gain Weight         
+      2,530 - 2,780 cal   
+   
+                             
+  [Selected: Lose Weight]    
+                             
+  Calorie Deficit            
+     
+   -500     
+     
+  -250   -500   -750         
+                             
+  Your Daily Target: 1,780   
+                             
+   
+     Start Tracking       
+   
+                             
+
 ```
 
 ### Elements
@@ -207,10 +207,10 @@ Let user choose their fitness goal and set calorie target
 - **"Start Tracking" button**
 
 ### Actions
-- Select goal card → Show slider for that goal
-- Adjust slider → Update daily target
-- Click "Start Tracking" → Go to Dashboard + save profile
-- Click "Back" → Return to BMR results
+- Select goal card  Show slider for that goal
+- Adjust slider  Update daily target
+- Click "Start Tracking"  Go to Dashboard + save profile
+- Click "Back"  Return to BMR results
 
 ---
 
@@ -221,46 +221,46 @@ Central hub - show daily progress and quick actions
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│  Hawk Fuel        ☰ Settings │
-├─────────────────────────────┤
-│                             │
-│  Today: Monday, Jan 20      │
-│                             │
-│  🎯 Daily Goal: 1,780 cal   │
-│                             │
-│  Progress                   │
-│  ┌─────────────────────┐   │
-│  │███████░░░░░░░░░░░░░ │   │
-│  └─────────────────────┘   │
-│  1,230 / 1,780              │
-│                             │
-│  ┌──────────┬──────────┐   │
-│  │ 🍽️ Eaten │ 🔥 Burned│   │
-│  │  1,420   │   190    │   │
-│  └──────────┴──────────┘   │
-│                             │
-│  Net Calories: 1,230        │
-│  Remaining: 550 cal         │
-│                             │
-│  ✅ On Track                │
-│                             │
-│  ┌───────────────────────┐ │
-│  │   ➕ Add Food         │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │   🏃 Add Activity     │ │
-│  └───────────────────────┘ │
-│                             │
-│  Today's Log                │
-│  ─────────────────────────  │
-│  🍳 Breakfast - 450 cal     │
-│  🏃 Running 30min - 190 cal │
-│  🥗 Lunch - 620 cal         │
-│  🍪 Snack - 350 cal         │
-│                             │
-└─────────────────────────────┘
+
+  Hawk Fuel         Settings 
+
+                             
+  Today: Monday, Jan 20      
+                             
+   Daily Goal: 1,780 cal   
+                             
+  Progress                   
+     
+      
+     
+  1,230 / 1,780              
+                             
+     
+    Eaten   Burned   
+    1,420      190       
+     
+                             
+  Net Calories: 1,230        
+  Remaining: 550 cal         
+                             
+   On Track                
+                             
+   
+      Add Food          
+   
+                             
+   
+      Add Activity      
+   
+                             
+  Today's Log                
+    
+   Breakfast - 450 cal     
+   Running 30min - 190 cal 
+   Lunch - 620 cal         
+   Snack - 350 cal         
+                             
+
 ```
 
 ### Elements
@@ -284,14 +284,14 @@ Central hub - show daily progress and quick actions
 - **Today's Log**: Scrollable list of entries
   - Food entries with calories
   - Activity entries with duration and calories
-  - Each with delete icon (🗑️)
+  - Each with delete icon ()
 
 ### Actions
-- Click "Settings" → Go to Settings screen
-- Click "Add Food" → Go to Add Food screen
-- Click "Add Activity" → Go to Add Activity screen
-- Click delete on entry → Remove entry, update totals
-- Swipe entry left → Show delete option
+- Click "Settings"  Go to Settings screen
+- Click "Add Food"  Go to Add Food screen
+- Click "Add Activity"  Go to Add Activity screen
+- Click delete on entry  Remove entry, update totals
+- Swipe entry left  Show delete option
 
 ---
 
@@ -302,38 +302,38 @@ Quick entry for food/meals
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│  ✖ Close      Add Food      │
-├─────────────────────────────┤
-│                             │
-│  Food Name                  │
-│  ┌───────────────────────┐ │
-│  │ e.g., Chicken Sandwich│ │
-│  └───────────────────────┘ │
-│                             │
-│  Meal Type                  │
-│  ┌───────────────────────┐ │
-│  │ Breakfast        ▼    │ │
-│  └───────────────────────┘ │
-│  • Breakfast                │
-│  • Lunch                    │
-│  • Dinner                   │
-│  • Snack                    │
-│                             │
-│  Calories                   │
-│  ┌───────────────────────┐ │
-│  │ e.g., 450             │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │      Add Food         │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │       Cancel          │ │
-│  └───────────────────────┘ │
-│                             │
-└─────────────────────────────┘
+
+   Close      Add Food      
+
+                             
+  Food Name                  
+   
+   e.g., Chicken Sandwich 
+   
+                             
+  Meal Type                  
+   
+   Breakfast             
+   
+  - Breakfast                
+  - Lunch                    
+  - Dinner                   
+  - Snack                    
+                             
+  Calories                   
+   
+   e.g., 450              
+   
+                             
+   
+        Add Food          
+   
+                             
+   
+         Cancel           
+   
+                             
+
 ```
 
 ### Form Fields
@@ -346,8 +346,8 @@ Quick entry for food/meals
 - Calories: Number > 0
 
 ### Actions
-- Click "Add Food" → Save entry, return to Dashboard
-- Click "Cancel" or "Close" → Return to Dashboard without saving
+- Click "Add Food"  Save entry, return to Dashboard
+- Click "Cancel" or "Close"  Return to Dashboard without saving
 
 ---
 
@@ -358,44 +358,44 @@ Log exercise/physical activity
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│  ✖ Close    Add Activity    │
-├─────────────────────────────┤
-│                             │
-│  Activity Type              │
-│  ┌───────────────────────┐ │
-│  │ Walking          ▼    │ │
-│  └───────────────────────┘ │
-│  • Walking (3.5 METs)       │
-│  • Running (8.0 METs)       │
-│  • Basketball (6.5 METs)    │
-│  • Soccer (7.0 METs)        │
-│  • Weight Training (6 METs) │
-│  • Swimming (6.0 METs)      │
-│  • Cycling (7.5 METs)       │
-│  • Yoga (2.5 METs)          │
-│  • HIIT Training (8 METs)   │
-│  • Sports Practice (5 METs) │
-│                             │
-│  Duration (minutes)         │
-│  ┌───────────────────────┐ │
-│  │ 30                    │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │ Calories Burned:      │ │
-│  │      190 cal          │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │    Add Activity       │ │
-│  └───────────────────────┘ │
-│                             │
-│  ┌───────────────────────┐ │
-│  │       Cancel          │ │
-│  └───────────────────────┘ │
-│                             │
-└─────────────────────────────┘
+
+   Close    Add Activity    
+
+                             
+  Activity Type              
+   
+   Walking               
+   
+  - Walking (3.5 METs)       
+  - Running (8.0 METs)       
+  - Basketball (6.5 METs)    
+  - Soccer (7.0 METs)        
+  - Weight Training (6 METs) 
+  - Swimming (6.0 METs)      
+  - Cycling (7.5 METs)       
+  - Yoga (2.5 METs)          
+  - HIIT Training (8 METs)   
+  - Sports Practice (5 METs) 
+                             
+  Duration (minutes)         
+   
+   30                     
+   
+                             
+   
+   Calories Burned:       
+        190 cal           
+   
+                             
+   
+      Add Activity        
+   
+                             
+   
+         Cancel           
+   
+                             
+
 ```
 
 ### Form Fields
@@ -426,9 +426,9 @@ Log exercise/physical activity
 - Duration: Number > 0
 
 ### Actions
-- Select activity + enter duration → Auto-calculate calories
-- Click "Add Activity" → Save entry, return to Dashboard
-- Click "Cancel" or "Close" → Return to Dashboard without saving
+- Select activity + enter duration  Auto-calculate calories
+- Click "Add Activity"  Save entry, return to Dashboard
+- Click "Cancel" or "Close"  Return to Dashboard without saving
 
 ---
 
@@ -439,50 +439,50 @@ Update user information and goals
 
 ### Layout
 ```
-┌─────────────────────────────┐
-│  ← Back      Settings       │
-├─────────────────────────────┤
-│                             │
-│  📊 Your Profile            │
-│  ─────────────────────────  │
-│  Age: 16 years              │
-│  Gender: Male               │
-│  Height: 5'10"              │
-│  Weight: 165 lbs            │
-│  Activity: Moderately Active│
-│                             │
-│  ┌───────────────────────┐ │
-│  │   Edit Profile        │ │
-│  └───────────────────────┘ │
-│                             │
-│  🎯 Your Goal               │
-│  ─────────────────────────  │
-│  Goal: Lose Weight          │
-│  Daily Target: 1,780 cal    │
-│  BMR: 1,650 cal             │
-│  TDEE: 2,280 cal            │
-│                             │
-│  ┌───────────────────────┐ │
-│  │   Change Goal         │ │
-│  └───────────────────────┘ │
-│                             │
-│  📅 History                 │
-│  ─────────────────────────  │
-│  Last 7 days                │
-│  • Mon: 1,820/1,780 ✅      │
-│  • Sun: 1,650/1,780 ✅      │
-│  • Sat: 2,100/1,780 ⚠️      │
-│                             │
-│  ⚙️ App Settings            │
-│  ─────────────────────────  │
-│  [ ] Dark Mode              │
-│  Units: Imperial            │
-│                             │
-│  ┌───────────────────────┐ │
-│  │   Reset All Data      │ │
-│  └───────────────────────┘ │
-│                             │
-└─────────────────────────────┘
+
+   Back      Settings       
+
+                             
+   Your Profile            
+    
+  Age: 16 years              
+  Gender: Male               
+  Height: 5'10"              
+  Weight: 165 lbs            
+  Activity: Moderately Active
+                             
+   
+     Edit Profile         
+   
+                             
+   Your Goal               
+    
+  Goal: Lose Weight          
+  Daily Target: 1,780 cal    
+  BMR: 1,650 cal             
+  TDEE: 2,280 cal            
+                             
+   
+     Change Goal          
+   
+                             
+   History                 
+    
+  Last 7 days                
+  - Mon: 1,820/1,780       
+  - Sun: 1,650/1,780       
+  - Sat: 2,100/1,780       
+                             
+   App Settings            
+    
+  [ ] Dark Mode              
+  Units: Imperial            
+                             
+   
+     Reset All Data       
+   
+                             
+
 ```
 
 ### Sections
@@ -501,10 +501,10 @@ Update user information and goals
    - Reset data button (with confirmation)
 
 ### Actions
-- Click "Edit Profile" → Open edit form (Screen 2 style)
-- Click "Change Goal" → Open goal selection (Screen 4)
-- Click "Reset All Data" → Confirm → Clear all data
-- Click "Back" → Return to Dashboard
+- Click "Edit Profile"  Open edit form (Screen 2 style)
+- Click "Change Goal"  Open goal selection (Screen 4)
+- Click "Reset All Data"  Confirm  Clear all data
+- Click "Back"  Return to Dashboard
 
 ---
 
@@ -512,25 +512,25 @@ Update user information and goals
 
 ```
 Welcome Screen (First time only)
-    ↓
+    
 Profile Setup
-    ↓
+    
 BMR/TDEE Results
-    ↓
+    
 Goal Selection
-    ↓
-═════════════════════════════════
-Main Dashboard (Home) ← PRIMARY SCREEN
-    ├→ Add Food
-    │   └→ Back to Dashboard
-    │
-    ├→ Add Activity
-    │   └→ Back to Dashboard
-    │
-    └→ Settings
-        ├→ Edit Profile → Dashboard
-        ├→ Change Goal → Dashboard
-        └→ Back to Dashboard
+    
+
+Main Dashboard (Home)  PRIMARY SCREEN
+     Add Food
+        Back to Dashboard
+    
+     Add Activity
+        Back to Dashboard
+    
+     Settings
+         Edit Profile  Dashboard
+         Change Goal  Dashboard
+         Back to Dashboard
 ```
 
 ## Mobile Responsiveness

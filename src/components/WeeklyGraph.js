@@ -348,20 +348,20 @@ export default WeeklyGraph;
  * 3. DATA UPDATE FLOW
  * -------------------
  *
- * User logs food → saveDailyDataToHistory() called
- *                   ↓
+ * User logs food - saveDailyDataToHistory() called
+ *                   |
  *              Calculates today's totals (eaten, burned, target)
- *                   ↓
+ *                   |
  *              Loads existing weekly history
- *                   ↓
+ *                   |
  *              Updates/adds today's data
- *                   ↓
+ *                   |
  *              Keeps only last 7 days (removes older)
- *                   ↓
+ *                   |
  *              Saves back to localStorage
- *                   ↓
+ *                   |
  *              Graph component refreshes
- *                   ↓
+ *                   |
  *              User sees updated graph!
  *
  * 4. MISSING DATA HANDLING
