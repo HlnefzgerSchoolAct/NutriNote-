@@ -1,0 +1,114 @@
+/* Modern Gym Theme - Weekly Graph */
+
+.weekly-graph {
+  max-width: 1400px;
+  margin: 0 auto 40px;
+  padding: 30px;
+  background: var(--dark-gray);
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--medium-gray);
+}
+
+.weekly-graph h3 {
+  text-align: center;
+  color: var(--primary-orange);
+  margin: 0 0 30px 0;
+  font-size: 2em;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.graph-container {
+  position: relative;
+  height: 400px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: var(--medium-gray);
+  border-radius: 12px;
+  border: 2px solid var(--light-gray);
+}
+
+.graph-legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 15px;
+  background: var(--medium-gray);
+  border-radius: 8px;
+  border: 2px solid var(--light-gray);
+  transition: all 0.3s;
+}
+
+.legend-item:hover {
+  border-color: var(--primary-orange);
+  transform: translateY(-2px);
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.legend-label {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.95em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.graph-info {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--medium-gray);
+  border-radius: 12px;
+  border: 2px solid var(--light-gray);
+}
+
+.graph-info p {
+  margin: 8px 0;
+  color: var(--off-white);
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+.graph-info strong {
+  color: var(--primary-orange);
+  font-weight: 700;
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 60px 20px;
+  color: #777;
+  font-size: 1.1em;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .graph-container {
+    height: 300px;
+    padding: 10px;
+  }
+  
+  .weekly-graph {
+    padding: 20px;
+  }
+  
+  .weekly-graph h3 {
+    font-size: 1.5em;
+  }
+}
