@@ -12,7 +12,8 @@
  * Wrapper: react-chartjs-2 (makes Chart.js work with React)
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -64,6 +65,10 @@ function WeeklyGraph({ onRefresh }) {
   
   // STATE: Holds the graph data
   const [graphData, setGraphData] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  
+  // REF: Reference to the graph container for export
+  const graphRef = useRef(null);
 
   /**
    * useEffect Hook
@@ -83,6 +88,45 @@ function WeeklyGraph({ onRefresh }) {
   const loadGraphData = () => {
     const data = getWeeklyGraphData();
     setGraphData(data);
+  };
+
+  /**
+   * exportToImage
+   * 
+   * Exports the graph as a PNG image
+   * Uses html2canvas to capture the graph as an image
+   */
+  const exportToImage = async () => {
+    if (!graphRef.current) return;
+    
+    setExporting(true);
+    
+    try {
+      // Capture the graph as a canvas
+      const canvas = await html2canvas(graphRef.current, {
+        backgroundColor: '#0A0A0A',
+        scale: 2, // Higher quality (2x resolution)
+      });
+      
+      // Convert canvas to blob
+      canvas.toBlob((blob) => {
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const date = new Date().toLocaleDateString('en-US').replace(/\//g, '-');
+        link.download = `hawk-fuel-progress-${date}.png`;
+        link.href = url;
+        link.click();
+        
+        // Cleanup
+        URL.revokeObjectURL(url);
+        setExporting(false);
+      });
+    } catch (error) {
+      console.error('Error exporting graph:', error);
+      alert('Failed to export graph. Please try again.');
+      setExporting(false);
+    }
   };
 
   /**
@@ -198,7 +242,18 @@ function WeeklyGraph({ onRefresh }) {
 
   // RENDER
   return (
-    <div className="weekly-graph">
+    <div className="weekly-graph" ref={graphRef}>
+      <div className="graph-header-with-export">
+        <h3>📊 7-Day Calorie Trends</h3>
+        <button 
+          className="btn-export" 
+          onClick={exportToImage}
+          disabled={exporting}
+        >
+          {exporting ? '⏳ Exporting...' : '📸 Save as Image'}
+        </button>
+      </div>
+      
       <div className="graph-container">
         {graphData ? (
           // Show graph when data is loaded

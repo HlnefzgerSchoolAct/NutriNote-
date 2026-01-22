@@ -33,11 +33,11 @@
 }
 
 .app-header h1::before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 70px;
   height: 70px;
-  background: url('/LogoWD.jpg') center/cover no-repeat;
+  background: url("/LogoWD.jpg") center/cover no-repeat;
   border-radius: 10px;
   border: 3px solid var(--primary-orange);
   box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);

@@ -5,6 +5,9 @@ import './Dashboard.css';
 // Import WeeklyGraph component (NEW!)
 import WeeklyGraph from './WeeklyGraph';
 
+// Import HydrationTracker component (NEW!)
+import HydrationTracker from './HydrationTracker';
+
 // Import localStorage utility functions
 import {
   loadFoodLog,
@@ -371,6 +374,9 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
           </p>
         )}
       </div>
+
+      {/* HYDRATION TRACKER (NEW!) */}
+      <HydrationTracker />
 
       {/* RESET BUTTON */}
       <button onClick={onReset} className="btn-reset">

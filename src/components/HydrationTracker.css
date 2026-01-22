@@ -1,0 +1,238 @@
+/* Hydration Tracker - Modern Gym Theme */
+
+.hydration-tracker {
+  background: var(--dark-gray);
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--medium-gray);
+}
+
+.hydration-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.hydration-header h3 {
+  color: var(--primary-orange);
+  font-size: 1.8em;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 10px 0;
+}
+
+.hydration-goal {
+  color: var(--off-white);
+  font-size: 0.95em;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hydration-display {
+  margin-bottom: 25px;
+}
+
+.water-drops {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.water-drop {
+  font-size: 2em;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.water-drop.filled {
+  filter: drop-shadow(0 0 8px rgba(52, 152, 219, 0.8));
+  transform: scale(1.1);
+}
+
+.water-drop.empty {
+  opacity: 0.3;
+  filter: grayscale(100%);
+}
+
+.hydration-counter {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.counter-number {
+  font-size: 3.5em;
+  font-weight: 900;
+  color: #3498db;
+  text-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+}
+
+.counter-label {
+  font-size: 1.2em;
+  color: var(--off-white);
+  margin-left: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hydration-progress-bar {
+  width: 100%;
+  height: 15px;
+  background: var(--medium-gray);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+  border: 2px solid var(--light-gray);
+}
+
+.hydration-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  border-radius: 8px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.6);
+}
+
+.hydration-status {
+  text-align: center;
+  margin: 20px 0;
+  min-height: 30px;
+}
+
+.status-message {
+  margin: 0;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1em;
+  letter-spacing: 0.5px;
+}
+
+.status-message.success {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  border: 2px solid #2ecc71;
+}
+
+.status-message.good {
+  background: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+  border: 2px solid #3498db;
+}
+
+.status-message.needs-more {
+  background: rgba(243, 156, 18, 0.2);
+  color: #f39c12;
+  border: 2px solid #f39c12;
+}
+
+.status-message.empty {
+  background: rgba(149, 165, 166, 0.2);
+  color: #95a5a6;
+  border: 2px solid #95a5a6;
+}
+
+.hydration-controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.btn-water-add,
+.btn-water-remove {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.05em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-water-add {
+  background: #3498db;
+  color: white;
+  flex: 1;
+  max-width: 200px;
+}
+
+.btn-water-add:hover {
+  background: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(52, 152, 219, 0.5);
+}
+
+.btn-water-add:active {
+  transform: translateY(-1px);
+}
+
+.btn-water-remove {
+  background: var(--medium-gray);
+  color: var(--white);
+  border: 2px solid var(--light-gray);
+  flex: 1;
+  max-width: 200px;
+}
+
+.btn-water-remove:hover:not(:disabled) {
+  background: var(--light-gray);
+  border-color: var(--primary-orange);
+  transform: translateY(-3px);
+}
+
+.btn-water-remove:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.hydration-tip {
+  text-align: center;
+  color: var(--off-white);
+  font-size: 0.9em;
+  margin: 15px 0 0 0;
+  padding: 12px;
+  background: var(--medium-gray);
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  line-height: 1.5;
+}
+
+.hydration-tip strong {
+  color: #3498db;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hydration-tracker {
+    padding: 20px;
+  }
+
+  .hydration-header h3 {
+    font-size: 1.4em;
+  }
+
+  .water-drop {
+    font-size: 1.5em;
+  }
+
+  .counter-number {
+    font-size: 2.5em;
+  }
+
+  .hydration-controls {
+    flex-direction: column;
+  }
+
+  .btn-water-add,
+  .btn-water-remove {
+    max-width: 100%;
+  }
+}

@@ -1,55 +1,55 @@
 // Import React hooks
-import React, { useState, useEffect } from 'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
 
 // Import all components
-import UserProfile from './components/UserProfile';
-import ActivityTracker from './components/ActivityTracker';
-import Results from './components/Results';
-import Dashboard from './components/Dashboard';
+import UserProfile from "./components/UserProfile";
+import ActivityTracker from "./components/ActivityTracker";
+import Results from "./components/Results";
+import Dashboard from "./components/Dashboard";
 
 // Import localStorage utilities
 import {
   saveUserProfile,
   loadUserProfile,
   saveDailyTarget,
-  loadDailyTarget
-} from './utils/localStorage';
+  loadDailyTarget,
+} from "./utils/localStorage";
 
 /**
  * App Component
- * 
+ *
  * Main application component that manages the entire user flow:
- * 
+ *
  * FLOW:
  * Step 1: User Profile → Collect personal info and goals
  * Step 2: Activity Tracker → Log planned activities
  * Step 3: Results → Show BMR, TDEE, calorie targets
  * Step 4: Dashboard → Daily calorie logging (NEW!)
- * 
+ *
  * All data is saved to localStorage automatically
  */
 function App() {
   // STATE MANAGEMENT
   // These hold data that changes as user progresses
-  
-  const [userProfile, setUserProfile] = useState(null);  // User's info
-  const [activities, setActivities] = useState([]);      // Activity plans
-  const [dailyTarget, setDailyTarget] = useState(2000);  // Target calories (NEW!)
-  const [currentStep, setCurrentStep] = useState(1);     // Which screen to show
+
+  const [userProfile, setUserProfile] = useState(null); // User's info
+  const [activities, setActivities] = useState([]); // Activity plans
+  const [dailyTarget, setDailyTarget] = useState(2000); // Target calories (NEW!)
+  const [currentStep, setCurrentStep] = useState(1); // Which screen to show
 
   /**
    * useEffect Hook
-   * 
+   *
    * Runs when app first loads
    * Loads saved user profile from localStorage
-   * 
+   *
    * If user already completed setup, skip to Dashboard
    */
   useEffect(() => {
     const savedProfile = loadUserProfile();
     const savedTarget = loadDailyTarget();
-    
+
     if (savedProfile) {
       setUserProfile(savedProfile);
       setDailyTarget(savedTarget);
@@ -60,7 +60,7 @@ function App() {
 
   /**
    * handleProfileSubmit
-   * 
+   *
    * Called when user completes Step 1 (Profile)
    * Saves profile to localStorage and moves to Step 2
    */
@@ -72,7 +72,7 @@ function App() {
 
   /**
    * handleActivitiesSubmit
-   * 
+   *
    * Called when user completes Step 2 (Activities)
    * Moves to Step 3 (Results)
    */
@@ -83,10 +83,10 @@ function App() {
 
   /**
    * handleResultsComplete
-   * 
+   *
    * Called when user finishes Step 3 (Results)
    * Saves daily target and moves to Dashboard
-   * 
+   *
    * @param {number} target - The calculated daily calorie target
    */
   const handleResultsComplete = (target) => {
@@ -97,7 +97,7 @@ function App() {
 
   /**
    * resetApp
-   * 
+   *
    * Completely restart the app
    * Clears all data and returns to Step 1
    */
@@ -117,20 +117,19 @@ function App() {
       </header>
 
       <div className="container">
-        
         {/* PROGRESS BAR - Shows which step user is on */}
         {/* Only show for Steps 1-3, hide on Dashboard */}
         {currentStep <= 3 && (
           <div className="progress-bar">
-            <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>
+            <div className={`step ${currentStep >= 1 ? "active" : ""}`}>
               <span className="step-number">1</span>
               <span className="step-label">Profile</span>
             </div>
-            <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>
+            <div className={`step ${currentStep >= 2 ? "active" : ""}`}>
               <span className="step-number">2</span>
               <span className="step-label">Activities</span>
             </div>
-            <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>
+            <div className={`step ${currentStep >= 3 ? "active" : ""}`}>
               <span className="step-number">3</span>
               <span className="step-label">Results</span>
             </div>
@@ -138,14 +137,12 @@ function App() {
         )}
 
         {/* STEP 1: User Profile */}
-        {currentStep === 1 && (
-          <UserProfile onSubmit={handleProfileSubmit} />
-        )}
+        {currentStep === 1 && <UserProfile onSubmit={handleProfileSubmit} />}
 
         {/* STEP 2: Activity Tracker */}
         {currentStep === 2 && userProfile && (
-          <ActivityTracker 
-            userProfile={userProfile} 
+          <ActivityTracker
+            userProfile={userProfile}
             onSubmit={handleActivitiesSubmit}
             onBack={() => setCurrentStep(1)}
           />
@@ -153,7 +150,7 @@ function App() {
 
         {/* STEP 3: Results (BMR, TDEE, Targets) */}
         {currentStep === 3 && userProfile && (
-          <Results 
+          <Results
             userProfile={userProfile}
             activities={activities}
             onComplete={handleResultsComplete} // NEW: Continue to Dashboard
@@ -174,17 +171,20 @@ function App() {
       <footer className="app-footer">
         <div className="footer-content">
           <p className="footer-brand">Hawk Fuel © 2026 - Built with React</p>
-          
+
           <div className="footer-disclaimers">
             <p className="privacy-notice">
-              🔒 <strong>Privacy:</strong> All your data is stored locally on your device only. 
-              We don't collect, send, or share any of your personal information.
+              🔒 <strong>Privacy:</strong> All your data is stored locally on
+              your device only. We don't collect, send, or share any of your
+              personal information.
             </p>
-            
+
             <p className="educational-disclaimer">
-              📚 <strong>Educational Tool:</strong> This app is designed for educational purposes to help you learn about 
-              nutrition and fitness. It is not medical advice. Please consult a healthcare professional, 
-              parent, or school nurse for personalized health guidance.
+              📚 <strong>Educational Tool:</strong> This app is designed for
+              educational purposes to help you learn about nutrition and
+              fitness. It is not medical advice. Please consult a healthcare
+              professional, parent, or school nurse for personalized health
+              guidance.
             </p>
           </div>
         </div>

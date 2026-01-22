@@ -10,14 +10,53 @@
   border: 2px solid var(--medium-gray);
 }
 
+.graph-header-with-export {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
 .weekly-graph h3 {
-  text-align: center;
   color: var(--primary-orange);
-  margin: 0 0 30px 0;
+  margin: 0;
   font-size: 2em;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 3px;
+}
+
+.btn-export {
+  padding: 12px 24px;
+  background: var(--primary-orange);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+  white-space: nowrap;
+}
+
+.btn-export:hover:not(:disabled) {
+  background: var(--dark-orange);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
+}
+
+.btn-export:active {
+  transform: translateY(-1px);
+}
+
+.btn-export:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .graph-container {

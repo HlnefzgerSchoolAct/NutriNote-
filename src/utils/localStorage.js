@@ -17,7 +17,8 @@ const STORAGE_KEYS = {
   FOOD_LOG: 'hawkfuel_food_log',              // All food entries
   EXERCISE_LOG: 'hawkfuel_exercise_log',      // All exercise entries
   CURRENT_DATE: 'hawkfuel_current_date',      // Today's date (to reset daily)
-  WEEKLY_HISTORY: 'hawkfuel_weekly_history'   // Last 7 days of data (NEW!)
+  WEEKLY_HISTORY: 'hawkfuel_weekly_history',  // Last 7 days of data
+  WATER_LOG: 'hawkfuel_water_log'             // Daily water intake (NEW!)
 };
 
 /**
@@ -417,6 +418,48 @@ export const getWeeklyGraphData = () => {
       }
     ]
   };
+};
+
+/**
+ * WATER TRACKING FUNCTIONS
+ */
+
+/**
+ * loadWaterLog
+ * Loads today's water intake (in cups)
+ */
+export const loadWaterLog = () => {
+  return loadFromLocalStorage(STORAGE_KEYS.WATER_LOG, 0);
+};
+
+/**
+ * saveWaterLog
+ * Saves water intake for the day
+ */
+export const saveWaterLog = (cups) => {
+  saveToLocalStorage(STORAGE_KEYS.WATER_LOG, cups);
+};
+
+/**
+ * addWaterCup
+ * Adds one cup to today's water intake
+ */
+export const addWaterCup = () => {
+  const current = loadWaterLog();
+  const updated = current + 1;
+  saveWaterLog(updated);
+  return updated;
+};
+
+/**
+ * removeWaterCup
+ * Removes one cup from today's water intake
+ */
+export const removeWaterCup = () => {
+  const current = loadWaterLog();
+  const updated = Math.max(0, current - 1); // Don't go below 0
+  saveWaterLog(updated);
+  return updated;
 };
 
 // Export storage keys for use in components
