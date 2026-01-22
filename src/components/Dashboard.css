@@ -98,6 +98,83 @@
   .logging-section {
     grid-template-columns: 1fr;
   }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .summary-card {
+    padding: 20px;
+  }
+
+  .log-column {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 15px;
+  }
+
+  .dashboard h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .summary-card {
+    padding: 18px;
+  }
+
+  .summary-card h3 {
+    font-size: 0.95em;
+  }
+
+  .big-number {
+    font-size: 2em;
+  }
+
+  .log-column {
+    padding: 18px;
+  }
+
+  .log-column h3 {
+    font-size: 1.2em;
+  }
+
+  .log-form input {
+    padding: 12px;
+    font-size: 1em;
+  }
+
+  .btn-add {
+    padding: 12px;
+    font-size: 1em;
+  }
+
+  .log-entry {
+    padding: 12px;
+  }
+
+  .entry-info strong {
+    font-size: 0.95em;
+  }
+
+  .guidance p {
+    font-size: 1.05em;
+  }
+
+  .btn-reset {
+    padding: 14px;
+    font-size: 1em;
+  }
 }
 
 .log-column {

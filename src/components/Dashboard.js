@@ -371,9 +371,8 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
           <p className="perfect">Perfect! You've hit your target exactly!</p>
         ) : (
           <p className="warning">
-            You're{" "}
-            <strong>{Math.abs(remainingCalories)} calories over</strong> your
-            target.
+            You're <strong>{Math.abs(remainingCalories)} calories over</strong>{" "}
+            your target.
           </p>
         )}
       </div>

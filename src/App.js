@@ -37,6 +37,22 @@ function App() {
   const [activities, setActivities] = useState([]); // Activity plans
   const [dailyTarget, setDailyTarget] = useState(2000); // Target calories (NEW!)
   const [currentStep, setCurrentStep] = useState(1); // Which screen to show
+  const [isStandalone, setIsStandalone] = useState(false); // Check if running as installed app
+
+  /**
+   * useEffect Hook - Check Standalone Mode
+   *
+   * Detects if app is running in standalone mode (added to homescreen)
+   * PWA should only work when installed as an app
+   */
+  useEffect(() => {
+    // Check if running in standalone mode
+    const standalone = window.matchMedia('(display-mode: standalone)').matches ||
+                      window.navigator.standalone ||
+                      document.referrer.includes('android-app://');
+    
+    setIsStandalone(standalone);
+  }, []);
 
   /**
    * useEffect Hook
@@ -109,6 +125,57 @@ function App() {
     // Note: localStorage is cleared in Dashboard component
   };
 
+  // If not in standalone mode, show installation prompt
+  if (!isStandalone) {
+    return (
+      <div className="App">
+        <div className="install-prompt">
+          <div className="install-prompt-content">
+            <div className="install-logo">
+              <img src="/LogoWD.jpg" alt="Hawk Fuel Logo" />
+            </div>
+            <h1>Hawk Fuel</h1>
+            <p className="install-subtitle">Professional Calorie & Activity Tracker</p>
+            
+            <div className="install-message">
+              <h2>Install Required</h2>
+              <p>This app must be installed to your device to work properly.</p>
+            </div>
+
+            <div className="install-instructions">
+              <h3>iOS (iPhone/iPad):</h3>
+              <ol>
+                <li>Tap the <strong>Share</strong> button (box with arrow)</li>
+                <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+                <li>Tap <strong>"Add"</strong> in the top right</li>
+                <li>Open the app from your home screen</li>
+              </ol>
+
+              <h3>Android (Chrome):</h3>
+              <ol>
+                <li>Tap the <strong>three dots</strong> menu (⋮)</li>
+                <li>Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong></li>
+                <li>Tap <strong>"Add"</strong> or <strong>"Install"</strong></li>
+                <li>Open the app from your home screen</li>
+              </ol>
+            </div>
+
+            <div className="install-benefits">
+              <h3>Why Install?</h3>
+              <ul>
+                <li>Works offline - track anytime, anywhere</li>
+                <li>Faster performance</li>
+                <li>Full-screen experience</li>
+                <li>Easy access from your home screen</li>
+                <li>All data stays private on your device</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <header className="app-header">
@@ -174,9 +241,9 @@ function App() {
 
           <div className="footer-disclaimers">
             <p className="privacy-notice">
-              <strong>Privacy:</strong> All your data is stored locally on
-              your device only. We don't collect, send, or share any of your
-              personal information.
+              <strong>Privacy:</strong> All your data is stored locally on your
+              device only. We don't collect, send, or share any of your personal
+              information.
             </p>
 
             <p className="educational-disclaimer">

@@ -21,7 +21,7 @@ import "./HydrationTracker.css";
  */
 function HydrationTracker({ userProfile }) {
   const [waterCups, setWaterCups] = useState(0);
-  
+
   // Calculate personalized daily water goal
   // Formula: weight (lbs) / 2 = ounces per day
   // 1 cup = 8 oz
@@ -33,7 +33,7 @@ function HydrationTracker({ userProfile }) {
     const cupsNeeded = Math.ceil(ouncesNeeded / 8);
     return Math.max(6, Math.min(cupsNeeded, 15)); // Between 6-15 cups
   };
-  
+
   const DAILY_GOAL = calculateDailyGoal();
   const OUNCES_GOAL = DAILY_GOAL * 8;
 
@@ -97,9 +97,7 @@ function HydrationTracker({ userProfile }) {
             </p>
           )}
           {waterCups >= DAILY_GOAL * 0.5 && waterCups < DAILY_GOAL * 0.75 && (
-            <p className="status-message good">
-              Good progress. Keep it up!
-            </p>
+            <p className="status-message good">Good progress. Keep it up!</p>
           )}
           {waterCups < DAILY_GOAL * 0.5 && waterCups > 0 && (
             <p className="status-message needs-more">
@@ -128,7 +126,8 @@ function HydrationTracker({ userProfile }) {
       </div>
 
       <p className="hydration-tip">
-        <strong>Tip:</strong> Drink water consistently throughout the day, especially before and after exercise.
+        <strong>Tip:</strong> Drink water consistently throughout the day,
+        especially before and after exercise.
       </p>
     </div>
   );

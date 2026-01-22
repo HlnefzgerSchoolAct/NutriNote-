@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* Better touch scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
 }
 
 :root {
@@ -25,6 +27,27 @@ body {
   background: var(--black);
   color: var(--white);
   min-height: 100vh;
+  /* iOS safe area support */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  /* Prevent text size adjustment on mobile */
+  -webkit-text-size-adjust: 100%;
+  /* Better tap highlighting */
+  -webkit-tap-highlight-color: rgba(255, 107, 53, 0.2);
+}
+
+/* Touch-friendly buttons and inputs */
+button, input, select, textarea {
+  /* Minimum 44px touch target for iOS */
+  min-height: 44px;
+  /* Better touch feedback */
+  touch-action: manipulation;
+}
+
+/* Prevent double-tap zoom on buttons */
+button {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 code {
