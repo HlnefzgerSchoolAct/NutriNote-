@@ -1,14 +1,7 @@
 import React from "react";
 import "./Results.css";
 
-/**
- * Results Component
- *
- * Shows calculated calorie targets and activity breakdowns
- * Now includes button to continue to daily calorie tracking!
- */
 function Results({ userProfile, activities, onComplete, onReset }) {
-  // Calculate BMR
   const calculateBMR = () => {
     const weightKg = parseFloat(userProfile.weight) / 2.20462;
     const heightInches =
@@ -27,7 +20,6 @@ function Results({ userProfile, activities, onComplete, onReset }) {
     return Math.round(bmr);
   };
 
-  // Calculate TDEE
   const calculateTDEE = (bmr) => {
     const multipliers = {
       sedentary: 1.2,
@@ -40,7 +32,6 @@ function Results({ userProfile, activities, onComplete, onReset }) {
     return Math.round(bmr * multipliers[userProfile.activityLevel]);
   };
 
-  // Calculate daily target calories
   const calculateDailyTarget = (tdee) => {
     let adjustment = 0;
 
@@ -53,7 +44,6 @@ function Results({ userProfile, activities, onComplete, onReset }) {
     return tdee + adjustment;
   };
 
-  // Calculate calories burned from activities
   const calculateActivityCalories = () => {
     const weightKg = parseFloat(userProfile.weight) / 2.20462;
 
@@ -73,21 +63,19 @@ function Results({ userProfile, activities, onComplete, onReset }) {
   const activityCalories = calculateActivityCalories();
   const totalActivityCalories = activityCalories.reduce(
     (sum, act) => sum + act.calories,
-    0,
+    0
   );
 
   return (
     <div className="results">
       <h2>Your Personalized Results</h2>
 
-      {/* BMR Section */}
       <div className="result-section">
         <h3>BMR (Basal Metabolic Rate)</h3>
         <div className="big-number">{bmr.toLocaleString()}</div>
         <p className="description">Calories burned at complete rest per day</p>
       </div>
 
-      {/* TDEE Section */}
       <div className="result-section">
         <h3>TDEE (Total Daily Energy Expenditure)</h3>
         <div className="big-number">{tdee.toLocaleString()}</div>
@@ -97,7 +85,6 @@ function Results({ userProfile, activities, onComplete, onReset }) {
         </p>
       </div>
 
-      {/* Daily Target Section */}
       <div className="result-section highlight">
         <h3>Your Daily Calorie Target</h3>
         <div className="big-number">{dailyTarget.toLocaleString()}</div>
@@ -110,7 +97,6 @@ function Results({ userProfile, activities, onComplete, onReset }) {
         </p>
       </div>
 
-      {/* Activity Calories Section */}
       {activityCalories.length > 0 && (
         <div className="result-section">
           <h3>Today's Activity Breakdown</h3>
@@ -138,7 +124,6 @@ function Results({ userProfile, activities, onComplete, onReset }) {
         </div>
       )}
 
-      {/* Summary */}
       <div className="result-section summary">
         <h3>Daily Summary</h3>
         <div className="summary-grid">
@@ -163,7 +148,6 @@ function Results({ userProfile, activities, onComplete, onReset }) {
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="button-group">
         <button
           onClick={() => onComplete(dailyTarget)}
@@ -180,3 +164,4 @@ function Results({ userProfile, activities, onComplete, onReset }) {
 }
 
 export default Results;
+

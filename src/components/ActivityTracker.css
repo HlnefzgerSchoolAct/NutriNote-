@@ -1,4 +1,4 @@
-/* Modern Gym Theme - Activity Tracker */
+/* Activity Tracker Styles */
 
 .activity-tracker {
   background: var(--dark-gray);
@@ -18,7 +18,7 @@
   letter-spacing: 3px;
 }
 
-.activities-grid {
+.activity-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
@@ -48,6 +48,32 @@
   letter-spacing: 2px;
 }
 
+.met-badge {
+  background: var(--dark-gray);
+  padding: 8px 15px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  color: var(--off-white);
+  font-weight: 600;
+  border: 2px solid var(--primary-orange);
+}
+
+.activity-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activity-input label {
+  font-size: 0.9em;
+  color: var(--off-white);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .activity-card input {
   width: 100%;
   padding: 12px;
@@ -73,7 +99,8 @@
   flex-wrap: wrap;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
   padding: 16px 35px;
   border: none;
   border-radius: 10px;
@@ -106,4 +133,12 @@
 .btn-secondary:hover {
   background: var(--light-gray);
   border-color: var(--primary-orange);
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--off-white);
+  margin-bottom: 30px;
+  font-size: 1.1em;
+  font-weight: 500;
 }

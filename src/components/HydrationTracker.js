@@ -6,56 +6,36 @@ import {
 } from "../utils/localStorage";
 import "./HydrationTracker.css";
 
-/**
- * HydrationTracker Component
- *
- * Personalized water intake tracker based on body weight
- * Formula: Weight (lbs) / 2 = Ounces needed per day
- * Example: 150 lbs / 2 = 75 oz = ~9-10 cups
- *
- * Features:
- * - Personalized daily goal based on weight
- * - Visual progress bar
- * - Add/remove cups with buttons
- * - Saves to localStorage
- */
 function HydrationTracker({ userProfile }) {
   const [waterCups, setWaterCups] = useState(0);
 
-  // Calculate personalized daily water goal
-  // Formula: weight (lbs) / 2 = ounces per day
-  // 1 cup = 8 oz
   const calculateDailyGoal = () => {
     if (!userProfile || !userProfile.weight) {
-      return 8; // Default to 8 cups if no profile
+      return 8;
     }
     const ouncesNeeded = userProfile.weight / 2;
     const cupsNeeded = Math.ceil(ouncesNeeded / 8);
-    return Math.max(6, Math.min(cupsNeeded, 15)); // Between 6-15 cups
+    return Math.max(6, Math.min(cupsNeeded, 15));
   };
 
   const DAILY_GOAL = calculateDailyGoal();
   const OUNCES_GOAL = DAILY_GOAL * 8;
 
-  // Load saved water intake on mount
   useEffect(() => {
     const saved = loadWaterLog();
     setWaterCups(saved);
   }, []);
 
-  // Add a cup
   const handleAddCup = () => {
     const updated = addWaterCup();
     setWaterCups(updated);
   };
 
-  // Remove a cup
   const handleRemoveCup = () => {
     const updated = removeWaterCup();
     setWaterCups(updated);
   };
 
-  // Calculate percentage for progress bar
   const percentage = Math.min((waterCups / DAILY_GOAL) * 100, 100);
 
   return (
@@ -134,3 +114,4 @@ function HydrationTracker({ userProfile }) {
 }
 
 export default HydrationTracker;
+

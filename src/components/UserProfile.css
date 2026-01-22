@@ -1,4 +1,4 @@
-/* Modern Gym Theme - User Profile */
+/* User Profile Styles */
 
 .user-profile {
   background: var(--dark-gray);
@@ -68,7 +68,7 @@
   color: #777;
 }
 
-button {
+.user-profile button {
   padding: 16px 40px;
   background: var(--primary-orange);
   color: white;
@@ -81,14 +81,18 @@ button {
   text-transform: uppercase;
   letter-spacing: 2px;
   box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 30px auto 0;
 }
 
-button:hover {
+.user-profile button:hover {
   background: var(--dark-orange);
   transform: translateY(-3px);
   box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
 }
 
-button:active {
+.user-profile button:active {
   transform: translateY(-1px);
 }

@@ -1,4 +1,4 @@
-/* Modern Professional Gym Theme - Black, White, Orange */
+/* Hawk Fuel - Main Styles */
 
 .App {
   min-height: 100vh;
@@ -7,7 +7,7 @@
   background: var(--black);
 }
 
-/* INSTALL PROMPT SCREEN */
+/* Install Prompt */
 .install-prompt {
   min-height: 100vh;
   display: flex;
@@ -162,6 +162,7 @@
   font-size: 1.3em;
 }
 
+/* Header */
 .app-header {
   background: var(--dark-gray);
   color: white;
@@ -216,6 +217,7 @@
   width: 100%;
 }
 
+/* Progress Bar */
 .progress-bar {
   display: flex;
   justify-content: center;
@@ -273,6 +275,7 @@
   letter-spacing: 2px;
 }
 
+/* Footer */
 .app-footer {
   background: var(--dark-gray);
   color: white;
@@ -322,6 +325,7 @@
   font-weight: 700;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .install-prompt-content {
     padding: 30px 25px;

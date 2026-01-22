@@ -1,4 +1,4 @@
-/* Modern Gym Theme - Results */
+/* Results Styles */
 
 .results {
   background: var(--dark-gray);
@@ -35,14 +35,14 @@
   letter-spacing: 2px;
 }
 
-.big-number {
+.result-section .big-number {
   font-size: 3.5em;
   font-weight: 900;
   color: var(--white);
   margin: 20px 0;
 }
 
-.label {
+.result-section .description {
   color: var(--off-white);
   font-size: 1.1em;
   margin-bottom: 10px;
@@ -51,10 +51,20 @@
   font-weight: 600;
 }
 
-.activity-list {
-  display: grid;
+.result-section.highlight {
+  border-color: var(--primary-orange);
+  background: var(--dark-gray);
+}
+
+.result-section.highlight .big-number {
+  color: var(--primary-orange);
+  text-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+.activity-breakdown {
+  display: flex;
+  flex-direction: column;
   gap: 15px;
-  margin-top: 20px;
 }
 
 .activity-result {
@@ -73,6 +83,12 @@
   transform: translateX(5px);
 }
 
+.activity-result-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .activity-name {
   font-size: 1.3em;
   font-weight: 700;
@@ -81,8 +97,39 @@
   letter-spacing: 1px;
 }
 
+.activity-details {
+  display: flex;
+  gap: 20px;
+  color: var(--off-white);
+  font-size: 0.95em;
+}
+
 .activity-calories {
   font-size: 1.5em;
+  font-weight: 800;
+  color: var(--primary-orange);
+}
+
+.total-activity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--dark-gray);
+  border-radius: 10px;
+  border: 2px solid var(--primary-orange);
+}
+
+.total-activity strong {
+  color: var(--off-white);
+  font-size: 1.1em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.total-value {
+  font-size: 1.4em;
   font-weight: 800;
   color: var(--primary-orange);
 }
@@ -123,14 +170,15 @@
   color: var(--primary-orange);
 }
 
-.button-group {
+.results .button-group {
   display: flex;
   gap: 15px;
   margin-top: 30px;
   flex-wrap: wrap;
 }
 
-.btn-continue, .btn-reset {
+.btn-continue,
+.btn-reset {
   padding: 16px 35px;
   border: none;
   border-radius: 10px;

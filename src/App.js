@@ -1,14 +1,9 @@
-// Import React hooks
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
-// Import all components
 import UserProfile from "./components/UserProfile";
 import ActivityTracker from "./components/ActivityTracker";
 import Results from "./components/Results";
 import Dashboard from "./components/Dashboard";
-
-// Import localStorage utilities
 import {
   saveUserProfile,
   loadUserProfile,
@@ -16,37 +11,14 @@ import {
   loadDailyTarget,
 } from "./utils/localStorage";
 
-/**
- * App Component
- *
- * Main application component that manages the entire user flow:
- *
- * FLOW:
- * Step 1: User Profile - Collect personal info and goals
- * Step 2: Activity Tracker - Log planned activities
- * Step 3: Results - Show BMR, TDEE, calorie targets
- * Step 4: Dashboard - Daily calorie logging (NEW!)
- *
- * All data is saved to localStorage automatically
- */
 function App() {
-  // STATE MANAGEMENT
-  // These hold data that changes as user progresses
+  const [userProfile, setUserProfile] = useState(null);
+  const [activities, setActivities] = useState([]);
+  const [dailyTarget, setDailyTarget] = useState(2000);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isStandalone, setIsStandalone] = useState(false);
 
-  const [userProfile, setUserProfile] = useState(null); // User's info
-  const [activities, setActivities] = useState([]); // Activity plans
-  const [dailyTarget, setDailyTarget] = useState(2000); // Target calories (NEW!)
-  const [currentStep, setCurrentStep] = useState(1); // Which screen to show
-  const [isStandalone, setIsStandalone] = useState(false); // Check if running as installed app
-
-  /**
-   * useEffect Hook - Check Standalone Mode
-   *
-   * Detects if app is running in standalone mode (added to homescreen)
-   * PWA should only work when installed as an app
-   */
   useEffect(() => {
-    // Check if running in standalone mode
     const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone ||
@@ -55,14 +27,6 @@ function App() {
     setIsStandalone(standalone);
   }, []);
 
-  /**
-   * useEffect Hook
-   *
-   * Runs when app first loads
-   * Loads saved user profile from localStorage
-   *
-   * If user already completed setup, skip to Dashboard
-   */
   useEffect(() => {
     const savedProfile = loadUserProfile();
     const savedTarget = loadDailyTarget();
@@ -70,63 +34,34 @@ function App() {
     if (savedProfile) {
       setUserProfile(savedProfile);
       setDailyTarget(savedTarget);
-      // Skip to dashboard if user already set up
       setCurrentStep(4);
     }
-  }, []); // Empty array = only run once on mount
+  }, []);
 
-  /**
-   * handleProfileSubmit
-   *
-   * Called when user completes Step 1 (Profile)
-   * Saves profile to localStorage and moves to Step 2
-   */
   const handleProfileSubmit = (profile) => {
     setUserProfile(profile);
-    saveUserProfile(profile); // Save to localStorage
+    saveUserProfile(profile);
     setCurrentStep(2);
   };
 
-  /**
-   * handleActivitiesSubmit
-   *
-   * Called when user completes Step 2 (Activities)
-   * Moves to Step 3 (Results)
-   */
   const handleActivitiesSubmit = (activityData) => {
     setActivities(activityData);
     setCurrentStep(3);
   };
 
-  /**
-   * handleResultsComplete
-   *
-   * Called when user finishes Step 3 (Results)
-   * Saves daily target and moves to Dashboard
-   *
-   * @param {number} target - The calculated daily calorie target
-   */
   const handleResultsComplete = (target) => {
     setDailyTarget(target);
-    saveDailyTarget(target); // Save to localStorage
-    setCurrentStep(4); // Go to Dashboard
+    saveDailyTarget(target);
+    setCurrentStep(4);
   };
 
-  /**
-   * resetApp
-   *
-   * Completely restart the app
-   * Clears all data and returns to Step 1
-   */
   const resetApp = () => {
     setCurrentStep(1);
     setUserProfile(null);
     setActivities([]);
     setDailyTarget(2000);
-    // Note: localStorage is cleared in Dashboard component
   };
 
-  // If not in standalone mode, show installation prompt
   if (!isStandalone) {
     return (
       <div className="App">
@@ -179,7 +114,6 @@ function App() {
               <ol>
                 <li>
                   Click the <strong>Install</strong> icon in the address bar
-                  (looks like a computer with a down arrow)
                 </li>
                 <li>
                   If you don't see the icon, click the{" "}
@@ -202,8 +136,8 @@ function App() {
                   Or click the <strong>three dots menu</strong> (top right)
                 </li>
                 <li>
-                  Select <strong>"Apps"</strong> &gt;{" "}
-                  <strong>"Install this site as an app"</strong>
+                  <strong>Apps</strong> {" > "}
+                  <strong>Install this site as an app</strong>
                 </li>
                 <li>App will open in its own window for easy access</li>
               </ol>
@@ -233,8 +167,6 @@ function App() {
       </header>
 
       <div className="container">
-        {/* PROGRESS BAR - Shows which step user is on */}
-        {/* Only show for Steps 1-3, hide on Dashboard */}
         {currentStep <= 3 && (
           <div className="progress-bar">
             <div className={`step ${currentStep >= 1 ? "active" : ""}`}>
@@ -252,10 +184,8 @@ function App() {
           </div>
         )}
 
-        {/* STEP 1: User Profile */}
         {currentStep === 1 && <UserProfile onSubmit={handleProfileSubmit} />}
 
-        {/* STEP 2: Activity Tracker */}
         {currentStep === 2 && userProfile && (
           <ActivityTracker
             userProfile={userProfile}
@@ -264,17 +194,15 @@ function App() {
           />
         )}
 
-        {/* STEP 3: Results (BMR, TDEE, Targets) */}
         {currentStep === 3 && userProfile && (
           <Results
             userProfile={userProfile}
             activities={activities}
-            onComplete={handleResultsComplete} // NEW: Continue to Dashboard
+            onComplete={handleResultsComplete}
             onReset={resetApp}
           />
         )}
 
-        {/* STEP 4: Dashboard (Daily Calorie Logging) - NEW! */}
         {currentStep === 4 && userProfile && (
           <Dashboard
             userProfile={userProfile}
@@ -310,3 +238,4 @@ function App() {
 }
 
 export default App;
+

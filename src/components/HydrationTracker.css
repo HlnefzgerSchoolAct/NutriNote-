@@ -1,4 +1,4 @@
-/* Hydration Tracker - Modern Gym Theme */
+/* Hydration Tracker Styles */
 
 .hydration-tracker {
   background: var(--dark-gray);
@@ -193,7 +193,6 @@
   color: #3498db;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .hydration-tracker {
     padding: 20px;
@@ -201,10 +200,6 @@
 
   .hydration-header h3 {
     font-size: 1.4em;
-  }
-
-  .water-drop {
-    font-size: 1.5em;
   }
 
   .counter-number {
