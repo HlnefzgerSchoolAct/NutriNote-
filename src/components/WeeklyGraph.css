@@ -1,180 +1,412 @@
-/* Weekly Graph Styles */
+/* ========================================
+   Hawk Fuel - Weekly Graph Component
+   Weekly Statistics Chart
+======================================== */
 
 .weekly-graph {
-  max-width: 1400px;
-  margin: 0 auto 40px;
-  padding: 30px;
-  background: var(--dark-gray);
-  border-radius: 15px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-  border: 2px solid var(--medium-gray);
+  max-width: 1200px;
+  margin: 0 auto var(--space-2xl);
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
 }
 
 .graph-header-with-export {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: var(--space-lg);
   flex-wrap: wrap;
-  gap: 15px;
+  gap: var(--space-md);
 }
 
 .weekly-graph h3 {
-  color: var(--primary-orange);
+  color: var(--text-primary);
   margin: 0;
-  font-size: 2em;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 3px;
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
 }
 
 .btn-export {
-  padding: 12px 24px;
-  background: var(--primary-orange);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1em;
-  font-weight: 700;
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
   cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-  white-space: nowrap;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
 }
 
 .btn-export:hover:not(:disabled) {
-  background: var(--dark-orange);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-}
-
-.btn-export:active {
-  transform: translateY(-1px);
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
 }
 
 .btn-export:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
+/* ===== Graph Container ===== */
 .graph-container {
   position: relative;
-  height: 400px;
-  margin-bottom: 25px;
-  padding: 20px;
-  background: var(--medium-gray);
-  border-radius: 12px;
-  border: 2px solid var(--light-gray);
+  height: 300px;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
 }
 
+.graph-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* ===== Bar Chart Styles ===== */
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  padding: var(--space-md) 0;
+  gap: var(--space-md);
+}
+
+.bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  min-width: 40px;
+  max-width: 60px;
+}
+
+.bar-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 200px;
+  width: 100%;
+  justify-content: center;
+}
+
+.bar {
+  width: 20px;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.bar:hover {
+  opacity: 0.9;
+}
+
+.bar.eaten {
+  background: #d84545;
+}
+
+.bar.burned {
+  background: #f59e0b;
+}
+
+.bar.target {
+  background: #3498db;
+  opacity: 0.4;
+}
+
+.bar-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-weight: var(--font-medium);
+  text-align: center;
+  margin-top: var(--space-sm);
+}
+
+.bar-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 10;
+  border: 1px solid var(--border-subtle);
+}
+
+.bar:hover .bar-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* ===== Graph Legend ===== */
 .graph-info {
-  margin-top: 20px;
-  padding: 20px;
-  background: var(--medium-gray);
-  border-radius: 12px;
-  border: 2px solid var(--light-gray);
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
 }
 
 .graph-info h4 {
-  color: var(--primary-orange);
-  margin: 0 0 15px 0;
-  font-size: 1.2em;
-  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-md) 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .graph-legend-items {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 15px;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 15px;
-  background: var(--dark-gray);
-  border-radius: 8px;
-  border: 2px solid var(--light-gray);
-  transition: all 0.3s;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--transition-fast);
 }
 
 .legend-item:hover {
-  border-color: var(--primary-orange);
-  transform: translateY(-2px);
+  border-color: var(--border-hover);
 }
 
 .legend-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
 }
 
 .legend-color.eaten {
-  background: #e74c3c;
+  background: var(--danger);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
 }
 
 .legend-color.burned {
-  background: #f39c12;
+  background: var(--warning);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
 }
 
 .legend-color.target {
-  background: #3498db;
-  border: 2px dashed #3498db;
+  background: var(--info);
+  opacity: 0.5;
 }
 
 .legend-item strong {
-  color: var(--white);
-  font-weight: 700;
+  color: var(--text-primary);
+  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
 }
 
+.legend-value {
+  margin-left: auto;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--primary-orange);
+}
+
+/* ===== Stats Summary ===== */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--space-md);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+}
+
+.stat-value {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.stat-value.highlight {
+  color: var(--primary-orange);
+}
+
+.stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Graph Tip ===== */
 .graph-tip {
-  color: var(--off-white);
-  font-size: 0.95em;
-  margin: 0;
+  color: var(--text-tertiary);
+  font-size: var(--text-xs);
+  margin: var(--space-md) 0 0 0;
   line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--info);
+}
+
+.graph-tip::before {
+  content: "📊";
+  flex-shrink: 0;
 }
 
 .graph-tip strong {
-  color: var(--primary-orange);
-  font-weight: 700;
+  color: var(--text-blue);
+  font-weight: var(--font-semibold);
 }
 
+/* ===== Loading State ===== */
 .graph-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--off-white);
-  font-size: 1.1em;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  gap: var(--space-sm);
 }
 
+.graph-loading .spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--primary-orange);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ===== Empty State ===== */
+.graph-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.graph-empty-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+  opacity: 0.5;
+}
+
+.graph-empty-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.graph-empty-description {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  max-width: 280px;
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .graph-container {
-    height: 300px;
-    padding: 10px;
-  }
-
   .weekly-graph {
-    padding: 20px;
+    padding: var(--space-lg);
   }
 
-  .weekly-graph h3 {
-    font-size: 1.5em;
+  .graph-container {
+    height: 250px;
+    padding: var(--space-md);
   }
 
-  .graph-legend-items {
-    gap: 8px;
+  .bar-container {
+    height: 160px;
+  }
+
+  .bar {
+    width: 16px;
+  }
+
+  .bar-group {
+    min-width: 30px;
+    max-width: 45px;
+  }
+
+  .graph-header-with-export {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stats-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .graph-container {
+    height: 200px;
+  }
+
+  .bar-container {
+    height: 120px;
+  }
+
+  .bar {
+    width: 12px;
+  }
+
+  .bar-group {
+    min-width: 24px;
+    max-width: 36px;
   }
 
   .legend-item {
-    padding: 8px 12px;
-    font-size: 0.9em;
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .legend-color {
+    width: 12px;
+    height: 12px;
+  }
+
+  .legend-item strong {
+    font-size: var(--text-xs);
   }
 }

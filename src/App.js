@@ -17,6 +17,7 @@ function App() {
   const [dailyTarget, setDailyTarget] = useState(2000);
   const [currentStep, setCurrentStep] = useState(1);
   const [isStandalone, setIsStandalone] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const standalone =
@@ -25,6 +26,11 @@ function App() {
       document.referrer.includes("android-app://");
 
     setIsStandalone(standalone);
+
+    // Detect mobile devices (touch primary pointer AND smaller screen)
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    const isSmallScreen = window.innerWidth < 1024;
+    setIsMobile(isTouchDevice && isSmallScreen);
   }, []);
 
   useEffect(() => {
@@ -62,7 +68,7 @@ function App() {
     setDailyTarget(2000);
   };
 
-  if (!isStandalone) {
+  if (!isStandalone && isMobile) {
     return (
       <div className="App">
         <div className="install-prompt">
@@ -77,7 +83,7 @@ function App() {
 
             <div className="install-message">
               <h2>Install Required</h2>
-              <p>This app must be installed to your device to work properly.</p>
+              <p>This app must be installed to your mobile device to work properly.</p>
             </div>
 
             <div className="install-instructions">
@@ -108,38 +114,6 @@ function App() {
                   Tap <strong>"Add"</strong> or <strong>"Install"</strong>
                 </li>
                 <li>Open the app from your home screen</li>
-              </ol>
-
-              <h3>Windows (Chrome):</h3>
-              <ol>
-                <li>
-                  Click the <strong>Install</strong> icon in the address bar
-                </li>
-                <li>
-                  If you don't see the icon, click the{" "}
-                  <strong>three dots menu</strong> (top right)
-                </li>
-                <li>
-                  Select <strong>"Install Hawk Fuel"</strong> or{" "}
-                  <strong>"Install app"</strong>
-                </li>
-                <li>App will open in its own window for easy access</li>
-              </ol>
-
-              <h3>Windows (Edge):</h3>
-              <ol>
-                <li>
-                  Click the <strong>App available</strong> icon in the address
-                  bar
-                </li>
-                <li>
-                  Or click the <strong>three dots menu</strong> (top right)
-                </li>
-                <li>
-                  <strong>Apps</strong> {" > "}
-                  <strong>Install this site as an app</strong>
-                </li>
-                <li>App will open in its own window for easy access</li>
               </ol>
             </div>
 

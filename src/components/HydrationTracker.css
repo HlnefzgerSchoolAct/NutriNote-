@@ -1,175 +1,290 @@
-/* Hydration Tracker Styles */
+/* ========================================
+   Hawk Fuel - Hydration Tracker Component
+   Water Intake Tracking
+======================================== */
 
 .hydration-tracker {
-  background: var(--dark-gray);
-  border-radius: 15px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-  border: 2px solid var(--medium-gray);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
 }
 
 .hydration-header {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: var(--space-lg);
 }
 
 .hydration-header h3 {
-  color: var(--primary-orange);
-  font-size: 1.8em;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 0 0 10px 0;
+  color: var(--text-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  margin: 0 0 var(--space-xs) 0;
 }
 
 .hydration-goal {
-  color: var(--off-white);
-  font-size: 0.95em;
-  margin: 0 0 5px 0;
-  font-weight: 600;
-  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+  margin: 0;
 }
 
 .hydration-personalized {
-  color: var(--primary-orange);
-  font-size: 0.85em;
-  margin: 5px 0 0 0;
-  font-weight: 600;
-  font-style: italic;
+  color: var(--text-blue);
+  font-size: var(--text-xs);
+  margin: var(--space-xs) 0 0 0;
 }
 
+/* ===== Circular Progress ===== */
 .hydration-display {
-  margin-bottom: 25px;
+  margin-bottom: var(--space-lg);
 }
 
 .hydration-counter {
   text-align: center;
-  margin: 20px 0;
+  margin: var(--space-lg) 0;
 }
 
-.counter-number {
-  font-size: 3.5em;
-  font-weight: 900;
-  color: #3498db;
-  text-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+.water-progress-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto var(--space-md);
 }
 
-.counter-label {
-  font-size: 1.2em;
-  color: var(--off-white);
-  margin-left: 10px;
-  font-weight: 600;
-  letter-spacing: 1px;
+.water-progress-ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
+.water-progress-ring svg {
+  transform: rotate(-90deg);
+}
+
+.water-progress-bg {
+  fill: none;
+  stroke: var(--bg-tertiary);
+  stroke-width: 10;
+}
+
+.water-progress-fill {
+  fill: none;
+  stroke: var(--info);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 452.39;
+  stroke-dashoffset: 452.39;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.water-progress-fill.complete {
+  stroke: var(--success);
+}
+
+.water-progress-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.water-icon {
+  font-size: 28px;
+  margin-bottom: var(--space-xs);
+}
+
+.water-count {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.water-label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  margin-top: var(--space-xs);
+}
+
+/* ===== Progress Bar ===== */
 .hydration-progress-bar {
   width: 100%;
-  height: 15px;
-  background: var(--medium-gray);
-  border-radius: 10px;
+  height: 10px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
   overflow: hidden;
-  margin: 20px 0;
-  border: 2px solid var(--light-gray);
+  margin: var(--space-lg) 0;
+  border: 1px solid var(--border-subtle);
 }
 
 .hydration-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #3498db, #2980b9);
-  border-radius: 8px;
+  background: var(--info);
+  border-radius: var(--radius-full);
   transition: width 0.5s ease;
-  box-shadow: 0 0 15px rgba(52, 152, 219, 0.6);
 }
 
+.hydration-progress-fill.complete {
+  background: var(--success);
+}
+
+/* ===== Status Messages ===== */
 .hydration-status {
   text-align: center;
-  margin: 20px 0;
-  min-height: 30px;
+  margin: var(--space-lg) 0;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .status-message {
   margin: 0;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1em;
-  letter-spacing: 0.5px;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
 }
 
 .status-message.success {
-  background: rgba(46, 204, 113, 0.2);
-  color: #2ecc71;
-  border: 2px solid #2ecc71;
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.status-message.info {
+  background: var(--info-light);
+  color: var(--info);
+}
+
+/* ===== Action Buttons ===== */
+.hydration-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.btn-add-water {
+  padding: var(--space-md);
+  background: var(--gradient-orange);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-add-water:hover {
+  background: linear-gradient(
+    135deg,
+    var(--primary-orange-light) 0%,
+    var(--primary-orange-dark) 100%
+  );
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-add-water:active {
+  transform: scale(0.98);
+}
+
+.status-message.success::before {
+  background: var(--success);
 }
 
 .status-message.good {
-  background: rgba(52, 152, 219, 0.2);
-  color: #3498db;
-  border: 2px solid #3498db;
+  background: var(--info-light);
+  color: var(--info);
+}
+
+.status-message.good::before {
+  background: var(--info);
 }
 
 .status-message.needs-more {
-  background: rgba(243, 156, 18, 0.2);
-  color: #f39c12;
-  border: 2px solid #f39c12;
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.status-message.needs-more::before {
+  background: var(--warning);
 }
 
 .status-message.empty {
-  background: rgba(149, 165, 166, 0.2);
-  color: #95a5a6;
-  border: 2px solid #95a5a6;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
 }
 
+.status-message.empty::before {
+  background: var(--text-muted);
+  animation: none;
+}
+
+/* ===== Controls ===== */
 .hydration-controls {
   display: flex;
-  gap: 15px;
+  gap: var(--space-md);
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
 }
 
 .btn-water-add,
 .btn-water-remove {
-  padding: 15px 30px;
+  padding: var(--space-md) var(--space-xl);
   border: none;
-  border-radius: 10px;
-  font-size: 1.05em;
-  font-weight: 700;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
   cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-width: 120px;
+  justify-content: center;
 }
 
 .btn-water-add {
-  background: #3498db;
+  background: var(--gradient-orange);
   color: white;
-  flex: 1;
-  max-width: 200px;
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.btn-water-add:hover {
-  background: #2980b9;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(52, 152, 219, 0.5);
+.btn-water-add:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--primary-orange-light) 0%,
+    var(--primary-orange) 100%
+  );
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), var(--shadow-glow-orange);
 }
 
-.btn-water-add:active {
-  transform: translateY(-1px);
+.btn-water-add:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .btn-water-remove {
-  background: var(--medium-gray);
-  color: var(--white);
-  border: 2px solid var(--light-gray);
-  flex: 1;
-  max-width: 200px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
 }
 
 .btn-water-remove:hover:not(:disabled) {
-  background: var(--light-gray);
-  border-color: var(--primary-orange);
-  transform: translateY(-3px);
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
 }
 
 .btn-water-remove:disabled {
@@ -177,41 +292,123 @@
   cursor: not-allowed;
 }
 
+.btn-water-add .icon,
+.btn-water-remove .icon {
+  font-size: 18px;
+}
+
+/* ===== Quick Add ===== */
+.quick-add-water {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.quick-water-btn {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-weight: var(--font-medium);
+}
+
+.quick-water-btn:hover {
+  background: var(--info);
+  border-color: var(--info);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ===== Hydration Tip ===== */
 .hydration-tip {
   text-align: center;
-  color: var(--off-white);
-  font-size: 0.9em;
-  margin: 15px 0 0 0;
-  padding: 12px;
-  background: var(--medium-gray);
-  border-radius: 8px;
-  border-left: 4px solid #3498db;
+  color: var(--text-tertiary);
+  font-size: var(--text-xs);
+  margin: var(--space-md) 0 0 0;
+  padding: var(--space-md);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--info);
   line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.hydration-tip::before {
+  content: "💧";
+  flex-shrink: 0;
 }
 
 .hydration-tip strong {
-  color: #3498db;
+  color: var(--text-blue);
+  font-weight: var(--font-semibold);
 }
 
+/* ===== Streak Counter ===== */
+.hydration-streak {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.streak-icon {
+  font-size: 24px;
+}
+
+.streak-info {
+  text-align: left;
+}
+
+.streak-count {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.streak-label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
   .hydration-tracker {
-    padding: 20px;
+    padding: var(--space-lg);
   }
 
-  .hydration-header h3 {
-    font-size: 1.4em;
+  .water-progress-container {
+    width: 150px;
+    height: 150px;
   }
 
-  .counter-number {
-    font-size: 2.5em;
+  .water-count {
+    font-size: var(--text-xl);
   }
 
   .hydration-controls {
     flex-direction: column;
+    gap: var(--space-sm);
   }
 
   .btn-water-add,
   .btn-water-remove {
-    max-width: 100%;
+    width: 100%;
+    max-width: none;
+  }
+
+  .quick-add-water {
+    flex-wrap: wrap;
   }
 }

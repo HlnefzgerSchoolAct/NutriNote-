@@ -252,20 +252,20 @@ export const loadWaterLog = () => {
   return loadFromLocalStorage(STORAGE_KEYS.WATER_LOG, 0);
 };
 
-export const saveWaterLog = (cups) => {
-  saveToLocalStorage(STORAGE_KEYS.WATER_LOG, cups);
+export const saveWaterLog = (ounces) => {
+  saveToLocalStorage(STORAGE_KEYS.WATER_LOG, ounces);
 };
 
 export const addWaterCup = () => {
   const current = loadWaterLog();
-  const updated = current + 1;
+  const updated = current + 8; // Add 8 oz (1 cup)
   saveWaterLog(updated);
   return updated;
 };
 
 export const removeWaterCup = () => {
   const current = loadWaterLog();
-  const updated = Math.max(0, current - 1);
+  const updated = Math.max(0, current - 8); // Remove 8 oz (1 cup)
   saveWaterLog(updated);
   return updated;
 };
