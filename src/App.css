@@ -220,6 +220,10 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
 .app-header h1 {
@@ -253,6 +257,36 @@
   font-weight: var(--font-medium);
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+/* Settings Button in Header */
+.settings-btn {
+  position: absolute;
+  right: var(--space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 107, 53, 0.15);
+  border-color: rgba(255, 107, 53, 0.3);
+  color: var(--primary-orange);
+}
+
+.settings-btn svg {
+  width: 22px;
+  height: 22px;
 }
 
 /* ===== Container ===== */

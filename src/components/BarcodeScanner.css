@@ -1,0 +1,553 @@
+/* Barcode Scanner Component Styles */
+/* Matches AIFoodInput.css design patterns */
+
+.barcode-scanner {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.barcode-scanner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4ecdc4 0%, #44a08d 100%);
+}
+
+.scanner-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.scanner-title span {
+  font-size: 1.5rem;
+}
+
+/* Loading State */
+.scanner-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  gap: var(--space-md);
+}
+
+.scanner-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #4ecdc4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.scanner-loading p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Error State */
+.scanner-error-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.scanner-error {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  color: #e74c3c;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.scanner-fallback-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.scanner-ai-btn {
+  background: linear-gradient(135deg, #ff6b35 0%, #e55a2b 100%);
+  color: white;
+  border: none;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.scanner-ai-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+.scanner-retry-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.scanner-retry-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Camera Container */
+.scanner-camera-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.camera-preview {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Scan Target Overlay */
+.scan-target {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 50%;
+  pointer-events: none;
+}
+
+.scan-target-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #4ecdc4;
+  border-style: solid;
+  border-width: 0;
+}
+
+.scan-target-corner.top-left {
+  top: 0;
+  left: 0;
+  border-top-width: 3px;
+  border-left-width: 3px;
+  border-top-left-radius: 8px;
+}
+
+.scan-target-corner.top-right {
+  top: 0;
+  right: 0;
+  border-top-width: 3px;
+  border-right-width: 3px;
+  border-top-right-radius: 8px;
+}
+
+.scan-target-corner.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+  border-bottom-left-radius: 8px;
+}
+
+.scan-target-corner.bottom-right {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 3px;
+  border-right-width: 3px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Animated Scan Line */
+.scan-line {
+  position: absolute;
+  top: 25%;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #4ecdc4,
+    transparent
+  );
+  animation: scanLine 2s ease-in-out infinite;
+}
+
+@keyframes scanLine {
+  0%,
+  100% {
+    top: 25%;
+    opacity: 0.5;
+  }
+  50% {
+    top: 75%;
+    opacity: 1;
+  }
+}
+
+.scan-instruction {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Camera Error Message */
+.camera-error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  min-height: 200px;
+}
+
+.camera-error-message p {
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 300px;
+}
+
+.camera-error-banner {
+  background: rgba(241, 196, 15, 0.15);
+  border: 1px solid rgba(241, 196, 15, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  color: #f1c40f;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+/* Manual Entry Section */
+.manual-entry-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-md);
+}
+
+.manual-entry-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.manual-entry-form {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.manual-input,
+.form-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: var(--transition-base);
+}
+
+.manual-input:focus,
+.form-input:focus {
+  outline: none;
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.15);
+}
+
+.manual-submit-btn {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+  border: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+  white-space: nowrap;
+}
+
+.manual-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+}
+
+/* Manual Mode */
+.scanner-manual-mode {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.manual-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.lookup-btn {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+  border: none;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.lookup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+}
+
+/* Result Container */
+.scanner-result-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Product Info */
+.product-info {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-xs);
+}
+
+.product-details {
+  flex: 1;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.product-brand {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-xs);
+}
+
+.product-serving {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Serving Form */
+.serving-form {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.serving-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.serving-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.serving-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.serving-input,
+.serving-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: var(--transition-base);
+}
+
+.serving-input:focus,
+.serving-select:focus {
+  outline: none;
+  border-color: #4ecdc4;
+  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.15);
+}
+
+/* Nutrition Preview */
+.nutrition-preview {
+  background: rgba(78, 205, 196, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.nutrition-preview-title {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.nutrition-item {
+  text-align: center;
+  padding: var(--space-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.nutrition-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #4ecdc4;
+  margin-bottom: 2px;
+}
+
+.nutrition-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Result Actions */
+.result-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.add-food-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #27ae60 0%, #219a52 100%);
+  color: white;
+  border: none;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.add-food-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+}
+
+.scan-again-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-base);
+  white-space: nowrap;
+}
+
+.scan-again-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .barcode-scanner {
+    padding: var(--space-lg);
+  }
+
+  .nutrition-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .result-actions {
+    flex-direction: column;
+  }
+
+  .scanner-fallback-buttons {
+    flex-direction: column;
+  }
+
+  .scanner-fallback-buttons button {
+    width: 100%;
+  }
+
+  .product-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}

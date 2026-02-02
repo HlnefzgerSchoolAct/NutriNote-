@@ -6,6 +6,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "server": "node proxy-server.js",
+    "server:dev": "nodemon proxy-server.js",
+    "dev": "concurrently \"npm run server:dev\" \"npm start\"",
     "generate-icons": "node scripts/generate-icons.js",
     "generate-sw": "node scripts/generate-sw.js",
     "postbuild": "node scripts/generate-sw.js",
@@ -13,7 +16,14 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@zxing/browser": "^0.1.5",
+    "@zxing/library": "^0.21.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
     "html2canvas": "^1.4.1",
+    "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^18.2.0",
@@ -25,7 +35,9 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0"
+    "@testing-library/user-event": "^13.5.0",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.11"
   },
   "eslintConfig": {
     "extends": [
@@ -43,5 +55,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5001"
 }

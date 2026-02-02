@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import WeeklyGraph from "./WeeklyGraph";
 import HydrationTracker from "./HydrationTracker";
+import WeightTracker from "./WeightTracker";
+import AIFoodInput from "./AIFoodInput";
+import BarcodeScanner from "./BarcodeScanner";
 import { quickAddFoods, foodsDatabase } from "../data/foods";
 import {
   loadFoodLog,
@@ -13,6 +16,15 @@ import {
   getTotalCaloriesEaten,
   getTotalCaloriesBurned,
   saveDailyDataToHistory,
+  loadPreferences,
+  loadRecentFoods,
+  addRecentFood,
+  loadFavoriteFoods,
+  toggleFavoriteFood,
+  isFavoriteFood,
+  updateStreak,
+  loadStreakData,
+  getMealTypeByTime,
 } from "../utils/localStorage";
 
 const TargetIcon = () => (
@@ -166,7 +178,13 @@ const ExerciseIcon = () => (
   </svg>
 );
 
-function Dashboard({ userProfile, dailyTarget, onReset }) {
+function Dashboard({
+  userProfile,
+  dailyTarget,
+  macroGoals,
+  onReset,
+  onOpenSettings,
+}) {
   const [foodName, setFoodName] = useState("");
   const [foodCalories, setFoodCalories] = useState("");
   const [foodLog, setFoodLog] = useState([]);
@@ -183,8 +201,32 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
   const [servingMultiplier, setServingMultiplier] = useState(1);
   const [selectedFood, setSelectedFood] = useState(null);
 
+  // Input mode state for AI/Scanner toggle
+  const [inputMode, setInputMode] = useState("ai"); // "ai" or "scan"
+  const [prefillFoodDescription, setPrefillFoodDescription] = useState("");
+
+  // Detect mobile device for scanner visibility
+  const isMobile =
+    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+    window.innerWidth <= 768;
+
+  // New state for macros and recent foods
+  const preferences = loadPreferences();
+  const [recentFoods, setRecentFoods] = useState(loadRecentFoods());
+  const [favoriteFoods, setFavoriteFoods] = useState(loadFavoriteFoods());
+  const [streakData, setStreakData] = useState(loadStreakData());
+  const [currentMacros, setCurrentMacros] = useState({
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+  });
+  const [showRecentFoods, setShowRecentFoods] = useState(true);
+
   useEffect(() => {
     loadSavedData();
+    // Update streak when dashboard loads
+    const updated = updateStreak();
+    setStreakData(updated);
   }, []);
 
   useEffect(() => {
@@ -195,6 +237,19 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
     setCaloriesEaten(eaten);
     setCaloriesBurned(burned);
     setRemainingCalories(remaining);
+
+    // Calculate current macros from food log
+    const macros = foodLog.reduce(
+      (acc, entry) => {
+        return {
+          protein: acc.protein + (entry.protein || 0),
+          carbs: acc.carbs + (entry.carbs || 0),
+          fat: acc.fat + (entry.fat || 0),
+        };
+      },
+      { protein: 0, carbs: 0, fat: 0 },
+    );
+    setCurrentMacros(macros);
 
     saveDailyDataToHistory();
   }, [foodLog, exerciseLog, dailyTarget]);
@@ -225,6 +280,42 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
 
     setFoodName("");
     setFoodCalories("");
+  };
+
+  const handleAddAIFood = (foodEntry) => {
+    // Add meal type based on time
+    const entryWithMeal = {
+      ...foodEntry,
+      mealType: getMealTypeByTime(),
+    };
+
+    const savedEntry = addFoodEntry(entryWithMeal);
+    setFoodLog((prev) => [...prev, savedEntry]);
+
+    // Add to recent foods
+    addRecentFood({
+      name: foodEntry.name,
+      calories: foodEntry.calories,
+      protein: foodEntry.protein || 0,
+      carbs: foodEntry.carbs || 0,
+      fat: foodEntry.fat || 0,
+    });
+    setRecentFoods(loadRecentFoods());
+  };
+
+  const handleToggleFavorite = (food) => {
+    toggleFavoriteFood(food);
+    setFavoriteFoods(loadFavoriteFoods());
+  };
+
+  const handleQuickAddRecent = (food) => {
+    handleAddAIFood({
+      name: food.name,
+      calories: food.calories,
+      protein: food.protein,
+      carbs: food.carbs,
+      fat: food.fat,
+    });
   };
 
   const handleAddExercise = (e) => {
@@ -291,6 +382,16 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
     <div className="dashboard">
       <WeeklyGraph onRefresh={foodLog.length + exerciseLog.length} />
 
+      {/* Streak Display */}
+      {streakData.currentStreak > 0 && (
+        <div className="streak-banner">
+          <span className="streak-fire">🔥</span>
+          <span className="streak-count">
+            {streakData.currentStreak} day streak!
+          </span>
+        </div>
+      )}
+
       {/* Progress Ring */}
       <div className="progress-ring-container">
         <div className={`progress-ring ${remainingCalories < 0 ? "over" : ""}`}>
@@ -318,6 +419,63 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
           </div>
         </div>
       </div>
+
+      {/* Macro Progress Bars */}
+      {macroGoals && macroGoals.protein > 0 && (
+        <div className="macro-progress-section">
+          <h3 className="macro-section-title">Macro Goals</h3>
+          <div className="macro-bars">
+            <div className="macro-bar-container">
+              <div className="macro-bar-header">
+                <span className="macro-bar-label">Protein</span>
+                <span className="macro-bar-values">
+                  {Math.round(currentMacros.protein)}g / {macroGoals.protein}g
+                </span>
+              </div>
+              <div className="macro-bar-track">
+                <div
+                  className="macro-bar-fill protein"
+                  style={{
+                    width: `${Math.min((currentMacros.protein / macroGoals.protein) * 100, 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+            <div className="macro-bar-container">
+              <div className="macro-bar-header">
+                <span className="macro-bar-label">Carbs</span>
+                <span className="macro-bar-values">
+                  {Math.round(currentMacros.carbs)}g / {macroGoals.carbs}g
+                </span>
+              </div>
+              <div className="macro-bar-track">
+                <div
+                  className="macro-bar-fill carbs"
+                  style={{
+                    width: `${Math.min((currentMacros.carbs / macroGoals.carbs) * 100, 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+            <div className="macro-bar-container">
+              <div className="macro-bar-header">
+                <span className="macro-bar-label">Fat</span>
+                <span className="macro-bar-values">
+                  {Math.round(currentMacros.fat)}g / {macroGoals.fat}g
+                </span>
+              </div>
+              <div className="macro-bar-track">
+                <div
+                  className="macro-bar-fill fat"
+                  style={{
+                    width: `${Math.min((currentMacros.fat / macroGoals.fat) * 100, 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <h2>Daily Tracker</h2>
 
@@ -364,78 +522,211 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
         </div>
       </div>
 
-      {/* Quick Add Foods */}
-      <div className="quick-add-section">
-        <div className="quick-add-title">Quick Add</div>
-        <div className="quick-add-search-container">
-          <input
-            type="text"
-            placeholder="Search foods..."
-            value={quickAddSearch}
-            onChange={(e) => setQuickAddSearch(e.target.value)}
-            className="quick-add-search"
+      {/* Food Input Section with Mode Toggle */}
+      <div className="food-input-section">
+        {/* Show tabs only on mobile */}
+        {isMobile && (
+          <div className="input-mode-tabs">
+            <button
+              className={`input-mode-tab ${inputMode === "ai" ? "active" : ""}`}
+              onClick={() => setInputMode("ai")}
+            >
+              🤖 AI Estimator
+            </button>
+            <button
+              className={`input-mode-tab ${inputMode === "scan" ? "active" : ""}`}
+              onClick={() => setInputMode("scan")}
+            >
+              📷 Scan Barcode
+            </button>
+          </div>
+        )}
+
+        {/* AI Food Input - shown when in AI mode or on desktop */}
+        {(inputMode === "ai" || !isMobile) && (
+          <AIFoodInput
+            onAddFood={handleAddAIFood}
+            userWeight={userProfile?.weight}
+            prefillDescription={prefillFoodDescription}
+            onDescriptionUsed={() => setPrefillFoodDescription("")}
           />
-        </div>
-        {selectedFood && (
-          <div className="quick-add-serving-selector">
-            <div className="serving-label">
-              Serving Size for {selectedFood.name}:
-            </div>
-            <div className="serving-buttons">
-              {[0.5, 1, 1.5, 2].map((mult) => (
-                <button
-                  key={mult}
-                  className={`serving-btn ${servingMultiplier === mult ? "active" : ""}`}
-                  onClick={() => {
-                    addQuickFood(selectedFood, mult);
-                    setServingMultiplier(1);
-                  }}
-                >
-                  {mult === 0.5 ? "½" : mult}x (
-                  {Math.round(selectedFood.cal * mult)} cal)
-                </button>
-              ))}
+        )}
+
+        {/* Barcode Scanner - only shown on mobile in scan mode */}
+        {inputMode === "scan" && isMobile && (
+          <BarcodeScanner
+            onAddFood={handleAddAIFood}
+            onSwitchToAI={(productName) => {
+              setInputMode("ai");
+              if (productName) {
+                setPrefillFoodDescription(productName);
+              }
+            }}
+          />
+        )}
+      </div>
+
+      {/* Recent & Favorite Foods */}
+      {(recentFoods.length > 0 || favoriteFoods.length > 0) && (
+        <div className="recent-foods-section">
+          <div className="recent-foods-header">
+            <h3>Quick Add</h3>
+            <div className="recent-foods-tabs">
               <button
-                className="serving-cancel"
-                onClick={() => {
-                  setSelectedFood(null);
-                  setServingMultiplier(1);
-                }}
+                className={`tab-btn ${showRecentFoods ? "active" : ""}`}
+                onClick={() => setShowRecentFoods(true)}
               >
-                Cancel
+                Recent
+              </button>
+              <button
+                className={`tab-btn ${!showRecentFoods ? "active" : ""}`}
+                onClick={() => setShowRecentFoods(false)}
+              >
+                Favorites
               </button>
             </div>
           </div>
-        )}
-        {quickAddSearch.trim() && (
-          <div className="quick-add-grid">
-            {filteredFoods.length === 0 ? (
-              <p className="no-results">No foods found</p>
-            ) : (
-              filteredFoods.map((food) => (
+
+          <div className="recent-foods-grid">
+            {showRecentFoods ? (
+              recentFoods.length > 0 ? (
+                recentFoods.slice(0, 8).map((food, index) => (
+                  <button
+                    key={`recent-${index}`}
+                    className="recent-food-btn"
+                    onClick={() => handleQuickAddRecent(food)}
+                  >
+                    <div className="recent-food-name">{food.name}</div>
+                    <div className="recent-food-info">
+                      <span className="recent-food-cal">
+                        {food.calories} cal
+                      </span>
+                      <span className="recent-food-macros">
+                        P:{food.protein}g C:{food.carbs}g F:{food.fat}g
+                      </span>
+                    </div>
+                    <button
+                      className={`favorite-btn ${isFavoriteFood(food.name) ? "active" : ""}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToggleFavorite(food);
+                      }}
+                      aria-label="Toggle favorite"
+                    >
+                      {isFavoriteFood(food.name) ? "★" : "☆"}
+                    </button>
+                  </button>
+                ))
+              ) : (
+                <p className="empty-recent">Log foods to see them here</p>
+              )
+            ) : favoriteFoods.length > 0 ? (
+              favoriteFoods.map((food, index) => (
                 <button
-                  key={food.name}
-                  className="quick-add-btn"
-                  onClick={() => {
-                    setSelectedFood(food);
-                    setServingMultiplier(1);
-                  }}
-                  title={`${food.category} - P: ${food.protein}g | C: ${food.carbs}g | F: ${food.fat}g`}
+                  key={`fav-${index}`}
+                  className="recent-food-btn favorite"
+                  onClick={() => handleQuickAddRecent(food)}
                 >
-                  <div className="quick-add-name">{food.name}</div>
-                  <div className="quick-add-cal">{food.cal}</div>
-                  <div className="quick-add-macro">
-                    P:{food.protein}g C:{food.carbs}g
+                  <div className="recent-food-name">{food.name}</div>
+                  <div className="recent-food-info">
+                    <span className="recent-food-cal">{food.calories} cal</span>
+                    <span className="recent-food-macros">
+                      P:{food.protein}g C:{food.carbs}g F:{food.fat}g
+                    </span>
                   </div>
+                  <button
+                    className="favorite-btn active"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleFavorite(food);
+                    }}
+                    aria-label="Remove from favorites"
+                  >
+                    ★
+                  </button>
                 </button>
               ))
+            ) : (
+              <p className="empty-recent">Star foods to add them here</p>
             )}
           </div>
-        )}
-        {!quickAddSearch.trim() && !selectedFood && (
-          <p className="search-prompt">Type to search foods...</p>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Quick Add Foods - Database Search (only if enabled) */}
+      {preferences.databaseEnabled && (
+        <div className="quick-add-section">
+          <div className="quick-add-title">Quick Add</div>
+          <div className="quick-add-search-container">
+            <input
+              type="text"
+              placeholder="Search foods..."
+              value={quickAddSearch}
+              onChange={(e) => setQuickAddSearch(e.target.value)}
+              className="quick-add-search"
+            />
+          </div>
+          {selectedFood && (
+            <div className="quick-add-serving-selector">
+              <div className="serving-label">
+                Serving Size for {selectedFood.name}:
+              </div>
+              <div className="serving-buttons">
+                {[0.5, 1, 1.5, 2].map((mult) => (
+                  <button
+                    key={mult}
+                    className={`serving-btn ${servingMultiplier === mult ? "active" : ""}`}
+                    onClick={() => {
+                      addQuickFood(selectedFood, mult);
+                      setServingMultiplier(1);
+                    }}
+                  >
+                    {mult === 0.5 ? "½" : mult}x (
+                    {Math.round(selectedFood.cal * mult)} cal)
+                  </button>
+                ))}
+                <button
+                  className="serving-cancel"
+                  onClick={() => {
+                    setSelectedFood(null);
+                    setServingMultiplier(1);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+          {quickAddSearch.trim() && (
+            <div className="quick-add-grid">
+              {filteredFoods.length === 0 ? (
+                <p className="no-results">No foods found</p>
+              ) : (
+                filteredFoods.map((food) => (
+                  <button
+                    key={food.name}
+                    className="quick-add-btn"
+                    onClick={() => {
+                      setSelectedFood(food);
+                      setServingMultiplier(1);
+                    }}
+                    title={`${food.category} - P: ${food.protein}g | C: ${food.carbs}g | F: ${food.fat}g`}
+                  >
+                    <div className="quick-add-name">{food.name}</div>
+                    <div className="quick-add-cal">{food.cal}</div>
+                    <div className="quick-add-macro">
+                      P:{food.protein}g C:{food.carbs}g
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+          {!quickAddSearch.trim() && !selectedFood && (
+            <p className="search-prompt">Type to search foods...</p>
+          )}
+        </div>
+      )}
 
       <div className="logging-section">
         <div className="log-column">
@@ -470,7 +761,17 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
                 <div key={entry.id} className="log-entry">
                   <div className="entry-info">
                     <strong>{entry.name}</strong>
-                    <span>{entry.calories} cal</span>
+                    <div className="entry-details">
+                      <span className="entry-calories">
+                        {entry.calories} cal
+                      </span>
+                      {(entry.protein || entry.carbs || entry.fat) && (
+                        <span className="entry-macros">
+                          P:{entry.protein || 0}g C:{entry.carbs || 0}g F:
+                          {entry.fat || 0}g
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <button
                     onClick={() => handleDeleteFood(entry.id)}
@@ -568,7 +869,10 @@ function Dashboard({ userProfile, dailyTarget, onReset }) {
         )}
       </div>
 
-      <HydrationTracker userProfile={userProfile} />
+      <div className="trackers-row">
+        <HydrationTracker userProfile={userProfile} />
+        <WeightTracker userProfile={userProfile} />
+      </div>
 
       <button onClick={onReset} className="btn-reset">
         Start New Calculation
