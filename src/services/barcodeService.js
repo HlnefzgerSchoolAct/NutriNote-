@@ -89,9 +89,16 @@ function cacheBarcode(barcode, productData) {
  */
 function parseNutrition(nutriments) {
   return {
-    calories: Math.round(nutriments["energy-kcal_100g"] || nutriments["energy-kcal"] || 0),
-    protein: Math.round((nutriments.proteins_100g || nutriments.proteins || 0) * 10) / 10,
-    carbs: Math.round((nutriments.carbohydrates_100g || nutriments.carbohydrates || 0) * 10) / 10,
+    calories: Math.round(
+      nutriments["energy-kcal_100g"] || nutriments["energy-kcal"] || 0,
+    ),
+    protein:
+      Math.round((nutriments.proteins_100g || nutriments.proteins || 0) * 10) /
+      10,
+    carbs:
+      Math.round(
+        (nutriments.carbohydrates_100g || nutriments.carbohydrates || 0) * 10,
+      ) / 10,
     fat: Math.round((nutriments.fat_100g || nutriments.fat || 0) * 10) / 10,
   };
 }
@@ -104,7 +111,7 @@ function parseNutrition(nutriments) {
  */
 export async function lookupBarcode(barcode) {
   const cleanBarcode = barcode.trim();
-  
+
   // Check cache first
   const cached = getCachedBarcode(cleanBarcode);
   if (cached) {
@@ -116,7 +123,8 @@ export async function lookupBarcode(barcode) {
   try {
     const response = await fetch(`${API_BASE}/${cleanBarcode}.json`, {
       headers: {
-        "User-Agent": "HawkFuel/1.0 (https://github.com/HlnefzgerSchoolAct/HawkFuel)",
+        "User-Agent":
+          "HawkFuel/1.0 (https://github.com/HlnefzgerSchoolAct/HawkFuel)",
       },
     });
 
@@ -132,7 +140,7 @@ export async function lookupBarcode(barcode) {
     }
 
     const product = data.product;
-    
+
     // Check if nutrition data exists
     if (!product.nutriments || Object.keys(product.nutriments).length === 0) {
       throw new Error("NO_NUTRITION_DATA");
@@ -141,7 +149,8 @@ export async function lookupBarcode(barcode) {
     // Build product data
     const productData = {
       barcode: cleanBarcode,
-      name: product.product_name || product.product_name_en || "Unknown Product",
+      name:
+        product.product_name || product.product_name_en || "Unknown Product",
       brand: product.brands || "",
       servingSize: product.serving_size || "100g",
       servingQuantity: product.serving_quantity || 100,
@@ -153,8 +162,10 @@ export async function lookupBarcode(barcode) {
     if (product.nutriments["energy-kcal_serving"]) {
       productData.nutritionPerServing = {
         calories: Math.round(product.nutriments["energy-kcal_serving"] || 0),
-        protein: Math.round((product.nutriments.proteins_serving || 0) * 10) / 10,
-        carbs: Math.round((product.nutriments.carbohydrates_serving || 0) * 10) / 10,
+        protein:
+          Math.round((product.nutriments.proteins_serving || 0) * 10) / 10,
+        carbs:
+          Math.round((product.nutriments.carbohydrates_serving || 0) * 10) / 10,
         fat: Math.round((product.nutriments.fat_serving || 0) * 10) / 10,
       };
     }
@@ -165,16 +176,22 @@ export async function lookupBarcode(barcode) {
     return { ...productData, cached: false };
   } catch (error) {
     console.error("Barcode lookup error:", error);
-    
+
     if (error.message === "PRODUCT_NOT_FOUND") {
-      throw new Error("Product not found in database. Try using the AI Estimator instead.");
+      throw new Error(
+        "Product not found in database. Try using the AI Estimator instead.",
+      );
     }
-    
+
     if (error.message === "NO_NUTRITION_DATA") {
-      throw new Error("This product has no nutrition data. Try using the AI Estimator instead.");
+      throw new Error(
+        "This product has no nutrition data. Try using the AI Estimator instead.",
+      );
     }
-    
-    throw new Error("Failed to look up barcode. Please check your connection and try again.");
+
+    throw new Error(
+      "Failed to look up barcode. Please check your connection and try again.",
+    );
   }
 }
 
@@ -186,7 +203,12 @@ export async function lookupBarcode(barcode) {
  * @param {number} servingQuantity - Grams per serving
  * @returns {Object} Calculated nutrition
  */
-export function calculateNutrition(nutritionPer100g, quantity, unit, servingQuantity = 100) {
+export function calculateNutrition(
+  nutritionPer100g,
+  quantity,
+  unit,
+  servingQuantity = 100,
+) {
   let grams;
 
   switch (unit) {

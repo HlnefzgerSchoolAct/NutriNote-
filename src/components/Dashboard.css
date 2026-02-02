@@ -702,13 +702,21 @@
 }
 
 .input-mode-tab.active {
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(255, 107, 53, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.2) 0%,
+    rgba(255, 107, 53, 0.1) 100%
+  );
   color: #ff6b35;
   font-weight: 600;
 }
 
 .input-mode-tab.active:nth-child(2) {
-  background: linear-gradient(135deg, rgba(78, 205, 196, 0.2) 0%, rgba(78, 205, 196, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(78, 205, 196, 0.2) 0%,
+    rgba(78, 205, 196, 0.1) 100%
+  );
   color: #4ecdc4;
 }
 

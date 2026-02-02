@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { estimateNutrition } from "../services/aiNutritionService";
 import "./AIFoodInput.css";
 
-function AIFoodInput({ onAddFood, userWeight, prefillDescription, onDescriptionUsed }) {
+function AIFoodInput({
+  onAddFood,
+  userWeight,
+  prefillDescription,
+  onDescriptionUsed,
+}) {
   const [foodDescription, setFoodDescription] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [unit, setUnit] = useState("serving");

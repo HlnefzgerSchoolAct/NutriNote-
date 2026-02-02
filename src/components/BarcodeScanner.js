@@ -33,29 +33,32 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
     setIsScanning(false);
   }, []);
 
-  const handleBarcodeDetected = useCallback(async (barcode) => {
-    // Stop scanning
-    stopCamera();
-    setLoading(true);
-    setError("");
+  const handleBarcodeDetected = useCallback(
+    async (barcode) => {
+      // Stop scanning
+      stopCamera();
+      setLoading(true);
+      setError("");
 
-    try {
-      const productData = await lookupBarcode(barcode);
-      setProduct(productData);
-      setMode("serving");
+      try {
+        const productData = await lookupBarcode(barcode);
+        setProduct(productData);
+        setMode("serving");
 
-      // Set default quantity based on serving size
-      if (productData.servingQuantity) {
-        setQuantity("1");
-        setUnit("serving");
+        // Set default quantity based on serving size
+        if (productData.servingQuantity) {
+          setQuantity("1");
+          setUnit("serving");
+        }
+      } catch (err) {
+        setError(err.message);
+        setProduct({ barcode, name: barcode }); // Store barcode for AI fallback
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError(err.message);
-      setProduct({ barcode, name: barcode }); // Store barcode for AI fallback
-    } finally {
-      setLoading(false);
-    }
-  }, [stopCamera]);
+    },
+    [stopCamera],
+  );
 
   const startCamera = useCallback(async () => {
     setCameraError("");
@@ -87,22 +90,22 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
             handleBarcodeDetected(result.getText());
           }
           // Ignore errors during scanning (they're continuous)
-        }
+        },
       );
     } catch (err) {
       console.error("Camera access error:", err);
 
       if (err.name === "NotAllowedError") {
         setCameraError(
-          "Camera access denied. Please allow camera access in your browser settings, or enter the barcode manually below."
+          "Camera access denied. Please allow camera access in your browser settings, or enter the barcode manually below.",
         );
       } else if (err.name === "NotFoundError") {
         setCameraError(
-          "No camera found. Please enter the barcode manually below."
+          "No camera found. Please enter the barcode manually below.",
         );
       } else {
         setCameraError(
-          "Could not access camera. Please enter the barcode manually below."
+          "Could not access camera. Please enter the barcode manually below.",
         );
       }
 
@@ -147,7 +150,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       product.nutritionPer100g,
       parseFloat(quantity),
       unit,
-      product.servingQuantity || 100
+      product.servingQuantity || 100,
     );
 
     const displayName = product.brand
@@ -197,7 +200,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
         product.nutritionPer100g,
         parseFloat(quantity) || 0,
         unit,
-        product.servingQuantity || 100
+        product.servingQuantity || 100,
       )
     : null;
 
@@ -254,9 +257,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
                 </div>
                 <div className="scan-line"></div>
               </div>
-              <p className="scan-instruction">
-                Point your camera at a barcode
-              </p>
+              <p className="scan-instruction">Point your camera at a barcode</p>
             </>
           )}
 
