@@ -1,0 +1,144 @@
+/* ============================================
+   PROGRESS RING STYLES
+   Professional Design System
+   ============================================ */
+
+.hf-progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hf-progress-ring__svg {
+  transform: rotate(0deg);
+}
+
+/* ============================================
+   CIRCLES
+   ============================================ */
+
+.hf-progress-ring__background {
+  stroke: var(--surface-overlay);
+}
+
+.hf-progress-ring__progress {
+  stroke: var(--color-primary-500);
+  transition: stroke var(--duration-normal) var(--ease-out);
+}
+
+.hf-progress-ring__glow {
+  stroke: var(--color-primary-500);
+  opacity: 0.2;
+  filter: blur(8px);
+}
+
+/* ============================================
+   COLOR VARIANTS
+   ============================================ */
+
+.hf-progress-ring--primary .hf-progress-ring__progress {
+  stroke: var(--color-primary-500);
+}
+
+.hf-progress-ring--primary .hf-progress-ring__glow {
+  stroke: var(--color-primary-500);
+}
+
+.hf-progress-ring--success .hf-progress-ring__progress {
+  stroke: var(--color-success);
+}
+
+.hf-progress-ring--success .hf-progress-ring__glow {
+  stroke: var(--color-success);
+}
+
+.hf-progress-ring--warning .hf-progress-ring__progress {
+  stroke: var(--color-warning);
+}
+
+.hf-progress-ring--warning .hf-progress-ring__glow {
+  stroke: var(--color-warning);
+}
+
+.hf-progress-ring--danger .hf-progress-ring__progress {
+  stroke: var(--color-error);
+}
+
+.hf-progress-ring--danger .hf-progress-ring__glow {
+  stroke: var(--color-error);
+}
+
+.hf-progress-ring--info .hf-progress-ring__progress {
+  stroke: var(--color-info);
+}
+
+.hf-progress-ring--info .hf-progress-ring__glow {
+  stroke: var(--color-info);
+}
+
+/* ============================================
+   CENTER CONTENT
+   ============================================ */
+
+.hf-progress-ring__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hf-progress-ring__value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: var(--leading-none);
+}
+
+.hf-progress-ring__label {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-top: var(--space-1);
+}
+
+/* Size variations for value text */
+.hf-progress-ring[style*="width: 80px"] .hf-progress-ring__value,
+.hf-progress-ring[style*="width: 64px"] .hf-progress-ring__value {
+  font-size: var(--text-lg);
+}
+
+.hf-progress-ring[style*="width: 160px"] .hf-progress-ring__value,
+.hf-progress-ring[style*="width: 180px"] .hf-progress-ring__value {
+  font-size: var(--text-4xl);
+}
+
+/* ============================================
+   MINI VARIANT
+   ============================================ */
+
+.hf-progress-ring--mini {
+  display: inline-flex;
+}
+
+.hf-progress-ring--mini .hf-progress-ring__glow {
+  display: none;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hf-progress-ring__progress,
+  .hf-progress-ring__glow {
+    transition: none;
+  }
+}

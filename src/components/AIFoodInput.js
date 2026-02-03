@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { estimateNutrition } from "../services/aiNutritionService";
+import devLog from "../utils/devLog";
 import "./AIFoodInput.css";
 
 function AIFoodInput({
@@ -46,13 +47,12 @@ function AIFoodInput({
       const fullDescription = `${quantity} ${unit} of ${foodDescription}`;
       const nutrition = await estimateNutrition(fullDescription);
 
-      // Scale nutrition by quantity if needed
-      const quantityNum = parseFloat(quantity);
+      // Round nutrition values (quantity is already included in the AI prompt)
       const scaledNutrition = {
-        calories: Math.round(nutrition.calories * quantityNum),
-        protein: Math.round(nutrition.protein * quantityNum * 10) / 10,
-        carbs: Math.round(nutrition.carbs * quantityNum * 10) / 10,
-        fat: Math.round(nutrition.fat * quantityNum * 10) / 10,
+        calories: Math.round(nutrition.calories),
+        protein: Math.round(nutrition.protein * 10) / 10,
+        carbs: Math.round(nutrition.carbs * 10) / 10,
+        fat: Math.round(nutrition.fat * 10) / 10,
       };
 
       setEstimatedNutrition(scaledNutrition);
@@ -60,7 +60,7 @@ function AIFoodInput({
       setError(
         err.message || "Failed to estimate nutrition. Please try again.",
       );
-      console.error("Estimation error:", err);
+      devLog.error("Estimation error:", err);
     } finally {
       setLoading(false);
     }

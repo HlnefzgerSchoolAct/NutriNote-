@@ -132,11 +132,21 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
   if (!isOpen) return null;
 
   return (
-    <div className="settings-overlay" onClick={onClose}>
+    <div
+      className="settings-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-title"
+    >
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
-          <h2>Settings</h2>
-          <button className="settings-close" onClick={onClose}>
+          <h2 id="settings-title">Settings</h2>
+          <button
+            className="settings-close"
+            onClick={onClose}
+            aria-label="Close settings"
+          >
             <svg
               width="24"
               height="24"

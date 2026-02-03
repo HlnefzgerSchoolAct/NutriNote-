@@ -4,6 +4,8 @@
  * Backend uses Hack Club's AI proxy (https://ai.hackclub.com)
  */
 
+import devLog from "../utils/devLog";
+
 const CACHE_KEY = "hawkfuel_ai_nutrition_cache";
 const API_ENDPOINT = "/api/estimate-nutrition";
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
@@ -18,7 +20,7 @@ function getCache() {
     const cache = localStorage.getItem(CACHE_KEY);
     return cache ? JSON.parse(cache) : {};
   } catch (error) {
-    console.warn("Failed to read nutrition cache:", error);
+    devLog.warn("Failed to read nutrition cache:", error);
     return {};
   }
 }
@@ -31,7 +33,7 @@ function saveCache(cache) {
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
   } catch (error) {
-    console.warn("Failed to save nutrition cache:", error);
+    devLog.warn("Failed to save nutrition cache:", error);
   }
 }
 
@@ -55,7 +57,7 @@ export function getCachedNutrition(foodDescription) {
   const entry = cache[key];
 
   if (entry && isCacheValid(entry.timestamp)) {
-    console.log("📦 Using cached nutrition data for:", foodDescription);
+    devLog.log("📦 Using cached nutrition data for:", foodDescription);
     return entry.data;
   }
 
@@ -81,7 +83,7 @@ function cacheNutrition(foodDescription, nutritionData) {
     timestamp: Date.now(),
   };
   saveCache(cache);
-  console.log("💾 Cached nutrition data for:", foodDescription);
+  devLog.log("💾 Cached nutrition data for:", foodDescription);
 }
 
 /**
@@ -153,7 +155,7 @@ export async function estimateNutrition(foodDescription) {
     return cached;
   }
 
-  console.log("🤖 Estimating nutrition for:", trimmedDescription);
+  devLog.log("🤖 Estimating nutrition for:", trimmedDescription);
 
   // Create AbortController for timeout
   const controller = new AbortController();
@@ -182,7 +184,7 @@ export async function estimateNutrition(foodDescription) {
     // Handle errors
     if (!response.ok) {
       const errorMessage = formatErrorMessage(data, response.status);
-      console.error("API Error:", {
+      devLog.error("API Error:", {
         status: response.status,
         code: data?.code,
         error: data?.error,
@@ -209,7 +211,7 @@ export async function estimateNutrition(foodDescription) {
       );
     }
 
-    console.log(`✅ Nutrition estimated in ${responseTime}ms:`, nutrition);
+    devLog.log(`✅ Nutrition estimated in ${responseTime}ms:`, nutrition);
 
     // Cache the result
     cacheNutrition(trimmedDescription, nutrition);
@@ -220,13 +222,13 @@ export async function estimateNutrition(foodDescription) {
 
     // Handle abort/timeout
     if (error.name === "AbortError") {
-      console.error("Request timeout");
+      devLog.error("Request timeout");
       throw new Error("⏳ Request timed out. Please try again.");
     }
 
     // Handle network errors
     if (error.message === "Failed to fetch" || error.name === "TypeError") {
-      console.error("Network error:", error);
+      devLog.error("Network error:", error);
       throw new Error(
         "📡 Network error. Is the server running? Check your connection.",
       );
@@ -243,9 +245,9 @@ export async function estimateNutrition(foodDescription) {
 export function clearNutritionCache() {
   try {
     localStorage.removeItem(CACHE_KEY);
-    console.log("🗑️ Nutrition cache cleared");
+    devLog.log("🗑️ Nutrition cache cleared");
   } catch (error) {
-    console.warn("Failed to clear nutrition cache:", error);
+    devLog.warn("Failed to clear nutrition cache:", error);
   }
 }
 

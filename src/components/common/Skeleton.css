@@ -1,0 +1,176 @@
+/* ============================================
+   SKELETON LOADING STYLES
+   Professional Design System
+   ============================================ */
+
+.hf-skeleton {
+  background: var(--surface-overlay);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================
+   VARIANTS
+   ============================================ */
+
+.hf-skeleton--text {
+  height: 16px;
+  border-radius: var(--radius-sm);
+}
+
+.hf-skeleton--rectangular {
+  border-radius: var(--radius-lg);
+}
+
+.hf-skeleton--circular {
+  border-radius: var(--radius-full);
+}
+
+.hf-skeleton--rounded {
+  border-radius: var(--radius-xl);
+}
+
+/* ============================================
+   ANIMATION
+   ============================================ */
+
+.hf-skeleton--animated::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hf-skeleton--animated::after {
+    animation: none;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+/* ============================================
+   SKELETON TEXT
+   ============================================ */
+
+.hf-skeleton-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.hf-skeleton-text--sm {
+  gap: var(--space-1-5);
+}
+
+.hf-skeleton-text--md {
+  gap: var(--space-2);
+}
+
+.hf-skeleton-text--lg {
+  gap: var(--space-3);
+}
+
+/* ============================================
+   SKELETON CARD
+   ============================================ */
+
+.hf-skeleton-card {
+  background: var(--surface-elevated);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+
+.hf-skeleton-card__content {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ============================================
+   SKELETON LIST ITEM
+   ============================================ */
+
+.hf-skeleton-list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+}
+
+.hf-skeleton-list-item__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* ============================================
+   SKELETON STATS
+   ============================================ */
+
+.hf-skeleton-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: var(--space-4) 0;
+}
+
+.hf-skeleton-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ============================================
+   SKELETON PAGE
+   ============================================ */
+
+.hf-skeleton-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  animation: skeleton-fade-in 0.3s ease-out;
+}
+
+.hf-skeleton-page--list {
+  align-items: stretch;
+}
+
+.hf-skeleton-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@keyframes skeleton-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

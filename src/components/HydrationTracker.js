@@ -4,6 +4,7 @@ import {
   addWaterCup,
   removeWaterCup,
 } from "../utils/localStorage";
+import devLog from "../utils/devLog";
 import "./HydrationTracker.css";
 
 // SVG Icons
@@ -213,7 +214,7 @@ function saveWaterLog(ounces) {
   try {
     localStorage.setItem("hawkfuel_water_log", JSON.stringify(ounces));
   } catch (error) {
-    console.error("Error saving water log:", error);
+    devLog.error("Error saving water log:", error);
   }
 }
 

@@ -1,0 +1,224 @@
+/* ============================================
+   CARD COMPONENT STYLES
+   Professional Design System
+   ============================================ */
+
+.hf-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-elevated);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: var(--transition-normal);
+}
+
+/* ============================================
+   SIZE VARIANTS
+   ============================================ */
+
+.hf-card--sm .hf-card__body {
+  padding: var(--card-padding-sm);
+}
+
+.hf-card--md .hf-card__body {
+  padding: var(--card-padding-md);
+}
+
+.hf-card--lg .hf-card__body {
+  padding: var(--card-padding-lg);
+}
+
+.hf-card--no-padding .hf-card__body {
+  padding: 0;
+}
+
+/* ============================================
+   STYLE VARIANTS
+   ============================================ */
+
+/* Default */
+.hf-card--default {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Elevated */
+.hf-card--elevated {
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-md);
+  border: none;
+}
+
+/* Outlined */
+.hf-card--outlined {
+  background: transparent;
+  border: 1px solid var(--border-default);
+}
+
+/* Interactive */
+.hf-card--interactive {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+
+.hf-card--interactive:hover {
+  border-color: var(--border-default);
+  background: var(--surface-overlay);
+}
+
+/* Glass */
+.hf-card--glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   INTERACTIVE STATES
+   ============================================ */
+
+.hf-card--hoverable {
+  cursor: pointer;
+}
+
+.hf-card--hoverable:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.hf-card--pressable {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hf-card--pressable:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* ============================================
+   CARD SECTIONS
+   ============================================ */
+
+.hf-card__header {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.hf-card--sm .hf-card__header {
+  padding: var(--space-3);
+}
+
+.hf-card--lg .hf-card__header {
+  padding: var(--space-5);
+}
+
+.hf-card__body {
+  flex: 1;
+}
+
+.hf-card__content {
+  padding: var(--space-4);
+}
+
+.hf-card__footer {
+  padding: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  background: var(--surface-base);
+}
+
+.hf-card--sm .hf-card__footer {
+  padding: var(--space-3);
+}
+
+.hf-card--lg .hf-card__footer {
+  padding: var(--space-5);
+}
+
+/* ============================================
+   SPECIAL CARD TYPES
+   ============================================ */
+
+/* Stats Card */
+.hf-card--stat {
+  text-align: center;
+}
+
+.hf-card--stat .hf-card__value {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: var(--leading-none);
+}
+
+.hf-card--stat .hf-card__label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-1);
+}
+
+/* Highlight Card */
+.hf-card--highlight {
+  border-left: 4px solid var(--color-primary-500);
+}
+
+.hf-card--highlight-success {
+  border-left: 4px solid var(--color-success);
+}
+
+.hf-card--highlight-warning {
+  border-left: 4px solid var(--color-warning);
+}
+
+.hf-card--highlight-error {
+  border-left: 4px solid var(--color-error);
+}
+
+/* ============================================
+   CARD LIST
+   ============================================ */
+
+.hf-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.hf-card-list--compact {
+  gap: var(--space-2);
+}
+
+.hf-card-list--spacious {
+  gap: var(--space-4);
+}
+
+/* ============================================
+   CARD GRID
+   ============================================ */
+
+.hf-card-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.hf-card-grid--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.hf-card-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.hf-card-grid--auto {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+@media (max-width: 640px) {
+  .hf-card-grid--2,
+  .hf-card-grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

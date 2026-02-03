@@ -1,0 +1,77 @@
+/* ============================================
+   ERROR BOUNDARY STYLES
+   Fallback UI for JavaScript errors
+   ============================================ */
+
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--surface-base);
+}
+
+.error-boundary__content {
+  max-width: 400px;
+  text-align: center;
+  padding: var(--space-8);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
+}
+
+.error-boundary__icon {
+  font-size: 64px;
+  margin-bottom: var(--space-4);
+}
+
+.error-boundary__title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.error-boundary__message {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-6) 0;
+}
+
+.error-boundary__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.error-boundary__btn {
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border: none;
+}
+
+.error-boundary__btn--primary {
+  background: var(--color-primary-500);
+  color: white;
+}
+
+.error-boundary__btn--primary:hover {
+  background: var(--color-primary-600);
+}
+
+.error-boundary__btn--secondary {
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+}
+
+.error-boundary__btn--secondary:hover {
+  background: var(--surface-raised);
+}

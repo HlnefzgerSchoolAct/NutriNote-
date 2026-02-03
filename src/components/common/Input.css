@@ -1,0 +1,293 @@
+/* ============================================
+   INPUT COMPONENT STYLES
+   Professional Design System
+   ============================================ */
+
+.hf-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+  width: 100%;
+}
+
+/* ============================================
+   LABEL
+   ============================================ */
+
+.hf-input__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.hf-input-container--focused .hf-input__label {
+  color: var(--color-primary-500);
+}
+
+.hf-input-container--error .hf-input__label {
+  color: var(--color-error);
+}
+
+.hf-input__required {
+  color: var(--color-error);
+}
+
+/* ============================================
+   INPUT WRAPPER
+   ============================================ */
+
+.hf-input__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--surface-overlay);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-fast);
+  overflow: hidden;
+}
+
+.hf-input-container--focused .hf-input__wrapper {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.hf-input-container--error .hf-input__wrapper {
+  border-color: var(--color-error);
+}
+
+.hf-input-container--error.hf-input-container--focused .hf-input__wrapper {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.hf-input-container--success .hf-input__wrapper {
+  border-color: var(--color-success);
+}
+
+.hf-input-container--success.hf-input-container--focused .hf-input__wrapper {
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+
+.hf-input-container--disabled .hf-input__wrapper {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--surface-raised);
+}
+
+/* ============================================
+   INPUT ELEMENT
+   ============================================ */
+
+.hf-input {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  caret-color: var(--color-primary-500);
+}
+
+.hf-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.hf-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Textarea specific */
+textarea.hf-input {
+  resize: vertical;
+  min-height: 80px;
+  line-height: var(--leading-relaxed);
+}
+
+/* Hide spinners for number input */
+.hf-input[type="number"]::-webkit-outer-spin-button,
+.hf-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.hf-input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ============================================
+   SIZE VARIANTS
+   ============================================ */
+
+.hf-input-container--sm .hf-input__wrapper {
+  border-radius: var(--radius-md);
+}
+
+.hf-input-container--sm .hf-input {
+  height: calc(var(--input-height-sm) - 2px);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.hf-input-container--md .hf-input {
+  height: calc(var(--input-height-md) - 2px);
+  padding: 0 var(--space-3);
+  font-size: var(--text-base);
+}
+
+.hf-input-container--lg .hf-input__wrapper {
+  border-radius: var(--radius-xl);
+}
+
+.hf-input-container--lg .hf-input {
+  height: calc(var(--input-height-lg) - 2px);
+  padding: 0 var(--space-4);
+  font-size: var(--text-lg);
+}
+
+/* Textarea padding */
+textarea.hf-input {
+  padding: var(--space-3);
+  height: auto;
+}
+
+/* ============================================
+   ICONS & ADDONS
+   ============================================ */
+
+.hf-input__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.hf-input__icon--left {
+  padding-left: var(--space-3);
+}
+
+.hf-input__icon--right {
+  padding-right: var(--space-3);
+}
+
+.hf-input__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.hf-input-container--focused .hf-input__icon {
+  color: var(--color-primary-500);
+}
+
+/* Prefix/Suffix */
+.hf-input__prefix,
+.hf-input__suffix {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background: var(--surface-raised);
+  border-right: 1px solid var(--border-default);
+  white-space: nowrap;
+}
+
+.hf-input__suffix {
+  border-right: none;
+  border-left: 1px solid var(--border-default);
+}
+
+/* With icons, adjust padding */
+.hf-input__icon--left + .hf-input {
+  padding-left: var(--space-1);
+}
+
+/* ============================================
+   PASSWORD TOGGLE
+   ============================================ */
+
+.hf-input__password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.hf-input__password-toggle:hover {
+  color: var(--text-primary);
+}
+
+/* ============================================
+   STATUS INDICATORS
+   ============================================ */
+
+.hf-input__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--space-3);
+  flex-shrink: 0;
+}
+
+.hf-input__status--error {
+  color: var(--color-error);
+}
+
+.hf-input__status--success {
+  color: var(--color-success);
+}
+
+/* ============================================
+   HELPER TEXT
+   ============================================ */
+
+.hf-input__helper {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  line-height: var(--leading-normal);
+}
+
+.hf-input__helper--error {
+  color: var(--color-error);
+}
+
+/* ============================================
+   INPUT GROUP
+   ============================================ */
+
+.hf-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.hf-input-row {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.hf-input-row--2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.hf-input-row--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 640px) {
+  .hf-input-row--2,
+  .hf-input-row--3 {
+    grid-template-columns: 1fr;
+  }
+}

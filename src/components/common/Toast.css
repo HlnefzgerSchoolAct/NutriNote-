@@ -1,0 +1,217 @@
+/* ============================================
+   TOAST NOTIFICATION STYLES
+   Professional Design System
+   ============================================ */
+
+/* Override default toaster styles */
+.hf-toast {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ============================================
+   TOAST CONTENT
+   ============================================ */
+
+.hf-toast-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  min-width: 280px;
+  max-width: 420px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================
+   TYPE VARIANTS
+   ============================================ */
+
+.hf-toast-content--success {
+  border-color: var(--color-success);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+}
+
+.hf-toast-content--success .hf-toast-content__icon {
+  color: var(--color-success);
+}
+
+.hf-toast-content--error {
+  border-color: var(--color-error);
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+}
+
+.hf-toast-content--error .hf-toast-content__icon {
+  color: var(--color-error);
+}
+
+.hf-toast-content--warning {
+  border-color: var(--color-warning);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+}
+
+.hf-toast-content--warning .hf-toast-content__icon {
+  color: var(--color-warning);
+}
+
+.hf-toast-content--info {
+  border-color: var(--color-info);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+}
+
+.hf-toast-content--info .hf-toast-content__icon {
+  color: var(--color-info);
+}
+
+.hf-toast-content--undo {
+  border-color: var(--color-primary-500);
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+  flex-wrap: wrap;
+}
+
+.hf-toast-content--loading {
+  border-color: var(--border-default);
+}
+
+/* ============================================
+   CHILD ELEMENTS
+   ============================================ */
+
+.hf-toast-content__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hf-toast-content__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+}
+
+.hf-toast-content__title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+}
+
+.hf-toast-content__message {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}
+
+/* Dismiss button */
+.hf-toast-content__dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+
+.hf-toast-content__dismiss:hover {
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+}
+
+/* Undo button */
+.hf-toast-content__undo-btn {
+  padding: var(--space-1-5) var(--space-3);
+  background: var(--color-primary-500);
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.hf-toast-content__undo-btn:hover {
+  background: var(--color-primary-400);
+}
+
+/* Progress bar for undo */
+.hf-toast-content__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--surface-overlay);
+}
+
+.hf-toast-content__progress-bar {
+  height: 100%;
+  background: var(--color-primary-500);
+}
+
+/* Loading spinner */
+.hf-toast-content__spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--color-primary-500);
+  border-radius: var(--radius-full);
+  animation: toast-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes toast-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+  .hf-toast-content {
+    min-width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    margin: 0 16px;
+  }
+}

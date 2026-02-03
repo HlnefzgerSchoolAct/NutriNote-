@@ -1,14 +1,17 @@
 /* ========================================
    Hawk Fuel - Fitness Tracker
-   Main Stylesheet
+   Main Stylesheet v2.0
 ======================================== */
 
-/* ===== CSS Variables ===== */
+/* Import Design System Tokens */
+@import "./styles/tokens.css";
+
+/* ===== Legacy CSS Variables (for backwards compatibility) ===== */
 :root {
-  /* Primary Brand Colors */
-  --primary-orange: #ff6b35;
-  --primary-orange-light: #ff8555;
-  --primary-orange-dark: #e55a2b;
+  /* Primary Brand Colors - Now using design tokens */
+  --primary-orange: var(--color-primary-500);
+  --primary-orange-light: var(--color-primary-400);
+  --primary-orange-dark: var(--color-primary-600);
 
   /* Semantic Colors */
   --success: #27ae60;

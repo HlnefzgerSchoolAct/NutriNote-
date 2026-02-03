@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
+import { X, Flashlight, FlashlightOff, Camera, RefreshCw } from "lucide-react";
 import { lookupBarcode, calculateNutrition } from "../services/barcodeService";
+import devLog from "../utils/devLog";
 import "./BarcodeScanner.css";
 
 function BarcodeScanner({ onAddFood, onSwitchToAI }) {
-  const [mode, setMode] = useState("scan"); // scan, serving, manual
+  const [mode, setMode] = useState("idle"); // idle, scan, serving, manual
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [product, setProduct] = useState(null);
@@ -12,15 +14,17 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
   const [quantity, setQuantity] = useState("1");
   const [unit, setUnit] = useState("serving");
   const [cameraError, setCameraError] = useState("");
-  const [isScanning, setIsScanning] = useState(false);
+  const [, setIsScanning] = useState(false); // Only setter is used
+  const [torchOn, setTorchOn] = useState(false);
+  const [torchSupported, setTorchSupported] = useState(false);
 
   const videoRef = useRef(null);
   const codeReaderRef = useRef(null);
   const streamRef = useRef(null);
+  const videoTrackRef = useRef(null);
 
   const stopCamera = useCallback(() => {
     if (codeReaderRef.current) {
-      // Reset the reader
       codeReaderRef.current = null;
     }
     if (streamRef.current) {
@@ -30,12 +34,14 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
+    videoTrackRef.current = null;
     setIsScanning(false);
+    setTorchOn(false);
+    setTorchSupported(false);
   }, []);
 
   const handleBarcodeDetected = useCallback(
     async (barcode) => {
-      // Stop scanning
       stopCamera();
       setLoading(true);
       setError("");
@@ -45,14 +51,13 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
         setProduct(productData);
         setMode("serving");
 
-        // Set default quantity based on serving size
         if (productData.servingQuantity) {
           setQuantity("1");
           setUnit("serving");
         }
       } catch (err) {
         setError(err.message);
-        setProduct({ barcode, name: barcode }); // Store barcode for AI fallback
+        setProduct({ barcode, name: barcode });
       } finally {
         setLoading(false);
       }
@@ -63,14 +68,48 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
   const startCamera = useCallback(async () => {
     setCameraError("");
     setError("");
+    setMode("scan");
 
     try {
-      // Request camera access
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" }, // Prefer rear camera
-      });
+      // Enhanced camera constraints for better focus and quality
+      const constraints = {
+        video: {
+          facingMode: { ideal: "environment" },
+          width: { ideal: 1920, min: 1280 },
+          height: { ideal: 1080, min: 720 },
+        },
+      };
 
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       streamRef.current = stream;
+
+      // Get video track for torch control
+      const videoTrack = stream.getVideoTracks()[0];
+      videoTrackRef.current = videoTrack;
+
+      // Check for torch support and apply continuous autofocus
+      if (videoTrack.getCapabilities) {
+        const capabilities = videoTrack.getCapabilities();
+
+        // Check torch support
+        if (capabilities.torch) {
+          setTorchSupported(true);
+        }
+
+        // Apply continuous autofocus if supported
+        if (
+          capabilities.focusMode &&
+          capabilities.focusMode.includes("continuous")
+        ) {
+          try {
+            await videoTrack.applyConstraints({
+              advanced: [{ focusMode: "continuous" }],
+            });
+          } catch (e) {
+            devLog.log("Continuous autofocus not applied:", e);
+          }
+        }
+      }
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -83,35 +122,43 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
 
       // Start continuous scanning
       codeReaderRef.current.decodeFromVideoDevice(
-        undefined, // Use default device
+        undefined,
         videoRef.current,
         (result, err) => {
           if (result) {
             handleBarcodeDetected(result.getText());
           }
-          // Ignore errors during scanning (they're continuous)
         },
       );
     } catch (err) {
-      console.error("Camera access error:", err);
+      devLog.error("Camera access error:", err);
 
       if (err.name === "NotAllowedError") {
         setCameraError(
-          "Camera access denied. Please allow camera access in your browser settings, or enter the barcode manually below.",
+          "Camera access denied. Please allow camera access in your browser settings.",
         );
       } else if (err.name === "NotFoundError") {
-        setCameraError(
-          "No camera found. Please enter the barcode manually below.",
-        );
+        setCameraError("No camera found on this device.");
       } else {
-        setCameraError(
-          "Could not access camera. Please enter the barcode manually below.",
-        );
+        setCameraError("Could not access camera. Please try again.");
       }
 
       setMode("manual");
     }
   }, [handleBarcodeDetected]);
+
+  const toggleTorch = async () => {
+    if (!videoTrackRef.current || !torchSupported) return;
+
+    try {
+      await videoTrackRef.current.applyConstraints({
+        advanced: [{ torch: !torchOn }],
+      });
+      setTorchOn(!torchOn);
+    } catch (e) {
+      devLog.warn("Torch control failed:", e);
+    }
+  };
 
   // Cleanup camera on unmount
   useEffect(() => {
@@ -119,18 +166,6 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       stopCamera();
     };
   }, [stopCamera]);
-
-  // Start camera when component mounts in scan mode
-  useEffect(() => {
-    if (mode === "scan" && !isScanning && !cameraError) {
-      startCamera();
-    }
-    return () => {
-      if (mode !== "scan") {
-        stopCamera();
-      }
-    };
-  }, [mode, isScanning, cameraError, startCamera, stopCamera]);
 
   const handleManualSubmit = async (e) => {
     e.preventDefault();
@@ -173,7 +208,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
 
     // Reset state
     setProduct(null);
-    setMode("scan");
+    setMode("idle");
     setQuantity("1");
     setUnit("serving");
     setError("");
@@ -181,7 +216,8 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
   };
 
   const handleTryAIEstimator = () => {
-    // Pass product name to AI estimator if available
+    stopCamera();
+    setMode("idle");
     if (onSwitchToAI) {
       onSwitchToAI(product?.name || "");
     }
@@ -190,8 +226,18 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
   const handleScanAgain = () => {
     setProduct(null);
     setError("");
-    setMode("scan");
     setManualBarcode("");
+    startCamera();
+  };
+
+  const handleClose = () => {
+    stopCamera();
+    setMode("idle");
+    setProduct(null);
+    setError("");
+  };
+
+  const handleOpenScanner = () => {
     startCamera();
   };
 
@@ -206,9 +252,121 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
 
   return (
     <div className="barcode-scanner">
-      <h3 className="scanner-title">
-        <span>📷</span> Barcode Scanner
-      </h3>
+      {/* Idle State - Launch Button */}
+      {mode === "idle" && (
+        <div className="scanner-idle">
+          <button
+            className="launch-scanner-btn"
+            onClick={handleOpenScanner}
+            aria-label="Open barcode scanner"
+          >
+            <Camera size={24} />
+            <span>Scan Barcode</span>
+          </button>
+          <div className="manual-entry-inline">
+            <span>or</span>
+            <form onSubmit={handleManualSubmit} className="inline-form">
+              <input
+                type="text"
+                value={manualBarcode}
+                onChange={(e) => setManualBarcode(e.target.value)}
+                placeholder="Enter barcode number"
+                className="inline-input"
+                pattern="[0-9]*"
+                inputMode="numeric"
+                aria-label="Barcode number"
+              />
+              <button type="submit" className="inline-submit">
+                Look Up
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen Scanner Modal */}
+      {mode === "scan" && (
+        <div className="scanner-fullscreen-modal">
+          {/* Close Button */}
+          <button
+            className="scanner-close-btn"
+            onClick={handleClose}
+            aria-label="Close scanner"
+          >
+            <X size={24} />
+          </button>
+
+          {/* Camera Controls */}
+          <div className="scanner-controls">
+            {torchSupported && (
+              <button
+                className="scanner-control-btn"
+                onClick={toggleTorch}
+                aria-label={
+                  torchOn ? "Turn off flashlight" : "Turn on flashlight"
+                }
+              >
+                {torchOn ? (
+                  <FlashlightOff size={20} />
+                ) : (
+                  <Flashlight size={20} />
+                )}
+              </button>
+            )}
+          </div>
+
+          {cameraError ? (
+            <div className="fullscreen-error">
+              <p>{cameraError}</p>
+              <button className="error-close-btn" onClick={handleClose}>
+                Close
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* Fullscreen Camera Preview */}
+              <div className="fullscreen-camera">
+                <video
+                  ref={videoRef}
+                  className="fullscreen-video"
+                  playsInline
+                  muted
+                />
+                <div className="fullscreen-scan-target">
+                  <div className="scan-corner top-left"></div>
+                  <div className="scan-corner top-right"></div>
+                  <div className="scan-corner bottom-left"></div>
+                  <div className="scan-corner bottom-right"></div>
+                </div>
+                <div className="scan-line-animated"></div>
+              </div>
+
+              {/* Instructions */}
+              <div className="scanner-instructions">
+                <p>Align barcode within the frame</p>
+              </div>
+
+              {/* Manual Entry */}
+              <div className="fullscreen-manual">
+                <form onSubmit={handleManualSubmit} className="fullscreen-form">
+                  <input
+                    type="text"
+                    value={manualBarcode}
+                    onChange={(e) => setManualBarcode(e.target.value)}
+                    placeholder="Or enter barcode manually"
+                    className="fullscreen-input"
+                    pattern="[0-9]*"
+                    inputMode="numeric"
+                  />
+                  <button type="submit" className="fullscreen-submit">
+                    Go
+                  </button>
+                </form>
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Loading State */}
       {loading && (
@@ -219,7 +377,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       )}
 
       {/* Error State with AI Fallback */}
-      {error && !loading && (
+      {error && !loading && mode !== "scan" && (
         <div className="scanner-error-container">
           <div className="scanner-error">{error}</div>
           <div className="scanner-fallback-buttons">
@@ -227,57 +385,8 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
               🤖 Try AI Estimator Instead
             </button>
             <button className="scanner-retry-btn" onClick={handleScanAgain}>
-              📷 Scan Again
+              <RefreshCw size={16} /> Scan Again
             </button>
-          </div>
-        </div>
-      )}
-
-      {/* Scan Mode */}
-      {mode === "scan" && !loading && !error && (
-        <div className="scanner-camera-container">
-          {cameraError ? (
-            <div className="camera-error-message">
-              <p>{cameraError}</p>
-            </div>
-          ) : (
-            <>
-              <div className="camera-preview">
-                <video
-                  ref={videoRef}
-                  className="camera-video"
-                  playsInline
-                  muted
-                />
-                <div className="scan-target">
-                  <div className="scan-target-corner top-left"></div>
-                  <div className="scan-target-corner top-right"></div>
-                  <div className="scan-target-corner bottom-left"></div>
-                  <div className="scan-target-corner bottom-right"></div>
-                </div>
-                <div className="scan-line"></div>
-              </div>
-              <p className="scan-instruction">Point your camera at a barcode</p>
-            </>
-          )}
-
-          {/* Manual Entry Fallback */}
-          <div className="manual-entry-section">
-            <p className="manual-entry-label">Or enter barcode manually:</p>
-            <form onSubmit={handleManualSubmit} className="manual-entry-form">
-              <input
-                type="text"
-                value={manualBarcode}
-                onChange={(e) => setManualBarcode(e.target.value)}
-                placeholder="Enter barcode number"
-                className="manual-input"
-                pattern="[0-9]*"
-                inputMode="numeric"
-              />
-              <button type="submit" className="manual-submit-btn">
-                Look Up
-              </button>
-            </form>
           </div>
         </div>
       )}

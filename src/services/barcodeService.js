@@ -3,6 +3,8 @@
  * Handles barcode lookup via Open Food Facts API with caching
  */
 
+import devLog from "../utils/devLog";
+
 const CACHE_KEY = "hawkfuel_barcode_cache";
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 const API_BASE = "https://world.openfoodfacts.org/api/v0/product";
@@ -16,7 +18,7 @@ function getCache() {
     const cache = localStorage.getItem(CACHE_KEY);
     return cache ? JSON.parse(cache) : {};
   } catch (error) {
-    console.warn("Failed to read barcode cache:", error);
+    devLog.warn("Failed to read barcode cache:", error);
     return {};
   }
 }
@@ -29,7 +31,7 @@ function saveCache(cache) {
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
   } catch (error) {
-    console.warn("Failed to save barcode cache:", error);
+    devLog.warn("Failed to save barcode cache:", error);
   }
 }
 
@@ -53,7 +55,7 @@ export function getCachedBarcode(barcode) {
   const entry = cache[key];
 
   if (entry && isCacheValid(entry.timestamp)) {
-    console.log("📦 Using cached barcode data for:", barcode);
+    devLog.log("📦 Using cached barcode data for:", barcode);
     return entry.data;
   }
 
@@ -79,7 +81,7 @@ function cacheBarcode(barcode, productData) {
     timestamp: Date.now(),
   };
   saveCache(cache);
-  console.log("💾 Cached barcode data for:", barcode);
+  devLog.log("💾 Cached barcode data for:", barcode);
 }
 
 /**
@@ -118,7 +120,7 @@ export async function lookupBarcode(barcode) {
     return { ...cached, cached: true };
   }
 
-  console.log("🔍 Looking up barcode:", cleanBarcode);
+  devLog.log("🔍 Looking up barcode:", cleanBarcode);
 
   try {
     const response = await fetch(`${API_BASE}/${cleanBarcode}.json`, {
@@ -175,7 +177,7 @@ export async function lookupBarcode(barcode) {
 
     return { ...productData, cached: false };
   } catch (error) {
-    console.error("Barcode lookup error:", error);
+    devLog.error("Barcode lookup error:", error);
 
     if (error.message === "PRODUCT_NOT_FOUND") {
       throw new Error(
@@ -244,9 +246,9 @@ export function calculateNutrition(
 export function clearBarcodeCache() {
   try {
     localStorage.removeItem(CACHE_KEY);
-    console.log("🗑️ Barcode cache cleared");
+    devLog.log("🗑️ Barcode cache cleared");
   } catch (error) {
-    console.warn("Failed to clear barcode cache:", error);
+    devLog.warn("Failed to clear barcode cache:", error);
   }
 }
 

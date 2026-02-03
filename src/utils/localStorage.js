@@ -1,3 +1,5 @@
+import devLog from "./devLog";
+
 const STORAGE_KEYS = {
   USER_PROFILE: "hawkfuel_user_profile",
   DAILY_TARGET: "hawkfuel_daily_target",
@@ -18,8 +20,60 @@ const STORAGE_KEYS = {
 const saveToLocalStorage = (key, data) => {
   try {
     localStorage.setItem(key, JSON.stringify(data));
+    return true;
   } catch (error) {
-    console.error("Error saving to localStorage:", error);
+    // Handle quota exceeded error
+    if (error.name === "QuotaExceededError" || error.code === 22) {
+      devLog.warn("localStorage quota exceeded, attempting cleanup...");
+
+      // Try to clear old cached data to make room
+      try {
+        // Remove old AI nutrition cache entries (oldest first)
+        const aiCacheKey = "hawkfuel_ai_nutrition_cache";
+        const aiCache = localStorage.getItem(aiCacheKey);
+        if (aiCache) {
+          const parsed = JSON.parse(aiCache);
+          const entries = Object.entries(parsed);
+          // Keep only the 50 most recent entries
+          if (entries.length > 50) {
+            const sorted = entries.sort(
+              (a, b) => b[1].timestamp - a[1].timestamp,
+            );
+            const trimmed = Object.fromEntries(sorted.slice(0, 50));
+            localStorage.setItem(aiCacheKey, JSON.stringify(trimmed));
+          }
+        }
+
+        // Remove barcode cache if still too full
+        const barcodeCacheKey = "hawkfuel_barcode_cache";
+        const barcodeCache = localStorage.getItem(barcodeCacheKey);
+        if (barcodeCache) {
+          const parsed = JSON.parse(barcodeCache);
+          const entries = Object.entries(parsed);
+          if (entries.length > 50) {
+            const sorted = entries.sort(
+              (a, b) => b[1].timestamp - a[1].timestamp,
+            );
+            const trimmed = Object.fromEntries(sorted.slice(0, 50));
+            localStorage.setItem(barcodeCacheKey, JSON.stringify(trimmed));
+          }
+        }
+
+        // Retry the save
+        localStorage.setItem(key, JSON.stringify(data));
+        devLog.log("localStorage save succeeded after cleanup");
+        return true;
+      } catch (retryError) {
+        devLog.error(
+          "localStorage save failed even after cleanup:",
+          retryError,
+        );
+        return false;
+      }
+    }
+
+    devLog.error("Error saving to localStorage:", error);
+    return false;
   }
 };
 
@@ -31,7 +85,7 @@ const loadFromLocalStorage = (key, defaultValue = null) => {
     }
     return JSON.parse(jsonString);
   } catch (error) {
-    console.error("Error loading from localStorage:", error);
+    devLog.error("Error loading from localStorage:", error);
     return defaultValue;
   }
 };
@@ -40,7 +94,7 @@ const clearLocalStorage = (key) => {
   try {
     localStorage.removeItem(key);
   } catch (error) {
-    console.error("Error clearing localStorage:", error);
+    devLog.error("Error clearing localStorage:", error);
   }
 };
 

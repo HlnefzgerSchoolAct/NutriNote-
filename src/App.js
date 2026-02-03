@@ -1,11 +1,35 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import "./App.css";
+
+// Design System
+import { ToastProvider } from "./components/common";
+
+// Components
+import BottomNavBar from "./components/BottomNavBar";
+import DesktopSidebar from "./components/DesktopSidebar";
+import ErrorBoundary from "./components/ErrorBoundary";
+import "./components/ErrorBoundary.css";
+import FloatingActionButton from "./components/FloatingActionButton";
 import UserProfile from "./components/UserProfile";
 import ActivityTracker from "./components/ActivityTracker";
 import Results from "./components/Results";
-import Dashboard from "./components/Dashboard";
 import WelcomeScreen from "./components/WelcomeScreen";
-import Settings from "./components/Settings";
+
+// Pages
+import HomePage from "./pages/HomePage";
+import LogPage from "./pages/LogPage";
+import HistoryPage from "./pages/HistoryPage";
+import ProfilePage from "./pages/ProfilePage";
+
+// Utils
 import {
   saveUserProfile,
   loadUserProfile,
@@ -16,17 +40,269 @@ import {
   saveMacroGoals,
   calculateMacroGrams,
   getMacroPresets,
+  updateStreak,
+  getTotalCaloriesEaten,
+  getTotalCaloriesBurned,
+  loadStreakData,
 } from "./utils/localStorage";
+
+// Page transition wrapper with animations
+function PageWrapper({ children }) {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        className="page-wrapper"
+        key={location.pathname}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{
+          duration: 0.25,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+// Main app content with routing
+function AppContent({
+  userProfile,
+  setUserProfile,
+  dailyTarget,
+  setDailyTarget,
+  macroGoals,
+  setMacroGoals,
+  isOnboarding,
+  setIsOnboarding,
+  onboardingStep,
+  setOnboardingStep,
+  activities,
+  setActivities,
+}) {
+  const location = useLocation();
+  const [caloriesData, setCaloriesData] = useState({ eaten: 0, burned: 0 });
+  const [streakDays, setStreakDays] = useState(0);
+
+  // Load calories and streak data
+  useEffect(() => {
+    const loadDashboardData = () => {
+      setCaloriesData({
+        eaten: getTotalCaloriesEaten(),
+        burned: getTotalCaloriesBurned(),
+      });
+
+      const streak = loadStreakData();
+      setStreakDays(streak.currentStreak || 0);
+    };
+
+    loadDashboardData();
+
+    // Refresh data when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadDashboardData();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [location.pathname]);
+
+  const handleProfileUpdate = (profile) => {
+    setUserProfile(profile);
+    saveUserProfile(profile);
+  };
+
+  const handleOnboardingComplete = () => {
+    setMacroGoals(loadMacroGoals());
+    setOnboardingStep(1);
+  };
+
+  const handleProfileSubmit = (profile) => {
+    setUserProfile(profile);
+    saveUserProfile(profile);
+    setOnboardingStep(2);
+  };
+
+  const handleActivitiesSubmit = (activityData) => {
+    setActivities(activityData);
+    setOnboardingStep(3);
+  };
+
+  const handleResultsComplete = (target) => {
+    setDailyTarget(target);
+    saveDailyTarget(target);
+
+    // Calculate and save macro goals based on calories
+    const savedMacros = loadMacroGoals();
+    const preset = savedMacros.preset
+      ? getMacroPresets()[
+          Object.keys(getMacroPresets()).find(
+            (k) => getMacroPresets()[k].name === savedMacros.preset,
+          )
+        ]
+      : getMacroPresets().balanced;
+    const newMacros = calculateMacroGrams(
+      target,
+      preset || getMacroPresets().balanced,
+    );
+    saveMacroGoals(newMacros);
+    setMacroGoals(newMacros);
+
+    setIsOnboarding(false);
+    setOnboardingStep(4);
+  };
+
+  const resetApp = () => {
+    setOnboardingStep(1);
+    setIsOnboarding(true);
+    setUserProfile(null);
+    setActivities([]);
+    setDailyTarget(2000);
+  };
+
+  // Show onboarding flow
+  if (isOnboarding) {
+    return (
+      <div className="onboarding-container">
+        {onboardingStep === 0 && (
+          <WelcomeScreen
+            onComplete={handleOnboardingComplete}
+            dailyTarget={dailyTarget}
+          />
+        )}
+
+        {onboardingStep > 0 && onboardingStep < 4 && (
+          <>
+            <header className="app-header compact">
+              <h1>Hawk Fuel</h1>
+              <p>Setup</p>
+            </header>
+
+            <div className="container">
+              <div className="progress-bar">
+                <div className={`step ${onboardingStep >= 1 ? "active" : ""}`}>
+                  <span className="step-number">1</span>
+                  <span className="step-label">Profile</span>
+                </div>
+                <div className={`step ${onboardingStep >= 2 ? "active" : ""}`}>
+                  <span className="step-number">2</span>
+                  <span className="step-label">Activities</span>
+                </div>
+                <div className={`step ${onboardingStep >= 3 ? "active" : ""}`}>
+                  <span className="step-number">3</span>
+                  <span className="step-label">Results</span>
+                </div>
+              </div>
+
+              {onboardingStep === 1 && (
+                <UserProfile onSubmit={handleProfileSubmit} />
+              )}
+
+              {onboardingStep === 2 && userProfile && (
+                <ActivityTracker
+                  userProfile={userProfile}
+                  onSubmit={handleActivitiesSubmit}
+                  onBack={() => setOnboardingStep(1)}
+                />
+              )}
+
+              {onboardingStep === 3 && userProfile && (
+                <Results
+                  userProfile={userProfile}
+                  activities={activities}
+                  onComplete={handleResultsComplete}
+                  onReset={resetApp}
+                />
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Main app with routing
+  const showNavigation = !location.pathname.startsWith("/onboarding");
+
+  return (
+    <>
+      <DesktopSidebar
+        dailyTarget={dailyTarget}
+        caloriesEaten={caloriesData.eaten}
+        caloriesBurned={caloriesData.burned}
+        streakDays={streakDays}
+      />
+
+      <main className="app-main">
+        <PageWrapper>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  userProfile={userProfile}
+                  dailyTarget={dailyTarget}
+                  macroGoals={macroGoals}
+                />
+              }
+            />
+            <Route
+              path="/log"
+              element={
+                <LogPage userProfile={userProfile} dailyTarget={dailyTarget} />
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <HistoryPage
+                  userProfile={userProfile}
+                  dailyTarget={dailyTarget}
+                />
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProfilePage
+                  userProfile={userProfile}
+                  dailyTarget={dailyTarget}
+                  onProfileUpdate={handleProfileUpdate}
+                />
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </PageWrapper>
+      </main>
+
+      {showNavigation && (
+        <>
+          <FloatingActionButton />
+          <BottomNavBar />
+        </>
+      )}
+    </>
+  );
+}
 
 function App() {
   const [userProfile, setUserProfile] = useState(null);
   const [activities, setActivities] = useState([]);
   const [dailyTarget, setDailyTarget] = useState(2000);
-  const [currentStep, setCurrentStep] = useState(0); // Start at 0 for onboarding
   const [isStandalone, setIsStandalone] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const [macroGoals, setMacroGoals] = useState(loadMacroGoals());
+  const [isOnboarding, setIsOnboarding] = useState(true);
+  const [onboardingStep, setOnboardingStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const standalone =
@@ -51,65 +327,31 @@ function App() {
       setUserProfile(savedProfile);
       setDailyTarget(savedTarget);
       setMacroGoals(loadMacroGoals());
-      setCurrentStep(4); // Skip to dashboard
+      setIsOnboarding(false);
+      setOnboardingStep(4);
+      // Update streak on app load
+      updateStreak();
     } else if (!completedOnboarding) {
-      setCurrentStep(0); // Show onboarding
+      setIsOnboarding(true);
+      setOnboardingStep(0);
     } else {
-      setCurrentStep(1); // Start profile setup
+      setIsOnboarding(true);
+      setOnboardingStep(1);
     }
+
+    setIsLoading(false);
   }, []);
 
-  const handleOnboardingComplete = () => {
-    setMacroGoals(loadMacroGoals());
-    setCurrentStep(1);
-  };
-
-  const handleProfileSubmit = (profile) => {
-    setUserProfile(profile);
-    saveUserProfile(profile);
-    setCurrentStep(2);
-  };
-
-  const handleActivitiesSubmit = (activityData) => {
-    setActivities(activityData);
-    setCurrentStep(3);
-  };
-
-  const handleResultsComplete = (target) => {
-    setDailyTarget(target);
-    saveDailyTarget(target);
-
-    // Calculate and save macro goals based on calories
-    const savedMacros = loadMacroGoals();
-    const preset = savedMacros.preset
-      ? getMacroPresets()[
-          Object.keys(getMacroPresets()).find(
-            (k) => getMacroPresets()[k].name === savedMacros.preset,
-          )
-        ]
-      : getMacroPresets().balanced;
-    const newMacros = calculateMacroGrams(
-      target,
-      preset || getMacroPresets().balanced,
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="App loading">
+        <div className="loading-spinner" />
+      </div>
     );
-    saveMacroGoals(newMacros);
-    setMacroGoals(newMacros);
+  }
 
-    setCurrentStep(4);
-  };
-
-  const handleProfileUpdate = (profile) => {
-    setUserProfile(profile);
-    saveUserProfile(profile);
-  };
-
-  const resetApp = () => {
-    setCurrentStep(1);
-    setUserProfile(null);
-    setActivities([]);
-    setDailyTarget(2000);
-  };
-
+  // Show install prompt on mobile (not standalone)
   if (!isStandalone && isMobile) {
     return (
       <div className="App">
@@ -179,125 +421,27 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {/* Settings Modal */}
-      <Settings
-        isOpen={showSettings}
-        onClose={() => setShowSettings(false)}
-        onProfileUpdate={handleProfileUpdate}
-        dailyTarget={dailyTarget}
-      />
-
-      {/* Step 0: Onboarding */}
-      {currentStep === 0 && (
-        <WelcomeScreen
-          onComplete={handleOnboardingComplete}
-          dailyTarget={dailyTarget}
-        />
-      )}
-
-      {currentStep > 0 && (
-        <>
-          <header className="app-header">
-            <h1>Hawk Fuel</h1>
-            <p>Your Personal Calorie & Activity Tracker</p>
-            {currentStep === 4 && (
-              <button
-                className="settings-btn"
-                onClick={() => setShowSettings(true)}
-                aria-label="Settings"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <circle cx="12" cy="12" r="3"></circle>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
-              </button>
-            )}
-          </header>
-
-          <div className="container">
-            {currentStep <= 3 && (
-              <div className="progress-bar">
-                <div className={`step ${currentStep >= 1 ? "active" : ""}`}>
-                  <span className="step-number">1</span>
-                  <span className="step-label">Profile</span>
-                </div>
-                <div className={`step ${currentStep >= 2 ? "active" : ""}`}>
-                  <span className="step-number">2</span>
-                  <span className="step-label">Activities</span>
-                </div>
-                <div className={`step ${currentStep >= 3 ? "active" : ""}`}>
-                  <span className="step-number">3</span>
-                  <span className="step-label">Results</span>
-                </div>
-              </div>
-            )}
-
-            {currentStep === 1 && (
-              <UserProfile onSubmit={handleProfileSubmit} />
-            )}
-
-            {currentStep === 2 && userProfile && (
-              <ActivityTracker
-                userProfile={userProfile}
-                onSubmit={handleActivitiesSubmit}
-                onBack={() => setCurrentStep(1)}
-              />
-            )}
-
-            {currentStep === 3 && userProfile && (
-              <Results
-                userProfile={userProfile}
-                activities={activities}
-                onComplete={handleResultsComplete}
-                onReset={resetApp}
-              />
-            )}
-
-            {currentStep === 4 && userProfile && (
-              <Dashboard
-                userProfile={userProfile}
-                dailyTarget={dailyTarget}
-                macroGoals={macroGoals}
-                onReset={resetApp}
-                onOpenSettings={() => setShowSettings(true)}
-              />
-            )}
-          </div>
-
-          <footer className="app-footer">
-            <div className="footer-content">
-              <p className="footer-brand">
-                Hawk Fuel © 2026 - Built with React
-              </p>
-
-              <div className="footer-disclaimers">
-                <p className="privacy-notice">
-                  <strong>Privacy:</strong> All your data is stored locally on
-                  your device only. We don't collect, send, or share any of your
-                  personal information.
-                </p>
-
-                <p className="educational-disclaimer">
-                  <strong>Educational Tool:</strong> This app is designed for
-                  educational purposes to help you learn about nutrition and
-                  fitness. It is not medical advice. Please consult a healthcare
-                  professional, parent, or school nurse for personalized health
-                  guidance.
-                </p>
-              </div>
-            </div>
-          </footer>
-        </>
-      )}
-    </div>
+    <BrowserRouter>
+      <ErrorBoundary>
+        <div className="App">
+          <ToastProvider />
+          <AppContent
+            userProfile={userProfile}
+            setUserProfile={setUserProfile}
+            dailyTarget={dailyTarget}
+            setDailyTarget={setDailyTarget}
+            macroGoals={macroGoals}
+            setMacroGoals={setMacroGoals}
+            isOnboarding={isOnboarding}
+            setIsOnboarding={setIsOnboarding}
+            onboardingStep={onboardingStep}
+            setOnboardingStep={setOnboardingStep}
+            activities={activities}
+            setActivities={setActivities}
+          />
+        </div>
+      </ErrorBoundary>
+    </BrowserRouter>
   );
 }
 

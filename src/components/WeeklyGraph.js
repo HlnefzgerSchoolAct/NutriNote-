@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { getWeeklyGraphData } from "../utils/localStorage";
+import devLog from "../utils/devLog";
 import "./WeeklyGraph.css";
 
 ChartJS.register(
@@ -23,7 +24,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 );
 
 function WeeklyGraph({ onRefresh }) {
@@ -63,7 +64,7 @@ function WeeklyGraph({ onRefresh }) {
         setExporting(false);
       });
     } catch (error) {
-      console.error("Error exporting graph:", error);
+      devLog.error("Error exporting graph:", error);
       alert("Failed to export graph. Please try again.");
       setExporting(false);
     }
@@ -207,4 +208,3 @@ function WeeklyGraph({ onRefresh }) {
 }
 
 export default WeeklyGraph;
-

@@ -1,0 +1,500 @@
+/* ============================================
+   HOME PAGE STYLES
+   Professional Design System v2.0
+   ============================================ */
+
+.home-page {
+  padding: var(--space-4);
+  padding-bottom: calc(var(--bottom-nav-height) + var(--space-8));
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   STREAK BANNER
+   ============================================ */
+
+.streak-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.15) 0%,
+    rgba(234, 88, 12, 0.08) 100%
+  );
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-4);
+}
+
+.streak-banner__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--color-primary-500);
+  border-radius: var(--radius-lg);
+  color: white;
+}
+
+.streak-banner__content {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.streak-banner__count {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--color-primary-500);
+}
+
+.streak-banner__label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.streak-banner__sparkle {
+  color: var(--color-primary-400);
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* ============================================
+   PROGRESS HERO
+   ============================================ */
+
+.progress-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) 0;
+  margin-bottom: var(--space-4);
+}
+
+.progress-hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-hero__value {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.progress-hero__value.over {
+  color: var(--color-error);
+}
+
+.progress-hero__label {
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-top: var(--space-1);
+}
+
+/* ============================================
+   QUICK STATS
+   ============================================ */
+
+.quick-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding: var(--space-3) var(--space-5);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-subtle);
+}
+
+.quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.quick-stat__value {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.quick-stat__label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.quick-stat__divider {
+  width: 1px;
+  height: 32px;
+  background: var(--border-default);
+}
+
+/* ============================================
+   SECTION STYLING
+   ============================================ */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.section-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.section-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: transparent;
+  border: none;
+  color: var(--color-primary-500);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: var(--radius-md);
+}
+
+.section-link:hover {
+  background: var(--color-primary-500);
+  background: rgba(249, 115, 22, 0.1);
+}
+
+/* ============================================
+   MACROS CARD
+   ============================================ */
+
+.macros-card {
+  margin-bottom: var(--space-4);
+}
+
+.macros-card .hf-card__body {
+  padding: var(--space-5);
+}
+
+.macros-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ============================================
+   SUMMARY SECTION
+   ============================================ */
+
+.summary-section {
+  margin-bottom: var(--space-4);
+}
+
+.summary-section .section-title {
+  margin-bottom: var(--space-4);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.summary-card .hf-card__body {
+  padding: var(--space-4);
+  width: 100%;
+}
+
+.summary-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+}
+
+.summary-card__icon--target {
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--color-primary-500);
+}
+
+.summary-card__icon--eaten {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--color-success);
+}
+
+.summary-card__icon--burned {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--color-info);
+}
+
+.summary-card__icon--remaining {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--color-success);
+}
+
+.summary-card__icon--over {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-error);
+}
+
+.summary-card__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-card__value {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.summary-card__label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.summary-card--over .summary-card__value {
+  color: var(--color-error);
+}
+
+/* ============================================
+   RECENT FOODS CARD
+   ============================================ */
+
+.recent-foods-card {
+  margin-bottom: var(--space-4);
+}
+
+.recent-foods-card .hf-card__body {
+  padding: var(--space-5);
+}
+
+.recent-foods-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.recent-food-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3);
+  background: var(--surface-overlay);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-fast);
+}
+
+.recent-food-item:hover {
+  background: var(--surface-raised);
+}
+
+.recent-food-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+  flex: 1;
+}
+
+.recent-food-item__name {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-food-item__meta {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.recent-food-item__calories {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-primary-500);
+  white-space: nowrap;
+  margin-left: var(--space-3);
+}
+
+/* ============================================
+   GUIDANCE CARD
+   ============================================ */
+
+.guidance-card {
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.guidance-card p {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.guidance-card strong {
+  font-weight: var(--font-semibold);
+}
+
+.guidance-card--success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: var(--color-success);
+}
+
+.guidance-card--success strong {
+  color: var(--color-success);
+}
+
+.guidance-card--warning {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--color-error);
+}
+
+.guidance-card--warning strong {
+  color: var(--color-error);
+}
+
+.guidance-card--perfect {
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.15) 0%,
+    rgba(234, 88, 12, 0.08) 100%
+  );
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  color: var(--color-primary-500);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 380px) {
+  .quick-stats {
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .quick-stat__value {
+    font-size: var(--text-base);
+  }
+
+  .summary-grid {
+    gap: var(--space-2);
+  }
+}
+
+/* ============================================
+   DESKTOP LAYOUT
+   Two-column grid for better use of space
+   ============================================ */
+
+@media (min-width: 1024px) {
+  .home-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items: start;
+  }
+
+  /* Streak banner spans both columns */
+  .streak-banner {
+    grid-column: 1 / -1;
+  }
+
+  /* Progress hero in left column */
+  .progress-hero {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  /* Quick stats in right column */
+  .quick-stats {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  /* Macro section spans both columns */
+  .macro-section {
+    grid-column: 1 / -1;
+  }
+
+  /* Summary grid spans both columns */
+  .summary-grid {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Recent section in left column */
+  .recent-section {
+    grid-column: 1;
+  }
+
+  /* Guidance card in right column */
+  .guidance-card {
+    grid-column: 2;
+  }
+
+  /* Add hover effects for cards */
+  .summary-card {
+    transition: all var(--transition-normal);
+  }
+
+  .summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .recent-food-item {
+    transition: all var(--transition-fast);
+  }
+
+  .recent-food-item:hover {
+    transform: translateX(4px);
+  }
+}
