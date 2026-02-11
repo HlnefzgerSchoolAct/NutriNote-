@@ -7,7 +7,7 @@
   padding: var(--space-4);
   padding-top: var(--space-6);
   padding-bottom: calc(var(--bottom-nav-height) + var(--space-8));
-  max-width: 600px;
+  max-width: var(--content-max-lg);
   margin: 0 auto;
 }
 
@@ -39,17 +39,22 @@
   font-weight: var(--font-medium);
   cursor: pointer;
   transition: var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .log-tab:hover {
   color: var(--text-primary);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
+}
+
+.log-tab:active {
+  transform: scale(0.97);
 }
 
 .log-tab.active {
-  background: var(--color-primary-500);
-  color: white;
-  box-shadow: var(--shadow-sm);
+  background: var(--primary);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-glow-sm);
 }
 
 /* ============================================
@@ -77,6 +82,7 @@
   font-weight: var(--font-medium);
   cursor: pointer;
   transition: var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mode-btn:hover {
@@ -84,14 +90,14 @@
   color: var(--text-primary);
 }
 
+.mode-btn:active {
+  transform: scale(0.97);
+}
+
 .mode-btn.active {
-  background: linear-gradient(
-    135deg,
-    rgba(249, 115, 22, 0.15) 0%,
-    rgba(234, 88, 12, 0.08) 100%
-  );
-  border-color: var(--color-primary-500);
-  color: var(--color-primary-500);
+  background: var(--gradient-primary-subtle);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* ============================================
@@ -116,15 +122,15 @@
   margin-bottom: var(--space-4);
 }
 
-.quick-add-card .hf-card__body,
-.search-card .hf-card__body,
-.food-log-card .hf-card__body,
-.exercise-log-card .hf-card__body {
+.quick-add-card .ds-card__body,
+.search-card .ds-card__body,
+.food-log-card .ds-card__body,
+.exercise-log-card .ds-card__body {
   padding: 0;
 }
 
-.manual-entry-card .hf-card__body,
-.exercise-input-card .hf-card__body {
+.manual-entry-card .ds-card__body,
+.exercise-input-card .ds-card__body {
   padding: var(--space-4);
 }
 
@@ -146,7 +152,7 @@
 }
 
 .section-header-btn:hover {
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
 }
 
 .section-header-content {
@@ -164,7 +170,7 @@
   min-width: 24px;
   height: 24px;
   padding: 0 var(--space-2);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: var(--font-medium);
@@ -216,12 +222,12 @@
 
 .quick-tab:hover {
   color: var(--text-primary);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
 }
 
 .quick-tab.active {
   color: var(--color-primary-500);
-  background: rgba(249, 115, 22, 0.1);
+  background: var(--bg-primary-subtle);
 }
 
 /* ============================================
@@ -240,7 +246,7 @@
   justify-content: space-between;
   width: 100%;
   padding: var(--space-3);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border: none;
   border-radius: var(--radius-lg);
   cursor: pointer;
@@ -361,7 +367,7 @@
 }
 
 .search-result-item:hover {
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
 }
 
 .result-info {
@@ -424,7 +430,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border-radius: var(--radius-lg);
 }
 
@@ -470,7 +476,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border-top: 1px solid var(--border-subtle);
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
@@ -507,7 +513,7 @@
 .form-input {
   flex: 1;
   padding: var(--space-3);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   color: var(--text-primary);
@@ -518,7 +524,7 @@
 
 .form-input:focus {
   border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+  box-shadow: var(--shadow-focus);
 }
 
 .form-input::placeholder {
@@ -558,7 +564,7 @@
    EMPTY STATE OVERRIDE
    ============================================ */
 
-.log-page .hf-empty-state.compact {
+.log-page .ds-empty-state.compact {
   min-height: 200px;
   padding: var(--space-6) var(--space-4);
 }

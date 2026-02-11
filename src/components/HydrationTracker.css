@@ -1,10 +1,10 @@
 /* ========================================
-   Hawk Fuel - Hydration Tracker Component
+   NutriNote+ - Hydration Tracker Component
    Water Intake Tracking
 ======================================== */
 
 .hydration-tracker {
-  background: var(--bg-card);
+  background: var(--surface-elevated);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   margin-bottom: var(--space-xl);
@@ -92,7 +92,7 @@
 }
 
 .water-icon {
-  font-size: 28px;
+  font-size: var(--text-3xl);
   margin-bottom: var(--space-xs);
 }
 
@@ -172,8 +172,8 @@
 
 .btn-add-water {
   padding: var(--space-md);
-  background: var(--gradient-orange);
-  color: white;
+  background: var(--gradient-blue);
+  color: var(--text-inverse);
   border: none;
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
@@ -186,14 +186,19 @@
 .btn-add-water:hover {
   background: linear-gradient(
     135deg,
-    var(--primary-orange-light) 0%,
-    var(--primary-orange-dark) 100%
+    var(--primary-blue-light) 0%,
+    var(--primary-blue-dark) 100%
   );
   box-shadow: var(--shadow-lg);
 }
 
 .btn-add-water:active {
   transform: scale(0.98);
+}
+
+.btn-add-water:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 .status-message.success::before {
@@ -254,21 +259,21 @@
 }
 
 .btn-water-add {
-  background: var(--gradient-orange);
-  color: white;
+  background: var(--gradient-blue);
+  color: var(--text-inverse);
   box-shadow:
     var(--shadow-sm),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    inset 0 1px 0 var(--overlay-light-10);
 }
 
 .btn-water-add:hover:not(:disabled) {
   background: linear-gradient(
     135deg,
-    var(--primary-orange-light) 0%,
-    var(--primary-orange) 100%
+    var(--primary-blue-light) 0%,
+    var(--primary-blue) 100%
   );
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md), var(--shadow-glow-orange);
+  box-shadow: var(--shadow-md), var(--shadow-glow-blue);
 }
 
 .btn-water-add:active:not(:disabled) {
@@ -294,7 +299,7 @@
 
 .btn-water-add .icon,
 .btn-water-remove .icon {
-  font-size: 18px;
+  font-size: var(--text-lg);
 }
 
 /* ===== Quick Add ===== */
@@ -321,7 +326,7 @@
 .quick-water-btn:hover {
   background: var(--info);
   border-color: var(--info);
-  color: white;
+  color: var(--text-inverse);
   transform: translateY(-1px);
 }
 
@@ -364,7 +369,7 @@
 }
 
 .streak-icon {
-  font-size: 24px;
+  font-size: var(--text-2xl);
 }
 
 .streak-info {

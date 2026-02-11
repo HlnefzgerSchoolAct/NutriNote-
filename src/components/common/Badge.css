@@ -1,0 +1,284 @@
+/* ============================================
+   M3 BADGE COMPONENT
+   Notification badges with number/dot variants
+   ============================================ */
+
+/* Badge container - wraps the element that has the badge */
+.m3-badge-container {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ============================================
+   BADGE
+   ============================================ */
+
+.m3-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  font-family: var(--m3-font-plain, inherit);
+  font-weight: 500;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ============================================
+   BADGE VARIANTS
+   ============================================ */
+
+/* Dot badge - small indicator */
+.m3-badge--dot {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 3px;
+  top: 0;
+  right: 0;
+  transform: translate(25%, -25%);
+}
+
+/* Small badge with number */
+.m3-badge--small {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  font-size: 0.6875rem;
+  line-height: 16px;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* Standard badge */
+.m3-badge--standard {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  font-size: 0.6875rem;
+  line-height: 16px;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* Large badge */
+.m3-badge--large {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  line-height: 24px;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* ============================================
+   BADGE POSITIONS
+   ============================================ */
+
+.m3-badge--top-left {
+  top: 0;
+  right: auto;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.m3-badge--top-right {
+  top: 0;
+  right: 0;
+  left: auto;
+  transform: translate(50%, -50%);
+}
+
+.m3-badge--bottom-left {
+  top: auto;
+  bottom: 0;
+  right: auto;
+  left: 0;
+  transform: translate(-50%, 50%);
+}
+
+.m3-badge--bottom-right {
+  top: auto;
+  bottom: 0;
+  right: 0;
+  left: auto;
+  transform: translate(50%, 50%);
+}
+
+/* Inline position - badge appears after content */
+.m3-badge--inline {
+  position: static;
+  transform: none;
+  margin-left: 8px;
+}
+
+/* ============================================
+   BADGE COLORS
+   ============================================ */
+
+.m3-badge--primary {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.m3-badge--secondary {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+
+.m3-badge--success {
+  background-color: var(--m3-success);
+  color: var(--m3-on-success);
+}
+
+.m3-badge--warning {
+  background-color: var(--m3-warning);
+  color: var(--m3-on-warning);
+}
+
+.m3-badge--error {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+
+/* Surface variant - subtle */
+.m3-badge--surface {
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* ============================================
+   BADGE WITH BORDER
+   ============================================ */
+
+.m3-badge--bordered {
+  box-shadow: 0 0 0 2px var(--md-sys-color-surface);
+}
+
+/* ============================================
+   BADGE PULSE ANIMATION
+   ============================================ */
+
+.m3-badge--pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: inherit;
+  animation: m3-badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes m3-badge-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+/* ============================================
+   BADGE ENTRANCE ANIMATION
+   ============================================ */
+
+@keyframes m3-badge-enter {
+  from {
+    opacity: 0;
+    transform: translate(var(--badge-tx, 50%), var(--badge-ty, -50%)) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translate(var(--badge-tx, 50%), var(--badge-ty, -50%)) scale(1);
+  }
+}
+
+.m3-badge--animate {
+  animation: m3-badge-enter 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.m3-badge--top-right.m3-badge--animate {
+  --badge-tx: 50%;
+  --badge-ty: -50%;
+}
+
+.m3-badge--top-left.m3-badge--animate {
+  --badge-tx: -50%;
+  --badge-ty: -50%;
+}
+
+/* ============================================
+   BADGE NUMBER ANIMATION
+   ============================================ */
+
+@keyframes m3-badge-bump {
+  0%,
+  100% {
+    transform: translate(var(--badge-tx, 50%), var(--badge-ty, -50%)) scale(1);
+  }
+  50% {
+    transform: translate(var(--badge-tx, 50%), var(--badge-ty, -50%))
+      scale(1.15);
+  }
+}
+
+.m3-badge--bump {
+  animation: m3-badge-bump 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ============================================
+   INVISIBLE BADGE (for hiding)
+   ============================================ */
+
+.m3-badge--invisible {
+  opacity: 0;
+  transform: translate(50%, -50%) scale(0);
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+}
+
+/* ============================================
+   STANDALONE BADGE (not positioned)
+   ============================================ */
+
+.m3-badge--standalone {
+  position: static;
+  display: inline-flex;
+  transform: none;
+}
+
+/* ============================================
+   MAX VALUE
+   ============================================ */
+
+.m3-badge__max {
+  font-size: inherit;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-badge--pulse::after,
+  .m3-badge--animate,
+  .m3-badge--bump {
+    animation: none;
+  }
+
+  .m3-badge--invisible {
+    transition: none;
+  }
+}

@@ -1,0 +1,193 @@
+/* ============================================
+   NUTRIENT WARNINGS STYLES
+   Alert System for Micronutrient Thresholds
+   ============================================ */
+
+.ds-nutrient-warnings {
+  position: fixed;
+  bottom: calc(var(--nav-height, 72px) + var(--space-4));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - var(--space-8));
+  max-width: 400px;
+  background: var(--surface-elevated);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  z-index: var(--z-dropdown);
+}
+
+.ds-nutrient-warnings__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-warning-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.ds-nutrient-warnings__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-warning);
+}
+
+.ds-nutrient-warnings__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.ds-nutrient-warnings__close:hover {
+  background: var(--surface-tertiary);
+  color: var(--text-primary);
+}
+
+.ds-nutrient-warnings__list {
+  padding: var(--space-2);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Individual Warning Item */
+.ds-nutrient-warning {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-2);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.ds-nutrient-warning:last-child {
+  margin-bottom: 0;
+}
+
+.ds-nutrient-warning:hover {
+  background: var(--surface-tertiary);
+}
+
+.ds-nutrient-warning__content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.ds-nutrient-warning__icon {
+  font-size: var(--text-base);
+}
+
+.ds-nutrient-warning__message {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.ds-nutrient-warning__dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.ds-nutrient-warning:hover .ds-nutrient-warning__dismiss {
+  opacity: 1;
+}
+
+.ds-nutrient-warning__dismiss:hover {
+  background: var(--overlay-light-10);
+  color: var(--text-primary);
+}
+
+/* Warning Levels */
+.ds-nutrient-warning--high {
+  border-left: 3px solid var(--color-error);
+}
+
+.ds-nutrient-warning--warning {
+  border-left: 3px solid var(--color-warning);
+}
+
+.ds-nutrient-warning--low {
+  border-left: 3px solid var(--color-info, #3b82f6);
+}
+
+/* ============================================
+   NUTRIENT TIP
+   ============================================ */
+
+.ds-nutrient-tip {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--bg-primary-subtle);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-info, #3b82f6);
+}
+
+.ds-nutrient-tip__icon {
+  color: var(--color-info, #3b82f6);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ds-nutrient-tip__content {
+  flex: 1;
+}
+
+.ds-nutrient-tip__message {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-2) 0;
+  line-height: 1.5;
+}
+
+.ds-nutrient-tip__foods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.ds-nutrient-tip__food {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+  .ds-nutrient-warnings {
+    width: calc(100% - var(--space-4));
+    bottom: calc(var(--nav-height, 72px) + var(--space-2));
+  }
+}

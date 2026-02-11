@@ -1,0 +1,292 @@
+/**
+ * Skeleton Loading Styles
+ */
+
+/* Base skeleton */
+.skeleton {
+  display: inline-block;
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.skeleton--circle {
+  border-radius: 50%;
+}
+
+.skeleton--text {
+  border-radius: 4px;
+}
+
+.skeleton--animate {
+  background: linear-gradient(
+    90deg,
+    var(--md-sys-color-surface-variant, #e7e0ec) 0%,
+    var(--md-sys-color-surface, #ffffff) 50%,
+    var(--md-sys-color-surface-variant, #e7e0ec) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+/* Skeleton text container */
+.skeleton-text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Food Entry Skeleton ===== */
+.skeleton-food-entry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.skeleton-food-entry__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skeleton-food-entry__calories {
+  flex-shrink: 0;
+}
+
+/* ===== Food Log Skeleton ===== */
+.skeleton-food-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.skeleton-meal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  margin-bottom: 8px;
+}
+
+/* ===== Dashboard Card Skeleton ===== */
+.skeleton-dashboard-card {
+  padding: 16px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 16px;
+}
+
+.skeleton-dashboard-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.skeleton-dashboard-card__body {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.skeleton-dashboard-card__ring {
+  flex-shrink: 0;
+}
+
+.skeleton-dashboard-card__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ===== Macro Bar Skeleton ===== */
+.skeleton-macro-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.skeleton-macro-bar__label {
+  width: 60px;
+}
+
+.skeleton-macro-bar .skeleton--rectangle {
+  flex: 1;
+  border-radius: 4px;
+}
+
+.skeleton-macro-bar__value {
+  width: 40px;
+  text-align: right;
+}
+
+/* ===== Macro Summary Skeleton ===== */
+.skeleton-macro-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 16px;
+}
+
+/* ===== History Day Skeleton ===== */
+.skeleton-history-day {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.skeleton-history-day__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 48px;
+}
+
+.skeleton-history-day__progress {
+  flex: 1;
+}
+
+.skeleton-history-day__progress .skeleton--rectangle {
+  border-radius: 4px;
+}
+
+.skeleton-history-day__calories {
+  flex-shrink: 0;
+}
+
+/* ===== Weekly Graph Skeleton ===== */
+.skeleton-weekly-graph {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  height: 150px;
+  padding: 16px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 16px;
+}
+
+.skeleton-weekly-graph__bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.skeleton-weekly-graph__bar .skeleton--rectangle {
+  border-radius: 4px 4px 0 0;
+}
+
+/* ===== Recipe Card Skeleton ===== */
+.skeleton-recipe-card {
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.skeleton-recipe-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.skeleton-recipe-card__meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* ===== Page Skeleton ===== */
+.skeleton-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.skeleton-page--dashboard {
+  gap: 24px;
+}
+
+/* ===== Shimmer Overlay ===== */
+.shimmer-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ===== Dark mode ===== */
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    background: var(--md-sys-color-surface-variant, #49454f);
+  }
+
+  .skeleton--animate {
+    background: linear-gradient(
+      90deg,
+      var(--md-sys-color-surface-variant, #49454f) 0%,
+      var(--md-sys-color-surface, #2b2930) 50%,
+      var(--md-sys-color-surface-variant, #49454f) 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  .skeleton-dashboard-card,
+  .skeleton-macro-summary,
+  .skeleton-history-day,
+  .skeleton-weekly-graph,
+  .skeleton-recipe-card {
+    background: var(--md-sys-color-surface, #1c1b1f);
+  }
+
+  .shimmer-overlay {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+  }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton--animate {
+    animation: none;
+    background: var(--md-sys-color-surface-variant, #e7e0ec);
+  }
+
+  .shimmer-overlay {
+    display: none;
+  }
+}

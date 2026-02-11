@@ -1,0 +1,414 @@
+/* ============================================
+   MATERIAL DESIGN 3 TOKEN SYSTEM
+   HawkFuel - Dynamic Color & State System
+   ============================================ */
+
+:root {
+  /* ========================================
+     M3 COLOR SCHEME
+     Primary: Blue | Secondary: Teal | Tertiary: Amber
+     ======================================== */
+
+  /* Primary Tonal Palette */
+  --md-sys-color-primary: #1a73e8;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #d3e3fd;
+  --md-sys-color-on-primary-container: #041e49;
+  --md-sys-color-primary-fixed: #d3e3fd;
+  --md-sys-color-primary-fixed-dim: #a8c7fa;
+  --md-sys-color-on-primary-fixed: #041e49;
+  --md-sys-color-on-primary-fixed-variant: #185abc;
+
+  /* Secondary Tonal Palette */
+  --md-sys-color-secondary: #00897b;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #a7f3ec;
+  --md-sys-color-on-secondary-container: #00201e;
+  --md-sys-color-secondary-fixed: #a7f3ec;
+  --md-sys-color-secondary-fixed-dim: #4dd9cb;
+  --md-sys-color-on-secondary-fixed: #00201e;
+  --md-sys-color-on-secondary-fixed-variant: #006a60;
+
+  /* Tertiary Tonal Palette (Accent) */
+  --md-sys-color-tertiary: #f9a825;
+  --md-sys-color-on-tertiary: #3e2800;
+  --md-sys-color-tertiary-container: #ffddb1;
+  --md-sys-color-on-tertiary-container: #291800;
+  --md-sys-color-tertiary-fixed: #ffddb1;
+  --md-sys-color-tertiary-fixed-dim: #f9c355;
+  --md-sys-color-on-tertiary-fixed: #291800;
+  --md-sys-color-on-tertiary-fixed-variant: #6d4200;
+
+  /* Error Colors */
+  --md-sys-color-error: #dc362e;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+
+  /* Surface Colors - M3 Tonal System */
+  --md-sys-color-surface: #fefbff;
+  --md-sys-color-on-surface: #1c1b1f;
+  --md-sys-color-surface-variant: #e1e2ec;
+  --md-sys-color-on-surface-variant: #44474f;
+
+  /* Surface Container Hierarchy */
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f7f8fc;
+  --md-sys-color-surface-container: #f1f2f6;
+  --md-sys-color-surface-container-high: #ebedf1;
+  --md-sys-color-surface-container-highest: #e5e7eb;
+
+  /* Surface Dim/Bright for adaptive contrast */
+  --md-sys-color-surface-dim: #dddce0;
+  --md-sys-color-surface-bright: #fefbff;
+
+  /* Outline Colors */
+  --md-sys-color-outline: #74777f;
+  --md-sys-color-outline-variant: #c4c6d0;
+
+  /* Inverse Colors */
+  --md-sys-color-inverse-surface: #303033;
+  --md-sys-color-inverse-on-surface: #f4eff4;
+  --md-sys-color-inverse-primary: #a8c7fa;
+
+  /* Scrim & Shadow */
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+
+  /* ========================================
+     SEMANTIC COLOR ALIASES
+     Maps M3 colors to app-specific tokens
+     ======================================== */
+
+  /* Brand Colors */
+  --m3-primary: var(--md-sys-color-primary);
+  --m3-primary-container: var(--md-sys-color-primary-container);
+  --m3-on-primary: var(--md-sys-color-on-primary);
+  --m3-on-primary-container: var(--md-sys-color-on-primary-container);
+
+  /* Macro Colors (mapped to M3 scheme) */
+  --m3-protein: #16a34a;
+  --m3-protein-container: #dcfce7;
+  --m3-on-protein: #ffffff;
+  --m3-on-protein-container: #052e16;
+
+  --m3-carbs: #0284c7;
+  --m3-carbs-container: #e0f2fe;
+  --m3-on-carbs: #ffffff;
+  --m3-on-carbs-container: #082f49;
+
+  --m3-fat: #d97706;
+  --m3-fat-container: #fef3c7;
+  --m3-on-fat: #ffffff;
+  --m3-on-fat-container: #422006;
+
+  --m3-calories: var(--md-sys-color-primary);
+  --m3-calories-container: var(--md-sys-color-primary-container);
+
+  /* Status Colors */
+  --m3-success: #16a34a;
+  --m3-success-container: #dcfce7;
+  --m3-on-success: #ffffff;
+  --m3-on-success-container: #052e16;
+
+  --m3-warning: #d97706;
+  --m3-warning-container: #fef3c7;
+  --m3-on-warning: #ffffff;
+  --m3-on-warning-container: #422006;
+
+  --m3-error: var(--md-sys-color-error);
+  --m3-error-container: var(--md-sys-color-error-container);
+  --m3-on-error: var(--md-sys-color-on-error);
+  --m3-on-error-container: var(--md-sys-color-on-error-container);
+
+  --m3-info: var(--md-sys-color-primary);
+  --m3-info-container: var(--md-sys-color-primary-container);
+
+  /* ========================================
+     STATE LAYERS
+     Opacity overlays for interaction states
+     ======================================== */
+
+  --md-sys-state-hover-opacity: 0.08;
+  --md-sys-state-focus-opacity: 0.12;
+  --md-sys-state-pressed-opacity: 0.12;
+  --md-sys-state-dragged-opacity: 0.16;
+  --md-sys-state-disabled-opacity: 0.38;
+  --md-sys-state-disabled-container-opacity: 0.12;
+
+  /* Pre-computed State Layer Colors */
+  --m3-state-layer-primary: rgba(
+    26,
+    115,
+    232,
+    var(--md-sys-state-hover-opacity)
+  );
+  --m3-state-layer-primary-focus: rgba(
+    26,
+    115,
+    232,
+    var(--md-sys-state-focus-opacity)
+  );
+  --m3-state-layer-primary-pressed: rgba(
+    26,
+    115,
+    232,
+    var(--md-sys-state-pressed-opacity)
+  );
+
+  --m3-state-layer-on-surface: rgba(
+    28,
+    27,
+    31,
+    var(--md-sys-state-hover-opacity)
+  );
+  --m3-state-layer-on-surface-focus: rgba(
+    28,
+    27,
+    31,
+    var(--md-sys-state-focus-opacity)
+  );
+  --m3-state-layer-on-surface-pressed: rgba(
+    28,
+    27,
+    31,
+    var(--md-sys-state-pressed-opacity)
+  );
+
+  /* ========================================
+     M3 EXTENDED COLOR ROLES
+     For nutrition-specific UI elements
+     ======================================== */
+
+  /* Achievement/Streak Colors */
+  --m3-achievement-gold: #fbbf24;
+  --m3-achievement-silver: #94a3b8;
+  --m3-achievement-bronze: #ea580c;
+  --m3-streak-flame: #f97316;
+  --m3-streak-container: #fff7ed;
+
+  /* Hydration */
+  --m3-hydration: #06b6d4;
+  --m3-hydration-container: #cffafe;
+  --m3-on-hydration: #ffffff;
+  --m3-on-hydration-container: #083344;
+
+  /* Weight Tracking */
+  --m3-weight-loss: var(--m3-success);
+  --m3-weight-gain: var(--m3-error);
+  --m3-weight-maintain: var(--md-sys-color-primary);
+
+  /* ========================================
+     DYNAMIC COLOR UTILITIES
+     CSS custom property functions for theming
+     ======================================== */
+
+  /* Alpha channel utilities */
+  --m3-primary-alpha-10: rgba(26, 115, 232, 0.1);
+  --m3-primary-alpha-20: rgba(26, 115, 232, 0.2);
+  --m3-primary-alpha-40: rgba(26, 115, 232, 0.4);
+  --m3-primary-alpha-60: rgba(26, 115, 232, 0.6);
+
+  --m3-surface-alpha-80: rgba(254, 251, 255, 0.8);
+  --m3-surface-alpha-90: rgba(254, 251, 255, 0.9);
+  --m3-surface-alpha-95: rgba(254, 251, 255, 0.95);
+
+  /* Gradient Presets */
+  --m3-gradient-primary: linear-gradient(
+    135deg,
+    var(--md-sys-color-primary) 0%,
+    #4285f4 100%
+  );
+  --m3-gradient-secondary: linear-gradient(
+    135deg,
+    var(--md-sys-color-secondary) 0%,
+    #26a69a 100%
+  );
+  --m3-gradient-surface: linear-gradient(
+    180deg,
+    var(--md-sys-color-surface-container-low) 0%,
+    var(--md-sys-color-surface) 100%
+  );
+  --m3-gradient-surface-radial: radial-gradient(
+    ellipse at top,
+    var(--md-sys-color-surface-container-low) 0%,
+    var(--md-sys-color-surface) 70%
+  );
+
+  /* Shimmer/Skeleton Gradient */
+  --m3-shimmer-gradient: linear-gradient(
+    90deg,
+    var(--md-sys-color-surface-container) 0%,
+    var(--md-sys-color-surface-container-high) 50%,
+    var(--md-sys-color-surface-container) 100%
+  );
+}
+
+/* ============================================
+   DARK THEME
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Primary Tonal Palette - Dark */
+    --md-sys-color-primary: #a8c7fa;
+    --md-sys-color-on-primary: #062e6f;
+    --md-sys-color-primary-container: #1b4fb8;
+    --md-sys-color-on-primary-container: #d3e3fd;
+    --md-sys-color-primary-fixed: #d3e3fd;
+    --md-sys-color-primary-fixed-dim: #a8c7fa;
+    --md-sys-color-on-primary-fixed: #041e49;
+    --md-sys-color-on-primary-fixed-variant: #185abc;
+
+    /* Secondary Tonal Palette - Dark */
+    --md-sys-color-secondary: #4dd9cb;
+    --md-sys-color-on-secondary: #003731;
+    --md-sys-color-secondary-container: #00504a;
+    --md-sys-color-on-secondary-container: #a7f3ec;
+
+    /* Tertiary Tonal Palette - Dark */
+    --md-sys-color-tertiary: #f9c355;
+    --md-sys-color-on-tertiary: #452b00;
+    --md-sys-color-tertiary-container: #623f00;
+    --md-sys-color-on-tertiary-container: #ffddb1;
+
+    /* Error Colors - Dark */
+    --md-sys-color-error: #ffb4ab;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000a;
+    --md-sys-color-on-error-container: #ffdad6;
+
+    /* Surface Colors - Dark M3 Tonal System */
+    --md-sys-color-surface: #131316;
+    --md-sys-color-on-surface: #e5e1e6;
+    --md-sys-color-surface-variant: #44474f;
+    --md-sys-color-on-surface-variant: #c4c6d0;
+
+    /* Surface Container Hierarchy - Dark */
+    --md-sys-color-surface-container-lowest: #0e0e11;
+    --md-sys-color-surface-container-low: #1c1b1f;
+    --md-sys-color-surface-container: #201f23;
+    --md-sys-color-surface-container-high: #2b2a2e;
+    --md-sys-color-surface-container-highest: #363539;
+
+    --md-sys-color-surface-dim: #131316;
+    --md-sys-color-surface-bright: #3a393d;
+
+    /* Outline Colors - Dark */
+    --md-sys-color-outline: #8e9099;
+    --md-sys-color-outline-variant: #44474f;
+
+    /* Inverse Colors - Dark */
+    --md-sys-color-inverse-surface: #e5e1e6;
+    --md-sys-color-inverse-on-surface: #303033;
+    --md-sys-color-inverse-primary: #185abc;
+
+    /* Status Colors - Dark Variants */
+    --m3-success: #4ade80;
+    --m3-success-container: #166534;
+    --m3-on-success: #052e16;
+    --m3-on-success-container: #dcfce7;
+
+    --m3-warning: #fbbf24;
+    --m3-warning-container: #92400e;
+    --m3-on-warning: #422006;
+    --m3-on-warning-container: #fef3c7;
+
+    /* Macro Colors - Dark Variants */
+    --m3-protein: #4ade80;
+    --m3-protein-container: #166534;
+    --m3-on-protein: #052e16;
+    --m3-on-protein-container: #dcfce7;
+
+    --m3-carbs: #38bdf8;
+    --m3-carbs-container: #075985;
+    --m3-on-carbs: #082f49;
+    --m3-on-carbs-container: #e0f2fe;
+
+    --m3-fat: #fbbf24;
+    --m3-fat-container: #92400e;
+    --m3-on-fat: #422006;
+    --m3-on-fat-container: #fef3c7;
+
+    /* Extended Colors - Dark */
+    --m3-hydration: #22d3ee;
+    --m3-hydration-container: #164e63;
+    --m3-on-hydration: #083344;
+    --m3-on-hydration-container: #cffafe;
+
+    --m3-streak-flame: #fb923c;
+    --m3-streak-container: #7c2d12;
+
+    /* Alpha utilities - Dark */
+    --m3-primary-alpha-10: rgba(168, 199, 250, 0.1);
+    --m3-primary-alpha-20: rgba(168, 199, 250, 0.2);
+    --m3-primary-alpha-40: rgba(168, 199, 250, 0.4);
+    --m3-primary-alpha-60: rgba(168, 199, 250, 0.6);
+
+    --m3-surface-alpha-80: rgba(19, 19, 22, 0.8);
+    --m3-surface-alpha-90: rgba(19, 19, 22, 0.9);
+    --m3-surface-alpha-95: rgba(19, 19, 22, 0.95);
+
+    /* Shimmer - Dark */
+    --m3-shimmer-gradient: linear-gradient(
+      90deg,
+      var(--md-sys-color-surface-container) 0%,
+      var(--md-sys-color-surface-container-high) 50%,
+      var(--md-sys-color-surface-container) 100%
+    );
+  }
+}
+
+/* Explicit dark theme class override */
+[data-theme="dark"] {
+  --md-sys-color-primary: #a8c7fa;
+  --md-sys-color-on-primary: #062e6f;
+  --md-sys-color-primary-container: #1b4fb8;
+  --md-sys-color-on-primary-container: #d3e3fd;
+  --md-sys-color-secondary: #4dd9cb;
+  --md-sys-color-on-secondary: #003731;
+  --md-sys-color-secondary-container: #00504a;
+  --md-sys-color-on-secondary-container: #a7f3ec;
+  --md-sys-color-tertiary: #f9c355;
+  --md-sys-color-on-tertiary: #452b00;
+  --md-sys-color-tertiary-container: #623f00;
+  --md-sys-color-on-tertiary-container: #ffddb1;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-surface: #131316;
+  --md-sys-color-on-surface: #e5e1e6;
+  --md-sys-color-surface-variant: #44474f;
+  --md-sys-color-on-surface-variant: #c4c6d0;
+  --md-sys-color-surface-container-lowest: #0e0e11;
+  --md-sys-color-surface-container-low: #1c1b1f;
+  --md-sys-color-surface-container: #201f23;
+  --md-sys-color-surface-container-high: #2b2a2e;
+  --md-sys-color-surface-container-highest: #363539;
+  --md-sys-color-surface-dim: #131316;
+  --md-sys-color-surface-bright: #3a393d;
+  --md-sys-color-outline: #8e9099;
+  --md-sys-color-outline-variant: #44474f;
+  --md-sys-color-inverse-surface: #e5e1e6;
+  --md-sys-color-inverse-on-surface: #303033;
+  --md-sys-color-inverse-primary: #185abc;
+}
+
+/* ============================================
+   LEGACY TOKEN BRIDGE
+   Maps new M3 tokens to existing variable names
+   ============================================ */
+
+:root {
+  /* Bridge M3 to existing tokens for backwards compatibility */
+  --color-primary-500: var(--md-sys-color-primary);
+  --surface-base: var(--md-sys-color-surface);
+  --surface-secondary: var(--md-sys-color-surface-container-low);
+  --surface-tertiary: var(--md-sys-color-surface-container);
+  --surface-elevated: var(--md-sys-color-surface-container-high);
+  --text-primary: var(--md-sys-color-on-surface);
+  --text-secondary: var(--md-sys-color-on-surface-variant);
+  --border-default: var(--md-sys-color-outline-variant);
+  --border-subtle: var(--md-sys-color-surface-container-highest);
+}

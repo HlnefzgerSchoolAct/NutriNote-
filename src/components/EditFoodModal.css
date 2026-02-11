@@ -1,0 +1,371 @@
+/**
+ * Edit Food Modal Styles
+ */
+
+/* ===== Modal Container ===== */
+.edit-food-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m3-spacing-md, 16px);
+  padding: var(--m3-spacing-md, 16px);
+  padding-bottom: calc(
+    var(--m3-spacing-xl, 32px) + env(safe-area-inset-bottom)
+  );
+}
+
+/* ===== Field ===== */
+.edit-food-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m3-spacing-xs, 8px);
+}
+
+.edit-food-modal__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--m3-on-surface-variant, #666);
+}
+
+/* ===== Quantity Controls ===== */
+.edit-food-modal__quantity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m3-spacing-sm, 12px);
+}
+
+.edit-food-modal__quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--m3-spacing-md, 16px);
+}
+
+.edit-food-modal__qty-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--m3-surface-container-high, #f0f0f0);
+  border: none;
+  color: var(--m3-on-surface, #1a1a1a);
+  cursor: pointer;
+  transition: all 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edit-food-modal__qty-btn:hover {
+  background: var(--m3-surface-container-highest, #e0e0e0);
+}
+
+.edit-food-modal__qty-btn:active {
+  transform: scale(0.95);
+}
+
+.edit-food-modal__qty-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.edit-food-modal__qty-input {
+  width: 80px;
+  height: 56px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 2px solid var(--m3-outline, #ccc);
+  border-radius: var(--m3-shape-md, 12px);
+  background: var(--m3-surface, #fff);
+  color: var(--m3-on-surface, #1a1a1a);
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.edit-food-modal__qty-input::-webkit-outer-spin-button,
+.edit-food-modal__qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.edit-food-modal__qty-input:focus {
+  outline: none;
+  border-color: var(--m3-primary, #6750a4);
+}
+
+/* ===== Presets ===== */
+.edit-food-modal__presets {
+  display: flex;
+  justify-content: center;
+  gap: var(--m3-spacing-xs, 8px);
+  flex-wrap: wrap;
+}
+
+.edit-food-modal__preset {
+  min-width: 40px;
+  height: 32px;
+  padding: 0 var(--m3-spacing-sm, 12px);
+  background: var(--m3-surface-container, #f5f5f5);
+  border: 1px solid var(--m3-outline-variant, #ddd);
+  border-radius: var(--m3-shape-full, 100px);
+  color: var(--m3-on-surface, #1a1a1a);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edit-food-modal__preset:hover {
+  background: var(--m3-surface-container-high, #f0f0f0);
+}
+
+.edit-food-modal__preset--active {
+  background: var(--m3-primary-container, #e8def8);
+  border-color: var(--m3-primary, #6750a4);
+  color: var(--m3-on-primary-container, #1d192b);
+}
+
+/* ===== Units ===== */
+.edit-food-modal__units {
+  overflow-x: auto;
+  padding-bottom: var(--m3-spacing-xs, 8px);
+  margin: 0 calc(-1 * var(--m3-spacing-md, 16px));
+  padding-left: var(--m3-spacing-md, 16px);
+  padding-right: var(--m3-spacing-md, 16px);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.edit-food-modal__units::-webkit-scrollbar {
+  display: none;
+}
+
+.edit-food-modal__units .m3-chip-group {
+  flex-wrap: nowrap;
+}
+
+/* ===== Meals ===== */
+.edit-food-modal__meals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--m3-spacing-xs, 8px);
+}
+
+.edit-food-modal__meal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--m3-spacing-sm, 12px) var(--m3-spacing-xs, 8px);
+  background: var(--m3-surface-container, #f5f5f5);
+  border: 2px solid transparent;
+  border-radius: var(--m3-shape-md, 12px);
+  cursor: pointer;
+  transition: all 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.edit-food-modal__meal:hover {
+  background: var(--m3-surface-container-high, #f0f0f0);
+}
+
+.edit-food-modal__meal--active {
+  background: var(--m3-primary-container, #e8def8);
+  border-color: var(--m3-primary, #6750a4);
+}
+
+.edit-food-modal__meal-emoji {
+  font-size: 1.5rem;
+}
+
+.edit-food-modal__meal-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--m3-on-surface, #1a1a1a);
+}
+
+/* ===== Nutrition Card ===== */
+.edit-food-modal__nutrition {
+  margin: var(--m3-spacing-sm, 12px) 0;
+}
+
+.edit-food-modal__nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--m3-spacing-sm, 12px);
+  text-align: center;
+}
+
+.edit-food-modal__nutrition-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.edit-food-modal__nutrition-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--m3-on-surface, #1a1a1a);
+  font-variant-numeric: tabular-nums;
+}
+
+.edit-food-modal__nutrition-label {
+  font-size: 0.75rem;
+  color: var(--m3-on-surface-variant, #666);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Actions ===== */
+.edit-food-modal__actions {
+  display: flex;
+  gap: var(--m3-spacing-sm, 12px);
+  margin-top: var(--m3-spacing-md, 16px);
+}
+
+.edit-food-modal__actions > * {
+  flex: 1;
+}
+
+.edit-food-modal__delete-btn {
+  color: var(--m3-error, #b3261e);
+  border-color: var(--m3-error, #b3261e);
+}
+
+/* ===== Quick Adjust Modal ===== */
+.quick-adjust-modal {
+  padding: var(--m3-spacing-md, 16px);
+  text-align: center;
+}
+
+.quick-adjust-modal__food-name {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--m3-on-surface, #1a1a1a);
+  margin-bottom: var(--m3-spacing-lg, 24px);
+}
+
+.quick-adjust-modal__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--m3-spacing-lg, 24px);
+  margin-bottom: var(--m3-spacing-md, 16px);
+}
+
+.quick-adjust-modal__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--m3-primary-container, #e8def8);
+  border: none;
+  color: var(--m3-on-primary-container, #1d192b);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.quick-adjust-modal__btn:hover {
+  background: var(--m3-primary, #6750a4);
+  color: var(--m3-on-primary, #fff);
+}
+
+.quick-adjust-modal__btn:active {
+  transform: scale(0.95);
+}
+
+.quick-adjust-modal__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.quick-adjust-modal__value {
+  display: flex;
+  flex-direction: column;
+  min-width: 80px;
+}
+
+.quick-adjust-modal__number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--m3-on-surface, #1a1a1a);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.quick-adjust-modal__unit {
+  font-size: 0.875rem;
+  color: var(--m3-on-surface-variant, #666);
+  margin-top: 4px;
+}
+
+.quick-adjust-modal__presets {
+  display: flex;
+  justify-content: center;
+  gap: var(--m3-spacing-xs, 8px);
+  flex-wrap: wrap;
+  margin-bottom: var(--m3-spacing-lg, 24px);
+}
+
+.quick-adjust-modal__preset {
+  min-width: 48px;
+  height: 36px;
+  padding: 0 var(--m3-spacing-sm, 12px);
+  background: var(--m3-surface-container, #f5f5f5);
+  border: 1px solid var(--m3-outline-variant, #ddd);
+  border-radius: var(--m3-shape-full, 100px);
+  color: var(--m3-on-surface, #1a1a1a);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.quick-adjust-modal__preset:hover {
+  background: var(--m3-surface-container-high, #f0f0f0);
+}
+
+.quick-adjust-modal__preset--active {
+  background: var(--m3-primary-container, #e8def8);
+  border-color: var(--m3-primary, #6750a4);
+  color: var(--m3-on-primary-container, #1d192b);
+}
+
+.quick-adjust-modal__calories {
+  font-size: 1rem;
+  color: var(--m3-on-surface-variant, #666);
+  margin-bottom: var(--m3-spacing-lg, 24px);
+}
+
+.quick-adjust-modal__calories strong {
+  color: var(--m3-on-surface, #1a1a1a);
+  font-size: 1.25rem;
+}
+
+.quick-adjust-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--m3-spacing-sm, 12px);
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .edit-food-modal__qty-input {
+    background: var(--m3-surface-container, #2a2a2a);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .edit-food-modal__qty-btn,
+  .edit-food-modal__preset,
+  .edit-food-modal__meal,
+  .quick-adjust-modal__btn,
+  .quick-adjust-modal__preset {
+    transition: none;
+  }
+}

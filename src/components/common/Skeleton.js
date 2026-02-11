@@ -15,10 +15,10 @@ export const Skeleton = memo(function Skeleton({
   ...props
 }) {
   const classes = [
-    "hf-skeleton",
-    `hf-skeleton--${variant}`,
-    animate && "hf-skeleton--animated",
-    rounded && "hf-skeleton--rounded",
+    "ds-skeleton",
+    `ds-skeleton--${variant}`,
+    animate && "ds-skeleton--animated",
+    rounded && "ds-skeleton--rounded",
     className,
   ]
     .filter(Boolean)
@@ -44,7 +44,7 @@ export const SkeletonText = memo(function SkeletonText({
 }) {
   return (
     <div
-      className={`hf-skeleton-text hf-skeleton-text--${spacing} ${className}`}
+      className={`ds-skeleton-text ds-skeleton-text--${spacing} ${className}`}
     >
       {Array.from({ length: lines }).map((_, i) => (
         <Skeleton
@@ -65,9 +65,9 @@ export const SkeletonCard = ({
   lines = 2,
   className = "",
 }) => (
-  <div className={`hf-skeleton-card ${className}`}>
+  <div className={`ds-skeleton-card ${className}`}>
     {hasImage && <Skeleton variant="rectangular" height={120} />}
-    <div className="hf-skeleton-card__content">
+    <div className="ds-skeleton-card__content">
       <Skeleton variant="text" width="70%" height={20} />
       <SkeletonText lines={lines} />
     </div>
@@ -81,9 +81,9 @@ export const SkeletonListItem = memo(function SkeletonListItem({
   className = "",
 }) {
   return (
-    <div className={`hf-skeleton-list-item ${className}`}>
+    <div className={`ds-skeleton-list-item ${className}`}>
       <Skeleton variant="circular" width={44} height={44} />
-      <div className="hf-skeleton-list-item__content">
+      <div className="ds-skeleton-list-item__content">
         <Skeleton variant="text" width="60%" height={16} />
         <Skeleton variant="text" width="40%" height={14} />
       </div>
@@ -96,9 +96,9 @@ export const SkeletonListItem = memo(function SkeletonListItem({
  * Skeleton Stats - For macro/calorie displays
  */
 export const SkeletonStats = ({ count = 4, className = "" }) => (
-  <div className={`hf-skeleton-stats ${className}`}>
+  <div className={`ds-skeleton-stats ${className}`}>
     {Array.from({ length: count }).map((_, i) => (
-      <div key={i} className="hf-skeleton-stat">
+      <div key={i} className="ds-skeleton-stat">
         <Skeleton variant="circular" width={64} height={64} />
         <Skeleton
           variant="text"
@@ -129,10 +129,10 @@ export const SkeletonProgressRing = ({ size = 120, className = "" }) => (
 export const SkeletonPage = ({ type = "default", className = "" }) => {
   if (type === "home") {
     return (
-      <div className={`hf-skeleton-page ${className}`}>
+      <div className={`ds-skeleton-page ${className}`}>
         <SkeletonProgressRing size={140} />
         <SkeletonStats count={3} />
-        <div className="hf-skeleton-section">
+        <div className="ds-skeleton-section">
           <Skeleton variant="text" width="30%" height={20} />
           <SkeletonListItem />
           <SkeletonListItem />
@@ -143,7 +143,7 @@ export const SkeletonPage = ({ type = "default", className = "" }) => {
 
   if (type === "list") {
     return (
-      <div className={`hf-skeleton-page hf-skeleton-page--list ${className}`}>
+      <div className={`ds-skeleton-page ds-skeleton-page--list ${className}`}>
         <Skeleton variant="text" width="40%" height={24} />
         {Array.from({ length: 5 }).map((_, i) => (
           <SkeletonListItem key={i} />
@@ -153,7 +153,7 @@ export const SkeletonPage = ({ type = "default", className = "" }) => {
   }
 
   return (
-    <div className={`hf-skeleton-page ${className}`}>
+    <div className={`ds-skeleton-page ${className}`}>
       <Skeleton variant="text" width="50%" height={28} />
       <SkeletonText lines={3} />
       <SkeletonCard hasImage />

@@ -11,7 +11,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "https://hawkfuel.hackclub.com"
+        ? "https://nutrinoteplus.hackclub.com"
         : ["http://localhost:3000", "http://127.0.0.1:3000"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
@@ -94,8 +94,8 @@ Example: {"calories": 95, "protein": 0.5, "carbs": 25, "fat": 0.3}`;
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://hawkfuel.hackclub.com",
-        "X-Title": "HawkFuel",
+        "HTTP-Referer": "https://nutrinoteplus.hackclub.com",
+        "X-Title": "NutriNote+",
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
@@ -269,7 +269,7 @@ app.get("/health", (req, res) => {
 // Root endpoint
 app.get("/", (req, res) => {
   res.json({
-    service: "HawkFuel AI Nutrition Proxy",
+    service: "NutriNote+ AI Nutrition Proxy",
     version: "2.0.0",
     endpoints: {
       nutrition: "POST /api/estimate-nutrition",
@@ -279,7 +279,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ HawkFuel Proxy Server running on http://localhost:${PORT}`);
+  console.log(`✅ NutriNote+ Proxy Server running on http://localhost:${PORT}`);
   console.log(`   Endpoints:`);
   console.log(`   - POST /api/estimate-nutrition (AI nutrition estimation)`);
   console.log(`   - GET  /health (health check)`);

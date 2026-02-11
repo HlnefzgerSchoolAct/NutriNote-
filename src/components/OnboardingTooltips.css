@@ -1,0 +1,204 @@
+/**
+ * Onboarding Tooltips Styles
+ */
+
+/* Backdrop */
+.tooltip-overlay__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+}
+
+/* Spotlight on target element */
+.tooltip-overlay__spotlight {
+  position: fixed;
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Tooltip */
+.tooltip-overlay__tooltip {
+  position: fixed;
+  width: 280px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 16px;
+  padding: 16px;
+  z-index: 10000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Arrow */
+.tooltip-overlay__arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--md-sys-color-surface, #ffffff);
+  transform: rotate(45deg);
+}
+
+.tooltip-overlay__tooltip--bottom .tooltip-overlay__arrow {
+  top: -6px;
+}
+
+.tooltip-overlay__tooltip--top .tooltip-overlay__arrow {
+  bottom: -6px;
+}
+
+.tooltip-overlay__tooltip--left .tooltip-overlay__arrow {
+  right: -6px;
+  top: 50%;
+  margin-top: -6px;
+}
+
+.tooltip-overlay__tooltip--right .tooltip-overlay__arrow {
+  left: -6px;
+  top: 50%;
+  margin-top: -6px;
+}
+
+/* Header */
+.tooltip-overlay__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tooltip-overlay__header svg {
+  color: var(--md-sys-color-primary, #6750a4);
+}
+
+.tooltip-overlay__title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.tooltip-overlay__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  transition: background-color 0.2s;
+}
+
+.tooltip-overlay__close:hover {
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+}
+
+/* Content */
+.tooltip-overlay__content {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+/* Action button */
+.tooltip-overlay__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tooltip-overlay__action:hover {
+  background: var(--md-sys-color-primary-hover, #5b45a0);
+}
+
+/* Feature Highlight */
+.feature-highlight {
+  position: relative;
+  display: inline-flex;
+}
+
+.feature-highlight__badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  padding: 2px 6px;
+  background: var(--md-sys-color-tertiary, #7d5260);
+  color: var(--md-sys-color-on-tertiary, #ffffff);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 6px;
+  animation: tooltip-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tooltip-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+/* ===== Dark mode ===== */
+@media (prefers-color-scheme: dark) {
+  .tooltip-overlay__tooltip {
+    background: var(--md-sys-color-surface, #2b2930);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .tooltip-overlay__arrow {
+    background: var(--md-sys-color-surface, #2b2930);
+  }
+
+  .tooltip-overlay__title {
+    color: var(--md-sys-color-on-surface, #e6e1e5);
+  }
+
+  .tooltip-overlay__close:hover {
+    background: var(--md-sys-color-surface-variant, #49454f);
+  }
+
+  .tooltip-overlay__content {
+    color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  }
+
+  .feature-highlight__badge {
+    background: var(--md-sys-color-tertiary, #efb8c8);
+    color: var(--md-sys-color-on-tertiary, #492532);
+  }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .tooltip-overlay__tooltip,
+  .tooltip-overlay__backdrop,
+  .tooltip-overlay__spotlight {
+    transition: none;
+  }
+
+  .feature-highlight__badge {
+    animation: none;
+  }
+}

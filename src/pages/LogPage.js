@@ -24,6 +24,7 @@ import {
   StaggerContainer,
   StaggerItem,
   CompactMacros,
+  CompactMicronutrients,
 } from "../components/common";
 
 import AIFoodInput from "../components/AIFoodInput";
@@ -618,6 +619,15 @@ function LogPage({ userProfile, dailyTarget }) {
                                             </>
                                           )}
                                         </span>
+                                        {/* Micronutrient highlights */}
+                                        {(entry.fiber || entry.sodium || entry.sugar) && (
+                                          <CompactMicronutrients
+                                            fiber={entry.fiber}
+                                            sodium={entry.sodium}
+                                            sugar={entry.sugar}
+                                            className="entry-micros"
+                                          />
+                                        )}
                                       </div>
                                       <span className="entry-calories">
                                         {entry.calories}

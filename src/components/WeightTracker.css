@@ -1,10 +1,10 @@
 /* ========================================
    Weight Tracker Component
-   Professional Dark Theme
+   Flat Modern Design
 ======================================== */
 
 .weight-tracker {
-  background: var(--bg-card);
+  background: var(--surface-elevated);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   margin-bottom: var(--space-xl);
@@ -39,29 +39,29 @@
 }
 
 .weight-trend.positive {
-  background: rgba(39, 174, 96, 0.15);
-  color: #27ae60;
+  background: var(--color-success-light);
+  color: var(--success);
 }
 
 .weight-trend.negative {
-  background: rgba(231, 76, 60, 0.15);
-  color: #e74c3c;
+  background: var(--color-error-light);
+  color: var(--danger);
 }
 
 .weight-trend.neutral {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-muted);
+  background: var(--surface-tertiary);
+  color: var(--text-tertiary);
 }
 
 .weight-add-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff6b35 0%, #e55a2b 100%);
+  background: var(--gradient-blue);
   border: none;
-  color: #fff;
-  font-size: 1.25rem;
-  font-weight: 300;
+  color: var(--text-inverse);
+  font-size: var(--text-xl);
+  font-weight: var(--font-normal);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -72,7 +72,12 @@
 
 .weight-add-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.weight-add-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 /* Weight Form */
@@ -81,17 +86,17 @@
   gap: var(--space-sm);
   margin-bottom: var(--space-md);
   padding: var(--space-md);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-secondary);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
 }
 
 .weight-input-group {
   display: flex;
   align-items: center;
   flex: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-base);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   padding: 0 var(--space-sm);
 }
@@ -118,8 +123,8 @@
 
 .weight-save-btn {
   padding: var(--space-sm) var(--space-md);
-  background: linear-gradient(135deg, #27ae60 0%, #219a52 100%);
-  color: #fff;
+  background: var(--success);
+  color: var(--text-inverse);
   border: none;
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
@@ -129,15 +134,16 @@
 }
 
 .weight-save-btn:hover {
+  background: var(--color-success-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+  box-shadow: var(--shadow-glow-success-md);
 }
 
 /* Current Weight Display */
 .weight-current {
   text-align: center;
   padding: var(--space-lg) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border-subtle);
   margin-bottom: var(--space-md);
 }
 
@@ -149,9 +155,9 @@
 }
 
 .weight-number {
-  font-size: 2.5rem;
+  font-size: var(--text-4xl);
   font-weight: var(--font-bold);
-  color: var(--primary-orange);
+  color: var(--primary-blue);
   line-height: 1;
 }
 
@@ -196,7 +202,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-sm) var(--space-md);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--overlay-light-5);
   border-radius: var(--radius-sm);
 }
 
@@ -221,11 +227,11 @@
 }
 
 .weight-entry-change.up {
-  color: #e74c3c;
+  color: var(--danger);
 }
 
 .weight-entry-change.down {
-  color: #27ae60;
+  color: var(--success);
 }
 
 .weight-empty {
@@ -243,7 +249,7 @@
   }
 
   .weight-number {
-    font-size: 2rem;
+    font-size: var(--text-3xl);
   }
 
   .weight-form {

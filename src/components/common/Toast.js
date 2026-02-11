@@ -17,7 +17,7 @@ export const ToastProvider = () => (
     }}
     toastOptions={{
       duration: 4000,
-      className: "hf-toast",
+      className: "ds-toast",
     }}
   />
 );
@@ -27,20 +27,20 @@ export const ToastProvider = () => (
  */
 const ToastContent = ({ icon, title, message, type, onDismiss }) => (
   <motion.div
-    className={`hf-toast-content hf-toast-content--${type}`}
+    className={`ds-toast-content ds-toast-content--${type}`}
     initial={{ opacity: 0, y: -20, scale: 0.95 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
     exit={{ opacity: 0, y: -20, scale: 0.95 }}
     transition={{ type: "spring", stiffness: 400, damping: 25 }}
   >
-    <span className="hf-toast-content__icon">{icon}</span>
-    <div className="hf-toast-content__text">
-      {title && <span className="hf-toast-content__title">{title}</span>}
-      {message && <span className="hf-toast-content__message">{message}</span>}
+    <span className="ds-toast-content__icon">{icon}</span>
+    <div className="ds-toast-content__text">
+      {title && <span className="ds-toast-content__title">{title}</span>}
+      {message && <span className="ds-toast-content__message">{message}</span>}
     </div>
     {onDismiss && (
       <button
-        className="hf-toast-content__dismiss"
+        className="ds-toast-content__dismiss"
         onClick={onDismiss}
         aria-label="Dismiss notification"
       >
@@ -137,16 +137,16 @@ export const showToast = {
     const id = toast.custom(
       (t) => (
         <motion.div
-          className="hf-toast-content hf-toast-content--undo"
+          className="ds-toast-content ds-toast-content--undo"
           initial={{ opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
         >
-          <span className="hf-toast-content__text">
-            <span className="hf-toast-content__title">{title}</span>
+          <span className="ds-toast-content__text">
+            <span className="ds-toast-content__title">{title}</span>
           </span>
           <button
-            className="hf-toast-content__undo-btn"
+            className="ds-toast-content__undo-btn"
             onClick={() => {
               onUndo();
               toast.dismiss(t.id);
@@ -155,9 +155,9 @@ export const showToast = {
           >
             Undo
           </button>
-          <div className="hf-toast-content__progress">
+          <div className="ds-toast-content__progress">
             <motion.div
-              className="hf-toast-content__progress-bar"
+              className="ds-toast-content__progress-bar"
               initial={{ width: "100%" }}
               animate={{ width: "0%" }}
               transition={{ duration: duration / 1000, ease: "linear" }}
@@ -178,13 +178,13 @@ export const showToast = {
     return toast.custom(
       (t) => (
         <motion.div
-          className="hf-toast-content hf-toast-content--loading"
+          className="ds-toast-content ds-toast-content--loading"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <span className="hf-toast-content__spinner" />
-          <span className="hf-toast-content__text">
-            <span className="hf-toast-content__message">{message}</span>
+          <span className="ds-toast-content__spinner" />
+          <span className="ds-toast-content__text">
+            <span className="ds-toast-content__message">{message}</span>
           </span>
         </motion.div>
       ),

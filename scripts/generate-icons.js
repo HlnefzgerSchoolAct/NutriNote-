@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
 
-const src = path.join(__dirname, "..", "public", "LogoWD.jpg");
+const src = path.join(__dirname, "..", "public", "NutriNote.png");
 const outDir = path.join(__dirname, "..", "public");
 
 const sizes = [48, 72, 96, 128, 144, 152, 192, 256, 384, 512];

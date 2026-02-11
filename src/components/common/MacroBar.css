@@ -1,245 +1,376 @@
-/* ============================================
-   MACRO BAR STYLES
-   Professional Design System
-   ============================================ */
+/* ========================================
+   NutriNote+ - Macro Bar Component
+   Flat Modern Design
+======================================== */
 
-.hf-macro-bar {
+/* ===== Design System Macro Bar ===== */
+.ds-macro-bar {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1-5);
+  gap: var(--space-2);
 }
 
-/* ============================================
-   HEADER
-   ============================================ */
-
-.hf-macro-bar__header {
+.ds-macro-bar__header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.hf-macro-bar__label {
+.ds-macro-bar__label {
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
-.hf-macro-bar__values {
+.ds-macro-bar__values {
   display: flex;
   align-items: baseline;
-  gap: var(--space-0-5);
-  font-size: var(--text-sm);
+  gap: 2px;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.hf-macro-bar__current {
+.ds-macro-bar__current {
   font-weight: var(--font-semibold);
   color: var(--text-primary);
 }
 
-.hf-macro-bar__separator {
+.ds-macro-bar__separator {
+  margin: 0 2px;
   color: var(--text-tertiary);
 }
 
-.hf-macro-bar__target {
+.ds-macro-bar__target {
   color: var(--text-tertiary);
 }
 
-.hf-macro-bar__percentage {
-  color: var(--text-tertiary);
-  font-size: var(--text-xs);
+.ds-macro-bar__percentage {
   margin-left: var(--space-1);
+  color: var(--text-tertiary);
 }
 
-/* ============================================
-   TRACK & FILL
-   ============================================ */
-
-.hf-macro-bar__track {
+.ds-macro-bar__track {
   position: relative;
   height: 8px;
-  background: var(--surface-overlay);
+  background: var(--surface-container);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
-.hf-macro-bar__fill {
+.ds-macro-bar__fill {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background: var(--color-primary-500);
   border-radius: var(--radius-full);
-  transition: background var(--duration-fast) var(--ease-out);
+  background: var(--primary);
 }
 
-.hf-macro-bar__glow {
+.ds-macro-bar__glow {
   position: absolute;
-  top: -4px;
+  top: 0;
   left: 0;
-  height: calc(100% + 8px);
-  background: var(--color-primary-500);
-  opacity: 0.3;
-  filter: blur(8px);
+  height: 100%;
   border-radius: var(--radius-full);
-  pointer-events: none;
+  opacity: 0.3;
+  filter: blur(4px);
 }
 
-/* ============================================
-   SIZE VARIANTS
-   ============================================ */
-
-.hf-macro-bar--sm .hf-macro-bar__track {
-  height: 4px;
-}
-
-.hf-macro-bar--sm .hf-macro-bar__label,
-.hf-macro-bar--sm .hf-macro-bar__values {
-  font-size: var(--text-xs);
-}
-
-.hf-macro-bar--lg .hf-macro-bar__track {
-  height: 12px;
-}
-
-.hf-macro-bar--lg .hf-macro-bar__label {
-  font-size: var(--text-base);
-}
-
-.hf-macro-bar--lg .hf-macro-bar__current {
-  font-size: var(--text-lg);
-}
-
-/* ============================================
-   COLOR VARIANTS
-   ============================================ */
-
-.hf-macro-bar--primary .hf-macro-bar__fill,
-.hf-macro-bar--primary .hf-macro-bar__glow {
-  background: var(--color-primary-500);
-}
-
-.hf-macro-bar--protein .hf-macro-bar__fill,
-.hf-macro-bar--protein .hf-macro-bar__glow {
-  background: var(--color-protein);
-}
-
-.hf-macro-bar--carbs .hf-macro-bar__fill,
-.hf-macro-bar--carbs .hf-macro-bar__glow {
-  background: var(--color-carbs);
-}
-
-.hf-macro-bar--fat .hf-macro-bar__fill,
-.hf-macro-bar--fat .hf-macro-bar__glow {
-  background: var(--color-warning);
-}
-
-.hf-macro-bar--calories .hf-macro-bar__fill,
-.hf-macro-bar--calories .hf-macro-bar__glow {
-  background: var(--color-calories);
-}
-
-.hf-macro-bar--success .hf-macro-bar__fill,
-.hf-macro-bar--success .hf-macro-bar__glow {
-  background: var(--color-success);
-}
-
-.hf-macro-bar--warning .hf-macro-bar__fill,
-.hf-macro-bar--warning .hf-macro-bar__glow {
-  background: var(--color-warning);
-}
-
-.hf-macro-bar--danger .hf-macro-bar__fill,
-.hf-macro-bar--danger .hf-macro-bar__glow {
-  background: var(--color-error);
-}
-
-/* ============================================
-   OVER LIMIT STATE
-   ============================================ */
-
-.hf-macro-bar--over .hf-macro-bar__fill {
-  background: var(--color-error);
-}
-
-.hf-macro-bar--over .hf-macro-bar__current {
-  color: var(--color-error);
-}
-
-.hf-macro-bar__overage {
+.ds-macro-bar__overage {
   position: absolute;
   right: var(--space-2);
   top: 50%;
   transform: translateY(-50%);
 }
 
-.hf-macro-bar__overage-text {
+.ds-macro-bar__overage-text {
   font-size: var(--text-xs);
-  font-weight: var(--font-semibold);
-  color: var(--color-error);
+  font-weight: var(--font-bold);
+  color: var(--danger);
 }
 
-/* ============================================
-   MACRO BAR GROUP
-   ============================================ */
+/* ===== Color Variants ===== */
+.ds-macro-bar--protein .ds-macro-bar__fill,
+.ds-macro-bar--protein .ds-macro-bar__glow {
+  background: var(--color-protein);
+}
 
-.hf-macro-bar-group {
+.ds-macro-bar--protein .ds-macro-bar__current {
+  color: var(--color-protein);
+}
+
+.ds-macro-bar--carbs .ds-macro-bar__fill,
+.ds-macro-bar--carbs .ds-macro-bar__glow {
+  background: var(--color-carbs);
+}
+
+.ds-macro-bar--carbs .ds-macro-bar__current {
+  color: var(--color-carbs);
+}
+
+.ds-macro-bar--fat .ds-macro-bar__fill,
+.ds-macro-bar--fat .ds-macro-bar__glow {
+  background: var(--color-fat);
+}
+
+.ds-macro-bar--fat .ds-macro-bar__current {
+  color: var(--color-fat);
+}
+
+.ds-macro-bar--calories .ds-macro-bar__fill,
+.ds-macro-bar--calories .ds-macro-bar__glow {
+  background: var(--color-calories);
+}
+
+.ds-macro-bar--success .ds-macro-bar__fill,
+.ds-macro-bar--success .ds-macro-bar__glow {
+  background: var(--success);
+}
+
+.ds-macro-bar--warning .ds-macro-bar__fill,
+.ds-macro-bar--warning .ds-macro-bar__glow {
+  background: var(--warning);
+}
+
+.ds-macro-bar--danger .ds-macro-bar__fill,
+.ds-macro-bar--danger .ds-macro-bar__glow {
+  background: var(--danger);
+}
+
+/* ===== Over Limit ===== */
+.ds-macro-bar--over .ds-macro-bar__fill {
+  background: var(--danger);
+}
+
+.ds-macro-bar--over .ds-macro-bar__current {
+  color: var(--danger);
+}
+
+/* ===== Sizes ===== */
+.ds-macro-bar--sm .ds-macro-bar__track {
+  height: 4px;
+}
+
+.ds-macro-bar--sm .ds-macro-bar__label {
+  font-size: var(--text-xs);
+}
+
+.ds-macro-bar--lg .ds-macro-bar__track {
+  height: 10px;
+}
+
+/* ===== Macro Bar Group ===== */
+.ds-macro-bar-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
-/* ============================================
-   COMPACT MACROS
-   ============================================ */
-
-.hf-compact-macros {
+/* ===== Compact Macros ===== */
+.ds-compact-macros {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
 }
 
-.hf-compact-macros__item {
+.ds-compact-macros__item {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
 }
 
-.hf-compact-macros__item--calories {
-  font-weight: var(--font-semibold);
-  color: var(--text-primary);
-}
-
-.hf-compact-macros__dot {
+.ds-compact-macros__dot {
   width: 6px;
   height: 6px;
   border-radius: var(--radius-full);
 }
 
-.hf-compact-macros__item--protein .hf-compact-macros__dot {
+.ds-compact-macros__item--protein .ds-compact-macros__dot {
   background: var(--color-protein);
 }
 
-.hf-compact-macros__item--carbs .hf-compact-macros__dot {
+.ds-compact-macros__item--carbs .ds-compact-macros__dot {
   background: var(--color-carbs);
 }
 
-.hf-compact-macros__item--fat .hf-compact-macros__dot {
-  background: var(--color-warning);
+.ds-compact-macros__item--fat .ds-compact-macros__dot {
+  background: var(--color-fat);
 }
 
-.hf-compact-macros__value {
-  color: var(--text-secondary);
+.ds-compact-macros__item--calories {
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
 }
 
-.hf-compact-macros__label {
+.ds-compact-macros__value {
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.ds-compact-macros__unit,
+.ds-compact-macros__label {
   color: var(--text-tertiary);
+}
+
+/* ===== Legacy Macro Bar (backward compatibility) ===== */
+.macro-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.macro-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.macro-bar-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.macro-bar-values {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.macro-bar-current {
+  font-weight: var(--font-semibold);
+}
+
+.macro-bar-track {
+  height: 6px;
+  background: var(--surface-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.macro-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.4s ease;
+}
+
+/* ===== Color Variants ===== */
+.macro-bar.protein .macro-bar-fill {
+  background: var(--color-protein);
+}
+
+.macro-bar.protein .macro-bar-current {
+  color: var(--color-protein);
+}
+
+.macro-bar.carbs .macro-bar-fill {
+  background: var(--color-carbs);
+}
+
+.macro-bar.carbs .macro-bar-current {
+  color: var(--color-carbs);
+}
+
+.macro-bar.fat .macro-bar-fill {
+  background: var(--color-fat);
+}
+
+.macro-bar.fat .macro-bar-current {
+  color: var(--color-fat);
+}
+
+.macro-bar.fiber .macro-bar-fill {
+  background: var(--color-fiber);
+}
+
+.macro-bar.fiber .macro-bar-current {
+  color: var(--color-fiber);
+}
+
+/* ===== Over Limit ===== */
+.macro-bar.over .macro-bar-fill {
+  background: var(--danger);
+}
+
+.macro-bar.over .macro-bar-current {
+  color: var(--danger);
+}
+
+/* ===== Perfect ===== */
+.macro-bar.perfect .macro-bar-fill {
+  background: var(--success);
+}
+
+/* ===== Sizes ===== */
+.macro-bar.sm .macro-bar-track {
+  height: 4px;
+}
+
+.macro-bar.sm .macro-bar-label {
   font-size: var(--text-xs);
 }
 
-.hf-compact-macros__unit {
-  color: var(--text-tertiary);
+.macro-bar.lg .macro-bar-track {
+  height: 8px;
+}
+
+/* ===== Compact Mode ===== */
+.macro-bar.compact {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.macro-bar.compact .macro-bar-header {
+  min-width: 80px;
+}
+
+.macro-bar.compact .macro-bar-track {
+  flex: 1;
+}
+
+/* ===== Stacked Layout ===== */
+.macro-bars-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* ===== Legend ===== */
+.macro-legend {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-top: var(--space-sm);
+}
+
+.macro-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
   font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.macro-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+}
+
+.macro-legend-dot.protein {
+  background: var(--color-protein);
+}
+.macro-legend-dot.carbs {
+  background: var(--color-carbs);
+}
+.macro-legend-dot.fat {
+  background: var(--color-fat);
+}
+.macro-legend-dot.fiber {
+  background: var(--color-fiber);
 }

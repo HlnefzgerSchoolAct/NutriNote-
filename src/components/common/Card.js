@@ -29,12 +29,12 @@ const Card = forwardRef(
     const Component = isInteractive ? motion.div : as;
 
     const baseClasses = [
-      "hf-card",
-      `hf-card--${variant}`,
-      `hf-card--${size}`,
-      hoverable && "hf-card--hoverable",
-      pressable && "hf-card--pressable",
-      noPadding && "hf-card--no-padding",
+      "ds-card",
+      `ds-card--${variant}`,
+      `ds-card--${size}`,
+      hoverable && "ds-card--hoverable",
+      pressable && "ds-card--pressable",
+      noPadding && "ds-card--no-padding",
       className,
     ]
       .filter(Boolean)
@@ -67,11 +67,11 @@ const Card = forwardRef(
         {...motionProps}
         {...props}
       >
-        {header && <div className="hf-card__header">{header}</div>}
+        {header && <div className="ds-card__header">{header}</div>}
 
-        <div className="hf-card__body">{children}</div>
+        <div className="ds-card__body">{children}</div>
 
-        {footer && <div className="hf-card__footer">{footer}</div>}
+        {footer && <div className="ds-card__footer">{footer}</div>}
       </Component>
     );
   },
@@ -86,7 +86,7 @@ export const CardHeader = memo(function CardHeader({
   ...props
 }) {
   return (
-    <div className={`hf-card__header ${className}`} {...props}>
+    <div className={`ds-card__header ${className}`} {...props}>
       {children}
     </div>
   );
@@ -98,7 +98,7 @@ export const CardBody = memo(function CardBody({
   ...props
 }) {
   return (
-    <div className={`hf-card__content ${className}`} {...props}>
+    <div className={`ds-card__content ${className}`} {...props}>
       {children}
     </div>
   );
@@ -110,7 +110,7 @@ export const CardFooter = memo(function CardFooter({
   ...props
 }) {
   return (
-    <div className={`hf-card__footer ${className}`} {...props}>
+    <div className={`ds-card__footer ${className}`} {...props}>
       {children}
     </div>
   );

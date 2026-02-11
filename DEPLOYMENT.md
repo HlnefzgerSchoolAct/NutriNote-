@@ -1,8 +1,8 @@
-# HawkFuel - Vercel Deployment Guide
+# NutriNote+ - Vercel Deployment Guide
 
 ## Prerequisites
 
-1. A GitHub account with the HawkFuel repository
+1. A GitHub account with the NutriNote+ repository
 2. A [Vercel](https://vercel.com) account (free tier works)
 3. An OpenRouter API key (for AI nutrition estimation)
 
@@ -10,7 +10,7 @@
 
 ### Option 1: One-Click Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/HlnefzgerSchoolAct/HawkFuel)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/HlnefzgerSchoolAct/NutriNote+)
 
 ### Option 2: Manual Deploy
 
@@ -42,7 +42,7 @@
 ## Project Structure for Vercel
 
 ```
-HawkFuel/
+NutriNote+/
 ├── api/                     # Vercel Serverless Functions
 │   └── estimate-nutrition.js   # AI nutrition endpoint
 ├── build/                   # Production build (auto-generated)

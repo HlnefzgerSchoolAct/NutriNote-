@@ -1,0 +1,280 @@
+/* ============================================
+   M3 SEGMENTED BUTTON COMPONENT
+   Single and multi-select toggle buttons
+   ============================================ */
+
+.m3-segmented-button-group {
+  display: inline-flex;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.m3-segmented-button-group--full-width {
+  display: flex;
+  width: 100%;
+}
+
+/* ============================================
+   SEGMENTED BUTTON
+   ============================================ */
+
+.m3-segmented-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: none;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--m3-font-plain, inherit);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1.25rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+    color 200ms cubic-bezier(0.2, 0, 0, 1);
+  flex: 1;
+  min-width: 0;
+}
+
+/* Divider between buttons */
+.m3-segmented-button:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background-color: var(--md-sys-color-outline);
+  transition: opacity 200ms ease;
+}
+
+/* State layer */
+.m3-segmented-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  pointer-events: none;
+}
+
+.m3-segmented-button:hover::before {
+  opacity: 0.08;
+}
+
+.m3-segmented-button:focus-visible::before {
+  opacity: 0.12;
+}
+
+.m3-segmented-button:active::before {
+  opacity: 0.12;
+}
+
+/* Focus ring */
+.m3-segmented-button:focus-visible {
+  outline: none;
+  z-index: 1;
+}
+
+.m3-segmented-button:focus-visible::after {
+  box-shadow: inset 0 0 0 2px var(--md-sys-color-primary);
+}
+
+/* Selected state */
+.m3-segmented-button--selected {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.m3-segmented-button--selected::after {
+  opacity: 0;
+}
+
+.m3-segmented-button--selected:hover::before {
+  opacity: 0.08;
+}
+
+/* Hide divider when adjacent button is selected */
+.m3-segmented-button--selected + .m3-segmented-button::after,
+.m3-segmented-button:has(+ .m3-segmented-button--selected)::after {
+  opacity: 0;
+}
+
+/* ============================================
+   BUTTON ELEMENTS
+   ============================================ */
+
+/* Check icon container */
+.m3-segmented-button__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  height: 18px;
+  overflow: hidden;
+  transition: width 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.m3-segmented-button--selected .m3-segmented-button__check {
+  width: 18px;
+}
+
+.m3-segmented-button__check svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Icon */
+.m3-segmented-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.m3-segmented-button__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hide icon when check is shown */
+.m3-segmented-button--selected.m3-segmented-button--has-icon
+  .m3-segmented-button__icon {
+  display: none;
+}
+
+/* Label */
+.m3-segmented-button__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
+   SIZES
+   ============================================ */
+
+.m3-segmented-button-group--sm .m3-segmented-button {
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 0.75rem;
+}
+
+.m3-segmented-button-group--lg .m3-segmented-button {
+  min-height: 48px;
+  padding: 0 24px;
+  font-size: 1rem;
+}
+
+/* ============================================
+   ICON ONLY
+   ============================================ */
+
+.m3-segmented-button--icon-only {
+  padding: 0;
+  min-width: 48px;
+}
+
+.m3-segmented-button--icon-only .m3-segmented-button__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.m3-segmented-button--icon-only .m3-segmented-button__icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ============================================
+   DISABLED STATE
+   ============================================ */
+
+.m3-segmented-button:disabled,
+.m3-segmented-button--disabled {
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+/* ============================================
+   DENSITY VARIANTS
+   ============================================ */
+
+/* Compact - tighter spacing */
+.m3-segmented-button-group--compact .m3-segmented-button {
+  min-height: 36px;
+  padding: 0 12px;
+  gap: 4px;
+}
+
+.m3-segmented-button-group--compact .m3-segmented-button__check {
+  width: 16px;
+  height: 16px;
+}
+
+.m3-segmented-button-group--compact
+  .m3-segmented-button--selected
+  .m3-segmented-button__check {
+  width: 16px;
+}
+
+/* ============================================
+   ANIMATION
+   ============================================ */
+
+@keyframes m3-segmented-check-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.m3-segmented-button--selected .m3-segmented-button__check svg {
+  animation: m3-segmented-check-in 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 599px) {
+  .m3-segmented-button-group--responsive {
+    display: flex;
+    width: 100%;
+  }
+
+  .m3-segmented-button-group--responsive .m3-segmented-button__label {
+    font-size: 0.75rem;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-segmented-button,
+  .m3-segmented-button::before,
+  .m3-segmented-button::after,
+  .m3-segmented-button__check {
+    transition: none;
+  }
+
+  .m3-segmented-button--selected .m3-segmented-button__check svg {
+    animation: none;
+  }
+}

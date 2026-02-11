@@ -23,7 +23,7 @@
 }
 
 .error-boundary__icon {
-  font-size: 64px;
+  font-size: var(--text-5xl);
   margin-bottom: var(--space-4);
 }
 
@@ -59,7 +59,7 @@
 
 .error-boundary__btn--primary {
   background: var(--color-primary-500);
-  color: white;
+  color: var(--text-inverse);
 }
 
 .error-boundary__btn--primary:hover {
@@ -67,7 +67,7 @@
 }
 
 .error-boundary__btn--secondary {
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   color: var(--text-primary);
   border: 1px solid var(--border-default);
 }

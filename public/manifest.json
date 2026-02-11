@@ -1,6 +1,9 @@
 {
-  "short_name": "Hawk Fuel",
-  "name": "Hawk Fuel - Calorie Tracker for Students",
+  "short_name": "NutriNote",
+  "name": "NutriNote+ - Smart Calorie Tracker",
+  "description": "Track your daily nutrition with AI-powered food recognition, barcode scanning, and personalized insights. Achieve your health goals with ease.",
+  "theme_color": "#6750a4",
+  "background_color": "#1c1b1f",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,51 +13,100 @@
     {
       "src": "icon-72x72.png",
       "type": "image/png",
-      "sizes": "72x72"
+      "sizes": "72x72",
+      "purpose": "any"
     },
     {
       "src": "icon-96x96.png",
       "type": "image/png",
-      "sizes": "96x96"
+      "sizes": "96x96",
+      "purpose": "any"
     },
     {
       "src": "icon-128x128.png",
       "type": "image/png",
-      "sizes": "128x128"
+      "sizes": "128x128",
+      "purpose": "any"
     },
     {
       "src": "icon-144x144.png",
       "type": "image/png",
-      "sizes": "144x144"
+      "sizes": "144x144",
+      "purpose": "any"
     },
     {
       "src": "icon-152x152.png",
       "type": "image/png",
-      "sizes": "152x152"
+      "sizes": "152x152",
+      "purpose": "any"
     },
     {
       "src": "icon-192x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any maskable"
     },
     {
       "src": "icon-256x256.png",
       "type": "image/png",
-      "sizes": "256x256"
+      "sizes": "256x256",
+      "purpose": "any"
     },
     {
       "src": "icon-384x384.png",
       "type": "image/png",
-      "sizes": "384x384"
+      "sizes": "384x384",
+      "purpose": "any"
     },
     {
       "src": "icon-512x512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#FF6B35",
-  "background_color": "#0A0A0A"
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "categories": ["health", "fitness", "lifestyle"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "Log Food",
+      "short_name": "Log",
+      "description": "Quickly log a new food item",
+      "url": "/log?action=add",
+      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "View History",
+      "short_name": "History",
+      "description": "View your nutrition history",
+      "url": "/history",
+      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Scan Barcode",
+      "short_name": "Scan",
+      "description": "Scan a food barcode",
+      "url": "/log?action=scan",
+      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "My Recipes",
+      "short_name": "Recipes",
+      "description": "View and manage your recipes",
+      "url": "/recipes",
+      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
 }

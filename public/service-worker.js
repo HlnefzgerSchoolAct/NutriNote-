@@ -1,11 +1,11 @@
-const CACHE_NAME = "hawkfuel-cache-v1";
+const CACHE_NAME = "nutrinoteplus-cache-v2";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
   "/manifest.json",
-  "/LogoWD.jpg",
-  "/logo192.png",
-  "/logo512.png",
+  "/favicon.ico",
+  "/icon-192x192.png",
+  "/icon-512x512.png",
 ];
 
 self.addEventListener("install", (event) => {

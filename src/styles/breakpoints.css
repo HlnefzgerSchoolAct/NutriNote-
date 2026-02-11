@@ -1,0 +1,794 @@
+/* ============================================
+   M3 RESPONSIVE BREAKPOINTS SYSTEM
+   HawkFuel - Adaptive Layout & Container Queries
+   ============================================ */
+
+:root {
+  /* ========================================
+     BREAKPOINT TOKENS
+     M3 Window Size Classes
+     ======================================== */
+
+  /* Compact: 0-599px (phones in portrait) */
+  --m3-bp-compact-max: 599px;
+
+  /* Medium: 600-839px (tablets, phones landscape) */
+  --m3-bp-medium-min: 600px;
+  --m3-bp-medium-max: 839px;
+
+  /* Expanded: 840-1199px (tablets landscape, small laptops) */
+  --m3-bp-expanded-min: 840px;
+  --m3-bp-expanded-max: 1199px;
+
+  /* Large: 1200-1599px (laptops, desktops) */
+  --m3-bp-large-min: 1200px;
+  --m3-bp-large-max: 1599px;
+
+  /* Extra Large: 1600px+ (large desktops, TVs) */
+  --m3-bp-xlarge-min: 1600px;
+
+  /* ========================================
+     LAYOUT CONSTRAINTS
+     ======================================== */
+
+  /* Content width limits */
+  --m3-content-compact: 100%;
+  --m3-content-medium: 600px;
+  --m3-content-expanded: 840px;
+  --m3-content-large: 1040px;
+  --m3-content-xlarge: 1280px;
+  --m3-content-max: 1400px;
+
+  /* Navigation dimensions */
+  --m3-nav-bar-height: 80px;
+  --m3-nav-rail-width: 80px;
+  --m3-nav-drawer-width: 360px;
+  --m3-bottom-nav-height: 80px;
+
+  /* App bar heights */
+  --m3-top-app-bar-small: 64px;
+  --m3-top-app-bar-medium: 112px;
+  --m3-top-app-bar-large: 152px;
+
+  /* ========================================
+     GRID SYSTEM
+     ======================================== */
+
+  /* Column counts per breakpoint */
+  --m3-columns-compact: 4;
+  --m3-columns-medium: 8;
+  --m3-columns-expanded: 12;
+
+  /* Margins per breakpoint */
+  --m3-margin-compact: 16px;
+  --m3-margin-medium: 24px;
+  --m3-margin-expanded: 24px;
+  --m3-margin-large: 24px;
+
+  /* Gutters (gaps between columns) */
+  --m3-gutter-compact: 8px;
+  --m3-gutter-medium: 16px;
+  --m3-gutter-expanded: 24px;
+
+  /* Default responsive values (mobile-first) */
+  --m3-columns: var(--m3-columns-compact);
+  --m3-margin: var(--m3-margin-compact);
+  --m3-gutter: var(--m3-gutter-compact);
+}
+
+/* ============================================
+   MEDIA QUERY MIXINS (via classes)
+   ============================================ */
+
+/* Compact only (mobile phones) */
+@media (max-width: 599px) {
+  :root {
+    --m3-columns: var(--m3-columns-compact);
+    --m3-margin: var(--m3-margin-compact);
+    --m3-gutter: var(--m3-gutter-compact);
+    --m3-current-bp: "compact";
+  }
+
+  .m3-hide-compact {
+    display: none !important;
+  }
+  .m3-show-compact {
+    display: block !important;
+  }
+  .m3-show-compact-flex {
+    display: flex !important;
+  }
+  .m3-show-compact-grid {
+    display: grid !important;
+  }
+}
+
+/* Medium (tablets portrait, large phones) */
+@media (min-width: 600px) and (max-width: 839px) {
+  :root {
+    --m3-columns: var(--m3-columns-medium);
+    --m3-margin: var(--m3-margin-medium);
+    --m3-gutter: var(--m3-gutter-medium);
+    --m3-current-bp: "medium";
+  }
+
+  .m3-hide-medium {
+    display: none !important;
+  }
+  .m3-show-medium {
+    display: block !important;
+  }
+  .m3-show-medium-flex {
+    display: flex !important;
+  }
+  .m3-show-medium-grid {
+    display: grid !important;
+  }
+}
+
+/* Expanded (tablets landscape, small laptops) */
+@media (min-width: 840px) and (max-width: 1199px) {
+  :root {
+    --m3-columns: var(--m3-columns-expanded);
+    --m3-margin: var(--m3-margin-expanded);
+    --m3-gutter: var(--m3-gutter-expanded);
+    --m3-current-bp: "expanded";
+  }
+
+  .m3-hide-expanded {
+    display: none !important;
+  }
+  .m3-show-expanded {
+    display: block !important;
+  }
+  .m3-show-expanded-flex {
+    display: flex !important;
+  }
+  .m3-show-expanded-grid {
+    display: grid !important;
+  }
+}
+
+/* Large (laptops, desktops) */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  :root {
+    --m3-columns: var(--m3-columns-expanded);
+    --m3-margin: var(--m3-margin-large);
+    --m3-gutter: var(--m3-gutter-expanded);
+    --m3-current-bp: "large";
+  }
+
+  .m3-hide-large {
+    display: none !important;
+  }
+  .m3-show-large {
+    display: block !important;
+  }
+  .m3-show-large-flex {
+    display: flex !important;
+  }
+  .m3-show-large-grid {
+    display: grid !important;
+  }
+}
+
+/* Extra Large (large desktops) */
+@media (min-width: 1600px) {
+  :root {
+    --m3-columns: var(--m3-columns-expanded);
+    --m3-margin: var(--m3-margin-large);
+    --m3-gutter: var(--m3-gutter-expanded);
+    --m3-current-bp: "xlarge";
+  }
+
+  .m3-hide-xlarge {
+    display: none !important;
+  }
+  .m3-show-xlarge {
+    display: block !important;
+  }
+  .m3-show-xlarge-flex {
+    display: flex !important;
+  }
+  .m3-show-xlarge-grid {
+    display: grid !important;
+  }
+}
+
+/* ============================================
+   COMMON BREAKPOINT COMBINATIONS
+   ============================================ */
+
+/* Mobile and below (compact only) */
+@media (max-width: 599px) {
+  .m3-mobile-only {
+    display: block;
+  }
+}
+@media (min-width: 600px) {
+  .m3-mobile-only {
+    display: none !important;
+  }
+}
+
+/* Tablet and above (medium+) */
+@media (max-width: 599px) {
+  .m3-tablet-up {
+    display: none !important;
+  }
+}
+@media (min-width: 600px) {
+  .m3-tablet-up {
+    display: block;
+  }
+  .m3-tablet-up-flex {
+    display: flex;
+  }
+  .m3-tablet-up-grid {
+    display: grid;
+  }
+}
+
+/* Desktop and above (expanded+) */
+@media (max-width: 839px) {
+  .m3-desktop-up {
+    display: none !important;
+  }
+}
+@media (min-width: 840px) {
+  .m3-desktop-up {
+    display: block;
+  }
+  .m3-desktop-up-flex {
+    display: flex;
+  }
+  .m3-desktop-up-grid {
+    display: grid;
+  }
+}
+
+/* Large desktop and above */
+@media (max-width: 1199px) {
+  .m3-large-up {
+    display: none !important;
+  }
+}
+@media (min-width: 1200px) {
+  .m3-large-up {
+    display: block;
+  }
+  .m3-large-up-flex {
+    display: flex;
+  }
+  .m3-large-up-grid {
+    display: grid;
+  }
+}
+
+/* ============================================
+   CONTAINER QUERIES
+   Component-level responsiveness
+   ============================================ */
+
+/* Container query setup */
+.m3-container {
+  container-type: inline-size;
+}
+
+.m3-container-named {
+  container-type: inline-size;
+  container-name: main;
+}
+
+/* Widget container */
+.m3-widget-container {
+  container-type: inline-size;
+  container-name: widget;
+}
+
+/* Card container */
+.m3-card-container {
+  container-type: inline-size;
+  container-name: card;
+}
+
+/* Container query breakpoints */
+@container (min-width: 200px) {
+  .m3-cq-200-show {
+    display: block;
+  }
+  .m3-cq-200-hide {
+    display: none;
+  }
+}
+
+@container (min-width: 300px) {
+  .m3-cq-300-show {
+    display: block;
+  }
+  .m3-cq-300-hide {
+    display: none;
+  }
+  .m3-cq-300-flex {
+    display: flex;
+  }
+}
+
+@container (min-width: 400px) {
+  .m3-cq-400-show {
+    display: block;
+  }
+  .m3-cq-400-hide {
+    display: none;
+  }
+  .m3-cq-400-flex {
+    display: flex;
+  }
+  .m3-cq-400-grid {
+    display: grid;
+  }
+}
+
+@container (min-width: 500px) {
+  .m3-cq-500-show {
+    display: block;
+  }
+  .m3-cq-500-hide {
+    display: none;
+  }
+  .m3-cq-500-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container (min-width: 600px) {
+  .m3-cq-600-show {
+    display: block;
+  }
+  .m3-cq-600-hide {
+    display: none;
+  }
+  .m3-cq-600-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .m3-cq-600-3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@container (min-width: 800px) {
+  .m3-cq-800-show {
+    display: block;
+  }
+  .m3-cq-800-hide {
+    display: none;
+  }
+  .m3-cq-800-3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .m3-cq-800-4col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Named container queries for widgets */
+@container widget (max-width: 199px) {
+  .widget-compact {
+    display: block;
+  }
+  .widget-expanded {
+    display: none;
+  }
+}
+
+@container widget (min-width: 200px) {
+  .widget-compact {
+    display: none;
+  }
+  .widget-expanded {
+    display: block;
+  }
+}
+
+/* ============================================
+   GRID LAYOUT UTILITIES
+   ============================================ */
+
+.m3-grid {
+  display: grid;
+  gap: var(--m3-gutter);
+  padding-inline: var(--m3-margin);
+}
+
+.m3-grid-auto {
+  display: grid;
+  gap: var(--m3-gutter);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.m3-grid-2 {
+  display: grid;
+  gap: var(--m3-gutter);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.m3-grid-3 {
+  display: grid;
+  gap: var(--m3-gutter);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.m3-grid-4 {
+  display: grid;
+  gap: var(--m3-gutter);
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Responsive grid that adapts to breakpoint */
+.m3-grid-responsive {
+  display: grid;
+  gap: var(--m3-gutter);
+  grid-template-columns: repeat(var(--m3-columns), 1fr);
+}
+
+/* ============================================
+   FLEX LAYOUT UTILITIES
+   ============================================ */
+
+.m3-flex {
+  display: flex;
+}
+.m3-flex-col {
+  flex-direction: column;
+}
+.m3-flex-row {
+  flex-direction: row;
+}
+.m3-flex-wrap {
+  flex-wrap: wrap;
+}
+.m3-flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.m3-items-start {
+  align-items: flex-start;
+}
+.m3-items-center {
+  align-items: center;
+}
+.m3-items-end {
+  align-items: flex-end;
+}
+.m3-items-stretch {
+  align-items: stretch;
+}
+
+.m3-justify-start {
+  justify-content: flex-start;
+}
+.m3-justify-center {
+  justify-content: center;
+}
+.m3-justify-end {
+  justify-content: flex-end;
+}
+.m3-justify-between {
+  justify-content: space-between;
+}
+.m3-justify-around {
+  justify-content: space-around;
+}
+
+.m3-gap-0 {
+  gap: 0;
+}
+.m3-gap-1 {
+  gap: 4px;
+}
+.m3-gap-2 {
+  gap: 8px;
+}
+.m3-gap-3 {
+  gap: 12px;
+}
+.m3-gap-4 {
+  gap: 16px;
+}
+.m3-gap-6 {
+  gap: 24px;
+}
+.m3-gap-8 {
+  gap: 32px;
+}
+
+.m3-flex-1 {
+  flex: 1;
+}
+.m3-flex-auto {
+  flex: auto;
+}
+.m3-flex-none {
+  flex: none;
+}
+.m3-shrink-0 {
+  flex-shrink: 0;
+}
+.m3-grow-0 {
+  flex-grow: 0;
+}
+
+/* ============================================
+   SPACING UTILITIES
+   ============================================ */
+
+/* Margin */
+.m3-m-0 {
+  margin: 0;
+}
+.m3-m-1 {
+  margin: 4px;
+}
+.m3-m-2 {
+  margin: 8px;
+}
+.m3-m-3 {
+  margin: 12px;
+}
+.m3-m-4 {
+  margin: 16px;
+}
+.m3-m-6 {
+  margin: 24px;
+}
+.m3-m-8 {
+  margin: 32px;
+}
+.m3-m-auto {
+  margin: auto;
+}
+
+.m3-mx-auto {
+  margin-inline: auto;
+}
+.m3-my-auto {
+  margin-block: auto;
+}
+
+.m3-mt-0 {
+  margin-top: 0;
+}
+.m3-mt-2 {
+  margin-top: 8px;
+}
+.m3-mt-4 {
+  margin-top: 16px;
+}
+.m3-mt-6 {
+  margin-top: 24px;
+}
+.m3-mt-8 {
+  margin-top: 32px;
+}
+
+.m3-mb-0 {
+  margin-bottom: 0;
+}
+.m3-mb-2 {
+  margin-bottom: 8px;
+}
+.m3-mb-4 {
+  margin-bottom: 16px;
+}
+.m3-mb-6 {
+  margin-bottom: 24px;
+}
+.m3-mb-8 {
+  margin-bottom: 32px;
+}
+
+.m3-ml-auto {
+  margin-left: auto;
+}
+.m3-mr-auto {
+  margin-right: auto;
+}
+
+/* Padding */
+.m3-p-0 {
+  padding: 0;
+}
+.m3-p-1 {
+  padding: 4px;
+}
+.m3-p-2 {
+  padding: 8px;
+}
+.m3-p-3 {
+  padding: 12px;
+}
+.m3-p-4 {
+  padding: 16px;
+}
+.m3-p-6 {
+  padding: 24px;
+}
+.m3-p-8 {
+  padding: 32px;
+}
+
+.m3-px-0 {
+  padding-inline: 0;
+}
+.m3-px-2 {
+  padding-inline: 8px;
+}
+.m3-px-4 {
+  padding-inline: 16px;
+}
+.m3-px-6 {
+  padding-inline: 24px;
+}
+
+.m3-py-0 {
+  padding-block: 0;
+}
+.m3-py-2 {
+  padding-block: 8px;
+}
+.m3-py-4 {
+  padding-block: 16px;
+}
+.m3-py-6 {
+  padding-block: 24px;
+}
+
+/* ============================================
+   PAGE LAYOUT PATTERNS
+   ============================================ */
+
+/* Full page container */
+.m3-page {
+  min-height: 100dvh;
+  padding-inline: var(--m3-margin);
+  padding-block: var(--m3-margin);
+}
+
+/* Page with bottom nav padding */
+.m3-page-with-nav {
+  min-height: 100dvh;
+  padding-inline: var(--m3-margin);
+  padding-top: var(--m3-margin);
+  padding-bottom: calc(
+    var(--m3-bottom-nav-height) + var(--m3-margin) +
+      env(safe-area-inset-bottom, 0px)
+  );
+}
+
+/* Centered content container */
+.m3-content-centered {
+  max-width: var(--m3-content-max);
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* ============================================
+   NAVIGATION LAYOUT PATTERNS
+   ============================================ */
+
+/* App shell with rail navigation (tablet) */
+.m3-shell-rail {
+  display: grid;
+  grid-template-columns: var(--m3-nav-rail-width) 1fr;
+  min-height: 100dvh;
+}
+
+/* App shell with drawer navigation (desktop) */
+.m3-shell-drawer {
+  display: grid;
+  grid-template-columns: var(--m3-nav-drawer-width) 1fr;
+  min-height: 100dvh;
+}
+
+/* Master-detail layout (tablet+) */
+.m3-master-detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--m3-gutter);
+}
+
+@media (min-width: 840px) {
+  .m3-master-detail {
+    grid-template-columns: 360px 1fr;
+  }
+}
+
+@media (min-width: 1200px) {
+  .m3-master-detail {
+    grid-template-columns: 400px 1fr;
+  }
+}
+
+/* ============================================
+   SAFE AREAS
+   ============================================ */
+
+.m3-safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.m3-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.m3-safe-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.m3-safe-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+.m3-safe-all {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+/* ============================================
+   WIDTH/HEIGHT UTILITIES
+   ============================================ */
+
+.m3-w-full {
+  width: 100%;
+}
+.m3-w-auto {
+  width: auto;
+}
+.m3-w-screen {
+  width: 100%;
+  max-width: 100vw;
+}
+.m3-max-w-full {
+  max-width: 100%;
+}
+.m3-max-w-content {
+  max-width: var(--m3-content-max);
+}
+
+.m3-h-full {
+  height: 100%;
+}
+.m3-h-auto {
+  height: auto;
+}
+.m3-h-screen {
+  height: 100vh;
+}
+.m3-h-dvh {
+  height: 100dvh;
+}
+.m3-min-h-screen {
+  min-height: 100vh;
+}
+.m3-min-h-dvh {
+  min-height: 100dvh;
+}
+
+/* ============================================
+   ASPECT RATIOS
+   ============================================ */
+
+.m3-aspect-square {
+  aspect-ratio: 1;
+}
+.m3-aspect-video {
+  aspect-ratio: 16 / 9;
+}
+.m3-aspect-photo {
+  aspect-ratio: 4 / 3;
+}
+.m3-aspect-portrait {
+  aspect-ratio: 3 / 4;
+}

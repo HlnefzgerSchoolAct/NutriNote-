@@ -96,31 +96,31 @@ const SwipeableItem = ({
 
   if (disabled) {
     return (
-      <div className={`hf-swipeable ${className}`}>
-        <div className="hf-swipeable__content">{children}</div>
+      <div className={`ds-swipeable ${className}`}>
+        <div className="ds-swipeable__content">{children}</div>
       </div>
     );
   }
 
   return (
-    <div className={`hf-swipeable ${className}`}>
+    <div className={`ds-swipeable ${className}`}>
       {/* Left actions (revealed on right swipe) */}
       {hasLeftActions && (
         <motion.div
-          className="hf-swipeable__actions hf-swipeable__actions--left"
+          className="ds-swipeable__actions ds-swipeable__actions--left"
           style={{ opacity: isOpen === "left" ? 1 : leftOpacity }}
         >
           {leftActionItems.map((action, index) => (
             <motion.button
               key={index}
-              className={`hf-swipeable__action hf-swipeable__action--${action.variant || "default"}`}
+              className={`ds-swipeable__action ds-swipeable__action--${action.variant || "default"}`}
               onClick={action.onClick}
               style={{ scale: isOpen === "left" ? 1 : leftScale }}
               whileTap={{ scale: 0.9 }}
               aria-label={action.label}
             >
               {action.icon}
-              <span className="hf-swipeable__action-label">{action.label}</span>
+              <span className="ds-swipeable__action-label">{action.label}</span>
             </motion.button>
           ))}
         </motion.div>
@@ -129,20 +129,20 @@ const SwipeableItem = ({
       {/* Right actions (revealed on left swipe) */}
       {hasRightActions && (
         <motion.div
-          className="hf-swipeable__actions hf-swipeable__actions--right"
+          className="ds-swipeable__actions ds-swipeable__actions--right"
           style={{ opacity: isOpen === "right" ? 1 : rightOpacity }}
         >
           {rightActionItems.map((action, index) => (
             <motion.button
               key={index}
-              className={`hf-swipeable__action hf-swipeable__action--${action.variant || "default"}`}
+              className={`ds-swipeable__action ds-swipeable__action--${action.variant || "default"}`}
               onClick={action.onClick}
               style={{ scale: isOpen === "right" ? 1 : rightScale }}
               whileTap={{ scale: 0.9 }}
               aria-label={action.label}
             >
               {action.icon}
-              <span className="hf-swipeable__action-label">{action.label}</span>
+              <span className="ds-swipeable__action-label">{action.label}</span>
             </motion.button>
           ))}
         </motion.div>
@@ -150,7 +150,7 @@ const SwipeableItem = ({
 
       {/* Main content */}
       <motion.div
-        className="hf-swipeable__content"
+        className="ds-swipeable__content"
         drag="x"
         dragConstraints={{
           left: hasRightActions ? -160 : 0,
@@ -177,17 +177,17 @@ const SwipeableItem = ({
  */
 export const SwipeHint = ({ onDismiss }) => (
   <motion.div
-    className="hf-swipe-hint"
+    className="ds-swipe-hint"
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0 }}
     transition={{ delay: 1 }}
   >
-    <div className="hf-swipe-hint__content">
+    <div className="ds-swipe-hint__content">
       <MoreHorizontal size={16} />
       <span>Swipe items for more options</span>
     </div>
-    <button className="hf-swipe-hint__dismiss" onClick={onDismiss}>
+    <button className="ds-swipe-hint__dismiss" onClick={onDismiss}>
       Got it
     </button>
   </motion.div>

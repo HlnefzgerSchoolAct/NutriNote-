@@ -29,14 +29,14 @@ const MacroBar = ({
 
   // Color mapping
   const colorClasses = {
-    primary: "hf-macro-bar--primary",
-    protein: "hf-macro-bar--protein",
-    carbs: "hf-macro-bar--carbs",
-    fat: "hf-macro-bar--fat",
-    calories: "hf-macro-bar--calories",
-    success: "hf-macro-bar--success",
-    warning: "hf-macro-bar--warning",
-    danger: "hf-macro-bar--danger",
+    primary: "ds-macro-bar--primary",
+    protein: "ds-macro-bar--protein",
+    carbs: "ds-macro-bar--carbs",
+    fat: "ds-macro-bar--fat",
+    calories: "ds-macro-bar--calories",
+    success: "ds-macro-bar--success",
+    warning: "ds-macro-bar--warning",
+    danger: "ds-macro-bar--danger",
   };
 
   const displayValue = Math.round(value);
@@ -44,7 +44,7 @@ const MacroBar = ({
 
   return (
     <div
-      className={`hf-macro-bar ${colorClasses[color] || ""} hf-macro-bar--${size} ${isOverLimit ? "hf-macro-bar--over" : ""} ${className}`}
+      className={`ds-macro-bar ${colorClasses[color] || ""} ds-macro-bar--${size} ${isOverLimit ? "ds-macro-bar--over" : ""} ${className}`}
       role="progressbar"
       aria-valuenow={value}
       aria-valuemin={0}
@@ -52,18 +52,18 @@ const MacroBar = ({
       aria-label={label}
     >
       {/* Header */}
-      <div className="hf-macro-bar__header">
-        {label && <span className="hf-macro-bar__label">{label}</span>}
+      <div className="ds-macro-bar__header">
+        {label && <span className="ds-macro-bar__label">{label}</span>}
         {showValue && (
-          <span className="hf-macro-bar__values">
-            <span className="hf-macro-bar__current">{displayValue}</span>
-            <span className="hf-macro-bar__separator">/</span>
-            <span className="hf-macro-bar__target">
+          <span className="ds-macro-bar__values">
+            <span className="ds-macro-bar__current">{displayValue}</span>
+            <span className="ds-macro-bar__separator">/</span>
+            <span className="ds-macro-bar__target">
               {displayMax}
               {unit}
             </span>
             {showPercentage && (
-              <span className="hf-macro-bar__percentage">
+              <span className="ds-macro-bar__percentage">
                 ({Math.round(percentage)}%)
               </span>
             )}
@@ -72,9 +72,9 @@ const MacroBar = ({
       </div>
 
       {/* Progress Track */}
-      <div className="hf-macro-bar__track">
+      <div className="ds-macro-bar__track">
         <motion.div
-          className="hf-macro-bar__fill"
+          className="ds-macro-bar__fill"
           initial={{ width: 0 }}
           animate={{
             width: mounted && animated ? `${Math.min(percentage, 100)}%` : 0,
@@ -88,7 +88,7 @@ const MacroBar = ({
 
         {/* Glow effect */}
         <motion.div
-          className="hf-macro-bar__glow"
+          className="ds-macro-bar__glow"
           initial={{ width: 0 }}
           animate={{
             width: mounted && animated ? `${Math.min(percentage, 100)}%` : 0,
@@ -103,12 +103,12 @@ const MacroBar = ({
         {/* Overage indicator */}
         {isOverLimit && (
           <motion.div
-            className="hf-macro-bar__overage"
+            className="ds-macro-bar__overage"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <span className="hf-macro-bar__overage-text">
+            <span className="ds-macro-bar__overage-text">
               +{Math.round(value - max)}
             </span>
           </motion.div>
@@ -132,7 +132,7 @@ export const MacroBarGroup = ({
   showLabels = true,
   className = "",
 }) => (
-  <div className={`hf-macro-bar-group ${className}`}>
+  <div className={`ds-macro-bar-group ${className}`}>
     <MacroBar
       value={protein}
       max={proteinTarget}
@@ -166,36 +166,36 @@ export const CompactMacros = memo(function CompactMacros({
   className = "",
 }) {
   return (
-    <div className={`hf-compact-macros ${className}`}>
+    <div className={`ds-compact-macros ${className}`}>
       {calories !== undefined && (
-        <span className="hf-compact-macros__item hf-compact-macros__item--calories">
-          <span className="hf-compact-macros__value">
+        <span className="ds-compact-macros__item ds-compact-macros__item--calories">
+          <span className="ds-compact-macros__value">
             {Math.round(calories)}
           </span>
-          <span className="hf-compact-macros__unit">cal</span>
+          <span className="ds-compact-macros__unit">cal</span>
         </span>
       )}
       {protein !== undefined && (
-        <span className="hf-compact-macros__item hf-compact-macros__item--protein">
-          <span className="hf-compact-macros__dot" />
-          <span className="hf-compact-macros__value">
+        <span className="ds-compact-macros__item ds-compact-macros__item--protein">
+          <span className="ds-compact-macros__dot" />
+          <span className="ds-compact-macros__value">
             {Math.round(protein)}g
           </span>
-          <span className="hf-compact-macros__label">P</span>
+          <span className="ds-compact-macros__label">P</span>
         </span>
       )}
       {carbs !== undefined && (
-        <span className="hf-compact-macros__item hf-compact-macros__item--carbs">
-          <span className="hf-compact-macros__dot" />
-          <span className="hf-compact-macros__value">{Math.round(carbs)}g</span>
-          <span className="hf-compact-macros__label">C</span>
+        <span className="ds-compact-macros__item ds-compact-macros__item--carbs">
+          <span className="ds-compact-macros__dot" />
+          <span className="ds-compact-macros__value">{Math.round(carbs)}g</span>
+          <span className="ds-compact-macros__label">C</span>
         </span>
       )}
       {fat !== undefined && (
-        <span className="hf-compact-macros__item hf-compact-macros__item--fat">
-          <span className="hf-compact-macros__dot" />
-          <span className="hf-compact-macros__value">{Math.round(fat)}g</span>
-          <span className="hf-compact-macros__label">F</span>
+        <span className="ds-compact-macros__item ds-compact-macros__item--fat">
+          <span className="ds-compact-macros__dot" />
+          <span className="ds-compact-macros__value">{Math.round(fat)}g</span>
+          <span className="ds-compact-macros__label">F</span>
         </span>
       )}
     </div>

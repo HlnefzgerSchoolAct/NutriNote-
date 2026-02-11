@@ -32,13 +32,13 @@ const Button = forwardRef(
     const Component = as === "a" ? motion.a : motion.button;
 
     const baseClasses = [
-      "hf-btn",
-      `hf-btn--${variant}`,
-      `hf-btn--${size}`,
-      fullWidth && "hf-btn--full-width",
-      iconOnly && "hf-btn--icon-only",
-      loading && "hf-btn--loading",
-      disabled && "hf-btn--disabled",
+      "ds-btn",
+      `ds-btn--${variant}`,
+      `ds-btn--${size}`,
+      fullWidth && "ds-btn--full-width",
+      iconOnly && "ds-btn--icon-only",
+      loading && "ds-btn--loading",
+      disabled && "ds-btn--disabled",
       className,
     ]
       .filter(Boolean)
@@ -75,11 +75,11 @@ const Button = forwardRef(
         {...props}
       >
         {loading && (
-          <span className="hf-btn__spinner" aria-hidden="true">
+          <span className="ds-btn__spinner" aria-hidden="true">
             <svg
               viewBox="0 0 24 24"
               fill="none"
-              className="hf-btn__spinner-icon"
+              className="ds-btn__spinner-icon"
             >
               <circle
                 cx="12"
@@ -96,17 +96,17 @@ const Button = forwardRef(
         )}
 
         {!loading && leftIcon && (
-          <span className="hf-btn__icon hf-btn__icon--left" aria-hidden="true">
+          <span className="ds-btn__icon ds-btn__icon--left" aria-hidden="true">
             {leftIcon}
           </span>
         )}
 
-        {!iconOnly && <span className="hf-btn__text">{children}</span>}
+        {!iconOnly && <span className="ds-btn__text">{children}</span>}
 
         {iconOnly && !loading && children}
 
         {!loading && rightIcon && (
-          <span className="hf-btn__icon hf-btn__icon--right" aria-hidden="true">
+          <span className="ds-btn__icon ds-btn__icon--right" aria-hidden="true">
             {rightIcon}
           </span>
         )}

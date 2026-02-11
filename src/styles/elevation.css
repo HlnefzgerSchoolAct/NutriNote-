@@ -1,0 +1,392 @@
+/* ============================================
+   M3 ELEVATION SYSTEM
+   HawkFuel - Tonal Surface & Shadow Hierarchy
+   ============================================ */
+
+:root {
+  /* ========================================
+     M3 ELEVATION LEVELS
+     Using tonal surfaces instead of shadows
+     ======================================== */
+
+  /* Level 0 - Base surface */
+  --m3-elevation-0: var(--md-sys-color-surface);
+
+  /* Level 1 - Cards, sheets */
+  --m3-elevation-1: var(--md-sys-color-surface-container-low);
+
+  /* Level 2 - Navigation drawers, bottom sheets */
+  --m3-elevation-2: var(--md-sys-color-surface-container);
+
+  /* Level 3 - Navigation bars, FAB */
+  --m3-elevation-3: var(--md-sys-color-surface-container-high);
+
+  /* Level 4 - Dialogs, menus */
+  --m3-elevation-4: var(--md-sys-color-surface-container-highest);
+
+  /* Level 5 - Elevated dialogs */
+  --m3-elevation-5: var(--md-sys-color-surface-container-highest);
+
+  /* ========================================
+     SHADOW TOKENS
+     Subtle shadows for depth enhancement
+     ======================================== */
+
+  /* Level shadows - subtle depth cues */
+  --m3-shadow-0: none;
+
+  --m3-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  --m3-shadow-2:
+    0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+
+  --m3-shadow-3:
+    0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.12),
+    0 8px 16px rgba(0, 0, 0, 0.08);
+
+  --m3-shadow-4:
+    0 2px 4px rgba(0, 0, 0, 0.08), 0 6px 12px rgba(0, 0, 0, 0.12),
+    0 12px 24px rgba(0, 0, 0, 0.1);
+
+  --m3-shadow-5:
+    0 4px 8px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.12),
+    0 16px 32px rgba(0, 0, 0, 0.12);
+
+  /* ========================================
+     FOCUS & STATE SHADOWS
+     ======================================== */
+
+  --m3-focus-ring: 0 0 0 3px var(--m3-primary-alpha-40);
+  --m3-focus-ring-error: 0 0 0 3px rgba(220, 54, 46, 0.4);
+  --m3-focus-ring-success: 0 0 0 3px rgba(22, 163, 74, 0.4);
+
+  /* Glow effects for emphasis */
+  --m3-glow-primary-sm: 0 0 8px var(--m3-primary-alpha-40);
+  --m3-glow-primary-md: 0 0 16px var(--m3-primary-alpha-40);
+  --m3-glow-primary-lg: 0 0 24px var(--m3-primary-alpha-40);
+
+  --m3-glow-success-sm: 0 0 8px rgba(22, 163, 74, 0.4);
+  --m3-glow-success-md: 0 0 16px rgba(22, 163, 74, 0.4);
+
+  --m3-glow-warning-sm: 0 0 8px rgba(217, 119, 6, 0.4);
+  --m3-glow-error-sm: 0 0 8px rgba(220, 54, 46, 0.4);
+
+  /* ========================================
+     OVERLAY TOKENS
+     For modals, scrims, and disabled states
+     ======================================== */
+
+  --m3-scrim: rgba(0, 0, 0, 0.32);
+  --m3-scrim-light: rgba(0, 0, 0, 0.2);
+  --m3-scrim-heavy: rgba(0, 0, 0, 0.5);
+
+  /* Disabled overlays */
+  --m3-disabled-overlay: rgba(28, 27, 31, 0.12);
+  --m3-disabled-content: rgba(28, 27, 31, 0.38);
+
+  /* ========================================
+     SURFACE TINT
+     Color overlay for elevated surfaces
+     ======================================== */
+
+  --m3-surface-tint: var(--md-sys-color-primary);
+  --m3-surface-tint-opacity-1: 0.05;
+  --m3-surface-tint-opacity-2: 0.08;
+  --m3-surface-tint-opacity-3: 0.11;
+  --m3-surface-tint-opacity-4: 0.12;
+  --m3-surface-tint-opacity-5: 0.14;
+}
+
+/* Dark mode shadow adjustments */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --m3-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.3);
+
+    --m3-shadow-2: 0 2px 6px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    --m3-shadow-3: 0 4px 8px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.25);
+
+    --m3-shadow-4:
+      0 6px 12px rgba(0, 0, 0, 0.35), 0 12px 24px rgba(0, 0, 0, 0.3);
+
+    --m3-shadow-5:
+      0 8px 16px rgba(0, 0, 0, 0.4), 0 16px 32px rgba(0, 0, 0, 0.35);
+
+    --m3-disabled-overlay: rgba(229, 225, 230, 0.12);
+    --m3-disabled-content: rgba(229, 225, 230, 0.38);
+  }
+}
+
+[data-theme="dark"] {
+  --m3-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.3);
+
+  --m3-shadow-2: 0 2px 6px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  --m3-shadow-3: 0 4px 8px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.25);
+
+  --m3-shadow-4: 0 6px 12px rgba(0, 0, 0, 0.35), 0 12px 24px rgba(0, 0, 0, 0.3);
+
+  --m3-shadow-5: 0 8px 16px rgba(0, 0, 0, 0.4), 0 16px 32px rgba(0, 0, 0, 0.35);
+
+  --m3-disabled-overlay: rgba(229, 225, 230, 0.12);
+  --m3-disabled-content: rgba(229, 225, 230, 0.38);
+}
+
+/* ============================================
+   ELEVATION UTILITY CLASSES
+   ============================================ */
+
+.m3-elevation-0 {
+  background-color: var(--m3-elevation-0);
+  box-shadow: var(--m3-shadow-0);
+}
+
+.m3-elevation-1 {
+  background-color: var(--m3-elevation-1);
+  box-shadow: var(--m3-shadow-1);
+}
+
+.m3-elevation-2 {
+  background-color: var(--m3-elevation-2);
+  box-shadow: var(--m3-shadow-2);
+}
+
+.m3-elevation-3 {
+  background-color: var(--m3-elevation-3);
+  box-shadow: var(--m3-shadow-3);
+}
+
+.m3-elevation-4 {
+  background-color: var(--m3-elevation-4);
+  box-shadow: var(--m3-shadow-4);
+}
+
+.m3-elevation-5 {
+  background-color: var(--m3-elevation-5);
+  box-shadow: var(--m3-shadow-5);
+}
+
+/* Shadow-only variants (for custom backgrounds) */
+.m3-shadow-1 {
+  box-shadow: var(--m3-shadow-1);
+}
+.m3-shadow-2 {
+  box-shadow: var(--m3-shadow-2);
+}
+.m3-shadow-3 {
+  box-shadow: var(--m3-shadow-3);
+}
+.m3-shadow-4 {
+  box-shadow: var(--m3-shadow-4);
+}
+.m3-shadow-5 {
+  box-shadow: var(--m3-shadow-5);
+}
+
+/* ============================================
+   INTERACTIVE ELEVATION
+   Elevation changes on interaction
+   ============================================ */
+
+.m3-elevation-interactive {
+  background-color: var(--m3-elevation-1);
+  box-shadow: var(--m3-shadow-1);
+  transition:
+    background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.m3-elevation-interactive:hover {
+  background-color: var(--m3-elevation-2);
+  box-shadow: var(--m3-shadow-2);
+}
+
+.m3-elevation-interactive:active {
+  background-color: var(--m3-elevation-1);
+  box-shadow: var(--m3-shadow-1);
+}
+
+/* Dragging state */
+.m3-elevation-dragging {
+  background-color: var(--m3-elevation-4);
+  box-shadow: var(--m3-shadow-4);
+}
+
+/* ============================================
+   SURFACE COMPONENTS
+   ============================================ */
+
+/* Card surfaces */
+.m3-surface-card {
+  background-color: var(--m3-elevation-1);
+  border-radius: 12px;
+}
+
+.m3-surface-card-elevated {
+  background-color: var(--m3-elevation-1);
+  border-radius: 12px;
+  box-shadow: var(--m3-shadow-1);
+}
+
+.m3-surface-card-filled {
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-radius: 12px;
+}
+
+.m3-surface-card-outlined {
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+}
+
+/* Sheet surfaces */
+.m3-surface-sheet {
+  background-color: var(--m3-elevation-2);
+  border-radius: 28px 28px 0 0;
+  box-shadow: var(--m3-shadow-3);
+}
+
+/* Dialog surfaces */
+.m3-surface-dialog {
+  background-color: var(--m3-elevation-3);
+  border-radius: 28px;
+  box-shadow: var(--m3-shadow-4);
+}
+
+/* Navigation surfaces */
+.m3-surface-nav {
+  background-color: var(--m3-elevation-2);
+}
+
+.m3-surface-nav-elevated {
+  background-color: var(--m3-elevation-2);
+  box-shadow: var(--m3-shadow-2);
+}
+
+/* Menu surfaces */
+.m3-surface-menu {
+  background-color: var(--m3-elevation-2);
+  border-radius: 4px;
+  box-shadow: var(--m3-shadow-2);
+}
+
+/* ============================================
+   SCRIM & OVERLAY
+   ============================================ */
+
+.m3-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--m3-scrim);
+  z-index: var(--z-modal-backdrop, 400);
+}
+
+.m3-scrim-light {
+  background-color: var(--m3-scrim-light);
+}
+
+.m3-scrim-heavy {
+  background-color: var(--m3-scrim-heavy);
+}
+
+/* ============================================
+   DISABLED STATES
+   ============================================ */
+
+.m3-disabled {
+  pointer-events: none;
+  opacity: 0.38;
+}
+
+.m3-disabled-container {
+  background-color: var(--m3-disabled-overlay);
+  color: var(--m3-disabled-content);
+  pointer-events: none;
+}
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+
+.m3-focus-visible:focus-visible {
+  outline: none;
+  box-shadow: var(--m3-focus-ring);
+}
+
+.m3-focus-visible-inset:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--md-sys-color-primary);
+}
+
+/* ============================================
+   GLASS MORPHISM VARIANTS
+   Frosted glass effects for overlays
+   ============================================ */
+
+.m3-glass {
+  background: var(--m3-surface-alpha-80);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.m3-glass-subtle {
+  background: var(--m3-surface-alpha-90);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.m3-glass-heavy {
+  background: var(--m3-surface-alpha-95);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+}
+
+/* ============================================
+   BORDER RADIUS TOKENS
+   M3 shape system
+   ============================================ */
+
+:root {
+  --m3-shape-none: 0;
+  --m3-shape-extra-small: 4px;
+  --m3-shape-small: 8px;
+  --m3-shape-medium: 12px;
+  --m3-shape-large: 16px;
+  --m3-shape-extra-large: 28px;
+  --m3-shape-full: 9999px;
+
+  /* Component-specific shapes */
+  --m3-shape-button: var(--m3-shape-full);
+  --m3-shape-fab: var(--m3-shape-large);
+  --m3-shape-fab-extended: var(--m3-shape-large);
+  --m3-shape-card: var(--m3-shape-medium);
+  --m3-shape-chip: var(--m3-shape-small);
+  --m3-shape-dialog: var(--m3-shape-extra-large);
+  --m3-shape-sheet: var(--m3-shape-extra-large);
+  --m3-shape-menu: var(--m3-shape-extra-small);
+  --m3-shape-text-field: var(--m3-shape-extra-small);
+}
+
+/* Shape utility classes */
+.m3-rounded-none {
+  border-radius: var(--m3-shape-none);
+}
+.m3-rounded-xs {
+  border-radius: var(--m3-shape-extra-small);
+}
+.m3-rounded-sm {
+  border-radius: var(--m3-shape-small);
+}
+.m3-rounded-md {
+  border-radius: var(--m3-shape-medium);
+}
+.m3-rounded-lg {
+  border-radius: var(--m3-shape-large);
+}
+.m3-rounded-xl {
+  border-radius: var(--m3-shape-extra-large);
+}
+.m3-rounded-full {
+  border-radius: var(--m3-shape-full);
+}

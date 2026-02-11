@@ -17,6 +17,8 @@ import {
   Card,
   ProgressRing,
   MacroBar,
+  MicronutrientPanel,
+  NutrientWarnings,
   StaggerContainer,
   StaggerItem,
   SkeletonPage,
@@ -28,6 +30,8 @@ import {
   getTotalCaloriesEaten,
   getTotalCaloriesBurned,
   loadStreakData,
+  getTotalMicronutrients,
+  loadMicronutrientGoals,
 } from "../utils/localStorage";
 
 function HomePage({ userProfile, dailyTarget, macroGoals }) {
@@ -43,6 +47,8 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
     carbs: 0,
     fat: 0,
   });
+  const [currentMicros, setCurrentMicros] = useState({});
+  const [microGoals, setMicroGoals] = useState({});
 
   const loadData = useCallback(() => {
     setIsLoading(true);
@@ -69,8 +75,12 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
     );
     setCurrentMacros(macros);
 
-    // Simulate smooth loading
-    setTimeout(() => setIsLoading(false), 300);
+    // Load micronutrient data
+    setCurrentMicros(getTotalMicronutrients());
+    setMicroGoals(loadMicronutrientGoals());
+
+    // Data loaded
+    setIsLoading(false);
   }, [dailyTarget]);
 
   useEffect(() => {
@@ -210,6 +220,13 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
                   color="fat"
                 />
               </div>
+
+              {/* Micronutrients Panel */}
+              <MicronutrientPanel
+                totals={currentMicros}
+                goals={microGoals}
+                defaultOpen={false}
+              />
             </Card>
           </StaggerItem>
         )}
@@ -346,6 +363,9 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
           </motion.div>
         </StaggerItem>
       </StaggerContainer>
+
+      {/* Micronutrient Warnings */}
+      <NutrientWarnings show={true} autoHide={true} autoHideDelay={15000} />
     </div>
   );
 }

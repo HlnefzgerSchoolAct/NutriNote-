@@ -1,6 +1,6 @@
 /* ========================================
-   Bottom Navigation Bar
-   Mobile-first fixed navigation
+   NutriNote+ - Bottom Navigation Bar
+   Flat Modern Design
 ======================================== */
 
 .bottom-nav-bar {
@@ -8,74 +8,185 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 64px;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-subtle);
-  padding-bottom: env(safe-area-inset-bottom, 0);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  padding: var(--space-sm) 0;
+  padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom, 0));
+  z-index: var(--z-fixed);
 }
 
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex: 1;
-  height: 100%;
-  padding: var(--space-xs) 0;
-  background: none;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
   border: none;
+  background: transparent;
   cursor: pointer;
-  color: var(--text-tertiary);
-  transition: all 0.2s ease;
-  gap: var(--space-xs);
+  transition: color var(--duration-short) var(--ease-emphasized);
+  min-width: 64px;
+  min-height: var(--touch-target-min);
+  border-radius: var(--radius-lg);
   -webkit-tap-highlight-color: transparent;
+  color: var(--text-tertiary);
+  position: relative;
 }
 
-.nav-item:hover {
-  color: var(--text-secondary);
+/* Pill indicator container */
+.nav-item-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 32px;
+  border-radius: var(--radius-pill);
 }
 
-.nav-item.active {
-  color: var(--primary-orange);
-}
-
-.nav-item.active .nav-icon {
-  transform: scale(1.1);
+/* iOS 18-style pill indicator */
+.nav-pill {
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary-100);
+  border-radius: var(--radius-pill);
+  z-index: 0;
 }
 
 .nav-icon {
-  transition: transform 0.2s ease;
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  transition: color var(--duration-short) var(--ease-emphasized);
 }
 
-.nav-label {
-  font-size: 11px;
-  font-weight: var(--font-medium);
-  letter-spacing: 0.3px;
-}
+@media (hover: hover) {
+  .nav-item:hover {
+    color: var(--text-secondary);
+  }
 
-.nav-item.active .nav-label {
-  font-weight: var(--font-semibold);
-}
-
-/* Add safe area padding for notched phones */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .bottom-nav-bar {
-    height: calc(64px + env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
+  .nav-item:hover .nav-item-content {
+    background: var(--surface-container);
+    border-radius: var(--radius-pill);
   }
 }
 
-/* Desktop: Hide bottom nav or show as sidebar option */
-@media (min-width: 1024px) {
+.nav-item:active {
+  /* Scale handled by Framer Motion */
+  background: transparent;
+}
+
+.nav-item:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+.nav-item.active .nav-icon {
+  color: var(--primary);
+}
+
+.nav-label {
+  font-size: var(--text-label-sm);
+  font-weight: var(--font-medium);
+  color: inherit;
+  transition: color var(--duration-short) var(--ease-emphasized);
+}
+
+.nav-item.active .nav-label {
+  color: var(--primary);
+  font-weight: var(--font-semibold);
+}
+
+/* ===== Add Button (Special) ===== */
+.nav-btn-add {
+  position: relative;
+  bottom: 8px;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--text-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-glow-md);
+}
+
+.nav-btn-add:hover {
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-glow-lg);
+}
+
+.nav-btn-add:active {
+  transform: scale(0.92);
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.nav-btn-add:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus), var(--shadow-glow-md);
+}
+
+.nav-btn-add .nav-btn-icon {
+  font-size: var(--text-headline-sm);
+  color: var(--text-inverse);
+}
+
+/* ===== Badge ===== */
+.nav-badge {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 var(--space-1);
+  background: var(--danger);
+  color: var(--text-inverse);
+  font-size: var(--text-label-sm);
+  font-weight: var(--font-bold);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Responsive ===== */
+@media (min-width: 1025px) {
   .bottom-nav-bar {
-    max-width: 600px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    display: none;
+  }
+}
+
+/* ===== Landscape Mode ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .bottom-nav-bar {
+    padding: 4px 0;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom, 0));
+  }
+
+  .nav-item {
+    padding: var(--space-xs);
+    min-width: 56px;
+  }
+
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .nav-label {
+    font-size: var(--text-xs);
   }
 }

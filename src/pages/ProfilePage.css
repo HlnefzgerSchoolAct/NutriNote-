@@ -7,7 +7,7 @@
   padding: var(--space-4);
   padding-top: var(--space-6);
   padding-bottom: calc(var(--bottom-nav-height) + var(--space-8));
-  max-width: 600px;
+  max-width: var(--content-max-md);
   margin: 0 auto;
 }
 
@@ -21,6 +21,13 @@
   gap: var(--space-4);
   padding: var(--space-5);
   margin-bottom: var(--space-5);
+  position: relative;
+}
+
+.profile-header .settings-btn {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
 }
 
 .avatar {
@@ -36,7 +43,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   flex-shrink: 0;
   box-shadow: var(--shadow-lg);
 }
@@ -47,12 +54,16 @@
   right: -4px;
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-warning) 0%,
+    var(--color-warning-dark) 100%
+  );
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-inverse);
   border: 2px solid var(--surface-base);
   box-shadow: var(--shadow-sm);
 }
@@ -74,7 +85,7 @@
   align-items: center;
   gap: var(--space-1-5);
   padding: var(--space-1) var(--space-2-5);
-  background: rgba(249, 115, 22, 0.15);
+  background: var(--bg-primary-light);
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: var(--font-medium);
@@ -87,7 +98,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   color: var(--text-secondary);
@@ -98,7 +109,7 @@
 .settings-btn:hover {
   border-color: var(--color-primary-500);
   color: var(--color-primary-500);
-  background: rgba(249, 115, 22, 0.1);
+  background: var(--color-primary-100);
 }
 
 /* ============================================
@@ -167,7 +178,7 @@
 }
 
 .streak-record svg {
-  color: #fbbf24;
+  color: var(--color-warning);
 }
 
 /* ============================================
@@ -199,22 +210,22 @@
 }
 
 .stat-icon-wrap.fire {
-  background: rgba(249, 115, 22, 0.15);
+  background: var(--bg-primary-light);
   color: var(--color-primary-500);
 }
 
 .stat-icon-wrap.calendar {
-  background: rgba(78, 205, 196, 0.15);
-  color: #4ecdc4;
+  background: var(--color-info-light);
+  color: var(--color-info);
 }
 
 .stat-icon-wrap.trend {
-  background: rgba(74, 222, 128, 0.15);
+  background: var(--bg-success-light);
   color: var(--color-success);
 }
 
 .stat-icon-wrap.activity {
-  background: rgba(59, 130, 246, 0.15);
+  background: var(--bg-primary-light);
   color: var(--color-info);
 }
 
@@ -260,7 +271,7 @@
 }
 
 .section-icon.achievement {
-  color: #fbbf24;
+  color: var(--color-warning);
 }
 
 .section-title {
@@ -274,7 +285,7 @@
 .achievement-count {
   font-size: var(--text-sm);
   color: var(--text-tertiary);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-full);
 }
@@ -303,8 +314,8 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: rgba(139, 92, 246, 0.15);
-  color: #8b5cf6;
+  background: var(--color-fiber-bg);
+  color: var(--color-fiber);
   border-radius: var(--radius-lg);
 }
 
@@ -356,7 +367,7 @@
 }
 
 .detail-row:hover {
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
 }
 
 .detail-left {
@@ -415,24 +426,24 @@
   width: 48px;
   height: 48px;
   border-radius: var(--radius-full);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   color: var(--text-tertiary);
   transition: var(--transition-normal);
 }
 
 .achievement.unlocked {
-  border-color: rgba(251, 191, 36, 0.4);
-  background: linear-gradient(
-    135deg,
-    rgba(251, 191, 36, 0.1) 0%,
-    rgba(245, 158, 11, 0.05) 100%
-  );
+  border-color: var(--border-warning-subtle);
+  background: var(--gradient-warning-subtle);
 }
 
 .achievement.unlocked .achievement-icon {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+  background: linear-gradient(
+    135deg,
+    var(--color-warning) 0%,
+    var(--color-warning-dark) 100%
+  );
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-glow-warning-md);
 }
 
 .achievement-name {
@@ -449,9 +460,9 @@
   width: 18px;
   height: 18px;
   background: var(--color-success);
-  color: white;
+  color: var(--text-inverse);
   border-radius: var(--radius-full);
-  font-size: 10px;
+  font-size: var(--text-xs);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -502,6 +513,7 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--space-6);
     align-items: start;
+    max-width: var(--content-max-lg);
   }
 
   /* Header spans both columns */
@@ -519,31 +531,31 @@
   .quick-stats-grid {
     grid-column: 2;
     grid-row: 2;
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   /* Weight progress spans both columns */
-  .profile-section:has(.weight-progress-card) {
+  .profile-section--weight {
     grid-column: 1 / -1;
   }
 
   /* Personal info in left column */
-  .profile-section:has(.details-card) {
+  .profile-section--details {
     grid-column: 1;
   }
 
   /* Hydration in right column */
-  .profile-section:has(.hf-hydration-tracker) {
+  .profile-section--hydration {
     grid-column: 2;
   }
 
   /* Achievements span both columns */
-  .profile-section:has(.achievements-grid) {
+  .profile-section--achievements {
     grid-column: 1 / -1;
   }
 
   .achievements-grid {
-    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-columns: repeat(6, 1fr);
   }
 
   /* Settings link spans both columns */

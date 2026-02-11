@@ -1,0 +1,211 @@
+/**
+ * Swipeable Food Entry Styles
+ */
+
+/* Container */
+.swipeable-entry {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.swipeable-entry--disabled {
+  pointer-events: none;
+}
+
+/* Content (the actual entry) */
+.swipeable-entry__content {
+  position: relative;
+  z-index: 2;
+  background: var(--md-sys-color-surface, #ffffff);
+  cursor: grab;
+}
+
+.swipeable-entry__content:active {
+  cursor: grabbing;
+}
+
+/* Actions container */
+.swipeable-entry__action {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  z-index: 1;
+}
+
+.swipeable-entry__action--left {
+  left: 0;
+  justify-content: flex-start;
+  background: linear-gradient(90deg, #f44336 0%, #e53935 100%);
+}
+
+.swipeable-entry__action--right {
+  right: 0;
+  justify-content: flex-end;
+  background: linear-gradient(90deg, #6750a4 0%, #7c4dff 100%);
+}
+
+/* Action buttons */
+.swipeable-entry__action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 60px;
+  height: 100%;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.swipeable-entry__action-btn:hover {
+  transform: scale(1.05);
+}
+
+.swipeable-entry__action-btn:active {
+  transform: scale(0.95);
+}
+
+.swipeable-entry__action-btn span {
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.swipeable-entry__action-btn--delete {
+  color: white;
+}
+
+.swipeable-entry__action-btn--edit {
+  color: white;
+}
+
+.swipeable-entry__action-btn--duplicate {
+  width: 44px;
+}
+
+/* Close overlay */
+.swipeable-entry__close-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background: transparent;
+}
+
+/* ===== Swipe Hint ===== */
+.swipe-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--md-sys-color-primary-container, #eaddff);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-primary-container, #21005d);
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+}
+
+.swipe-hint--left {
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.swipe-hint--right {
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.swipe-hint__arrow {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* ===== Desktop: disable swipe, show hover actions ===== */
+@media (hover: hover) and (pointer: fine) {
+  .swipeable-entry__content {
+    cursor: default;
+  }
+
+  .swipeable-entry__action {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .swipeable-entry:hover .swipeable-entry__action {
+    opacity: 1;
+  }
+
+  /* Show action buttons on right side only on desktop */
+  .swipeable-entry__action--left {
+    display: none;
+  }
+
+  .swipeable-entry__action--right {
+    background: transparent;
+    padding-right: 8px;
+  }
+
+  .swipeable-entry__action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--md-sys-color-surface-variant, #e7e0ec);
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    flex-direction: row;
+    gap: 0;
+  }
+
+  .swipeable-entry__action-btn--delete:hover {
+    background: #ffebee;
+    color: #f44336;
+  }
+
+  .swipeable-entry__action-btn--edit:hover {
+    background: var(--md-sys-color-primary-container, #eaddff);
+    color: var(--md-sys-color-primary, #6750a4);
+  }
+
+  .swipeable-entry__action-btn span {
+    display: none;
+  }
+
+  .swipe-hint {
+    display: none;
+  }
+}
+
+/* ===== Dark mode ===== */
+@media (prefers-color-scheme: dark) {
+  .swipeable-entry__content {
+    background: var(--md-sys-color-surface, #1c1b1f);
+  }
+
+  .swipe-hint {
+    background: var(--md-sys-color-primary-container, #4f378b);
+    color: var(--md-sys-color-on-primary-container, #eaddff);
+  }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .swipeable-entry__action-btn,
+  .swipe-hint__arrow {
+    transition: none;
+    animation: none;
+  }
+}

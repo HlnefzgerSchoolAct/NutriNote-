@@ -3,7 +3,7 @@
    Professional Design System
    ============================================ */
 
-.hf-empty-state {
+.ds-empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,12 +17,12 @@
    ICON CONTAINER
    ============================================ */
 
-.hf-empty-state__icon-container {
+.ds-empty-state__icon-container {
   position: relative;
   margin-bottom: var(--space-6);
 }
 
-.hf-empty-state__icon-bg {
+.ds-empty-state__icon-bg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,22 +35,22 @@
   );
   border-radius: var(--radius-3xl);
   box-shadow:
-    0 8px 32px rgba(249, 115, 22, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    var(--shadow-glow-md),
+    inset 0 1px 0 var(--overlay-light-20);
 }
 
-.hf-empty-state__icon {
-  color: white;
+.ds-empty-state__icon {
+  color: var(--text-inverse);
 }
 
-.hf-empty-state__icon svg {
+.ds-empty-state__icon svg {
   width: 40px;
   height: 40px;
   stroke-width: 1.5;
 }
 
 /* Decorative circles */
-.hf-empty-state__decoration {
+.ds-empty-state__decoration {
   position: absolute;
   border-radius: var(--radius-full);
   background: var(--color-primary-500);
@@ -58,7 +58,7 @@
   animation: empty-state-pulse 3s ease-in-out infinite;
 }
 
-.hf-empty-state__decoration--1 {
+.ds-empty-state__decoration--1 {
   width: 12px;
   height: 12px;
   top: -8px;
@@ -66,7 +66,7 @@
   animation-delay: 0s;
 }
 
-.hf-empty-state__decoration--2 {
+.ds-empty-state__decoration--2 {
   width: 8px;
   height: 8px;
   bottom: 0;
@@ -74,7 +74,7 @@
   animation-delay: 0.5s;
 }
 
-.hf-empty-state__decoration--3 {
+.ds-empty-state__decoration--3 {
   width: 6px;
   height: 6px;
   top: 50%;
@@ -98,12 +98,12 @@
    CONTENT
    ============================================ */
 
-.hf-empty-state__content {
+.ds-empty-state__content {
   max-width: 320px;
   margin-bottom: var(--space-6);
 }
 
-.hf-empty-state__title {
+.ds-empty-state__title {
   font-size: var(--text-xl);
   font-weight: var(--font-semibold);
   color: var(--text-primary);
@@ -111,7 +111,7 @@
   line-height: var(--leading-tight);
 }
 
-.hf-empty-state__description {
+.ds-empty-state__description {
   font-size: var(--text-sm);
   color: var(--text-secondary);
   margin: 0;
@@ -122,7 +122,7 @@
    ACTIONS
    ============================================ */
 
-.hf-empty-state__actions {
+.ds-empty-state__actions {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -133,26 +133,26 @@
    COMPACT VARIANT
    ============================================ */
 
-.hf-empty-state--compact {
+.ds-empty-state--compact {
   padding: var(--space-6) var(--space-4);
   min-height: 200px;
 }
 
-.hf-empty-state--compact .hf-empty-state__icon-bg {
+.ds-empty-state--compact .ds-empty-state__icon-bg {
   width: 64px;
   height: 64px;
 }
 
-.hf-empty-state--compact .hf-empty-state__icon svg {
+.ds-empty-state--compact .ds-empty-state__icon svg {
   width: 28px;
   height: 28px;
 }
 
-.hf-empty-state--compact .hf-empty-state__title {
+.ds-empty-state--compact .ds-empty-state__title {
   font-size: var(--text-lg);
 }
 
-.hf-empty-state--compact .hf-empty-state__description {
+.ds-empty-state--compact .ds-empty-state__description {
   font-size: var(--text-sm);
 }
 
@@ -160,7 +160,7 @@
    INLINE VARIANT
    ============================================ */
 
-.hf-empty-state--inline {
+.ds-empty-state--inline {
   flex-direction: row;
   text-align: left;
   padding: var(--space-4);
@@ -168,26 +168,26 @@
   gap: var(--space-4);
 }
 
-.hf-empty-state--inline .hf-empty-state__icon-container {
+.ds-empty-state--inline .ds-empty-state__icon-container {
   margin-bottom: 0;
 }
 
-.hf-empty-state--inline .hf-empty-state__icon-bg {
+.ds-empty-state--inline .ds-empty-state__icon-bg {
   width: 48px;
   height: 48px;
 }
 
-.hf-empty-state--inline .hf-empty-state__icon svg {
+.ds-empty-state--inline .ds-empty-state__icon svg {
   width: 24px;
   height: 24px;
 }
 
-.hf-empty-state--inline .hf-empty-state__content {
+.ds-empty-state--inline .ds-empty-state__content {
   margin-bottom: 0;
   flex: 1;
 }
 
-.hf-empty-state--inline .hf-empty-state__actions {
+.ds-empty-state--inline .ds-empty-state__actions {
   flex-direction: row;
 }
 
@@ -196,11 +196,11 @@
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .hf-empty-state__decoration {
+  .ds-empty-state__decoration {
     animation: none;
   }
 
-  .hf-empty-state__icon {
-    animation: none !important;
+  .ds-empty-state__icon {
+    animation: none;
   }
 }

@@ -530,12 +530,16 @@ function Dashboard({
             <button
               className={`input-mode-tab ${inputMode === "ai" ? "active" : ""}`}
               onClick={() => setInputMode("ai")}
+              aria-label="Switch to AI food estimator"
+              aria-pressed={inputMode === "ai"}
             >
               🤖 AI Estimator
             </button>
             <button
               className={`input-mode-tab ${inputMode === "scan" ? "active" : ""}`}
               onClick={() => setInputMode("scan")}
+              aria-label="Switch to barcode scanner"
+              aria-pressed={inputMode === "scan"}
             >
               📷 Scan Barcode
             </button>
@@ -575,12 +579,16 @@ function Dashboard({
               <button
                 className={`tab-btn ${showRecentFoods ? "active" : ""}`}
                 onClick={() => setShowRecentFoods(true)}
+                aria-label="Show recent foods"
+                aria-pressed={showRecentFoods}
               >
                 Recent
               </button>
               <button
                 className={`tab-btn ${!showRecentFoods ? "active" : ""}`}
                 onClick={() => setShowRecentFoods(false)}
+                aria-label="Show favorite foods"
+                aria-pressed={!showRecentFoods}
               >
                 Favorites
               </button>
@@ -595,6 +603,7 @@ function Dashboard({
                     key={`recent-${index}`}
                     className="recent-food-btn"
                     onClick={() => handleQuickAddRecent(food)}
+                    aria-label={`Quick add ${food.name}`}
                   >
                     <div className="recent-food-name">{food.name}</div>
                     <div className="recent-food-info">
@@ -626,6 +635,7 @@ function Dashboard({
                   key={`fav-${index}`}
                   className="recent-food-btn favorite"
                   onClick={() => handleQuickAddRecent(food)}
+                  aria-label={`Quick add ${food.name}`}
                 >
                   <div className="recent-food-name">{food.name}</div>
                   <div className="recent-food-info">
@@ -664,6 +674,7 @@ function Dashboard({
               value={quickAddSearch}
               onChange={(e) => setQuickAddSearch(e.target.value)}
               className="quick-add-search"
+              aria-label="Search food database"
             />
           </div>
           {selectedFood && (

@@ -7,7 +7,7 @@
   padding: var(--space-4);
   padding-top: var(--space-6);
   padding-bottom: calc(var(--bottom-nav-height) + var(--space-8));
-  max-width: 600px;
+  max-width: var(--content-max-lg);
   margin: 0 auto;
 }
 
@@ -20,12 +20,8 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  background: linear-gradient(
-    135deg,
-    rgba(249, 115, 22, 0.15) 0%,
-    rgba(234, 88, 12, 0.08) 100%
-  );
-  border: 1px solid rgba(249, 115, 22, 0.2);
+  background: var(--gradient-primary-subtle);
+  border: 1px solid var(--border-primary-subtle);
   border-radius: var(--radius-xl);
   margin-bottom: var(--space-4);
 }
@@ -38,7 +34,7 @@
   height: 36px;
   background: var(--color-primary-500);
   border-radius: var(--radius-lg);
-  color: white;
+  color: var(--text-inverse);
 }
 
 .streak-banner__content {
@@ -189,9 +185,10 @@
   border-radius: var(--radius-md);
 }
 
-.section-link:hover {
-  background: var(--color-primary-500);
-  background: rgba(249, 115, 22, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .section-link:hover {
+    background: var(--bg-primary-subtle);
+  }
 }
 
 /* ============================================
@@ -202,7 +199,7 @@
   margin-bottom: var(--space-4);
 }
 
-.macros-card .hf-card__body {
+.macros-card .ds-card__body {
   padding: var(--space-5);
 }
 
@@ -237,7 +234,7 @@
   gap: var(--space-2);
 }
 
-.summary-card .hf-card__body {
+.summary-card .ds-card__body {
   padding: var(--space-4);
   width: 100%;
 }
@@ -252,27 +249,27 @@
 }
 
 .summary-card__icon--target {
-  background: rgba(249, 115, 22, 0.15);
+  background: var(--bg-primary-light);
   color: var(--color-primary-500);
 }
 
 .summary-card__icon--eaten {
-  background: rgba(34, 197, 94, 0.15);
+  background: var(--bg-success-light);
   color: var(--color-success);
 }
 
 .summary-card__icon--burned {
-  background: rgba(59, 130, 246, 0.15);
+  background: var(--bg-primary-light);
   color: var(--color-info);
 }
 
 .summary-card__icon--remaining {
-  background: rgba(34, 197, 94, 0.15);
+  background: var(--bg-success-light);
   color: var(--color-success);
 }
 
 .summary-card__icon--over {
-  background: rgba(239, 68, 68, 0.15);
+  background: var(--bg-error-light);
   color: var(--color-error);
 }
 
@@ -306,7 +303,7 @@
   margin-bottom: var(--space-4);
 }
 
-.recent-foods-card .hf-card__body {
+.recent-foods-card .ds-card__body {
   padding: var(--space-5);
 }
 
@@ -321,13 +318,15 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border-radius: var(--radius-lg);
   transition: var(--transition-fast);
 }
 
-.recent-food-item:hover {
-  background: var(--surface-raised);
+@media (hover: hover) and (pointer: fine) {
+  .recent-food-item:hover {
+    background: var(--surface-raised);
+  }
 }
 
 .recent-food-item__info {
@@ -382,8 +381,8 @@
 }
 
 .guidance-card--success {
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.2);
+  background: var(--bg-success-subtle);
+  border: 1px solid var(--border-success-subtle);
   color: var(--color-success);
 }
 
@@ -392,8 +391,8 @@
 }
 
 .guidance-card--warning {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: var(--bg-error-subtle);
+  border: 1px solid var(--border-error-subtle);
   color: var(--color-error);
 }
 
@@ -402,12 +401,8 @@
 }
 
 .guidance-card--perfect {
-  background: linear-gradient(
-    135deg,
-    rgba(249, 115, 22, 0.15) 0%,
-    rgba(234, 88, 12, 0.08) 100%
-  );
-  border: 1px solid rgba(249, 115, 22, 0.2);
+  background: var(--gradient-primary-subtle);
+  border: 1px solid var(--border-primary-subtle);
   color: var(--color-primary-500);
 }
 
@@ -441,6 +436,7 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--space-6);
     align-items: start;
+    max-width: var(--content-max-xl);
   }
 
   /* Streak banner spans both columns */
@@ -448,27 +444,40 @@
     grid-column: 1 / -1;
   }
 
-  /* Progress hero in left column */
+  /* Progress hero spans full width with centered content */
   .progress-hero {
-    grid-column: 1;
-    grid-row: 2;
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-8);
+    padding: var(--space-8);
+    background: var(--surface-container-low);
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--border-subtle);
   }
 
-  /* Quick stats in right column */
-  .quick-stats {
-    grid-column: 2;
-    grid-row: 2;
+  .progress-hero .quick-stats {
+    margin-top: 0;
+    flex-direction: column;
+    background: var(--surface-base);
+    padding: var(--space-4);
+    gap: var(--space-3);
   }
 
-  /* Macro section spans both columns */
-  .macro-section {
+  .progress-hero .quick-stats .quick-stat__divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  /* Macros card spans both columns */
+  .macros-card {
     grid-column: 1 / -1;
   }
 
   /* Summary grid spans both columns */
   .summary-grid {
     grid-column: 1 / -1;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   /* Recent section in left column */
@@ -488,7 +497,7 @@
 
   .summary-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg);
   }
 
   .recent-food-item {

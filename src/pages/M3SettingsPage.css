@@ -1,0 +1,305 @@
+/**
+ * M3 Settings Page Styles
+ * Material Design 3 settings interface styling
+ */
+
+/* ===== Page Layout ===== */
+.m3-settings-page {
+  padding: var(--m3-spacing-md);
+  padding-bottom: calc(var(--m3-spacing-xl) + 72px);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 600px) {
+  .m3-settings-page {
+    padding: var(--m3-spacing-lg);
+    max-width: 840px;
+  }
+}
+
+/* ===== Settings Item ===== */
+.m3-settings-item {
+  display: flex;
+  align-items: center;
+  gap: var(--m3-spacing-md);
+  width: 100%;
+  padding: var(--m3-spacing-md);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--m3-outline-variant);
+  cursor: pointer;
+  text-align: left;
+  transition: background 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-settings-item:last-child {
+  border-bottom: none;
+}
+
+.m3-settings-item:hover {
+  background: var(--m3-surface-container-high);
+}
+
+.m3-settings-item:focus-visible {
+  outline: 3px solid var(--m3-primary);
+  outline-offset: -3px;
+  border-radius: var(--m3-shape-sm);
+}
+
+.m3-settings-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.m3-settings-item--danger {
+  color: var(--m3-error);
+}
+
+.m3-settings-item--danger .m3-settings-item__icon {
+  color: var(--m3-error);
+}
+
+/* Icon */
+.m3-settings-item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--m3-on-surface-variant);
+  flex-shrink: 0;
+}
+
+/* Content */
+.m3-settings-item__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.m3-settings-item__label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m3-settings-item__description {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--m3-on-surface-variant);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Value */
+.m3-settings-item__value {
+  font-size: 0.875rem;
+  color: var(--m3-on-surface-variant);
+  flex-shrink: 0;
+}
+
+/* Arrow */
+.m3-settings-item__arrow {
+  color: var(--m3-on-surface-variant);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* ===== Toggle Switch ===== */
+.m3-toggle {
+  position: relative;
+  width: 52px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.m3-toggle__track {
+  position: absolute;
+  inset: 0;
+  background: var(--m3-surface-container-highest);
+  border: 2px solid var(--m3-outline);
+  border-radius: 16px;
+  transition: all 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.m3-toggle--checked .m3-toggle__track {
+  background: var(--m3-primary);
+  border-color: var(--m3-primary);
+}
+
+.m3-toggle__thumb {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: var(--m3-outline);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--m3-on-primary);
+  transition: all 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.m3-toggle--checked .m3-toggle__thumb {
+  left: calc(100% - 6px);
+  transform: translate(-100%, -50%);
+  width: 24px;
+  height: 24px;
+  background: var(--m3-on-primary);
+  color: var(--m3-primary);
+}
+
+/* Hover state */
+.m3-settings-item:hover .m3-toggle__thumb {
+  box-shadow: 0 0 0 8px rgba(var(--m3-on-surface-rgb), 0.08);
+}
+
+.m3-settings-item:hover .m3-toggle--checked .m3-toggle__thumb {
+  box-shadow: 0 0 0 8px rgba(var(--m3-primary-rgb), 0.08);
+}
+
+/* ===== Theme Options ===== */
+.m3-theme-options {
+  display: flex;
+  flex-direction: column;
+  padding: var(--m3-spacing-sm);
+}
+
+.m3-theme-option {
+  display: flex;
+  align-items: center;
+  gap: var(--m3-spacing-md);
+  width: 100%;
+  padding: var(--m3-spacing-md);
+  background: transparent;
+  border: none;
+  border-radius: var(--m3-shape-md);
+  cursor: pointer;
+  transition: background 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-theme-option:hover {
+  background: var(--m3-surface-container-highest);
+}
+
+.m3-theme-option:focus-visible {
+  outline: 3px solid var(--m3-primary);
+  outline-offset: 2px;
+}
+
+.m3-theme-option--selected {
+  background: var(--m3-secondary-container);
+}
+
+.m3-theme-option__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--m3-surface-container);
+  border-radius: 50%;
+  color: var(--m3-on-surface-variant);
+}
+
+.m3-theme-option--selected .m3-theme-option__icon {
+  background: var(--m3-primary);
+  color: var(--m3-on-primary);
+}
+
+.m3-theme-option__label {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--m3-on-surface);
+  text-align: left;
+}
+
+.m3-theme-option__check {
+  color: var(--m3-primary);
+}
+
+/* ===== Card Content Override ===== */
+.m3-settings-page .m3-card__content--no-padding {
+  padding: 0;
+}
+
+/* ===== Footer ===== */
+.m3-settings-footer {
+  text-align: center;
+  padding: var(--m3-spacing-xl) var(--m3-spacing-md);
+  color: var(--m3-on-surface-variant);
+  font-size: 0.8125rem;
+}
+
+.m3-settings-footer p {
+  margin: 0;
+}
+
+.m3-settings-footer p + p {
+  margin-top: var(--m3-spacing-xs);
+}
+
+/* ===== Section Spacing ===== */
+.m3-settings-page .m3-section {
+  margin-bottom: var(--m3-spacing-md);
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .m3-toggle__track {
+    background: var(--m3-surface-container);
+    border-color: var(--m3-outline-variant);
+  }
+
+  .m3-theme-option:hover {
+    background: var(--m3-surface-container);
+  }
+
+  .m3-theme-option--selected {
+    background: rgba(var(--m3-secondary-rgb), 0.2);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .m3-toggle__track,
+  .m3-toggle__thumb,
+  .m3-settings-item {
+    transition: none;
+  }
+}
+
+/* ===== High Contrast ===== */
+@media (prefers-contrast: more) {
+  .m3-settings-item {
+    border-bottom-width: 2px;
+  }
+
+  .m3-toggle__track {
+    border-width: 3px;
+  }
+
+  .m3-theme-option--selected {
+    border: 2px solid var(--m3-primary);
+  }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .m3-settings-page {
+    display: none;
+  }
+}

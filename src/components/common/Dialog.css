@@ -1,0 +1,443 @@
+/* ============================================
+   M3 DIALOG COMPONENT
+   Basic, Full-screen, and Confirmation dialogs
+   ============================================ */
+
+/* Scrim overlay */
+.m3-dialog-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--m3-scrim);
+  z-index: var(--z-modal-backdrop, 400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* Dialog container */
+.m3-dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 280px;
+  max-width: 560px;
+  width: 100%;
+  max-height: calc(100dvh - 48px);
+  background-color: var(--md-sys-color-surface-container-high);
+  border-radius: 28px;
+  box-shadow: var(--m3-shadow-4);
+  z-index: var(--z-modal, 500);
+  overflow: hidden;
+}
+
+/* Dialog sizes */
+.m3-dialog--sm {
+  max-width: 400px;
+}
+
+.m3-dialog--lg {
+  max-width: 720px;
+}
+
+.m3-dialog--xl {
+  max-width: 900px;
+}
+
+/* Full-screen dialog */
+.m3-dialog--fullscreen {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0;
+}
+
+/* ============================================
+   DIALOG HEADER
+   ============================================ */
+
+.m3-dialog__header {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 0;
+  flex-shrink: 0;
+}
+
+.m3-dialog--fullscreen .m3-dialog__header {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 8px 8px 16px;
+  background-color: var(--md-sys-color-surface);
+  border-bottom: 1px solid var(--md-sys-color-surface-container-highest);
+}
+
+/* Icon (optional, for alert dialogs) */
+.m3-dialog__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 16px;
+  color: var(--md-sys-color-secondary);
+}
+
+.m3-dialog__icon--error {
+  color: var(--md-sys-color-error);
+}
+
+.m3-dialog__icon--warning {
+  color: var(--m3-warning);
+}
+
+.m3-dialog__icon--success {
+  color: var(--m3-success);
+}
+
+/* Close button for fullscreen */
+.m3-dialog__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  flex-shrink: 0;
+}
+
+.m3-dialog__close:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.m3-dialog__close:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+
+/* Title */
+.m3-dialog__title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 2rem;
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+  text-align: center;
+}
+
+.m3-dialog--fullscreen .m3-dialog__title {
+  flex: 1;
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+  text-align: left;
+}
+
+/* Header action button for fullscreen */
+.m3-dialog__header-action {
+  flex-shrink: 0;
+}
+
+/* ============================================
+   DIALOG CONTENT
+   ============================================ */
+
+.m3-dialog__content {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 24px 24px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.m3-dialog__content p {
+  margin: 0 0 16px;
+}
+
+.m3-dialog__content p:last-child {
+  margin-bottom: 0;
+}
+
+.m3-dialog--fullscreen .m3-dialog__content {
+  padding: 24px;
+}
+
+/* Divider between content and actions */
+.m3-dialog__divider {
+  height: 1px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   DIALOG ACTIONS
+   ============================================ */
+
+.m3-dialog__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px 24px;
+  flex-shrink: 0;
+}
+
+.m3-dialog--fullscreen .m3-dialog__actions {
+  padding: 16px 24px;
+  background-color: var(--md-sys-color-surface);
+  border-top: 1px solid var(--md-sys-color-surface-container-highest);
+}
+
+/* Stack actions vertically on small screens */
+.m3-dialog__actions--stacked {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.m3-dialog__actions--stacked > * {
+  width: 100%;
+}
+
+/* ============================================
+   DIALOG TYPES
+   ============================================ */
+
+/* Alert dialog - icon centered */
+.m3-dialog--alert .m3-dialog__header {
+  align-items: center;
+  text-align: center;
+}
+
+.m3-dialog--alert .m3-dialog__content {
+  text-align: center;
+}
+
+/* Confirm dialog - standard layout */
+.m3-dialog--confirm .m3-dialog__title {
+  text-align: left;
+}
+
+.m3-dialog--confirm .m3-dialog__content {
+  text-align: left;
+}
+
+/* ============================================
+   INPUT DIALOG
+   ============================================ */
+
+.m3-dialog__input-container {
+  margin-top: 16px;
+}
+
+.m3-dialog__input {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  outline: none;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.m3-dialog__input:focus {
+  border-color: var(--md-sys-color-primary);
+  box-shadow: inset 0 0 0 1px var(--md-sys-color-primary);
+}
+
+.m3-dialog__input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-dialog__input-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant);
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   SELECTION LIST DIALOG
+   ============================================ */
+
+.m3-dialog__list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.m3-dialog__list-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  min-height: 56px;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.m3-dialog__list-item:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.m3-dialog__list-item:focus-visible {
+  background-color: var(--md-sys-color-surface-container);
+  outline: none;
+}
+
+.m3-dialog__list-item--selected {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.m3-dialog__list-item-radio,
+.m3-dialog__list-item-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+.m3-dialog__list-item-checkbox {
+  border-radius: 4px;
+}
+
+.m3-dialog__list-item--selected .m3-dialog__list-item-radio,
+.m3-dialog__list-item--selected .m3-dialog__list-item-checkbox {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary);
+}
+
+.m3-dialog__list-item-radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--md-sys-color-on-primary);
+  transform: scale(0);
+  transition: transform 150ms ease;
+}
+
+.m3-dialog__list-item--selected .m3-dialog__list-item-radio-dot {
+  transform: scale(1);
+}
+
+.m3-dialog__list-item-check {
+  color: var(--md-sys-color-on-primary);
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.m3-dialog__list-item--selected .m3-dialog__list-item-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.m3-dialog__list-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.m3-dialog__list-item-title {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.m3-dialog__list-item-subtitle {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes m3-dialog-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes m3-dialog-scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 599px) {
+  .m3-dialog-scrim {
+    padding: 16px;
+  }
+
+  .m3-dialog {
+    border-radius: 24px;
+  }
+
+  .m3-dialog__header {
+    padding: 20px 20px 0;
+  }
+
+  .m3-dialog__content {
+    padding: 12px 20px 20px;
+  }
+
+  .m3-dialog__actions {
+    padding: 12px 20px 20px;
+  }
+
+  /* Stack actions on mobile */
+  .m3-dialog__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-dialog,
+  .m3-dialog-scrim {
+    transition: none;
+    animation: none;
+  }
+}

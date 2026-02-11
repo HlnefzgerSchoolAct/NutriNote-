@@ -56,7 +56,7 @@ function WeeklyGraph({ onRefresh }) {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         const date = new Date().toLocaleDateString("en-US").replace(/\//g, "-");
-        link.download = `hawk-fuel-progress-${date}.png`;
+        link.download = `nutrinoteplus-progress-${date}.png`;
         link.href = url;
         link.click();
 

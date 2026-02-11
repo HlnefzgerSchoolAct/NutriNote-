@@ -320,7 +320,7 @@ function ProfilePage({ userProfile, dailyTarget, onProfileUpdate }) {
       {/* Weight Progress */}
       {stats.weightChange !== null && (
         <motion.section
-          className="profile-section"
+          className="profile-section profile-section--weight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -353,7 +353,7 @@ function ProfilePage({ userProfile, dailyTarget, onProfileUpdate }) {
 
       {/* User Details */}
       <motion.section
-        className="profile-section"
+        className="profile-section profile-section--details"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
@@ -412,7 +412,7 @@ function ProfilePage({ userProfile, dailyTarget, onProfileUpdate }) {
 
       {/* Hydration Tracker */}
       <motion.section
-        className="profile-section"
+        className="profile-section profile-section--hydration"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
@@ -428,7 +428,7 @@ function ProfilePage({ userProfile, dailyTarget, onProfileUpdate }) {
 
       {/* Achievements */}
       <motion.section
-        className="profile-section"
+        className="profile-section profile-section--achievements"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}

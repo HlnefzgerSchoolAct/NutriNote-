@@ -1,11 +1,13 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, UtensilsCrossed, Calendar, User } from "lucide-react";
+import { Home, UtensilsCrossed, Calendar, User, ChefHat } from "lucide-react";
+import { motion } from "framer-motion";
 import "./BottomNavBar.css";
 
 const navItems = [
   { path: "/", label: "Home", icon: Home },
   { path: "/log", label: "Log", icon: UtensilsCrossed },
+  { path: "/recipes", label: "Recipes", icon: ChefHat },
   { path: "/history", label: "History", icon: Calendar },
   { path: "/profile", label: "Profile", icon: User },
 ];
@@ -20,26 +22,45 @@ function BottomNavBar() {
   }
 
   return (
-    <nav className="bottom-nav-bar">
+    <nav
+      className="bottom-nav-bar"
+      role="navigation"
+      aria-label="Main navigation"
+    >
       {navItems.map((item) => {
         const isActive = location.pathname === item.path;
         const Icon = item.icon;
 
         return (
-          <button
+          <motion.button
             key={item.path}
             className={`nav-item ${isActive ? "active" : ""}`}
             onClick={() => navigate(item.path)}
             aria-label={item.label}
             aria-current={isActive ? "page" : undefined}
+            whileTap={{ scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            <Icon
-              className="nav-icon"
-              size={24}
-              strokeWidth={isActive ? 2.5 : 2}
-            />
+            <div className="nav-item-content">
+              {isActive && (
+                <motion.div
+                  className="nav-pill"
+                  layoutId="navPill"
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30,
+                  }}
+                />
+              )}
+              <Icon
+                className="nav-icon"
+                size={22}
+                strokeWidth={isActive ? 2.5 : 1.75}
+              />
+            </div>
             <span className="nav-label">{item.label}</span>
-          </button>
+          </motion.button>
         );
       })}
     </nav>

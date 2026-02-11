@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { showToast } from "./common";
 import "./UserProfile.css";
 
 function UserProfile({ onSubmit }) {
@@ -26,7 +27,7 @@ function UserProfile({ onSubmit }) {
     e.preventDefault();
 
     if (!formData.age || !formData.heightFeet || !formData.weight) {
-      alert("Please fill in all required fields");
+      showToast.error("Please fill in all required fields");
       return;
     }
 
@@ -183,4 +184,3 @@ function UserProfile({ onSubmit }) {
 }
 
 export default UserProfile;
-

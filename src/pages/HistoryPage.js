@@ -11,6 +11,9 @@ import {
   Target,
   Calendar,
   Award,
+  Check,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 import "./HistoryPage.css";
 import {
@@ -31,13 +34,10 @@ function HistoryPage({ userProfile, dailyTarget }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading for smoother UX
-    const timer = setTimeout(() => {
-      setHistoryData(loadWeeklyHistory());
-      loadWeightLog();
-      setLoading(false);
-    }, 300);
-    return () => clearTimeout(timer);
+    // Load history data
+    setHistoryData(loadWeeklyHistory());
+    loadWeightLog();
+    setLoading(false);
   }, []);
 
   const getDaysInMonth = (date) => {
@@ -301,7 +301,22 @@ function HistoryPage({ userProfile, dailyTarget }) {
                   {day && (
                     <>
                       <span className="day-number">{day}</span>
-                      {status && <span className="day-indicator" />}
+                      {status && (
+                        <span
+                          className="day-indicator"
+                          aria-label={
+                            status === "perfect"
+                              ? "On target"
+                              : status === "under"
+                                ? "Under target"
+                                : "Over target"
+                          }
+                        >
+                          {status === "under" && <ArrowDown size={8} />}
+                          {status === "perfect" && <Check size={8} />}
+                          {status === "over" && <ArrowUp size={8} />}
+                        </span>
+                      )}
                     </>
                   )}
                 </motion.button>

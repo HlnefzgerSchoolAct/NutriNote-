@@ -1,0 +1,379 @@
+/* ============================================
+   M3 NAVIGATION RAIL COMPONENT
+   Vertical navigation for tablets
+   ============================================ */
+
+.m3-nav-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  height: 100%;
+  background-color: var(--md-sys-color-surface);
+  padding: 12px 0;
+  gap: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.m3-nav-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* With FAB slot at top */
+.m3-nav-rail--with-fab {
+  padding-top: 0;
+}
+
+/* Bordered variant */
+.m3-nav-rail--bordered {
+  border-right: 1px solid var(--md-sys-color-surface-container-highest);
+}
+
+/* ============================================
+   FAB CONTAINER
+   ============================================ */
+
+.m3-nav-rail__fab {
+  padding: 12px 0 4px;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   MENU LABEL (optional)
+   ============================================ */
+
+.m3-nav-rail__menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  flex-shrink: 0;
+}
+
+.m3-nav-rail__menu-btn:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.m3-nav-rail__menu-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   NAVIGATION ITEMS CONTAINER
+   ============================================ */
+
+.m3-nav-rail__items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 12px;
+  flex: 1;
+}
+
+.m3-nav-rail__items--top {
+  justify-content: flex-start;
+  margin-bottom: auto;
+}
+
+.m3-nav-rail__items--center {
+  justify-content: center;
+}
+
+.m3-nav-rail__items--bottom {
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+/* ============================================
+   NAVIGATION ITEM
+   ============================================ */
+
+.m3-nav-rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  width: 100%;
+  min-height: 56px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color 150ms ease;
+  position: relative;
+}
+
+.m3-nav-rail-item:focus-visible {
+  outline: none;
+}
+
+.m3-nav-rail-item:focus-visible .m3-nav-rail-item__icon-container {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Icon container with indicator */
+.m3-nav-rail-item__icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 32px;
+  border-radius: 16px;
+  position: relative;
+  transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* State layer */
+.m3-nav-rail-item__icon-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.m3-nav-rail-item:hover .m3-nav-rail-item__icon-container::before {
+  opacity: 0.08;
+}
+
+.m3-nav-rail-item:active .m3-nav-rail-item__icon-container::before {
+  opacity: 0.12;
+}
+
+/* Active indicator */
+.m3-nav-rail-item--active .m3-nav-rail-item__icon-container {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.m3-nav-rail-item--active .m3-nav-rail-item__icon-container::before {
+  opacity: 0;
+}
+
+.m3-nav-rail-item--active:hover .m3-nav-rail-item__icon-container::before {
+  opacity: 0.08;
+}
+
+/* Icon */
+.m3-nav-rail-item__icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: transform 150ms ease;
+}
+
+.m3-nav-rail-item--active .m3-nav-rail-item__icon {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Active icon (filled variant) */
+.m3-nav-rail-item__icon--active {
+  display: none;
+}
+
+.m3-nav-rail-item--active .m3-nav-rail-item__icon--default {
+  display: none;
+}
+
+.m3-nav-rail-item--active .m3-nav-rail-item__icon--active {
+  display: flex;
+}
+
+/* Label */
+.m3-nav-rail-item__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1rem;
+  letter-spacing: 0.5px;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px;
+  transition:
+    font-weight 150ms ease,
+    color 150ms ease;
+}
+
+.m3-nav-rail-item--active .m3-nav-rail-item__label {
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* ============================================
+   BADGE
+   ============================================ */
+
+.m3-nav-rail-item__badge {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  min-width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--md-sys-color-error);
+}
+
+.m3-nav-rail-item__badge--number {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: center;
+  color: var(--md-sys-color-on-error);
+  right: 8px;
+  top: -2px;
+}
+
+.m3-nav-rail-item__badge--large {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  line-height: 24px;
+  right: 4px;
+  top: -4px;
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+
+.m3-nav-rail__divider {
+  width: 56px;
+  height: 1px;
+  background-color: var(--md-sys-color-surface-container-highest);
+  margin: 8px 0;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   EXPANDED STATE (for hover/pinned expansion)
+   ============================================ */
+
+.m3-nav-rail--expanded {
+  width: 256px;
+  align-items: flex-start;
+}
+
+.m3-nav-rail--expanded .m3-nav-rail-item {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 0 16px;
+  min-height: 56px;
+  width: 100%;
+}
+
+.m3-nav-rail--expanded .m3-nav-rail-item__icon-container {
+  width: 56px;
+  flex-shrink: 0;
+}
+
+.m3-nav-rail--expanded .m3-nav-rail-item__label {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: left;
+  flex: 1;
+}
+
+.m3-nav-rail--expanded .m3-nav-rail__items {
+  width: 100%;
+  padding: 0;
+}
+
+/* ============================================
+   ANIMATION
+   ============================================ */
+
+@keyframes m3-nav-rail-indicator {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.m3-nav-rail-item--active .m3-nav-rail-item__icon-container {
+  animation: m3-nav-rail-indicator 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Hide on mobile - use bottom nav instead */
+@media (max-width: 599px) {
+  .m3-nav-rail {
+    display: none;
+  }
+}
+
+/* Show on medium screens (tablets) */
+@media (min-width: 600px) and (max-width: 839px) {
+  .m3-nav-rail {
+    display: flex;
+  }
+}
+
+/* Optional expansion on large screens */
+@media (min-width: 1200px) {
+  .m3-nav-rail--auto-expand {
+    width: 256px;
+    align-items: flex-start;
+  }
+
+  .m3-nav-rail--auto-expand .m3-nav-rail-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 0 16px;
+  }
+
+  .m3-nav-rail--auto-expand .m3-nav-rail-item__label {
+    font-size: 0.875rem;
+    text-align: left;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-nav-rail-item__icon-container,
+  .m3-nav-rail-item__icon-container::before,
+  .m3-nav-rail-item__label,
+  .m3-nav-rail-item__icon {
+    transition: none;
+  }
+
+  .m3-nav-rail-item--active .m3-nav-rail-item__icon-container {
+    animation: none;
+  }
+}

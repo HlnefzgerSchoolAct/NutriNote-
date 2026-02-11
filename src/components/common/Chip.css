@@ -1,0 +1,371 @@
+/* ============================================
+   M3 CHIP COMPONENT
+   Assist, Filter, Input, Suggestion variants
+   ============================================ */
+
+/* Base Chip Styles */
+.m3-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-family: var(--m3-font-plain, inherit);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 200ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0, 0, 1),
+    border-color 200ms cubic-bezier(0.2, 0, 0, 1);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* State layer for ripple effect */
+.m3-chip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 200ms cubic-bezier(0.2, 0, 0, 1);
+  pointer-events: none;
+}
+
+.m3-chip:hover::before {
+  opacity: 0.08;
+}
+
+.m3-chip:focus-visible::before {
+  opacity: 0.12;
+}
+
+.m3-chip:active::before {
+  opacity: 0.12;
+}
+
+/* Focus ring */
+.m3-chip:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   CHIP VARIANTS
+   ============================================ */
+
+/* Assist Chip - Elevated */
+.m3-chip--assist {
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: var(--m3-shadow-1);
+}
+
+.m3-chip--assist:hover {
+  box-shadow: var(--m3-shadow-2);
+}
+
+/* Assist Chip - Outlined */
+.m3-chip--assist-outlined {
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.m3-chip--assist-outlined:hover {
+  background-color: var(--md-sys-color-surface-container-low);
+}
+
+/* Filter Chip - Unselected */
+.m3-chip--filter {
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  padding-left: 8px;
+}
+
+.m3-chip--filter:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+/* Filter Chip - Selected */
+.m3-chip--filter.m3-chip--selected {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+}
+
+.m3-chip--filter.m3-chip--selected:hover {
+  background-color: var(--md-sys-color-secondary-container);
+  box-shadow: var(--m3-shadow-1);
+}
+
+/* Input Chip */
+.m3-chip--input {
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  padding-left: 4px;
+  padding-right: 8px;
+}
+
+.m3-chip--input:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.m3-chip--input.m3-chip--selected {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+}
+
+/* Suggestion Chip */
+.m3-chip--suggestion {
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.m3-chip--suggestion:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.m3-chip--suggestion.m3-chip--selected {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+}
+
+/* ============================================
+   CHIP ELEMENTS
+   ============================================ */
+
+/* Leading icon container */
+.m3-chip__leading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: -4px;
+}
+
+.m3-chip__leading svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Avatar for input chips */
+.m3-chip__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.m3-chip__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Trailing icon / remove button */
+.m3-chip__trailing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: -4px;
+  border-radius: 50%;
+  transition: background-color 150ms ease;
+}
+
+.m3-chip__trailing:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.m3-chip__trailing svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Checkmark for filter chips */
+.m3-chip__checkmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  height: 18px;
+  overflow: hidden;
+  transition: width 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.m3-chip--selected .m3-chip__checkmark {
+  width: 18px;
+  margin-right: 4px;
+}
+
+.m3-chip__checkmark svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Label text */
+.m3-chip__label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
+   CHIP SIZES
+   ============================================ */
+
+.m3-chip--sm {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 0.75rem;
+}
+
+.m3-chip--sm .m3-chip__leading,
+.m3-chip--sm .m3-chip__trailing {
+  width: 16px;
+  height: 16px;
+}
+
+.m3-chip--sm .m3-chip__leading svg,
+.m3-chip--sm .m3-chip__trailing svg {
+  width: 16px;
+  height: 16px;
+}
+
+.m3-chip--lg {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 1rem;
+}
+
+/* ============================================
+   CHIP COLORS
+   ============================================ */
+
+/* Primary color chip */
+.m3-chip--primary.m3-chip--selected {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* Error/danger chip */
+.m3-chip--error.m3-chip--selected {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+/* Macro chips */
+.m3-chip--protein {
+  background-color: var(--m3-protein-container);
+  color: var(--m3-on-protein-container);
+  border-color: transparent;
+}
+
+.m3-chip--carbs {
+  background-color: var(--m3-carbs-container);
+  color: var(--m3-on-carbs-container);
+  border-color: transparent;
+}
+
+.m3-chip--fat {
+  background-color: var(--m3-fat-container);
+  color: var(--m3-on-fat-container);
+  border-color: transparent;
+}
+
+/* ============================================
+   CHIP GROUP
+   ============================================ */
+
+.m3-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.m3-chip-group--scroll {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: -4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.m3-chip-group--scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Vertical chip group */
+.m3-chip-group--vertical {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ============================================
+   DISABLED STATE
+   ============================================ */
+
+.m3-chip:disabled,
+.m3-chip--disabled {
+  opacity: 0.38;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* ============================================
+   ANIMATION
+   ============================================ */
+
+@keyframes m3-chip-selection {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.m3-chip--animate-selection {
+  animation: m3-chip-selection 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-chip,
+  .m3-chip::before,
+  .m3-chip__checkmark {
+    transition: none;
+  }
+
+  .m3-chip--animate-selection {
+    animation: none;
+  }
+}

@@ -1,0 +1,149 @@
+/**
+ * Skip Links & Accessibility Styles
+ */
+
+/* Skip Links Container */
+.skip-links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Individual Skip Link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  padding: 12px 24px;
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: none;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 0;
+  outline: 2px solid var(--md-sys-color-on-primary, #ffffff);
+  outline-offset: -2px;
+}
+
+.skip-link:focus + .skip-link:focus {
+  top: 44px;
+}
+
+/* Main Content Focus Style (when skipped to) */
+.main-content:focus {
+  outline: none;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Live Region (hidden visually) */
+.live-region {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Focus Trap Container */
+.focus-trap {
+  display: contents;
+}
+
+/* ===== Focus Styles ===== */
+
+/* Custom focus ring for interactive elements */
+*:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary, #6750a4);
+  outline-offset: 2px;
+}
+
+/* Remove default focus for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Button focus enhancement */
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary, #6750a4);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(103, 80, 164, 0.2);
+}
+
+/* Input focus enhancement */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary, #6750a4);
+  outline-offset: 0;
+  border-color: var(--md-sys-color-primary, #6750a4);
+}
+
+/* Link focus */
+a:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary, #6750a4);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== High Contrast Mode ===== */
+@media (prefers-contrast: high) {
+  .skip-link {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+  }
+
+  *:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 3px solid currentColor;
+    box-shadow: none;
+  }
+}
+
+/* ===== Dark mode ===== */
+@media (prefers-color-scheme: dark) {
+  .skip-link {
+    background: var(--md-sys-color-primary, #d0bcff);
+    color: var(--md-sys-color-on-primary, #381e72);
+  }
+
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    box-shadow: 0 0 0 4px rgba(208, 188, 255, 0.3);
+  }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+}

@@ -7,7 +7,7 @@
   position: fixed;
   bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   right: var(--space-lg);
-  z-index: 999;
+  z-index: var(--z-fixed);
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -18,25 +18,26 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--primary-orange) 0%,
-    var(--primary-orange-dark) 100%
-  );
+  background: var(--gradient-blue);
   border: none;
-  color: white;
+  color: var(--text-inverse);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+  box-shadow: var(--shadow-glow-blue);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
 }
 
 .fab-main:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 24px rgba(255, 107, 53, 0.5);
+  box-shadow: var(--shadow-glow-xl);
+}
+
+.fab-main:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus), var(--shadow-glow-blue);
 }
 
 .fab-main:active {
@@ -44,8 +45,8 @@
 }
 
 .fab-container.open .fab-main {
-  background: var(--bg-tertiary);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  background: var(--surface-tertiary);
+  box-shadow: var(--shadow-lg);
 }
 
 .fab-container.open .fab-main svg {
@@ -92,8 +93,8 @@
 
 .fab-option:hover {
   background: var(--bg-tertiary);
-  border-color: var(--primary-orange);
-  color: var(--primary-orange);
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
 }
 
 .fab-option:active {
@@ -129,7 +130,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--surface-overlay);
   z-index: -1;
   animation: fadeIn 0.2s ease;
 }

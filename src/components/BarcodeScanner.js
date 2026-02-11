@@ -14,7 +14,6 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
   const [quantity, setQuantity] = useState("1");
   const [unit, setUnit] = useState("serving");
   const [cameraError, setCameraError] = useState("");
-  const [, setIsScanning] = useState(false); // Only setter is used
   const [torchOn, setTorchOn] = useState(false);
   const [torchSupported, setTorchSupported] = useState(false);
 
@@ -24,8 +23,15 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
   const videoTrackRef = useRef(null);
 
   const stopCamera = useCallback(() => {
+    // Stop the barcode reader first
     if (codeReaderRef.current) {
-      codeReaderRef.current = null;
+      try {
+        // BrowserMultiFormatReader doesn't have a stop method,
+        // but setting to null prevents further decode callbacks
+        codeReaderRef.current = null;
+      } catch (e) {
+        devLog.warn("Error stopping barcode reader:", e);
+      }
     }
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
@@ -35,7 +41,6 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       videoRef.current.srcObject = null;
     }
     videoTrackRef.current = null;
-    setIsScanning(false);
     setTorchOn(false);
     setTorchSupported(false);
   }, []);
@@ -118,7 +123,6 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
 
       // Initialize barcode reader
       codeReaderRef.current = new BrowserMultiFormatReader();
-      setIsScanning(true);
 
       // Start continuous scanning
       codeReaderRef.current.decodeFromVideoDevice(
@@ -357,6 +361,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
                     className="fullscreen-input"
                     pattern="[0-9]*"
                     inputMode="numeric"
+                    aria-label="Enter barcode manually"
                   />
                   <button type="submit" className="fullscreen-submit">
                     Go
@@ -399,8 +404,11 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
           )}
           <form onSubmit={handleManualSubmit} className="manual-form">
             <div className="form-group">
-              <label className="form-label">Barcode Number</label>
+              <label htmlFor="barcode-input" className="form-label">
+                Barcode Number
+              </label>
               <input
+                id="barcode-input"
                 type="text"
                 value={manualBarcode}
                 onChange={(e) => setManualBarcode(e.target.value)}

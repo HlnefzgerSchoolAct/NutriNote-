@@ -1,0 +1,350 @@
+/**
+ * M3 Home Page Styles
+ * Material Design 3 dashboard styling
+ */
+
+/* ===== Page Layout ===== */
+.m3-home-page {
+  padding: var(--m3-spacing-md);
+  padding-bottom: calc(var(--m3-spacing-xl) + 72px); /* FAB clearance */
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 600px) {
+  .m3-home-page {
+    padding: var(--m3-spacing-lg);
+    max-width: 840px;
+  }
+}
+
+/* ===== Streak Banner ===== */
+.m3-streak-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--m3-spacing-sm);
+  padding: var(--m3-spacing-sm) var(--m3-spacing-md);
+  background: linear-gradient(
+    135deg,
+    var(--m3-tertiary-container) 0%,
+    var(--m3-secondary-container) 100%
+  );
+  border-radius: var(--m3-shape-full);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  margin-bottom: var(--m3-spacing-md);
+}
+
+.m3-streak-banner:focus-visible {
+  outline: 3px solid var(--m3-primary);
+  outline-offset: 2px;
+}
+
+.m3-streak-banner__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--m3-tertiary);
+  color: var(--m3-on-tertiary);
+  border-radius: 50%;
+}
+
+.m3-streak-banner__content {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: var(--m3-spacing-xs);
+}
+
+.m3-streak-banner__count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--m3-on-tertiary-container);
+  font-variant-numeric: tabular-nums;
+}
+
+.m3-streak-banner__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--m3-on-tertiary-container);
+  opacity: 0.8;
+}
+
+.m3-streak-banner__sparkle {
+  color: var(--m3-tertiary);
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+}
+
+/* ===== Progress Card ===== */
+.m3-progress-card {
+  margin-bottom: var(--m3-spacing-md);
+}
+
+.m3-progress-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--m3-spacing-lg);
+  padding: var(--m3-spacing-md) 0;
+}
+
+.m3-progress-hero__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.m3-progress-hero__value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--m3-on-surface);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.m3-progress-hero__value--over {
+  color: var(--m3-error);
+}
+
+.m3-progress-hero__label {
+  font-size: 0.875rem;
+  color: var(--m3-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: var(--m3-spacing-xs);
+}
+
+/* ===== Quick Stats ===== */
+.m3-quick-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--m3-spacing-lg);
+  width: 100%;
+  padding: var(--m3-spacing-sm) 0;
+}
+
+.m3-quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 70px;
+}
+
+.m3-quick-stat__value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--m3-on-surface);
+  font-variant-numeric: tabular-nums;
+}
+
+.m3-quick-stat__label {
+  font-size: 0.75rem;
+  color: var(--m3-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.m3-quick-stat__divider {
+  width: 1px;
+  height: 32px;
+  background: var(--m3-outline-variant);
+}
+
+/* ===== Chip Group Spacing ===== */
+.m3-home-page .m3-chip-group {
+  justify-content: center;
+  margin-bottom: var(--m3-spacing-md);
+}
+
+/* ===== Section Spacing ===== */
+.m3-home-page .m3-section {
+  margin-bottom: var(--m3-spacing-lg);
+}
+
+/* ===== Recent Foods ===== */
+.m3-recent-foods {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m3-spacing-xs);
+}
+
+.m3-recent-food {
+  display: flex;
+  align-items: center;
+  gap: var(--m3-spacing-md);
+  padding: var(--m3-spacing-sm) var(--m3-spacing-md);
+  background: var(--m3-surface-container);
+  border-radius: var(--m3-shape-md);
+  cursor: pointer;
+  transition: background 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-recent-food:hover {
+  background: var(--m3-surface-container-high);
+}
+
+.m3-recent-food:focus-visible {
+  outline: 3px solid var(--m3-primary);
+  outline-offset: 2px;
+}
+
+.m3-recent-food__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--m3-primary-container);
+  color: var(--m3-on-primary-container);
+  border-radius: var(--m3-shape-sm);
+  flex-shrink: 0;
+}
+
+.m3-recent-food__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.m3-recent-food__name {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--m3-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m3-recent-food__details {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--m3-on-surface-variant);
+  margin-top: 2px;
+}
+
+.m3-recent-food__arrow {
+  color: var(--m3-on-surface-variant);
+  flex-shrink: 0;
+}
+
+/* ===== Widget Grid Override ===== */
+.m3-home-page .m3-widget-grid {
+  --widget-columns: 2;
+  gap: var(--m3-spacing-sm);
+}
+
+@media (min-width: 600px) {
+  .m3-home-page .m3-widget-grid {
+    --widget-columns: 4;
+  }
+}
+
+/* ===== Quick Actions Grid ===== */
+.m3-home-page .m3-grid {
+  margin-bottom: var(--m3-spacing-md);
+}
+
+/* ===== FAB Positioning ===== */
+.m3-home-page ~ .m3-fab,
+.m3-home-page .m3-fab {
+  position: fixed;
+  right: var(--m3-spacing-md);
+  bottom: calc(var(--bottom-nav-height, 64px) + var(--m3-spacing-md));
+  z-index: 100;
+}
+
+@media (min-width: 840px) {
+  .m3-home-page ~ .m3-fab,
+  .m3-home-page .m3-fab {
+    right: var(--m3-spacing-lg);
+    bottom: var(--m3-spacing-lg);
+  }
+}
+
+/* ===== Tablet Layout ===== */
+@media (min-width: 840px) {
+  .m3-progress-hero {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: var(--m3-spacing-lg);
+  }
+
+  .m3-quick-stats {
+    flex-direction: column;
+    gap: var(--m3-spacing-md);
+    width: auto;
+  }
+
+  .m3-quick-stat__divider {
+    width: 80px;
+    height: 1px;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .m3-streak-banner {
+    background: linear-gradient(
+      135deg,
+      rgba(var(--m3-tertiary-rgb), 0.2) 0%,
+      rgba(var(--m3-secondary-rgb), 0.15) 100%
+    );
+  }
+
+  .m3-recent-food:hover {
+    background: var(--m3-surface-container-highest);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .m3-streak-banner__sparkle {
+    animation: none;
+  }
+
+  .m3-progress-hero__value {
+    transition: none;
+  }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .m3-home-page {
+    padding: 0;
+    max-width: none;
+  }
+
+  .m3-streak-banner,
+  .m3-fab,
+  .m3-chip-group,
+  .m3-recent-foods {
+    display: none;
+  }
+
+  .m3-progress-card,
+  .m3-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

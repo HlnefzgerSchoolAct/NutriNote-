@@ -1,0 +1,302 @@
+/* ============================================
+   M3 SNACKBAR COMPONENT
+   Temporary feedback messages
+   ============================================ */
+
+/* ============================================
+   SNACKBAR CONTAINER
+   ============================================ */
+
+.m3-snackbar-container {
+  position: fixed;
+  z-index: var(--z-toast, 800);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  pointer-events: none;
+  max-width: 100%;
+}
+
+/* Position variants */
+.m3-snackbar-container--bottom-center {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.m3-snackbar-container--bottom-left {
+  bottom: 0;
+  left: 0;
+  align-items: flex-start;
+}
+
+.m3-snackbar-container--bottom-right {
+  bottom: 0;
+  right: 0;
+  align-items: flex-end;
+}
+
+.m3-snackbar-container--top-center {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.m3-snackbar-container--top-left {
+  top: 0;
+  left: 0;
+  align-items: flex-start;
+}
+
+.m3-snackbar-container--top-right {
+  top: 0;
+  right: 0;
+  align-items: flex-end;
+}
+
+/* Safe area adjustment for mobile */
+.m3-snackbar-container--bottom-center,
+.m3-snackbar-container--bottom-left,
+.m3-snackbar-container--bottom-right {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Adjust for bottom navigation */
+.m3-snackbar-container--with-nav {
+  padding-bottom: calc(80px + 16px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ============================================
+   SNACKBAR
+   ============================================ */
+
+.m3-snackbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 280px;
+  max-width: 560px;
+  min-height: 48px;
+  padding: 0 8px 0 16px;
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  border-radius: 4px;
+  box-shadow: var(--m3-shadow-3);
+  pointer-events: auto;
+}
+
+/* Single-line snackbar */
+.m3-snackbar--single-line {
+  padding: 0 16px;
+}
+
+/* Two-line snackbar */
+.m3-snackbar--two-line {
+  min-height: 68px;
+  padding: 12px 8px 12px 16px;
+  align-items: flex-start;
+}
+
+/* Longer action snackbar */
+.m3-snackbar--longer-action {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 16px;
+  gap: 4px;
+}
+
+.m3-snackbar--longer-action .m3-snackbar__actions {
+  align-self: flex-end;
+  margin-top: 4px;
+}
+
+/* ============================================
+   SNACKBAR ELEMENTS
+   ============================================ */
+
+/* Message */
+.m3-snackbar__message {
+  flex: 1;
+  font-family: var(--m3-font-plain, inherit);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0.25px;
+}
+
+.m3-snackbar--two-line .m3-snackbar__message {
+  line-height: 1.5rem;
+}
+
+/* Leading icon */
+.m3-snackbar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+/* Actions container */
+.m3-snackbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+/* Action button */
+.m3-snackbar__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-inverse-primary);
+  font-family: var(--m3-font-plain, inherit);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 150ms ease;
+}
+
+.m3-snackbar__action:hover {
+  background-color: rgba(168, 199, 250, 0.08);
+}
+
+.m3-snackbar__action:focus-visible {
+  outline: 2px solid var(--md-sys-color-inverse-primary);
+  outline-offset: 2px;
+}
+
+.m3-snackbar__action:active {
+  background-color: rgba(168, 199, 250, 0.12);
+}
+
+/* Close/dismiss button */
+.m3-snackbar__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-inverse-on-surface);
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 0.7;
+  transition:
+    opacity 150ms ease,
+    background-color 150ms ease;
+}
+
+.m3-snackbar__close:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   SNACKBAR VARIANTS
+   ============================================ */
+
+/* Success snackbar */
+.m3-snackbar--success {
+  background-color: var(--m3-success);
+  color: var(--m3-on-success);
+}
+
+.m3-snackbar--success .m3-snackbar__action {
+  color: var(--m3-on-success);
+}
+
+.m3-snackbar--success .m3-snackbar__action:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Error snackbar */
+.m3-snackbar--error {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+
+.m3-snackbar--error .m3-snackbar__action {
+  color: var(--md-sys-color-on-error);
+}
+
+/* Warning snackbar */
+.m3-snackbar--warning {
+  background-color: var(--m3-warning);
+  color: var(--m3-on-warning);
+}
+
+.m3-snackbar--warning .m3-snackbar__action {
+  color: var(--m3-on-warning);
+}
+
+/* ============================================
+   PROGRESS INDICATOR
+   ============================================ */
+
+.m3-snackbar__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+.m3-snackbar__progress-bar {
+  height: 100%;
+  background-color: var(--md-sys-color-inverse-primary);
+  transform-origin: left;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 599px) {
+  .m3-snackbar-container {
+    padding: 8px;
+  }
+
+  .m3-snackbar-container--bottom-center,
+  .m3-snackbar-container--bottom-left,
+  .m3-snackbar-container--bottom-right {
+    left: 0;
+    right: 0;
+    transform: none;
+    align-items: stretch;
+  }
+
+  .m3-snackbar {
+    min-width: auto;
+    max-width: none;
+    width: 100%;
+    border-radius: 8px;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .m3-snackbar,
+  .m3-snackbar__progress-bar {
+    transition: none;
+  }
+}

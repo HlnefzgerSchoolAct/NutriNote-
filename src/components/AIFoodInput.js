@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Bot } from "lucide-react";
 import { estimateNutrition } from "../services/aiNutritionService";
+import { CompactMicronutrients } from "./common";
 import devLog from "../utils/devLog";
 import "./AIFoodInput.css";
 
@@ -53,6 +55,27 @@ function AIFoodInput({
         protein: Math.round(nutrition.protein * 10) / 10,
         carbs: Math.round(nutrition.carbs * 10) / 10,
         fat: Math.round(nutrition.fat * 10) / 10,
+        // Micronutrients
+        fiber: nutrition.fiber,
+        sodium: nutrition.sodium,
+        sugar: nutrition.sugar,
+        cholesterol: nutrition.cholesterol,
+        vitaminA: nutrition.vitaminA,
+        vitaminC: nutrition.vitaminC,
+        vitaminD: nutrition.vitaminD,
+        vitaminE: nutrition.vitaminE,
+        vitaminK: nutrition.vitaminK,
+        vitaminB1: nutrition.vitaminB1,
+        vitaminB2: nutrition.vitaminB2,
+        vitaminB3: nutrition.vitaminB3,
+        vitaminB6: nutrition.vitaminB6,
+        vitaminB12: nutrition.vitaminB12,
+        folate: nutrition.folate,
+        calcium: nutrition.calcium,
+        iron: nutrition.iron,
+        magnesium: nutrition.magnesium,
+        zinc: nutrition.zinc,
+        potassium: nutrition.potassium,
       };
 
       setEstimatedNutrition(scaledNutrition);
@@ -76,6 +99,27 @@ function AIFoodInput({
       protein: estimatedNutrition.protein,
       carbs: estimatedNutrition.carbs,
       fat: estimatedNutrition.fat,
+      // Micronutrients
+      fiber: estimatedNutrition.fiber,
+      sodium: estimatedNutrition.sodium,
+      sugar: estimatedNutrition.sugar,
+      cholesterol: estimatedNutrition.cholesterol,
+      vitaminA: estimatedNutrition.vitaminA,
+      vitaminC: estimatedNutrition.vitaminC,
+      vitaminD: estimatedNutrition.vitaminD,
+      vitaminE: estimatedNutrition.vitaminE,
+      vitaminK: estimatedNutrition.vitaminK,
+      vitaminB1: estimatedNutrition.vitaminB1,
+      vitaminB2: estimatedNutrition.vitaminB2,
+      vitaminB3: estimatedNutrition.vitaminB3,
+      vitaminB6: estimatedNutrition.vitaminB6,
+      vitaminB12: estimatedNutrition.vitaminB12,
+      folate: estimatedNutrition.folate,
+      calcium: estimatedNutrition.calcium,
+      iron: estimatedNutrition.iron,
+      magnesium: estimatedNutrition.magnesium,
+      zinc: estimatedNutrition.zinc,
+      potassium: estimatedNutrition.potassium,
       timestamp: new Date().toISOString(),
       aiEstimated: true,
     };
@@ -93,13 +137,16 @@ function AIFoodInput({
   return (
     <div className="ai-food-input">
       <h3 className="ai-food-title">
-        <span>🤖</span> AI Nutrition Estimator
+        <Bot size={20} aria-hidden="true" /> AI Nutrition Estimator
       </h3>
 
       <form onSubmit={handleEstimate} className="ai-food-form">
         <div className="ai-form-group">
-          <label className="ai-label">What did you eat?</label>
+          <label htmlFor="ai-food-description" className="ai-label">
+            What did you eat?
+          </label>
           <input
+            id="ai-food-description"
             type="text"
             value={foodDescription}
             onChange={(e) => setFoodDescription(e.target.value)}
@@ -115,8 +162,11 @@ function AIFoodInput({
 
         <div className="ai-form-row">
           <div className="ai-form-group">
-            <label className="ai-label">Quantity</label>
+            <label htmlFor="ai-food-quantity" className="ai-label">
+              Quantity
+            </label>
             <input
+              id="ai-food-quantity"
               type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
@@ -193,6 +243,20 @@ function AIFoodInput({
               <div className="ai-nutrition-label">Fat</div>
             </div>
           </div>
+
+          {/* Micronutrient highlights */}
+          {(estimatedNutrition.fiber ||
+            estimatedNutrition.sodium ||
+            estimatedNutrition.sugar) && (
+            <div className="ai-micros-section">
+              <CompactMicronutrients
+                fiber={estimatedNutrition.fiber}
+                sodium={estimatedNutrition.sodium}
+                sugar={estimatedNutrition.sugar}
+              />
+            </div>
+          )}
+
           <button className="ai-add-btn" onClick={handleAddFood}>
             ✓ Add to Food Log
           </button>

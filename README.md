@@ -1,4 +1,4 @@
-#  Hawk Fuel - Calorie & Activity Tracker
+#  NutriNote+ - Calorie & Activity Tracker
 
 A modern Progressive Web App (PWA) built with React for tracking calories, calculating BMR/TDEE, and monitoring daily activities using the MET system.
 
@@ -27,7 +27,7 @@ A modern Progressive Web App (PWA) built with React for tracking calories, calcu
 ##  Project Structure
 
 ```
-Hawk Fuel/
+NutriNote+/
  public/                    # Static files
     index.html            # Main HTML template
     manifest.json         # PWA manifest
@@ -189,7 +189,7 @@ This creates an optimized production build in the `build/` folder.
 
 ---
 
-##  How to Use Hawk Fuel
+##  How to Use NutriNote+
 
 ### First Time Setup (Steps 1-3)
 
@@ -405,7 +405,7 @@ set PORT=3001 && npm start
 ### Option 1: GitHub Pages
 ```bash
 npm install --save gh-pages
-# Add to package.json: "homepage": "https://yourusername.github.io/Hawk Fuel"
+# Add to package.json: "homepage": "https://yourusername.github.io/NutriNote+"
 npm run build
 npx gh-pages -d build
 ```

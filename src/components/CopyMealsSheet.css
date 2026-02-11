@@ -1,0 +1,405 @@
+/**
+ * Copy Meals Sheet Styles
+ */
+
+/* Backdrop */
+.copy-meals-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+/* Sheet */
+.copy-meals-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 28px 28px 0 0;
+  z-index: 1001;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Handle */
+.copy-meals-sheet__handle {
+  width: 32px;
+  height: 4px;
+  background: var(--md-sys-color-outline-variant, #cac4d0);
+  border-radius: 2px;
+  margin: 12px auto;
+}
+
+/* Header */
+.copy-meals-sheet__header {
+  padding: 0 20px 16px;
+}
+
+.copy-meals-sheet__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.copy-meals-sheet__title-row h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.copy-meals-sheet__title-row svg:first-child {
+  color: var(--md-sys-color-primary, #6750a4);
+}
+
+.copy-meals-sheet__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.copy-meals-sheet__close:hover {
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+}
+
+.copy-meals-sheet__subtitle {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+/* Date Navigator */
+.copy-meals-sheet__date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+  margin: 0 20px;
+  border-radius: 12px;
+}
+
+.copy-meals-sheet__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: var(--md-sys-color-surface, #ffffff);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  transition: background-color 0.2s;
+}
+
+.copy-meals-sheet__nav-btn:hover:not(:disabled) {
+  background: var(--md-sys-color-primary-container, #eaddff);
+}
+
+.copy-meals-sheet__nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.copy-meals-sheet__current-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+  min-width: 140px;
+  justify-content: center;
+}
+
+.copy-meals-sheet__current-date svg {
+  color: var(--md-sys-color-primary, #6750a4);
+}
+
+/* Content */
+.copy-meals-sheet__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+  min-height: 200px;
+}
+
+/* Select All */
+.copy-meals-sheet__select-all {
+  margin-bottom: 12px;
+}
+
+.copy-meals-sheet__select-all button {
+  background: none;
+  border: none;
+  padding: 8px 0;
+  font-size: 14px;
+  color: var(--md-sys-color-primary, #6750a4);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.copy-meals-sheet__select-all button:hover {
+  text-decoration: underline;
+}
+
+/* Meals List */
+.copy-meals-sheet__meals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Meal Item */
+.copy-meals-sheet__meal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--md-sys-color-surface, #ffffff);
+  border: 2px solid var(--md-sys-color-outline-variant, #cac4d0);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.copy-meals-sheet__meal:hover {
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+}
+
+.copy-meals-sheet__meal.selected {
+  background: var(--md-sys-color-primary-container, #eaddff);
+  border-color: var(--md-sys-color-primary, #6750a4);
+}
+
+.copy-meals-sheet__meal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--md-sys-color-surface-variant, #e7e0ec);
+  border-radius: 10px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.copy-meals-sheet__meal.selected .copy-meals-sheet__meal-icon {
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+}
+
+.copy-meals-sheet__meal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.copy-meals-sheet__meal-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.copy-meals-sheet__meal-detail {
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.copy-meals-sheet__meal-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--md-sys-color-primary, #6750a4);
+}
+
+/* Empty State */
+.copy-meals-sheet__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.copy-meals-sheet__empty svg {
+  opacity: 0.4;
+  margin-bottom: 16px;
+}
+
+.copy-meals-sheet__empty p {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.copy-meals-sheet__empty span {
+  font-size: 14px;
+}
+
+/* Footer */
+.copy-meals-sheet__footer {
+  padding: 16px 20px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+}
+
+.copy-meals-sheet__summary {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
+  margin-bottom: 12px;
+}
+
+.copy-meals-sheet__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  background: var(--md-sys-color-primary, #6750a4);
+  color: var(--md-sys-color-on-primary, #ffffff);
+  border: none;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-meals-sheet__submit:hover:not(:disabled) {
+  background: var(--md-sys-color-primary-hover, #5b45a0);
+}
+
+.copy-meals-sheet__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.copy-meals-sheet__submit.success {
+  background: #4caf50;
+}
+
+/* ===== Dark mode ===== */
+@media (prefers-color-scheme: dark) {
+  .copy-meals-backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .copy-meals-sheet {
+    background: var(--md-sys-color-surface, #1c1b1f);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .copy-meals-sheet__handle {
+    background: var(--md-sys-color-outline-variant, #49454f);
+  }
+
+  .copy-meals-sheet__title-row h2 {
+    color: var(--md-sys-color-on-surface, #e6e1e5);
+  }
+
+  .copy-meals-sheet__close:hover {
+    background: var(--md-sys-color-surface-variant, #49454f);
+  }
+
+  .copy-meals-sheet__subtitle {
+    color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  }
+
+  .copy-meals-sheet__date-nav {
+    background: var(--md-sys-color-surface-variant, #49454f);
+  }
+
+  .copy-meals-sheet__nav-btn {
+    background: var(--md-sys-color-surface, #1c1b1f);
+    color: var(--md-sys-color-on-surface, #e6e1e5);
+  }
+
+  .copy-meals-sheet__current-date {
+    color: var(--md-sys-color-on-surface, #e6e1e5);
+  }
+
+  .copy-meals-sheet__meal {
+    background: var(--md-sys-color-surface, #1c1b1f);
+    border-color: var(--md-sys-color-outline-variant, #49454f);
+  }
+
+  .copy-meals-sheet__meal:hover {
+    background: var(--md-sys-color-surface-variant, #49454f);
+  }
+
+  .copy-meals-sheet__meal.selected {
+    background: var(--md-sys-color-primary-container, #4f378b);
+    border-color: var(--md-sys-color-primary, #d0bcff);
+  }
+
+  .copy-meals-sheet__meal-icon {
+    background: var(--md-sys-color-surface-variant, #49454f);
+    color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  }
+
+  .copy-meals-sheet__meal.selected .copy-meals-sheet__meal-icon {
+    background: var(--md-sys-color-primary, #d0bcff);
+    color: var(--md-sys-color-on-primary, #381e72);
+  }
+
+  .copy-meals-sheet__meal-name {
+    color: var(--md-sys-color-on-surface, #e6e1e5);
+  }
+
+  .copy-meals-sheet__meal-detail {
+    color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  }
+
+  .copy-meals-sheet__empty p {
+    color: var(--md-sys-color-on-surface, #e6e1e5);
+  }
+
+  .copy-meals-sheet__footer {
+    border-color: var(--md-sys-color-outline-variant, #49454f);
+  }
+
+  .copy-meals-sheet__summary {
+    color: var(--md-sys-color-on-surface-variant, #cac4d0);
+  }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .copy-meals-sheet,
+  .copy-meals-sheet__meal,
+  .copy-meals-sheet__nav-btn,
+  .copy-meals-sheet__submit {
+    transition: none;
+  }
+}

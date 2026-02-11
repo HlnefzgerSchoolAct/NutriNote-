@@ -45,11 +45,11 @@ const ProgressRing = ({
 
   // Color mapping
   const colorClasses = {
-    primary: "hf-progress-ring--primary",
-    success: "hf-progress-ring--success",
-    warning: "hf-progress-ring--warning",
-    danger: "hf-progress-ring--danger",
-    info: "hf-progress-ring--info",
+    primary: "ds-progress-ring--primary",
+    success: "ds-progress-ring--success",
+    warning: "ds-progress-ring--warning",
+    danger: "ds-progress-ring--danger",
+    info: "ds-progress-ring--info",
   };
 
   const displayValue = valueFormatter
@@ -58,7 +58,7 @@ const ProgressRing = ({
 
   return (
     <div
-      className={`hf-progress-ring ${colorClasses[color] || ""} ${className}`}
+      className={`ds-progress-ring ${colorClasses[color] || ""} ${className}`}
       style={{ width: size, height: size }}
       role="progressbar"
       aria-valuenow={value}
@@ -67,14 +67,14 @@ const ProgressRing = ({
       aria-label={label || "Progress"}
     >
       <svg
-        className="hf-progress-ring__svg"
+        className="ds-progress-ring__svg"
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
       >
         {/* Background circle */}
         <circle
-          className="hf-progress-ring__background"
+          className="ds-progress-ring__background"
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -84,7 +84,7 @@ const ProgressRing = ({
 
         {/* Progress circle */}
         <motion.circle
-          className="hf-progress-ring__progress"
+          className="ds-progress-ring__progress"
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -102,7 +102,7 @@ const ProgressRing = ({
 
         {/* Optional glow effect */}
         <motion.circle
-          className="hf-progress-ring__glow"
+          className="ds-progress-ring__glow"
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -120,14 +120,14 @@ const ProgressRing = ({
       </svg>
 
       {/* Center content */}
-      <div className="hf-progress-ring__content">
+      <div className="ds-progress-ring__content">
         {children ? (
           children
         ) : (
           <>
             {showValue && (
               <motion.span
-                className="hf-progress-ring__value"
+                className="ds-progress-ring__value"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, type: "spring" }}
@@ -136,7 +136,7 @@ const ProgressRing = ({
               </motion.span>
             )}
             {showLabel && label && (
-              <span className="hf-progress-ring__label">{label}</span>
+              <span className="ds-progress-ring__label">{label}</span>
             )}
           </>
         )}
@@ -165,7 +165,7 @@ export const MiniProgressRing = ({
     color={color}
     showValue={false}
     showLabel={false}
-    className={`hf-progress-ring--mini ${className}`}
+    className={`ds-progress-ring--mini ${className}`}
   />
 );
 

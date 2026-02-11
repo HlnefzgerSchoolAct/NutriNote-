@@ -7,12 +7,16 @@ import {
   User,
   Flame,
   Target,
+  ChefHat,
+  LayoutTemplate,
 } from "lucide-react";
 import "./DesktopSidebar.css";
 
 const navItems = [
   { path: "/", label: "Home", icon: Home },
   { path: "/log", label: "Log Food", icon: UtensilsCrossed },
+  { path: "/recipes", label: "Recipes", icon: ChefHat },
+  { path: "/templates", label: "Templates", icon: LayoutTemplate },
   { path: "/history", label: "History", icon: Calendar },
   { path: "/profile", label: "Profile", icon: User },
 ];
@@ -36,9 +40,9 @@ function DesktopSidebar({
   return (
     <aside className="desktop-sidebar">
       <div className="sidebar-header">
-        <div className="sidebar-logo">HF</div>
+        <div className="sidebar-logo">NN+</div>
         <div>
-          <h1 className="sidebar-title">HawkFuel</h1>
+          <h1 className="sidebar-title">NutriNote+</h1>
           <p className="sidebar-subtitle">Nutrition Tracker</p>
         </div>
       </div>

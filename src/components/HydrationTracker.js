@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
   loadWaterLog,
+  saveWaterLog,
   addWaterCup,
   removeWaterCup,
 } from "../utils/localStorage";
-import devLog from "../utils/devLog";
 import "./HydrationTracker.css";
 
 // SVG Icons
@@ -208,14 +208,6 @@ function HydrationTracker({ userProfile }) {
       </p>
     </div>
   );
-}
-
-function saveWaterLog(ounces) {
-  try {
-    localStorage.setItem("hawkfuel_water_log", JSON.stringify(ounces));
-  } catch (error) {
-    devLog.error("Error saving water log:", error);
-  }
 }
 
 export default HydrationTracker;

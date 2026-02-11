@@ -1,20 +1,262 @@
 import devLog from "./devLog";
 
 const STORAGE_KEYS = {
-  USER_PROFILE: "hawkfuel_user_profile",
-  DAILY_TARGET: "hawkfuel_daily_target",
-  FOOD_LOG: "hawkfuel_food_log",
-  EXERCISE_LOG: "hawkfuel_exercise_log",
-  CURRENT_DATE: "hawkfuel_current_date",
-  WEEKLY_HISTORY: "hawkfuel_weekly_history",
-  WATER_LOG: "hawkfuel_water_log",
-  PREFERENCES: "hawkfuel_preferences",
-  ONBOARDING: "hawkfuel_onboarding",
-  RECENT_FOODS: "hawkfuel_recent_foods",
-  FAVORITE_FOODS: "hawkfuel_favorite_foods",
-  WEIGHT_LOG: "hawkfuel_weight_log",
-  STREAK_DATA: "hawkfuel_streak_data",
-  MACRO_GOALS: "hawkfuel_macro_goals",
+  USER_PROFILE: "nutrinoteplus_user_profile",
+  DAILY_TARGET: "nutrinoteplus_daily_target",
+  FOOD_LOG: "nutrinoteplus_food_log",
+  EXERCISE_LOG: "nutrinoteplus_exercise_log",
+  CURRENT_DATE: "nutrinoteplus_current_date",
+  WEEKLY_HISTORY: "nutrinoteplus_weekly_history",
+  FOOD_HISTORY: "nutrinoteplus_food_history",
+  WATER_LOG: "nutrinoteplus_water_log",
+  PREFERENCES: "nutrinoteplus_preferences",
+  ONBOARDING: "nutrinoteplus_onboarding",
+  RECENT_FOODS: "nutrinoteplus_recent_foods",
+  FAVORITE_FOODS: "nutrinoteplus_favorite_foods",
+  WEIGHT_LOG: "nutrinoteplus_weight_log",
+  STREAK_DATA: "nutrinoteplus_streak_data",
+  MACRO_GOALS: "nutrinoteplus_macro_goals",
+  MICRONUTRIENT_GOALS: "nutrinoteplus_micronutrient_goals",
+};
+
+// ============================================
+// MICRONUTRIENT CONSTANTS & RDA VALUES
+// ============================================
+
+// Default daily values based on FDA/USDA recommendations for adults
+const DEFAULT_MICRONUTRIENT_GOALS = {
+  fiber: 28, // grams
+  sodium: 2300, // mg
+  sugar: 50, // grams (added sugars limit)
+  cholesterol: 300, // mg
+  vitaminA: 900, // mcg RAE
+  vitaminC: 90, // mg
+  vitaminD: 20, // mcg
+  vitaminE: 15, // mg
+  vitaminK: 120, // mcg
+  vitaminB1: 1.2, // mg (Thiamin)
+  vitaminB2: 1.3, // mg (Riboflavin)
+  vitaminB3: 16, // mg (Niacin)
+  vitaminB6: 1.7, // mg
+  vitaminB12: 2.4, // mcg
+  folate: 400, // mcg DFE
+  calcium: 1000, // mg
+  iron: 18, // mg
+  magnesium: 420, // mg
+  zinc: 11, // mg
+  potassium: 4700, // mg
+};
+
+// RDA adjustments by gender (multiplier from male baseline)
+const GENDER_ADJUSTMENTS = {
+  male: {
+    iron: 8,
+    vitaminA: 900,
+    vitaminC: 90,
+    vitaminK: 120,
+    magnesium: 420,
+    zinc: 11,
+  },
+  female: {
+    iron: 18,
+    vitaminA: 700,
+    vitaminC: 75,
+    vitaminK: 90,
+    magnesium: 320,
+    zinc: 8,
+  },
+};
+
+// Age-based adjustments
+const AGE_ADJUSTMENTS = {
+  // Under 18
+  teen: {
+    calcium: 1300,
+    vitaminD: 15,
+    iron: 15,
+  },
+  // 19-50
+  adult: {
+    calcium: 1000,
+    vitaminD: 15,
+  },
+  // Over 50
+  senior: {
+    calcium: 1200,
+    vitaminD: 20,
+    vitaminB12: 2.4,
+  },
+};
+
+// Micronutrient metadata for UI display
+export const MICRONUTRIENT_INFO = {
+  fiber: {
+    label: "Fiber",
+    unit: "g",
+    category: "general",
+    warnHigh: false,
+    warnLow: true,
+  },
+  sodium: {
+    label: "Sodium",
+    unit: "mg",
+    category: "general",
+    warnHigh: true,
+    warnLow: false,
+    threshold: 2300,
+  },
+  sugar: {
+    label: "Sugar",
+    unit: "g",
+    category: "general",
+    warnHigh: true,
+    warnLow: false,
+    threshold: 50,
+  },
+  cholesterol: {
+    label: "Cholesterol",
+    unit: "mg",
+    category: "general",
+    warnHigh: true,
+    warnLow: false,
+    threshold: 300,
+  },
+  vitaminA: {
+    label: "Vitamin A",
+    unit: "mcg",
+    category: "vitamins",
+    warnHigh: true,
+    warnLow: true,
+  },
+  vitaminC: {
+    label: "Vitamin C",
+    unit: "mg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  vitaminD: {
+    label: "Vitamin D",
+    unit: "mcg",
+    category: "vitamins",
+    warnHigh: true,
+    warnLow: true,
+  },
+  vitaminE: {
+    label: "Vitamin E",
+    unit: "mg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  vitaminK: {
+    label: "Vitamin K",
+    unit: "mcg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  vitaminB1: {
+    label: "Thiamin (B1)",
+    unit: "mg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  vitaminB2: {
+    label: "Riboflavin (B2)",
+    unit: "mg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  vitaminB3: {
+    label: "Niacin (B3)",
+    unit: "mg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  vitaminB6: {
+    label: "Vitamin B6",
+    unit: "mg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  vitaminB12: {
+    label: "Vitamin B12",
+    unit: "mcg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  folate: {
+    label: "Folate",
+    unit: "mcg",
+    category: "vitamins",
+    warnHigh: false,
+    warnLow: true,
+  },
+  calcium: {
+    label: "Calcium",
+    unit: "mg",
+    category: "minerals",
+    warnHigh: false,
+    warnLow: true,
+  },
+  iron: {
+    label: "Iron",
+    unit: "mg",
+    category: "minerals",
+    warnHigh: true,
+    warnLow: true,
+  },
+  magnesium: {
+    label: "Magnesium",
+    unit: "mg",
+    category: "minerals",
+    warnHigh: false,
+    warnLow: true,
+  },
+  zinc: {
+    label: "Zinc",
+    unit: "mg",
+    category: "minerals",
+    warnHigh: true,
+    warnLow: true,
+  },
+  potassium: {
+    label: "Potassium",
+    unit: "mg",
+    category: "minerals",
+    warnHigh: false,
+    warnLow: true,
+  },
+};
+
+// Empty micronutrient object for defaults
+export const EMPTY_MICRONUTRIENTS = {
+  fiber: null,
+  sodium: null,
+  sugar: null,
+  cholesterol: null,
+  vitaminA: null,
+  vitaminC: null,
+  vitaminD: null,
+  vitaminE: null,
+  vitaminK: null,
+  vitaminB1: null,
+  vitaminB2: null,
+  vitaminB3: null,
+  vitaminB6: null,
+  vitaminB12: null,
+  folate: null,
+  calcium: null,
+  iron: null,
+  magnesium: null,
+  zinc: null,
+  potassium: null,
 };
 
 const saveToLocalStorage = (key, data) => {
@@ -29,7 +271,7 @@ const saveToLocalStorage = (key, data) => {
       // Try to clear old cached data to make room
       try {
         // Remove old AI nutrition cache entries (oldest first)
-        const aiCacheKey = "hawkfuel_ai_nutrition_cache";
+        const aiCacheKey = "nutrinoteplus_ai_nutrition_cache";
         const aiCache = localStorage.getItem(aiCacheKey);
         if (aiCache) {
           const parsed = JSON.parse(aiCache);
@@ -45,7 +287,7 @@ const saveToLocalStorage = (key, data) => {
         }
 
         // Remove barcode cache if still too full
-        const barcodeCacheKey = "hawkfuel_barcode_cache";
+        const barcodeCacheKey = "nutrinoteplus_barcode_cache";
         const barcodeCache = localStorage.getItem(barcodeCacheKey);
         if (barcodeCache) {
           const parsed = JSON.parse(barcodeCache);
@@ -108,6 +350,26 @@ const checkAndResetDaily = () => {
   const todaysDate = getTodaysDate();
 
   if (savedDate !== todaysDate) {
+    // Save yesterday's food log to history before clearing
+    const currentFoodLog = loadFromLocalStorage(STORAGE_KEYS.FOOD_LOG, []);
+    if (currentFoodLog.length > 0 && savedDate) {
+      const history = loadFromLocalStorage(STORAGE_KEYS.FOOD_HISTORY, {});
+      history[savedDate] = currentFoodLog;
+
+      // Keep only last 7 days
+      const dates = Object.keys(history).sort();
+      if (dates.length > 7) {
+        const datesToKeep = dates.slice(-7);
+        const newHistory = {};
+        datesToKeep.forEach((date) => {
+          newHistory[date] = history[date];
+        });
+        saveToLocalStorage(STORAGE_KEYS.FOOD_HISTORY, newHistory);
+      } else {
+        saveToLocalStorage(STORAGE_KEYS.FOOD_HISTORY, history);
+      }
+    }
+
     clearLocalStorage(STORAGE_KEYS.FOOD_LOG);
     clearLocalStorage(STORAGE_KEYS.EXERCISE_LOG);
     saveToLocalStorage(STORAGE_KEYS.CURRENT_DATE, todaysDate);
@@ -341,13 +603,79 @@ export const getTotalMacros = () => {
   );
 };
 
+/**
+ * Get total micronutrient information from food log
+ * @returns {Object} Object with all micronutrient totals
+ */
+export const getTotalMicronutrients = () => {
+  const foodLog = loadFoodLog();
+  return foodLog.reduce(
+    (totals, entry) => ({
+      fiber: totals.fiber + (entry.fiber || 0),
+      sodium: totals.sodium + (entry.sodium || 0),
+      sugar: totals.sugar + (entry.sugar || 0),
+      cholesterol: totals.cholesterol + (entry.cholesterol || 0),
+      vitaminA: totals.vitaminA + (entry.vitaminA || 0),
+      vitaminC: totals.vitaminC + (entry.vitaminC || 0),
+      vitaminD: totals.vitaminD + (entry.vitaminD || 0),
+      vitaminE: totals.vitaminE + (entry.vitaminE || 0),
+      vitaminK: totals.vitaminK + (entry.vitaminK || 0),
+      vitaminB1: totals.vitaminB1 + (entry.vitaminB1 || 0),
+      vitaminB2: totals.vitaminB2 + (entry.vitaminB2 || 0),
+      vitaminB3: totals.vitaminB3 + (entry.vitaminB3 || 0),
+      vitaminB6: totals.vitaminB6 + (entry.vitaminB6 || 0),
+      vitaminB12: totals.vitaminB12 + (entry.vitaminB12 || 0),
+      folate: totals.folate + (entry.folate || 0),
+      calcium: totals.calcium + (entry.calcium || 0),
+      iron: totals.iron + (entry.iron || 0),
+      magnesium: totals.magnesium + (entry.magnesium || 0),
+      zinc: totals.zinc + (entry.zinc || 0),
+      potassium: totals.potassium + (entry.potassium || 0),
+    }),
+    {
+      fiber: 0,
+      sodium: 0,
+      sugar: 0,
+      cholesterol: 0,
+      vitaminA: 0,
+      vitaminC: 0,
+      vitaminD: 0,
+      vitaminE: 0,
+      vitaminK: 0,
+      vitaminB1: 0,
+      vitaminB2: 0,
+      vitaminB3: 0,
+      vitaminB6: 0,
+      vitaminB12: 0,
+      folate: 0,
+      calcium: 0,
+      iron: 0,
+      magnesium: 0,
+      zinc: 0,
+      potassium: 0,
+    },
+  );
+};
+
+/**
+ * Get combined nutrition totals (macros + micros)
+ * @returns {Object} Complete nutrition breakdown
+ */
+export const getTotalNutrition = () => {
+  return {
+    ...getTotalMacros(),
+    ...getTotalMicronutrients(),
+    calories: getTotalCaloriesEaten(),
+  };
+};
+
 // ============================================
 // PREFERENCES & SETTINGS
 // ============================================
 
 const DEFAULT_PREFERENCES = {
   databaseEnabled: false,
-  darkMode: true,
+  theme: "system", // 'system', 'light', 'dark'
   macroInputMode: "both", // 'manual', 'auto', 'both'
   tutorialComplete: false,
 };
@@ -428,6 +756,123 @@ export const calculateMacroGrams = (calories, percentages) => {
 };
 
 // ============================================
+// MICRONUTRIENT GOALS
+// ============================================
+
+/**
+ * Calculate personalized micronutrient goals based on user profile
+ * @param {Object} profile - User profile with age, gender, activityLevel
+ * @returns {Object} Personalized micronutrient daily goals
+ */
+export const calculatePersonalizedMicronutrientGoals = (profile = null) => {
+  if (!profile) {
+    profile = loadUserProfile();
+  }
+
+  // Start with defaults
+  let goals = { ...DEFAULT_MICRONUTRIENT_GOALS };
+
+  // Apply gender adjustments
+  if (profile?.gender) {
+    const genderKey = profile.gender.toLowerCase();
+    if (GENDER_ADJUSTMENTS[genderKey]) {
+      goals = { ...goals, ...GENDER_ADJUSTMENTS[genderKey] };
+    }
+  }
+
+  // Apply age adjustments
+  if (profile?.age) {
+    const age = parseInt(profile.age, 10);
+    let ageCategory = "adult";
+    if (age < 19) ageCategory = "teen";
+    else if (age >= 50) ageCategory = "senior";
+
+    if (AGE_ADJUSTMENTS[ageCategory]) {
+      goals = { ...goals, ...AGE_ADJUSTMENTS[ageCategory] };
+    }
+  }
+
+  // Activity level adjustments (higher activity = higher needs for some nutrients)
+  if (profile?.activityLevel) {
+    const level = profile.activityLevel.toLowerCase();
+    if (level === "very_active" || level === "extra_active") {
+      goals.potassium = Math.round(goals.potassium * 1.1);
+      goals.magnesium = Math.round(goals.magnesium * 1.1);
+      goals.iron = Math.round(goals.iron * 1.1);
+      goals.sodium = Math.round(goals.sodium * 1.15); // Allow slightly more for athletes
+    }
+  }
+
+  return goals;
+};
+
+export const loadMicronutrientGoals = () => {
+  const saved = loadFromLocalStorage(STORAGE_KEYS.MICRONUTRIENT_GOALS, null);
+  if (saved) return saved;
+
+  // Calculate personalized defaults from profile
+  return calculatePersonalizedMicronutrientGoals();
+};
+
+export const saveMicronutrientGoals = (goals) => {
+  saveToLocalStorage(STORAGE_KEYS.MICRONUTRIENT_GOALS, goals);
+};
+
+/**
+ * Check for micronutrient warnings (too high or too low)
+ * @returns {Array} Array of warning objects {nutrient, level, message}
+ */
+export const getMicronutrientWarnings = () => {
+  const totals = getTotalMicronutrients();
+  const goals = loadMicronutrientGoals();
+  const warnings = [];
+
+  // High sodium warning
+  if (totals.sodium > goals.sodium) {
+    warnings.push({
+      nutrient: "sodium",
+      level: "high",
+      message: `Sodium intake (${Math.round(totals.sodium)}mg) exceeds daily limit of ${goals.sodium}mg`,
+    });
+  } else if (totals.sodium > goals.sodium * 0.8) {
+    warnings.push({
+      nutrient: "sodium",
+      level: "warning",
+      message: `Approaching sodium limit (${Math.round(totals.sodium)}/${goals.sodium}mg)`,
+    });
+  }
+
+  // High sugar warning
+  if (totals.sugar > goals.sugar) {
+    warnings.push({
+      nutrient: "sugar",
+      level: "high",
+      message: `Sugar intake (${Math.round(totals.sugar)}g) exceeds daily limit of ${goals.sugar}g`,
+    });
+  }
+
+  // High cholesterol warning
+  if (totals.cholesterol > goals.cholesterol) {
+    warnings.push({
+      nutrient: "cholesterol",
+      level: "high",
+      message: `Cholesterol (${Math.round(totals.cholesterol)}mg) exceeds daily limit of ${goals.cholesterol}mg`,
+    });
+  }
+
+  // Low fiber warning
+  if (totals.fiber < goals.fiber * 0.5) {
+    warnings.push({
+      nutrient: "fiber",
+      level: "low",
+      message: `Fiber intake is low (${Math.round(totals.fiber)}/${goals.fiber}g)`,
+    });
+  }
+
+  return warnings;
+};
+
+// ============================================
 // RECENT FOODS
 // ============================================
 
@@ -445,7 +890,7 @@ export const addRecentFood = (food) => {
     (f) => f.name.toLowerCase() !== food.name.toLowerCase(),
   );
 
-  // Add to beginning
+  // Add to beginning with all nutrition data
   filtered.unshift({
     id: Date.now(),
     name: food.name,
@@ -453,6 +898,27 @@ export const addRecentFood = (food) => {
     protein: food.protein || 0,
     carbs: food.carbs || 0,
     fat: food.fat || 0,
+    // Micronutrients
+    fiber: food.fiber || null,
+    sodium: food.sodium || null,
+    sugar: food.sugar || null,
+    cholesterol: food.cholesterol || null,
+    vitaminA: food.vitaminA || null,
+    vitaminC: food.vitaminC || null,
+    vitaminD: food.vitaminD || null,
+    vitaminE: food.vitaminE || null,
+    vitaminK: food.vitaminK || null,
+    vitaminB1: food.vitaminB1 || null,
+    vitaminB2: food.vitaminB2 || null,
+    vitaminB3: food.vitaminB3 || null,
+    vitaminB6: food.vitaminB6 || null,
+    vitaminB12: food.vitaminB12 || null,
+    folate: food.folate || null,
+    calcium: food.calcium || null,
+    iron: food.iron || null,
+    magnesium: food.magnesium || null,
+    zinc: food.zinc || null,
+    potassium: food.potassium || null,
     addedAt: new Date().toISOString(),
   });
 
@@ -489,6 +955,27 @@ export const addFavoriteFood = (food) => {
     protein: food.protein || 0,
     carbs: food.carbs || 0,
     fat: food.fat || 0,
+    // Micronutrients
+    fiber: food.fiber || null,
+    sodium: food.sodium || null,
+    sugar: food.sugar || null,
+    cholesterol: food.cholesterol || null,
+    vitaminA: food.vitaminA || null,
+    vitaminC: food.vitaminC || null,
+    vitaminD: food.vitaminD || null,
+    vitaminE: food.vitaminE || null,
+    vitaminK: food.vitaminK || null,
+    vitaminB1: food.vitaminB1 || null,
+    vitaminB2: food.vitaminB2 || null,
+    vitaminB3: food.vitaminB3 || null,
+    vitaminB6: food.vitaminB6 || null,
+    vitaminB12: food.vitaminB12 || null,
+    folate: food.folate || null,
+    calcium: food.calcium || null,
+    iron: food.iron || null,
+    magnesium: food.magnesium || null,
+    zinc: food.zinc || null,
+    potassium: food.potassium || null,
     addedAt: new Date().toISOString(),
   });
 
@@ -665,10 +1152,11 @@ export const getFoodLogByMeal = () => {
 export const exportAllData = () => {
   const data = {
     exportDate: new Date().toISOString(),
-    version: "2.0.0",
+    version: "3.0.0", // Updated for micronutrient support
     userProfile: loadUserProfile(),
     dailyTarget: loadDailyTarget(),
     macroGoals: loadMacroGoals(),
+    micronutrientGoals: loadMicronutrientGoals(),
     preferences: loadPreferences(),
     foodLog: loadFoodLog(),
     exerciseLog: loadExerciseLog(),
@@ -683,6 +1171,180 @@ export const exportAllData = () => {
   return JSON.stringify(data, null, 2);
 };
 
+/**
+ * Validate import data before importing
+ * @param {Object} data - The data to validate
+ * @returns {Object} - { valid: boolean, message: string, errors: string[] }
+ */
+export const validateImportData = (data) => {
+  const errors = [];
+
+  // Check if data is an object
+  if (!data || typeof data !== "object") {
+    return {
+      valid: false,
+      message: "Invalid data format",
+      errors: ["Data must be a valid JSON object"],
+    };
+  }
+
+  // Check version compatibility
+  if (data.version) {
+    const [major] = data.version.split(".").map(Number);
+    if (major < 1) {
+      errors.push("Data version may be incompatible");
+    }
+  }
+
+  // Check for expected fields (at least some should exist)
+  const expectedFields = [
+    "userProfile",
+    "dailyTarget",
+    "foodLog",
+    "preferences",
+  ];
+  const hasValidFields = expectedFields.some(
+    (field) => data[field] !== undefined
+  );
+
+  if (!hasValidFields) {
+    return {
+      valid: false,
+      message: "This doesn't appear to be a NutriNote backup file",
+      errors: ["Missing expected data fields"],
+    };
+  }
+
+  // Validate userProfile structure if present
+  if (data.userProfile && typeof data.userProfile !== "object") {
+    errors.push("Invalid userProfile format");
+  }
+
+  // Validate foodLog structure if present
+  if (data.foodLog && typeof data.foodLog !== "object") {
+    errors.push("Invalid foodLog format");
+  }
+
+  // Validate dailyTarget
+  if (data.dailyTarget !== undefined) {
+    const target = Number(data.dailyTarget);
+    if (isNaN(target) || target < 100 || target > 10000) {
+      errors.push("Invalid calorie target value");
+    }
+  }
+
+  return {
+    valid: errors.length === 0,
+    message:
+      errors.length === 0
+        ? "Data validation passed"
+        : "Data has validation warnings",
+    errors,
+  };
+};
+
+/**
+ * Import all data from a backup file
+ * @param {Object} data - The data to import
+ * @returns {Object} - { success: boolean, message: string, imported: string[] }
+ */
+export const importAllData = (data) => {
+  const imported = [];
+
+  try {
+    // Import user profile
+    if (data.userProfile) {
+      saveToLocalStorage(STORAGE_KEYS.USER_PROFILE, data.userProfile);
+      imported.push("User Profile");
+    }
+
+    // Import daily target
+    if (data.dailyTarget) {
+      saveDailyTarget(data.dailyTarget);
+      imported.push("Daily Target");
+    }
+
+    // Import macro goals
+    if (data.macroGoals) {
+      saveMacroGoals(data.macroGoals);
+      imported.push("Macro Goals");
+    }
+
+    // Import micronutrient goals
+    if (data.micronutrientGoals) {
+      saveMicronutrientGoals(data.micronutrientGoals);
+      imported.push("Micronutrient Goals");
+    }
+
+    // Import preferences
+    if (data.preferences) {
+      saveToLocalStorage(STORAGE_KEYS.PREFERENCES, data.preferences);
+      imported.push("Preferences");
+    }
+
+    // Import food log
+    if (data.foodLog) {
+      saveToLocalStorage(STORAGE_KEYS.FOOD_LOG, data.foodLog);
+      imported.push("Food Log");
+    }
+
+    // Import exercise log
+    if (data.exerciseLog) {
+      saveToLocalStorage(STORAGE_KEYS.EXERCISE_LOG, data.exerciseLog);
+      imported.push("Exercise Log");
+    }
+
+    // Import weekly history
+    if (data.weeklyHistory) {
+      saveToLocalStorage(STORAGE_KEYS.WEEKLY_HISTORY, data.weeklyHistory);
+      imported.push("Weekly History");
+    }
+
+    // Import water log
+    if (data.waterLog) {
+      saveWaterLog(data.waterLog);
+      imported.push("Water Log");
+    }
+
+    // Import recent foods
+    if (data.recentFoods) {
+      saveToLocalStorage(STORAGE_KEYS.RECENT_FOODS, data.recentFoods);
+      imported.push("Recent Foods");
+    }
+
+    // Import favorite foods
+    if (data.favoriteFoods) {
+      saveToLocalStorage(STORAGE_KEYS.FAVORITE_FOODS, data.favoriteFoods);
+      imported.push("Favorite Foods");
+    }
+
+    // Import weight log
+    if (data.weightLog) {
+      saveToLocalStorage(STORAGE_KEYS.WEIGHT_LOG, data.weightLog);
+      imported.push("Weight Log");
+    }
+
+    // Import streak data
+    if (data.streakData) {
+      saveToLocalStorage(STORAGE_KEYS.STREAK_DATA, data.streakData);
+      imported.push("Streak Data");
+    }
+
+    return {
+      success: true,
+      message: `Successfully imported ${imported.length} data sections`,
+      imported,
+    };
+  } catch (error) {
+    console.error("Import error:", error);
+    return {
+      success: false,
+      message: "Failed to import data: " + error.message,
+      imported,
+    };
+  }
+};
+
 // Get meal type based on current time
 export const getMealTypeByTime = () => {
   const hour = new Date().getHours();
@@ -691,6 +1353,46 @@ export const getMealTypeByTime = () => {
   if (hour >= 14 && hour < 17) return "snack";
   if (hour >= 17 && hour < 21) return "dinner";
   return "snack"; // Late night snack
+};
+
+// Save today's food log to history (called at end of day or before reset)
+export const saveFoodLogToHistory = () => {
+  const today = getTodaysDate();
+  const foodLog = loadFromLocalStorage(STORAGE_KEYS.FOOD_LOG, []);
+
+  if (foodLog.length === 0) return;
+
+  const history = loadFromLocalStorage(STORAGE_KEYS.FOOD_HISTORY, {});
+  history[today] = foodLog;
+
+  // Keep only last 7 days of detailed history
+  const dates = Object.keys(history).sort();
+  if (dates.length > 7) {
+    const datesToKeep = dates.slice(-7);
+    const newHistory = {};
+    datesToKeep.forEach((date) => {
+      newHistory[date] = history[date];
+    });
+    saveToLocalStorage(STORAGE_KEYS.FOOD_HISTORY, newHistory);
+  } else {
+    saveToLocalStorage(STORAGE_KEYS.FOOD_HISTORY, history);
+  }
+};
+
+// Get yesterday's food log
+export const getYesterdaysFoodLog = () => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split("T")[0];
+
+  const history = loadFromLocalStorage(STORAGE_KEYS.FOOD_HISTORY, {});
+  return history[yesterdayStr] || [];
+};
+
+// Get food log for a specific date
+export const getFoodLogByDate = (dateStr) => {
+  const history = loadFromLocalStorage(STORAGE_KEYS.FOOD_HISTORY, {});
+  return history[dateStr] || [];
 };
 
 export const clearAllData = () => {

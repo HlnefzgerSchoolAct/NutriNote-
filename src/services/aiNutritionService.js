@@ -6,10 +6,13 @@
 
 import devLog from "../utils/devLog";
 
-const CACHE_KEY = "hawkfuel_ai_nutrition_cache";
+const CACHE_KEY = "nutrinoteplus_ai_nutrition_cache";
 const API_ENDPOINT = "/api/estimate-nutrition";
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 const REQUEST_TIMEOUT = 35000; // 35 seconds (slightly longer than server timeout)
+
+// Track in-flight requests to deduplicate concurrent calls for the same food
+const pendingRequests = new Map();
 
 /**
  * Get cache object from localStorage
@@ -148,6 +151,7 @@ export async function estimateNutrition(foodDescription) {
   }
 
   const trimmedDescription = foodDescription.trim();
+  const requestKey = trimmedDescription.toLowerCase();
 
   // Check cache first
   const cached = getCachedNutrition(trimmedDescription);
@@ -155,88 +159,105 @@ export async function estimateNutrition(foodDescription) {
     return cached;
   }
 
+  // Check if there's already a pending request for this food
+  if (pendingRequests.has(requestKey)) {
+    devLog.log("⏳ Reusing pending request for:", trimmedDescription);
+    return pendingRequests.get(requestKey);
+  }
+
   devLog.log("🤖 Estimating nutrition for:", trimmedDescription);
 
-  // Create AbortController for timeout
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
+  // Create the request promise and store it for deduplication
+  const requestPromise = (async () => {
+    // Create AbortController for timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-  try {
-    const response = await fetch(API_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ foodDescription: trimmedDescription }),
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeout);
-
-    // Parse response
-    let data;
     try {
-      data = await response.json();
-    } catch {
-      throw new Error("📡 Invalid response from server. Please try again.");
-    }
-
-    // Handle errors
-    if (!response.ok) {
-      const errorMessage = formatErrorMessage(data, response.status);
-      devLog.error("API Error:", {
-        status: response.status,
-        code: data?.code,
-        error: data?.error,
-        details: data?.details,
+      const response = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ foodDescription: trimmedDescription }),
+        signal: controller.signal,
       });
-      throw new Error(errorMessage);
+
+      clearTimeout(timeout);
+
+      // Parse response
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("📡 Invalid response from server. Please try again.");
+      }
+
+      // Handle errors
+      if (!response.ok) {
+        const errorMessage = formatErrorMessage(data, response.status);
+        devLog.error("API Error:", {
+          status: response.status,
+          code: data?.code,
+          error: data?.error,
+          details: data?.details,
+        });
+        throw new Error(errorMessage);
+      }
+
+      // Validate response
+      const { nutrition, responseTime } = data;
+
+      if (!nutrition) {
+        throw new Error("🤷 No nutrition data received. Please try again.");
+      }
+
+      if (
+        nutrition.calories < 0 ||
+        nutrition.protein < 0 ||
+        nutrition.carbs < 0 ||
+        nutrition.fat < 0
+      ) {
+        throw new Error(
+          "⚠️ Invalid nutrition values. Please try a different description.",
+        );
+      }
+
+      devLog.log(`✅ Nutrition estimated in ${responseTime}ms:`, nutrition);
+
+      // Cache the result
+      cacheNutrition(trimmedDescription, nutrition);
+
+      return nutrition;
+    } catch (error) {
+      clearTimeout(timeout);
+
+      // Handle abort/timeout
+      if (error.name === "AbortError") {
+        devLog.error("Request timeout");
+        throw new Error("⏳ Request timed out. Please try again.");
+      }
+
+      // Handle network errors
+      if (error.message === "Failed to fetch" || error.name === "TypeError") {
+        devLog.error("Network error:", error);
+        throw new Error(
+          "📡 Network error. Is the server running? Check your connection.",
+        );
+      }
+
+      // Re-throw other errors (already formatted)
+      throw error;
+    } finally {
+      // Always remove from pending requests when done
+      pendingRequests.delete(requestKey);
     }
+  })();
 
-    // Validate response
-    const { nutrition, responseTime } = data;
+  // Store the promise for deduplication
+  pendingRequests.set(requestKey, requestPromise);
 
-    if (!nutrition) {
-      throw new Error("🤷 No nutrition data received. Please try again.");
-    }
-
-    if (
-      nutrition.calories < 0 ||
-      nutrition.protein < 0 ||
-      nutrition.carbs < 0 ||
-      nutrition.fat < 0
-    ) {
-      throw new Error(
-        "⚠️ Invalid nutrition values. Please try a different description.",
-      );
-    }
-
-    devLog.log(`✅ Nutrition estimated in ${responseTime}ms:`, nutrition);
-
-    // Cache the result
-    cacheNutrition(trimmedDescription, nutrition);
-
-    return nutrition;
-  } catch (error) {
-    clearTimeout(timeout);
-
-    // Handle abort/timeout
-    if (error.name === "AbortError") {
-      devLog.error("Request timeout");
-      throw new Error("⏳ Request timed out. Please try again.");
-    }
-
-    // Handle network errors
-    if (error.message === "Failed to fetch" || error.name === "TypeError") {
-      devLog.error("Network error:", error);
-      throw new Error(
-        "📡 Network error. Is the server running? Check your connection.",
-      );
-    }
-
-    // Re-throw other errors (already formatted)
-    throw error;
-  }
+  return requestPromise;
 }
 
 /**

@@ -3,8 +3,8 @@
    Professional Design System
    ============================================ */
 
-.hf-skeleton {
-  background: var(--surface-overlay);
+.ds-skeleton {
+  background: var(--surface-tertiary);
   position: relative;
   overflow: hidden;
 }
@@ -13,20 +13,20 @@
    VARIANTS
    ============================================ */
 
-.hf-skeleton--text {
+.ds-skeleton--text {
   height: 16px;
   border-radius: var(--radius-sm);
 }
 
-.hf-skeleton--rectangular {
+.ds-skeleton--rectangular {
   border-radius: var(--radius-lg);
 }
 
-.hf-skeleton--circular {
+.ds-skeleton--circular {
   border-radius: var(--radius-full);
 }
 
-.hf-skeleton--rounded {
+.ds-skeleton--rounded {
   border-radius: var(--radius-xl);
 }
 
@@ -34,7 +34,7 @@
    ANIMATION
    ============================================ */
 
-.hf-skeleton--animated::after {
+.ds-skeleton--animated::after {
   content: "";
   position: absolute;
   top: 0;
@@ -44,7 +44,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
+    var(--overlay-light-10) 50%,
     transparent 100%
   );
   animation: skeleton-shimmer 1.5s infinite;
@@ -60,9 +60,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hf-skeleton--animated::after {
+  .ds-skeleton--animated::after {
     animation: none;
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--overlay-light-5);
   }
 }
 
@@ -70,20 +70,20 @@
    SKELETON TEXT
    ============================================ */
 
-.hf-skeleton-text {
+.ds-skeleton-text {
   display: flex;
   flex-direction: column;
 }
 
-.hf-skeleton-text--sm {
+.ds-skeleton-text--sm {
   gap: var(--space-1-5);
 }
 
-.hf-skeleton-text--md {
+.ds-skeleton-text--md {
   gap: var(--space-2);
 }
 
-.hf-skeleton-text--lg {
+.ds-skeleton-text--lg {
   gap: var(--space-3);
 }
 
@@ -91,14 +91,14 @@
    SKELETON CARD
    ============================================ */
 
-.hf-skeleton-card {
+.ds-skeleton-card {
   background: var(--surface-elevated);
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid var(--border-subtle);
 }
 
-.hf-skeleton-card__content {
+.ds-skeleton-card__content {
   padding: var(--space-4);
   display: flex;
   flex-direction: column;
@@ -109,7 +109,7 @@
    SKELETON LIST ITEM
    ============================================ */
 
-.hf-skeleton-list-item {
+.ds-skeleton-list-item {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -119,7 +119,7 @@
   border: 1px solid var(--border-subtle);
 }
 
-.hf-skeleton-list-item__content {
+.ds-skeleton-list-item__content {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -130,13 +130,13 @@
    SKELETON STATS
    ============================================ */
 
-.hf-skeleton-stats {
+.ds-skeleton-stats {
   display: flex;
   justify-content: space-around;
   padding: var(--space-4) 0;
 }
 
-.hf-skeleton-stat {
+.ds-skeleton-stat {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,7 +146,7 @@
    SKELETON PAGE
    ============================================ */
 
-.hf-skeleton-page {
+.ds-skeleton-page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,11 +155,11 @@
   animation: skeleton-fade-in 0.3s ease-out;
 }
 
-.hf-skeleton-page--list {
+.ds-skeleton-page--list {
   align-items: stretch;
 }
 
-.hf-skeleton-section {
+.ds-skeleton-section {
   width: 100%;
   display: flex;
   flex-direction: column;

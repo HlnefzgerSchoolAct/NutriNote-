@@ -100,14 +100,14 @@ const EmptyState = memo(function EmptyState({
 
   return (
     <motion.div
-      className={`hf-empty-state ${className}`}
+      className={`ds-empty-state ${className}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {/* Animated Icon Container */}
       <motion.div
-        className="hf-empty-state__icon-container"
+        className="ds-empty-state__icon-container"
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         transition={{
@@ -117,9 +117,9 @@ const EmptyState = memo(function EmptyState({
           delay: 0.1,
         }}
       >
-        <div className="hf-empty-state__icon-bg">
+        <div className="ds-empty-state__icon-bg">
           <motion.div
-            className="hf-empty-state__icon"
+            className="ds-empty-state__icon"
             animate={{
               y: [0, -4, 0],
             }}
@@ -134,26 +134,26 @@ const EmptyState = memo(function EmptyState({
         </div>
 
         {/* Decorative circles */}
-        <div className="hf-empty-state__decoration hf-empty-state__decoration--1" />
-        <div className="hf-empty-state__decoration hf-empty-state__decoration--2" />
-        <div className="hf-empty-state__decoration hf-empty-state__decoration--3" />
+        <div className="ds-empty-state__decoration ds-empty-state__decoration--1" />
+        <div className="ds-empty-state__decoration ds-empty-state__decoration--2" />
+        <div className="ds-empty-state__decoration ds-empty-state__decoration--3" />
       </motion.div>
 
       {/* Text Content */}
       <motion.div
-        className="hf-empty-state__content"
+        className="ds-empty-state__content"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <h3 className="hf-empty-state__title">{displayTitle}</h3>
-        <p className="hf-empty-state__description">{displayDescription}</p>
+        <h3 className="ds-empty-state__title">{displayTitle}</h3>
+        <p className="ds-empty-state__description">{displayDescription}</p>
       </motion.div>
 
       {/* Actions */}
       {(displayActionLabel || secondaryActionLabel) && (
         <motion.div
-          className="hf-empty-state__actions"
+          className="ds-empty-state__actions"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}

@@ -3,7 +3,7 @@
    Professional Design System
    ============================================ */
 
-.hf-swipeable {
+.ds-swipeable {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
@@ -13,7 +13,7 @@
    CONTENT
    ============================================ */
 
-.hf-swipeable__content {
+.ds-swipeable__content {
   position: relative;
   z-index: 2;
   background: var(--surface-elevated);
@@ -21,7 +21,7 @@
   touch-action: pan-y;
 }
 
-.hf-swipeable__content:active {
+.ds-swipeable__content:active {
   cursor: grabbing;
 }
 
@@ -29,7 +29,7 @@
    ACTIONS
    ============================================ */
 
-.hf-swipeable__actions {
+.ds-swipeable__actions {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -38,17 +38,17 @@
   z-index: 1;
 }
 
-.hf-swipeable__actions--left {
+.ds-swipeable__actions--left {
   left: 0;
   justify-content: flex-start;
 }
 
-.hf-swipeable__actions--right {
+.ds-swipeable__actions--right {
   right: 0;
   justify-content: flex-end;
 }
 
-.hf-swipeable__action {
+.ds-swipeable__action {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,7 +57,7 @@
   width: 80px;
   padding: var(--space-2);
   border: none;
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   color: var(--text-primary);
   font-size: var(--text-xs);
   font-weight: var(--font-medium);
@@ -65,55 +65,55 @@
   transition: background var(--duration-fast) var(--ease-out);
 }
 
-.hf-swipeable__action:first-child {
+.ds-swipeable__action:first-child {
   border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 }
 
-.hf-swipeable__action:last-child {
+.ds-swipeable__action:last-child {
   border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
 }
 
-.hf-swipeable__action:only-child {
+.ds-swipeable__action:only-child {
   border-radius: var(--radius-lg);
 }
 
-.hf-swipeable__action-label {
+.ds-swipeable__action-label {
   opacity: 0.9;
 }
 
 /* Action Variants */
-.hf-swipeable__action--delete {
+.ds-swipeable__action--delete {
   background: var(--color-error);
-  color: white;
+  color: var(--text-inverse);
 }
 
-.hf-swipeable__action--delete:active {
+.ds-swipeable__action--delete:active {
   background: var(--color-error-dark);
 }
 
-.hf-swipeable__action--edit {
+.ds-swipeable__action--edit {
   background: var(--color-info);
-  color: white;
+  color: var(--text-inverse);
 }
 
-.hf-swipeable__action--edit:active {
+.ds-swipeable__action--edit:active {
   background: var(--color-info-dark);
 }
 
-.hf-swipeable__action--favorite {
+.ds-swipeable__action--favorite {
   background: var(--color-warning);
-  color: white;
+  color: var(--text-inverse);
 }
 
-.hf-swipeable__action--favorite:active {
+.ds-swipeable__action--favorite:active {
   background: var(--color-warning-dark);
 }
 
-.hf-swipeable__action--default {
+.ds-swipeable__action--default {
   background: var(--surface-raised);
 }
 
-.hf-swipeable__action--default:active {
+.ds-swipeable__action--default:active {
   background: var(--surface-interactive);
 }
 
@@ -121,17 +121,17 @@
    SWIPE HINT
    ============================================ */
 
-.hf-swipe-hint {
+.ds-swipe-hint {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) var(--space-4);
-  background: var(--surface-overlay);
+  background: var(--surface-tertiary);
   border-radius: var(--radius-lg);
   margin-bottom: var(--space-3);
 }
 
-.hf-swipe-hint__content {
+.ds-swipe-hint__content {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -139,19 +139,19 @@
   font-size: var(--text-sm);
 }
 
-.hf-swipe-hint__dismiss {
+.ds-swipe-hint__dismiss {
   padding: var(--space-1-5) var(--space-3);
   background: var(--color-primary-500);
   border: none;
   border-radius: var(--radius-md);
-  color: white;
+  color: var(--text-inverse);
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
   cursor: pointer;
   transition: background var(--duration-fast) var(--ease-out);
 }
 
-.hf-swipe-hint__dismiss:hover {
+.ds-swipe-hint__dismiss:hover {
   background: var(--color-primary-400);
 }
 
@@ -159,7 +159,7 @@
    LIST CONTAINER
    ============================================ */
 
-.hf-swipeable-list {
+.ds-swipeable-list {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -170,18 +170,18 @@
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .hf-swipeable__content {
+  .ds-swipeable__content {
     cursor: default;
   }
 }
 
 /* Non-touch devices: show actions on hover */
 @media (hover: hover) and (pointer: fine) {
-  .hf-swipeable:hover .hf-swipeable__actions--right {
+  .ds-swipeable:hover .ds-swipeable__actions--right {
     opacity: 1;
   }
 
-  .hf-swipeable:hover .hf-swipeable__action {
+  .ds-swipeable:hover .ds-swipeable__action {
     transform: scale(1);
   }
 }

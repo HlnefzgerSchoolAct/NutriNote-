@@ -25,10 +25,10 @@
   gap: var(--space-sm);
   width: 100%;
   padding: var(--space-lg);
-  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  background: var(--gradient-blue);
   border: none;
   border-radius: var(--radius-lg);
-  color: white;
+  color: var(--text-inverse);
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
   cursor: pointer;
@@ -37,7 +37,12 @@
 
 .launch-scanner-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+  box-shadow: var(--shadow-glow-blue);
+}
+
+.launch-scanner-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 .launch-scanner-btn:active {
@@ -75,7 +80,7 @@
 
 .inline-input:focus {
   outline: none;
-  border-color: #4ecdc4;
+  border-color: var(--primary);
 }
 
 .inline-submit {
@@ -90,8 +95,8 @@
 }
 
 .inline-submit:hover {
-  border-color: #4ecdc4;
-  color: #4ecdc4;
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* ===== Fullscreen Scanner Modal ===== */
@@ -101,8 +106,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 10000;
-  background: #000;
+  z-index: var(--z-modal);
+  background: var(--color-gray-950);
   display: flex;
   flex-direction: column;
 }
@@ -111,13 +116,13 @@
   position: absolute;
   top: calc(env(safe-area-inset-top, 16px) + 8px);
   right: 16px;
-  z-index: 10001;
+  z-index: var(--z-popover);
   width: 44px;
   height: 44px;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--overlay-dark-50);
   border: none;
   border-radius: 50%;
-  color: white;
+  color: var(--text-inverse);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -133,7 +138,7 @@
   position: absolute;
   top: calc(env(safe-area-inset-top, 16px) + 8px);
   left: 16px;
-  z-index: 10001;
+  z-index: var(--z-popover);
   display: flex;
   gap: var(--space-sm);
 }
@@ -141,10 +146,10 @@
 .scanner-control-btn {
   width: 44px;
   height: 44px;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--overlay-dark-50);
   border: none;
   border-radius: 50%;
-  color: white;
+  color: var(--text-inverse);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -153,11 +158,11 @@
 }
 
 .scanner-control-btn:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--overlay-dark-80);
 }
 
 .scanner-control-btn.active {
-  background: rgba(78, 205, 196, 0.8);
+  background: var(--primary-active);
 }
 
 /* Fullscreen Camera */
@@ -192,7 +197,7 @@
   position: absolute;
   width: 32px;
   height: 32px;
-  border-color: #4ecdc4;
+  border-color: var(--primary);
   border-style: solid;
   border-width: 0;
 }
@@ -202,7 +207,7 @@
   left: 0;
   border-top-width: 4px;
   border-left-width: 4px;
-  border-top-left-radius: 12px;
+  border-top-left-radius: var(--radius-xl);
 }
 
 .scan-corner.top-right {
@@ -210,7 +215,7 @@
   right: 0;
   border-top-width: 4px;
   border-right-width: 4px;
-  border-top-right-radius: 12px;
+  border-top-right-radius: var(--radius-xl);
 }
 
 .scan-corner.bottom-left {
@@ -218,7 +223,7 @@
   left: 0;
   border-bottom-width: 4px;
   border-left-width: 4px;
-  border-bottom-left-radius: 12px;
+  border-bottom-left-radius: var(--radius-xl);
 }
 
 .scan-corner.bottom-right {
@@ -226,7 +231,7 @@
   right: 0;
   border-bottom-width: 4px;
   border-right-width: 4px;
-  border-bottom-right-radius: 12px;
+  border-bottom-right-radius: var(--radius-xl);
 }
 
 /* Animated Scan Line */
@@ -238,7 +243,7 @@
   width: 80%;
   max-width: 300px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
   animation: scanLineMove 2s ease-in-out infinite;
 }
 
@@ -265,8 +270,8 @@
 }
 
 .scanner-instructions p {
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
+  background: var(--overlay-dark-50);
+  color: var(--text-inverse);
   padding: var(--space-sm) var(--space-lg);
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
@@ -281,7 +286,7 @@
   left: 16px;
   right: 16px;
   padding: var(--space-md);
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--overlay-dark-80);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(10px);
 }
@@ -294,28 +299,28 @@
 .fullscreen-input {
   flex: 1;
   padding: var(--space-md);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--overlay-light-10);
+  border: 1px solid var(--overlay-light-20);
   border-radius: var(--radius-md);
-  color: white;
+  color: var(--text-inverse);
   font-size: var(--text-base);
 }
 
 .fullscreen-input:focus {
   outline: none;
-  border-color: #4ecdc4;
+  border-color: var(--primary);
 }
 
 .fullscreen-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--overlay-light-50);
 }
 
 .fullscreen-submit {
   padding: var(--space-md) var(--space-lg);
-  background: #4ecdc4;
+  background: var(--primary);
   border: none;
   border-radius: var(--radius-md);
-  color: #000;
+  color: var(--text-inverse);
   font-weight: var(--font-semibold);
   cursor: pointer;
 }
@@ -332,22 +337,22 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-xl);
-  color: white;
+  color: var(--text-inverse);
   text-align: center;
   gap: var(--space-lg);
 }
 
 .fullscreen-error p {
   max-width: 300px;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--overlay-light-80);
 }
 
 .error-close-btn {
   padding: var(--space-md) var(--space-xl);
-  background: var(--primary-orange);
+  background: var(--primary-blue);
   border: none;
   border-radius: var(--radius-md);
-  color: white;
+  color: var(--text-inverse);
   font-weight: var(--font-semibold);
   cursor: pointer;
 }
@@ -369,7 +374,7 @@
   width: 80px;
   height: 80px;
   object-fit: contain;
-  background: white;
+  background: var(--surface-base);
   border-radius: var(--radius-md);
   padding: var(--space-xs);
 }
@@ -379,26 +384,26 @@
 }
 
 .product-name {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
   color: var(--text-primary);
   margin-bottom: var(--space-xs);
 }
 
 .product-brand {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   margin-bottom: var(--space-xs);
 }
 
 .product-serving {
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
 }
 
 /* Serving Form */
 .serving-form {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-secondary);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   margin-bottom: var(--space-md);
@@ -418,31 +423,31 @@
 
 .serving-label {
   color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
 }
 
 .serving-input,
 .serving-select {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface-base);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   padding: var(--space-sm) var(--space-md);
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: var(--text-base);
   transition: var(--transition-base);
 }
 
 .serving-input:focus,
 .serving-select:focus {
   outline: none;
-  border-color: #4ecdc4;
-  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.15);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-focus);
 }
 
 /* Nutrition Preview */
 .nutrition-preview {
-  background: rgba(78, 205, 196, 0.1);
+  background: var(--color-primary-100);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   margin-bottom: var(--space-lg);
@@ -450,8 +455,8 @@
 
 .nutrition-preview-title {
   color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
   margin-bottom: var(--space-sm);
   text-align: center;
 }
@@ -465,20 +470,20 @@
 .nutrition-item {
   text-align: center;
   padding: var(--space-sm);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-base);
   border-radius: var(--radius-sm);
 }
 
 .nutrition-value {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #4ecdc4;
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--primary);
   margin-bottom: 2px;
 }
 
 .nutrition-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -491,36 +496,37 @@
 
 .add-food-btn {
   flex: 1;
-  background: linear-gradient(135deg, #27ae60 0%, #219a52 100%);
-  color: white;
+  background: var(--success);
+  color: var(--text-inverse);
   border: none;
   padding: var(--space-md);
   border-radius: var(--radius-md);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
   cursor: pointer;
   transition: var(--transition-base);
 }
 
 .add-food-btn:hover {
+  background: var(--color-success-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+  box-shadow: var(--shadow-glow-success-md);
 }
 
 .scan-again-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--surface-tertiary);
   color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-default);
   padding: var(--space-md);
   border-radius: var(--radius-md);
-  font-weight: 500;
+  font-weight: var(--font-medium);
   cursor: pointer;
   transition: var(--transition-base);
   white-space: nowrap;
 }
 
 .scan-again-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--surface-interactive-hover);
 }
 
 /* ===== Manual Mode ===== */
@@ -545,33 +551,33 @@
 
 .form-label {
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   font-weight: 500;
 }
 
 .form-input {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--overlay-light-5);
+  border: 1px solid var(--overlay-light-10);
   border-radius: var(--radius-md);
   padding: var(--space-sm) var(--space-md);
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: var(--text-base);
   transition: var(--transition-base);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #4ecdc4;
-  box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.15);
+  border-color: var(--color-primary-400);
+  box-shadow: var(--shadow-focus);
 }
 
 .lookup-btn {
-  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
   border: none;
   padding: var(--space-md);
   border-radius: var(--radius-md);
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition-base);
@@ -579,7 +585,7 @@
 
 .lookup-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+  box-shadow: var(--shadow-glow-blue);
 }
 
 /* ===== Loading State ===== */
@@ -595,8 +601,8 @@
 .scanner-loading .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: #4ecdc4;
+  border: 3px solid var(--border-subtle);
+  border-top-color: var(--color-primary-500);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -609,28 +615,28 @@
 
 .scanner-loading p {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
 }
 
 /* ===== Error States ===== */
 .scanner-error {
-  background: rgba(231, 76, 60, 0.15);
-  border: 1px solid rgba(231, 76, 60, 0.3);
+  background: var(--color-error-light);
+  border: 1px solid var(--color-error);
   border-radius: var(--radius-md);
   padding: var(--space-md);
-  color: #e74c3c;
-  font-size: 0.9rem;
+  color: var(--danger);
+  font-size: var(--text-sm);
   text-align: center;
   margin-bottom: var(--space-md);
 }
 
 .camera-error-banner {
-  background: rgba(241, 196, 15, 0.15);
-  border: 1px solid rgba(241, 196, 15, 0.3);
+  background: var(--color-warning-light);
+  border: 1px solid var(--color-warning);
   border-radius: var(--radius-md);
   padding: var(--space-md);
-  color: #f1c40f;
-  font-size: 0.85rem;
+  color: var(--color-warning-dark);
+  font-size: var(--text-sm);
   text-align: center;
   margin-bottom: var(--space-md);
 }

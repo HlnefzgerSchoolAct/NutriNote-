@@ -58,13 +58,13 @@ const Input = forwardRef(
     const hasValue = value !== undefined ? value !== "" : false;
 
     const containerClasses = [
-      "hf-input-container",
-      `hf-input-container--${size}`,
-      isFocused && "hf-input-container--focused",
-      error && "hf-input-container--error",
-      success && "hf-input-container--success",
-      disabled && "hf-input-container--disabled",
-      hasValue && "hf-input-container--has-value",
+      "ds-input-container",
+      `ds-input-container--${size}`,
+      isFocused && "ds-input-container--focused",
+      error && "ds-input-container--error",
+      success && "ds-input-container--success",
+      disabled && "ds-input-container--disabled",
+      hasValue && "ds-input-container--has-value",
       className,
     ]
       .filter(Boolean)
@@ -105,7 +105,7 @@ const Input = forwardRef(
       step,
       pattern,
       rows: isTextarea ? rows : undefined,
-      className: `hf-input ${inputClassName}`,
+      className: `ds-input ${inputClassName}`,
       "aria-invalid": error ? "true" : undefined,
       "aria-describedby": error || helperText ? `${inputId}-helper` : undefined,
       ...props,
@@ -114,22 +114,22 @@ const Input = forwardRef(
     return (
       <div className={containerClasses}>
         {label && (
-          <label htmlFor={inputId} className="hf-input__label">
+          <label htmlFor={inputId} className="ds-input__label">
             {label}
             {required && (
-              <span className="hf-input__required" aria-hidden="true">
+              <span className="ds-input__required" aria-hidden="true">
                 *
               </span>
             )}
           </label>
         )}
 
-        <div className="hf-input__wrapper">
-          {prefix && <span className="hf-input__prefix">{prefix}</span>}
+        <div className="ds-input__wrapper">
+          {prefix && <span className="ds-input__prefix">{prefix}</span>}
 
           {leftIcon && (
             <span
-              className="hf-input__icon hf-input__icon--left"
+              className="ds-input__icon ds-input__icon--left"
               aria-hidden="true"
             >
               {leftIcon}
@@ -141,7 +141,7 @@ const Input = forwardRef(
           {type === "password" && (
             <button
               type="button"
-              className="hf-input__password-toggle"
+              className="ds-input__password-toggle"
               onClick={() => setShowPassword(!showPassword)}
               tabIndex={-1}
               aria-label={showPassword ? "Hide password" : "Show password"}
@@ -152,20 +152,20 @@ const Input = forwardRef(
 
           {rightIcon && type !== "password" && (
             <span
-              className="hf-input__icon hf-input__icon--right"
+              className="ds-input__icon ds-input__icon--right"
               aria-hidden="true"
             >
               {rightIcon}
             </span>
           )}
 
-          {suffix && <span className="hf-input__suffix">{suffix}</span>}
+          {suffix && <span className="ds-input__suffix">{suffix}</span>}
 
           {/* Status indicators */}
           <AnimatePresence>
             {error && (
               <motion.span
-                className="hf-input__status hf-input__status--error"
+                className="ds-input__status ds-input__status--error"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
@@ -176,7 +176,7 @@ const Input = forwardRef(
             )}
             {success && !error && (
               <motion.span
-                className="hf-input__status hf-input__status--success"
+                className="ds-input__status ds-input__status--success"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
@@ -193,7 +193,7 @@ const Input = forwardRef(
           {(error || helperText) && (
             <motion.span
               id={`${inputId}-helper`}
-              className={`hf-input__helper ${error ? "hf-input__helper--error" : ""}`}
+              className={`ds-input__helper ${error ? "ds-input__helper--error" : ""}`}
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}

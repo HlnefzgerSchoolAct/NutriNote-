@@ -5,12 +5,12 @@
 
 import devLog from "../utils/devLog";
 
-const CACHE_KEY = "hawkfuel_barcode_cache";
+const CACHE_KEY = "nutrinoteplus_barcode_cache";
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 const API_BASE = "https://world.openfoodfacts.org/api/v0/product";
 
 /**
- * Get cache object from localStorage
+ * Get cache object from localStorage 
  * @returns {Object} Cache object
  */
 function getCache() {
@@ -23,8 +23,8 @@ function getCache() {
   }
 }
 
-/**
- * Save cache to localStorage
+/** a dog pooped on this part lol... frfr gang gang
+ * Save cache to localStorage dun dun dunnn
  * @param {Object} cache - Cache object to save
  */
 function saveCache(cache) {
@@ -87,10 +87,25 @@ function cacheBarcode(barcode, productData) {
 /**
  * Parse nutrition data from Open Food Facts response
  * @param {Object} nutriments - Nutriments object from API
- * @returns {Object} Normalized nutrition per 100g
+ * @returns {Object} Normalized nutrition per 100g including micronutrients
  */
 function parseNutrition(nutriments) {
+  // Helper to parse with specified decimals, returns null if not available
+  const parseVal = (keys, decimals = 1) => {
+    for (const key of keys) {
+      const val = nutriments[key];
+      if (val !== undefined && val !== null && !isNaN(val)) {
+        return (
+          Math.round(parseFloat(val) * Math.pow(10, decimals)) /
+          Math.pow(10, decimals)
+        );
+      }
+    }
+    return null;
+  };
+
   return {
+    // Macronutrients
     calories: Math.round(
       nutriments["energy-kcal_100g"] || nutriments["energy-kcal"] || 0,
     ),
@@ -102,6 +117,42 @@ function parseNutrition(nutriments) {
         (nutriments.carbohydrates_100g || nutriments.carbohydrates || 0) * 10,
       ) / 10,
     fat: Math.round((nutriments.fat_100g || nutriments.fat || 0) * 10) / 10,
+
+    // Micronutrients
+    fiber: parseVal(["fiber_100g", "fiber"]),
+    sodium: parseVal(["sodium_100g", "sodium"], 0),
+    sugar: parseVal(["sugars_100g", "sugars"]),
+    cholesterol: parseVal(["cholesterol_100g", "cholesterol"], 0),
+    vitaminA: parseVal(["vitamin-a_100g", "vitamin-a"], 0),
+    vitaminC: parseVal(["vitamin-c_100g", "vitamin-c"]),
+    vitaminD: parseVal(["vitamin-d_100g", "vitamin-d"]),
+    vitaminE: parseVal(["vitamin-e_100g", "vitamin-e"], 2),
+    vitaminK: parseVal(["vitamin-k_100g", "vitamin-k"]),
+    vitaminB1: parseVal(
+      ["vitamin-b1_100g", "vitamin-b1", "thiamin_100g", "thiamin"],
+      2,
+    ),
+    vitaminB2: parseVal(
+      ["vitamin-b2_100g", "vitamin-b2", "riboflavin_100g", "riboflavin"],
+      2,
+    ),
+    vitaminB3: parseVal([
+      "vitamin-pp_100g",
+      "vitamin-pp",
+      "niacin_100g",
+      "niacin",
+    ]),
+    vitaminB6: parseVal(["vitamin-b6_100g", "vitamin-b6"], 2),
+    vitaminB12: parseVal(["vitamin-b12_100g", "vitamin-b12"], 2),
+    folate: parseVal(
+      ["folates_100g", "folates", "folic-acid_100g", "folic-acid"],
+      0,
+    ),
+    calcium: parseVal(["calcium_100g", "calcium"], 0),
+    iron: parseVal(["iron_100g", "iron"], 2),
+    magnesium: parseVal(["magnesium_100g", "magnesium"], 0),
+    zinc: parseVal(["zinc_100g", "zinc"], 2),
+    potassium: parseVal(["potassium_100g", "potassium"], 0),
   };
 }
 
@@ -126,7 +177,7 @@ export async function lookupBarcode(barcode) {
     const response = await fetch(`${API_BASE}/${cleanBarcode}.json`, {
       headers: {
         "User-Agent":
-          "HawkFuel/1.0 (https://github.com/HlnefzgerSchoolAct/HawkFuel)",
+          "NutriNote+/1.0 (https://github.com/HlnefzgerSchoolAct/NutriNote-Plus)",
       },
     });
 

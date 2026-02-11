@@ -15,7 +15,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
 
   const steps = [
     {
-      title: "Welcome to HawkFuel",
+      title: "Welcome to NutriNote+",
       content: (
         <div className="welcome-content">
           <div className="welcome-icon">
@@ -25,12 +25,12 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
                 cy="50"
                 r="45"
                 fill="none"
-                stroke="#ff6b35"
+                stroke="#3b82f6"
                 strokeWidth="3"
               />
               <path
                 d="M50 25 L55 45 L75 45 L60 58 L65 78 L50 65 L35 78 L40 58 L25 45 L45 45 Z"
-                fill="#ff6b35"
+                fill="#3b82f6"
               />
             </svg>
           </div>
@@ -52,7 +52,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
                 height="32"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#ff6b35"
+                stroke="#3b82f6"
                 strokeWidth="2"
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -68,7 +68,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
                 height="32"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#ff6b35"
+                stroke="#3b82f6"
                 strokeWidth="2"
               >
                 <circle cx="12" cy="12" r="10" />
@@ -85,7 +85,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
                 height="32"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#ff6b35"
+                stroke="#3b82f6"
                 strokeWidth="2"
               >
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
@@ -159,7 +159,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
                         height="20"
                         viewBox="0 0 24 24"
                         fill="none"
-                        stroke="#ff6b35"
+                        stroke="#3b82f6"
                         strokeWidth="3"
                       >
                         <polyline points="20 6 9 17 4 12" />
@@ -215,7 +215,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
               height="64"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ff6b35"
+              stroke="#3b82f6"
               strokeWidth="2"
             >
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />

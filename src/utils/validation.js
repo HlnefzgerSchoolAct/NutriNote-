@@ -1,6 +1,6 @@
 /**
  * Validation Utilities
- * Input sanitization and validation for HawkFuel
+ * Input sanitization and validation for NutriNote+
  */
 
 /**

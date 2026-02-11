@@ -9,7 +9,10 @@ function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
   const navigate = useNavigate();
 
   // Don't show FAB during onboarding or on log page (already has inputs)
-  if (location.pathname.startsWith("/onboarding") || location.pathname === "/log") {
+  if (
+    location.pathname.startsWith("/onboarding") ||
+    location.pathname === "/log"
+  ) {
     return null;
   }
 
@@ -66,7 +69,14 @@ function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
 
       {/* Backdrop */}
       {isOpen && (
-        <div className="fab-backdrop" onClick={() => setIsOpen(false)} />
+        <div
+          className="fab-backdrop"
+          onClick={() => setIsOpen(false)}
+          role="button"
+          aria-label="Close menu"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === "Enter" && setIsOpen(false)}
+        />
       )}
     </div>
   );

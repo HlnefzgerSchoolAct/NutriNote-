@@ -1,7 +1,7 @@
-// Basic smoke test for HawkFuel
+// Basic smoke test for NutriNote+
 // Note: Full integration tests require additional setup
 
-// Mock the localStorage
+
 const localStorageMock = {
   getItem: jest.fn(() => null),
   setItem: jest.fn(),

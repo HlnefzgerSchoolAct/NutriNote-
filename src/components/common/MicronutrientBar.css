@@ -1,0 +1,311 @@
+/* ============================================
+   MICRONUTRIENT BAR STYLES
+   Extension of MacroBar for Micronutrients
+   ============================================ */
+
+/* ============================================
+   MICRONUTRIENT BAR
+   ============================================ */
+
+.ds-micronutrient-bar {
+  position: relative;
+}
+
+.ds-micronutrient-bar__warning {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+.ds-micronutrient-bar__warning--high {
+  color: var(--color-error);
+  background: var(--bg-error-subtle);
+}
+
+.ds-micronutrient-bar__warning--low {
+  color: var(--color-warning);
+  background: var(--bg-warning-subtle);
+}
+
+@keyframes pulse-warning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ============================================
+   ADDITIONAL COLOR VARIANTS
+   ============================================ */
+
+.ds-macro-bar--vitamin .ds-macro-bar__fill,
+.ds-macro-bar--vitamin .ds-macro-bar__glow {
+  background: var(--color-vitamin, #3b82f6);
+}
+
+.ds-macro-bar--mineral .ds-macro-bar__fill,
+.ds-macro-bar--mineral .ds-macro-bar__glow {
+  background: var(--color-mineral, #8b5cf6);
+}
+
+.ds-macro-bar--fiber .ds-macro-bar__fill,
+.ds-macro-bar--fiber .ds-macro-bar__glow {
+  background: var(--color-fiber, #22c55e);
+}
+
+.ds-macro-bar--danger .ds-macro-bar__fill,
+.ds-macro-bar--danger .ds-macro-bar__glow {
+  background: var(--color-error);
+}
+
+/* ============================================
+   COMPACT MICRONUTRIENTS
+   ============================================ */
+
+.ds-compact-micros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.ds-compact-micro {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+}
+
+.ds-compact-micro__icon {
+  font-size: var(--text-sm);
+}
+
+.ds-compact-micro__value {
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.ds-compact-micro__label {
+  color: var(--text-tertiary);
+}
+
+.ds-compact-micro--warning {
+  background: var(--bg-warning-light);
+}
+
+.ds-compact-micro--warning .ds-compact-micro__value {
+  color: var(--color-warning);
+}
+
+.ds-compact-micro--danger {
+  background: var(--bg-error-light);
+}
+
+.ds-compact-micro--danger .ds-compact-micro__value {
+  color: var(--color-error);
+}
+
+/* ============================================
+   MICRONUTRIENT SUMMARY
+   ============================================ */
+
+.ds-micro-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .ds-micro-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ds-micro-summary {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.ds-micro-summary__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.ds-micro-summary__item:hover {
+  transform: translateY(-2px);
+}
+
+.ds-micro-summary__icon {
+  font-size: var(--text-xl);
+}
+
+.ds-micro-summary__label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-weight: var(--font-medium);
+}
+
+.ds-micro-summary__value {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-family: var(--font-mono, monospace);
+}
+
+/* Status Colors */
+.ds-micro-summary__item--complete {
+  background: var(--bg-success-subtle);
+  border: 1px solid var(--border-success-subtle);
+}
+
+.ds-micro-summary__item--complete .ds-micro-summary__label {
+  color: var(--color-success);
+}
+
+.ds-micro-summary__item--partial {
+  background: var(--surface-secondary);
+}
+
+.ds-micro-summary__item--low {
+  background: var(--bg-warning-subtle);
+  border: 1px solid var(--border-warning-subtle);
+}
+
+.ds-micro-summary__item--low .ds-micro-summary__label {
+  color: var(--color-warning);
+}
+
+.ds-micro-summary__item--danger {
+  background: var(--bg-error-subtle);
+  border: 1px solid var(--border-error-subtle);
+}
+
+.ds-micro-summary__item--danger .ds-micro-summary__label {
+  color: var(--color-error);
+}
+
+.ds-micro-summary__item--warning {
+  background: var(--bg-warning-subtle);
+  border: 1px solid var(--border-warning-subtle);
+}
+
+.ds-micro-summary__item--warning .ds-micro-summary__label {
+  color: var(--color-warning);
+}
+
+.ds-micro-summary__item--success {
+  background: var(--bg-success-subtle);
+  border: 1px solid var(--border-success-subtle);
+}
+
+.ds-micro-summary__item--success .ds-micro-summary__label {
+  color: var(--color-success);
+}
+
+/* ============================================
+   MICRONUTRIENT PANEL (COLLAPSIBLE)
+   ============================================ */
+
+.ds-micro-panel {
+  margin-top: var(--space-4);
+}
+
+.ds-micro-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3);
+  background: var(--surface-secondary);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.ds-micro-panel__header:hover {
+  background: var(--surface-elevated);
+}
+
+.ds-micro-panel__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.ds-micro-panel__icon {
+  font-size: var(--text-base);
+}
+
+.ds-micro-panel__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.ds-micro-panel__arrow {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.ds-micro-panel--open .ds-micro-panel__arrow {
+  transform: rotate(180deg);
+}
+
+.ds-micro-panel__content {
+  overflow: hidden;
+}
+
+.ds-micro-panel__inner {
+  padding: var(--space-4) 0;
+}
+
+.ds-micro-panel__section {
+  margin-bottom: var(--space-4);
+}
+
+.ds-micro-panel__section:last-child {
+  margin-bottom: 0;
+}
+
+.ds-micro-panel__section-title {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.ds-micro-panel__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .ds-micro-panel__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ds-micro-panel__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,5 +1,11 @@
 // Vercel Serverless Function for AI Nutrition Estimation
 // Uses Hack Club's AI proxy with in-memory rate limiting
+//
+// NOTE: In-memory rate limiting has limitations in serverless environments:
+// - Each function instance has its own memory, so rate limits aren't shared across instances
+// - Cold starts reset the rate limit map
+// - For production, consider using external storage (Vercel KV, Upstash Redis)
+// - Current implementation provides per-instance rate limiting which still helps prevent abuse
 
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
@@ -95,23 +101,53 @@ export default async function handler(req, res) {
     // Use Hack Club's AI proxy
     const apiUrl = "https://ai.hackclub.com/proxy/v1/chat/completions";
 
-    const systemPrompt = `You are a nutrition expert. When given a food description, provide the nutritional information for that food. 
-Always respond with a valid JSON object containing: calories (total kcal), protein (grams), carbs (grams), and fat (grams).
-Use realistic USDA estimates. Format your response as JSON only, no other text.
-Example: {"calories": 95, "protein": 0.5, "carbs": 25, "fat": 0.3}`;
+    const systemPrompt = `You are a nutrition expert. When given a food description, provide comprehensive nutritional information.
+Always respond with a valid JSON object containing:
+- calories (total kcal)
+- protein (grams)
+- carbs (grams)
+- fat (grams)
+- fiber (grams)
+- sodium (milligrams)
+- sugar (grams, total sugars)
+- cholesterol (milligrams)
+- vitaminA (micrograms RAE)
+- vitaminC (milligrams)
+- vitaminD (micrograms)
+- vitaminE (milligrams)
+- vitaminK (micrograms)
+- vitaminB1 (milligrams, thiamin)
+- vitaminB2 (milligrams, riboflavin)
+- vitaminB3 (milligrams, niacin)
+- vitaminB6 (milligrams)
+- vitaminB12 (micrograms)
+- folate (micrograms DFE)
+- calcium (milligrams)
+- iron (milligrams)
+- magnesium (milligrams)
+- zinc (milligrams)
+- potassium (milligrams)
 
-    const userMessage = `What is the nutritional content of: ${trimmedDescription}? Provide the response in JSON format with calories, protein, carbs, and fat.`;
+Use realistic USDA estimates. Use null for nutrients you cannot estimate. Format as JSON only.
+Example: {"calories": 95, "protein": 0.5, "carbs": 25, "fat": 0.3, "fiber": 4.4, "sodium": 2, "sugar": 19, "cholesterol": 0, "vitaminA": 3, "vitaminC": 8.4, "vitaminD": 0, "vitaminE": 0.18, "vitaminK": 2.2, "vitaminB1": 0.02, "vitaminB2": 0.03, "vitaminB3": 0.09, "vitaminB6": 0.04, "vitaminB12": 0, "folate": 3, "calcium": 6, "iron": 0.12, "magnesium": 5, "zinc": 0.04, "potassium": 107}`;
+
+    const userMessage = `What is the complete nutritional content of: ${trimmedDescription}? Provide all macronutrients and micronutrients in JSON format.`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 25000); // 25s for Vercel
+
+    // Use VERCEL_URL for dynamic domain, fallback for local dev
+    const refererUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "https://nutrinoteplus.vercel.app";
 
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://hawkfuel.vercel.app",
-        "X-Title": "HawkFuel",
+        "HTTP-Referer": refererUrl,
+        "X-Title": "NutriNote+",
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
@@ -120,7 +156,7 @@ Example: {"calories": 95, "protein": 0.5, "carbs": 25, "fat": 0.3}`;
           { role: "user", content: userMessage },
         ],
         temperature: 0.2,
-        max_tokens: 200,
+        max_tokens: 500,
       }),
       signal: controller.signal,
     });
@@ -179,12 +215,52 @@ Example: {"calories": 95, "protein": 0.5, "carbs": 25, "fat": 0.3}`;
     let nutrition;
     try {
       const parsed = JSON.parse(jsonMatch[0]);
+
+      // Helper to parse numeric value, returning null if not valid
+      const parseNum = (val, decimals = 1) => {
+        if (val === null || val === undefined || isNaN(val)) return null;
+        const num = parseFloat(val);
+        if (isNaN(num) || num < 0) return null;
+        return (
+          Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals)
+        );
+      };
+
       nutrition = {
+        // Macronutrients (required)
         calories: Math.round(parsed.calories || parsed.cal || 0),
-        protein: Math.round((parsed.protein || 0) * 10) / 10,
-        carbs:
-          Math.round((parsed.carbs || parsed.carbohydrates || 0) * 10) / 10,
-        fat: Math.round((parsed.fat || 0) * 10) / 10,
+        protein: parseNum(parsed.protein) || 0,
+        carbs: parseNum(parsed.carbs || parsed.carbohydrates) || 0,
+        fat: parseNum(parsed.fat) || 0,
+        // Micronutrients (optional, can be null)
+        fiber: parseNum(parsed.fiber),
+        sodium: parseNum(parsed.sodium, 0),
+        sugar: parseNum(parsed.sugar || parsed.sugars),
+        cholesterol: parseNum(parsed.cholesterol, 0),
+        vitaminA: parseNum(parsed.vitaminA || parsed.vitamin_a, 0),
+        vitaminC: parseNum(parsed.vitaminC || parsed.vitamin_c),
+        vitaminD: parseNum(parsed.vitaminD || parsed.vitamin_d),
+        vitaminE: parseNum(parsed.vitaminE || parsed.vitamin_e, 2),
+        vitaminK: parseNum(parsed.vitaminK || parsed.vitamin_k),
+        vitaminB1: parseNum(
+          parsed.vitaminB1 || parsed.vitamin_b1 || parsed.thiamin,
+          2,
+        ),
+        vitaminB2: parseNum(
+          parsed.vitaminB2 || parsed.vitamin_b2 || parsed.riboflavin,
+          2,
+        ),
+        vitaminB3: parseNum(
+          parsed.vitaminB3 || parsed.vitamin_b3 || parsed.niacin,
+        ),
+        vitaminB6: parseNum(parsed.vitaminB6 || parsed.vitamin_b6, 2),
+        vitaminB12: parseNum(parsed.vitaminB12 || parsed.vitamin_b12, 2),
+        folate: parseNum(parsed.folate, 0),
+        calcium: parseNum(parsed.calcium, 0),
+        iron: parseNum(parsed.iron, 2),
+        magnesium: parseNum(parsed.magnesium, 0),
+        zinc: parseNum(parsed.zinc, 2),
+        potassium: parseNum(parsed.potassium, 0),
       };
     } catch {
       return res.status(502).json({
