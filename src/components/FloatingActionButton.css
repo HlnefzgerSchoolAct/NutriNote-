@@ -80,7 +80,7 @@
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
-  background: var(--bg-card);
+  background: var(--surface-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
   color: var(--text-primary);
@@ -92,9 +92,9 @@
 }
 
 .fab-option:hover {
-  background: var(--bg-tertiary);
-  border-color: var(--primary-blue);
-  color: var(--primary-blue);
+  background: var(--surface-tertiary);
+  border-color: var(--color-primary-500);
+  color: var(--color-primary-500);
 }
 
 .fab-option:active {
@@ -144,9 +144,10 @@
   }
 }
 
-/* Desktop positioning */
+/* Desktop positioning - keep FAB visible */
 @media (min-width: 1024px) {
   .fab-container {
-    right: calc(50% - 280px);
+    right: var(--space-xl);
+    bottom: var(--space-xl);
   }
 }

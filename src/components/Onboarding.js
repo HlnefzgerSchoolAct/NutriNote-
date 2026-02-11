@@ -161,8 +161,7 @@ const Onboarding = ({
 
   const steps = useMemo(() => ['welcome', 'goal', 'info', 'activity', 'summary'], []);
   const totalSteps = steps.length;
-  // eslint-disable-next-line no-unused-vars
-  const _progress = ((currentStep + 1) / totalSteps) * 100;
+  const progress = ((currentStep + 1) / totalSteps) * 100;
 
   const updateFormData = useCallback((field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -311,14 +310,22 @@ const Onboarding = ({
 
         {/* Progress */}
         <div className="m3-onboarding__progress">
-          {steps.map((_, index) => (
+          <div className="m3-onboarding__progress-bar">
             <div
-              key={index}
-              className={`m3-onboarding__step-dot ${
-                index === currentStep ? 'm3-onboarding__step-dot--active' : ''
-              } ${index < currentStep ? 'm3-onboarding__step-dot--completed' : ''}`}
+              className="m3-onboarding__progress-fill"
+              style={{ width: `${progress}%` }}
             />
-          ))}
+          </div>
+          <div className="m3-onboarding__step-dots">
+            {steps.map((_, index) => (
+              <div
+                key={index}
+                className={`m3-onboarding__step-dot ${
+                  index === currentStep ? 'm3-onboarding__step-dot--active' : ''
+                } ${index < currentStep ? 'm3-onboarding__step-dot--completed' : ''}`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Content */}

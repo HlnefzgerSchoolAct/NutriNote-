@@ -10,7 +10,6 @@ import {
   AnimatePresence,
   useDragControls,
   useMotionValue,
-  useTransform,
   animate,
 } from "framer-motion";
 import { X } from "lucide-react";
@@ -63,8 +62,6 @@ const BottomSheet = forwardRef(
 
     // Motion values for drag
     const y = useMotionValue(0);
-    // eslint-disable-next-line no-unused-vars
-    const _opacity = useTransform(y, [0, 300], [1, 0]);
 
     // Handle close with animation
     const handleClose = useCallback(() => {

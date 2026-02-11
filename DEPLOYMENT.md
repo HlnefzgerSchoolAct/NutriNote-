@@ -27,6 +27,7 @@
 3. **Add Environment Variables**
    - Go to Project Settings → Environment Variables
    - Add: `OPENROUTER_API_KEY` = `your_api_key_here`
+   - Add: `USDA_API_KEY` = `your_usda_fdc_api_key_here`
    - Enable for: Production, Preview, Development
 
 4. **Deploy**
@@ -35,16 +36,18 @@
 
 ## Environment Variables
 
-| Variable             | Required | Description                         |
-| -------------------- | -------- | ----------------------------------- |
-| `OPENROUTER_API_KEY` | Yes      | API key for AI nutrition estimation |
+| Variable             | Required | Description                                          |
+| -------------------- | -------- | ---------------------------------------------------- |
+| `OPENROUTER_API_KEY` | Yes      | API key for AI nutrition estimation                  |
+| `USDA_API_KEY`       | Yes      | USDA FoodData Central API key (free at fdc.nal.usda.gov) |
 
 ## Project Structure for Vercel
 
 ```
 NutriNote+/
 ├── api/                     # Vercel Serverless Functions
-│   └── estimate-nutrition.js   # AI nutrition endpoint
+│   ├── estimate-nutrition.js   # AI nutrition endpoint
+│   └── identify-food-photo.js  # Photo food identification + USDA lookup
 ├── build/                   # Production build (auto-generated)
 ├── public/                  # Static assets
 ├── src/                     # React source code
@@ -59,6 +62,13 @@ The AI nutrition feature uses a Vercel Serverless Function:
 - **Endpoint**: `POST /api/estimate-nutrition`
 - **Location**: `api/estimate-nutrition.js`
 - **Rate Limit**: 30 requests per 15 minutes per IP
+
+The photo food identification feature uses a second serverless function:
+
+- **Endpoint**: `POST /api/identify-food-photo`
+- **Location**: `api/identify-food-photo.js`
+- **Rate Limit**: 20 requests per 15 minutes per IP
+- **Flow**: Gemini Vision identifies food → USDA FoodData Central lookup → AI fallback if needed
 
 ### API Usage
 

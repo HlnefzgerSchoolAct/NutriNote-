@@ -23,8 +23,8 @@ function getCache() {
   }
 }
 
-/** a dog pooped on this part lol... frfr gang gang
- * Save cache to localStorage dun dun dunnn
+/**
+ * Save cache to localStorage
  * @param {Object} cache - Cache object to save
  */
 function saveCache(cache) {

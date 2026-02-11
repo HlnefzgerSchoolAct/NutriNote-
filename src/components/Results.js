@@ -23,9 +23,13 @@ function Results({ userProfile, activities, onComplete, onReset }) {
   const calculateTDEE = (bmr) => {
     const multipliers = {
       sedentary: 1.2,
+      light: 1.375,
       lightly_active: 1.375,
+      moderate: 1.55,
       moderately_active: 1.55,
+      active: 1.725,
       very_active: 1.725,
+      veryActive: 1.9,
       extra_active: 1.9,
     };
 

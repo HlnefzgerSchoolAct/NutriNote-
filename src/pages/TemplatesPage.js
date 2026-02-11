@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+/**
+ * Templates Page — M3 Redesign with Tailwind
+ * Browse, create, log, import/export meal templates
+ */
+
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutTemplate,
@@ -25,14 +30,18 @@ import {
   RefreshCw,
 } from "lucide-react";
 import {
-  Card,
-  Button,
-  Input,
+  M3Card,
+  M3CardContent,
+  M3Button,
+  Chip,
   EmptyState,
   showToast,
   StaggerContainer,
   StaggerItem,
   CompactMacros,
+  Main,
+  VisuallyHidden,
+  useAnnounce,
 } from "../components/common";
 import TemplateBuilder from "../components/TemplateBuilder";
 import {
@@ -74,7 +83,6 @@ const MEAL_ICONS = {
 
 function TemplatesPage() {
   const [templates, setTemplates] = useState([]);
-  const [filteredTemplates, setFilteredTemplates] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
@@ -83,17 +91,15 @@ function TemplatesPage() {
   const [expandedTemplate, setExpandedTemplate] = useState(null);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importJson, setImportJson] = useState("");
+  const announce = useAnnounce();
 
-  // Initialize prebuilt templates
+  // ===== Initialization =====
   const initializeTemplates = useCallback(async () => {
     try {
       await initTemplateDB();
       setGetAllTemplates(getAllTemplates);
-
-      // Check if prebuilt templates exist, if not add them
       const existingTemplates = await getAllTemplates();
       const existingIds = new Set(existingTemplates.map((t) => t.id));
-
       let addedCount = 0;
       for (const template of prebuiltTemplates) {
         if (!existingIds.has(template.id)) {
@@ -101,10 +107,7 @@ function TemplatesPage() {
           addedCount++;
         }
       }
-
-      if (addedCount > 0) {
-        devLog.log(`Added ${addedCount} prebuilt templates`);
-      }
+      if (addedCount > 0) devLog.log(`Added ${addedCount} prebuilt templates`);
     } catch (error) {
       console.error("Failed to initialize templates:", error);
     }
@@ -116,7 +119,6 @@ function TemplatesPage() {
       await initializeTemplates();
       const allTemplates = await getAllTemplates();
       setTemplates(allTemplates);
-      setFilteredTemplates(allTemplates);
     } catch (error) {
       showToast.error("Failed to load templates");
     } finally {
@@ -128,16 +130,12 @@ function TemplatesPage() {
     loadTemplates();
   }, [loadTemplates]);
 
-  // Filter templates when search or category changes
-  useEffect(() => {
+  // ===== Filtered =====
+  const filteredTemplates = useMemo(() => {
     let filtered = templates;
-
-    // Filter by category
     if (selectedCategory !== "all") {
       filtered = filtered.filter((t) => t.category === selectedCategory);
     }
-
-    // Filter by search
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
@@ -147,41 +145,33 @@ function TemplatesPage() {
           t.tags?.some((tag) => tag.toLowerCase().includes(query)),
       );
     }
-
-    setFilteredTemplates(filtered);
+    return filtered;
   }, [templates, searchQuery, selectedCategory]);
 
-  const handleDeleteTemplate = async (template) => {
-    if (template.isPrebuilt) {
-      showToast.error("Cannot delete prebuilt templates");
-      return;
-    }
+  // ===== Handlers =====
+  const handleDeleteTemplate = useCallback(
+    async (template) => {
+      if (template.isPrebuilt) {
+        showToast.error("Cannot delete prebuilt templates");
+        return;
+      }
+      try {
+        await deleteTemplate(template.id);
+        setTemplates((prev) => prev.filter((t) => t.id !== template.id));
+        showToast.success(`Deleted "${template.name}"`);
+        announce(`Deleted template ${template.name}`, "assertive");
+      } catch (error) {
+        showToast.error("Failed to delete template");
+      }
+    },
+    [announce],
+  );
 
-    try {
-      await deleteTemplate(template.id);
-      setTemplates((prev) => prev.filter((t) => t.id !== template.id));
-      showToast.success(`Deleted "${template.name}"`);
-    } catch (error) {
-      showToast.error("Failed to delete template");
-    }
-  };
-
-  const handleEditTemplate = (template) => {
-    if (template.isPrebuilt) {
-      // Duplicate prebuilt template for editing
-      handleDuplicateTemplate(template, true);
-      return;
-    }
-    setEditingTemplate(template);
-    setShowBuilder(true);
-  };
-
-  const handleDuplicateTemplate = async (template, openForEdit = false) => {
+  const handleDuplicateTemplate = useCallback(async (template, openForEdit = false) => {
     try {
       const duplicated = await duplicateTemplate(template.id);
       setTemplates((prev) => [duplicated, ...prev]);
       showToast.success(`Created copy of "${template.name}"`);
-
       if (openForEdit) {
         setEditingTemplate(duplicated);
         setShowBuilder(true);
@@ -189,40 +179,49 @@ function TemplatesPage() {
     } catch (error) {
       showToast.error("Failed to duplicate template");
     }
-  };
+  }, []);
 
-  const handleLogTemplate = (template) => {
-    // Log all foods from all meals in the template
-    let totalFoods = 0;
+  const handleEditTemplate = useCallback(
+    (template) => {
+      if (template.isPrebuilt) {
+        handleDuplicateTemplate(template, true);
+        return;
+      }
+      setEditingTemplate(template);
+      setShowBuilder(true);
+    },
+    [handleDuplicateTemplate],
+  );
 
-    template.meals.forEach((meal) => {
-      meal.foods.forEach((food) => {
-        const foodEntry = {
-          id: Date.now() + Math.random(),
-          name: food.name,
-          calories: food.calories,
-          protein: food.protein || 0,
-          carbs: food.carbs || 0,
-          fat: food.fat || 0,
-          timestamp: new Date().toISOString(),
-          mealType: meal.mealType || getMealTypeByTime(),
-          fromTemplate: template.name,
-        };
-        addFoodEntry(foodEntry);
-        totalFoods++;
+  const handleLogTemplate = useCallback(
+    (template) => {
+      let totalFoods = 0;
+      template.meals.forEach((meal) => {
+        meal.foods.forEach((food) => {
+          addFoodEntry({
+            id: Date.now() + Math.random(),
+            name: food.name,
+            calories: food.calories,
+            protein: food.protein || 0,
+            carbs: food.carbs || 0,
+            fat: food.fat || 0,
+            timestamp: new Date().toISOString(),
+            mealType: meal.mealType || getMealTypeByTime(),
+            fromTemplate: template.name,
+          });
+          totalFoods++;
+        });
       });
-    });
+      showToast.success("Template logged!", `${totalFoods} foods added from "${template.name}"`);
+      announce(`Logged ${totalFoods} foods from template ${template.name}`, "assertive");
+      setExpandedTemplate(null);
+    },
+    [announce],
+  );
 
-    showToast.success(
-      "Template logged!",
-      `${totalFoods} foods added from "${template.name}"`,
-    );
-    setExpandedTemplate(null);
-  };
-
-  const handleLogMeal = (template, meal) => {
+  const handleLogMeal = useCallback((template, meal) => {
     meal.foods.forEach((food) => {
-      const foodEntry = {
+      addFoodEntry({
         id: Date.now() + Math.random(),
         name: food.name,
         calories: food.calories,
@@ -232,21 +231,14 @@ function TemplatesPage() {
         timestamp: new Date().toISOString(),
         mealType: meal.mealType,
         fromTemplate: template.name,
-      };
-      addFoodEntry(foodEntry);
+      });
     });
+    showToast.success(`Logged ${meal.name}`, `${meal.foods.length} foods added`);
+  }, []);
 
-    showToast.success(
-      `Logged ${meal.name}`,
-      `${meal.foods.length} foods added`,
-    );
-  };
-
-  const handleExportTemplate = async (template) => {
+  const handleExportTemplate = useCallback(async (template) => {
     try {
       const jsonString = await exportTemplate(template.id);
-
-      // Create and download file
       const blob = new Blob([jsonString], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -256,19 +248,17 @@ function TemplatesPage() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-
       showToast.success("Template exported!");
     } catch (error) {
       showToast.error("Failed to export template");
     }
-  };
+  }, []);
 
-  const handleImportTemplates = async () => {
+  const handleImportTemplates = useCallback(async () => {
     if (!importJson.trim()) {
       showToast.error("Please paste template JSON");
       return;
     }
-
     try {
       const imported = await importTemplates(importJson);
       setTemplates((prev) => [...imported, ...prev]);
@@ -278,18 +268,16 @@ function TemplatesPage() {
     } catch (error) {
       showToast.error("Invalid template format");
     }
-  };
+  }, [importJson]);
 
-  const handleRepeatYesterday = async () => {
+  const handleRepeatYesterday = useCallback(() => {
     const yesterdayFoods = getYesterdaysFoodLog();
-
     if (!yesterdayFoods || yesterdayFoods.length === 0) {
       showToast.error("No meals logged yesterday");
       return;
     }
-
     yesterdayFoods.forEach((food) => {
-      const foodEntry = {
+      addFoodEntry({
         id: Date.now() + Math.random(),
         name: food.name,
         calories: food.calories,
@@ -299,24 +287,17 @@ function TemplatesPage() {
         timestamp: new Date().toISOString(),
         mealType: food.mealType || getMealTypeByTime(),
         repeatedFrom: "yesterday",
-      };
-      addFoodEntry(foodEntry);
+      });
     });
+    showToast.success("Yesterday's meals repeated!", `${yesterdayFoods.length} foods added`);
+  }, []);
 
-    showToast.success(
-      "Yesterday's meals repeated!",
-      `${yesterdayFoods.length} foods added`,
-    );
-  };
-
-  const handleCreateFromYesterday = async () => {
+  const handleCreateFromYesterday = useCallback(async () => {
     const yesterdayFoods = getYesterdaysFoodLog();
-
     if (!yesterdayFoods || yesterdayFoods.length === 0) {
       showToast.error("No meals logged yesterday");
       return;
     }
-
     try {
       const template = await createTemplateFromMeals(
         yesterdayFoods,
@@ -327,337 +308,134 @@ function TemplatesPage() {
     } catch (error) {
       showToast.error("Failed to create template");
     }
-  };
+  }, []);
 
-  const handleSaveTemplate = (savedTemplate) => {
-    if (editingTemplate) {
-      setTemplates((prev) =>
-        prev.map((t) => (t.id === savedTemplate.id ? savedTemplate : t)),
-      );
-    } else {
-      setTemplates((prev) => [savedTemplate, ...prev]);
-    }
+  const handleSaveTemplate = useCallback(
+    (savedTemplate) => {
+      if (editingTemplate) {
+        setTemplates((prev) =>
+          prev.map((t) => (t.id === savedTemplate.id ? savedTemplate : t)),
+        );
+      } else {
+        setTemplates((prev) => [savedTemplate, ...prev]);
+      }
+      setShowBuilder(false);
+      setEditingTemplate(null);
+    },
+    [editingTemplate],
+  );
+
+  const handleCancelBuilder = useCallback(() => {
     setShowBuilder(false);
     setEditingTemplate(null);
-  };
+  }, []);
 
-  const handleCancelBuilder = () => {
-    setShowBuilder(false);
-    setEditingTemplate(null);
-  };
-
-  // Show template builder
+  // ===== Builder View =====
   if (showBuilder) {
     return (
-      <div className="templates-page">
+      <Main className="px-4 pt-6 pb-24 max-w-150 mx-auto md:max-w-210 lg:pb-8 lg:pl-70">
         <TemplateBuilder
           existingTemplate={editingTemplate}
           onSave={handleSaveTemplate}
           onCancel={handleCancelBuilder}
         />
-      </div>
+      </Main>
     );
   }
 
+  // ===== Main View =====
   return (
-    <div className="templates-page">
+    <Main className="px-4 pt-6 pb-24 max-w-150 mx-auto md:max-w-210 lg:pb-8 lg:pl-70">
+      <VisuallyHidden>
+        <h1>Meal Templates</h1>
+      </VisuallyHidden>
+
       {/* Header */}
-      <header className="templates-header">
-        <div className="header-content">
-          <h1>
-            <LayoutTemplate size={28} />
+      <header className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <LayoutTemplate size={26} className="text-primary" aria-hidden="true" />
+          <h2 className="text-headline-sm font-bold text-on-surface m-0" aria-hidden="true">
             Meal Templates
-          </h1>
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => setShowBuilder(true)}
-          >
-            <Plus size={18} />
-            New Template
-          </Button>
+          </h2>
         </div>
+        <M3Button variant="filled" size="sm" icon={<Plus size={18} />} onClick={() => setShowBuilder(true)}>
+          New Template
+        </M3Button>
       </header>
 
       {/* Quick Actions */}
-      <div className="quick-actions">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={handleRepeatYesterday}
-          className="quick-action-btn"
-        >
-          <RefreshCw size={16} />
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-none">
+        <M3Button variant="tonal" size="sm" icon={<RefreshCw size={16} />} onClick={handleRepeatYesterday} className="shrink-0">
           Repeat Yesterday
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={handleCreateFromYesterday}
-          className="quick-action-btn"
-        >
-          <Calendar size={16} />
-          Save Yesterday as Template
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setShowImportModal(true)}
-          className="quick-action-btn"
-        >
-          <Upload size={16} />
+        </M3Button>
+        <M3Button variant="tonal" size="sm" icon={<Calendar size={16} />} onClick={handleCreateFromYesterday} className="shrink-0">
+          Save Yesterday
+        </M3Button>
+        <M3Button variant="tonal" size="sm" icon={<Upload size={16} />} onClick={() => setShowImportModal(true)} className="shrink-0">
           Import
-        </Button>
+        </M3Button>
       </div>
 
       {/* Search */}
-      <div className="templates-search">
-        <div className="search-input-wrapper">
-          <Search size={18} className="search-icon" />
-          <Input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search templates..."
-            className="search-input"
-          />
-        </div>
+      <div className="relative mb-4">
+        <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" aria-hidden="true" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search templates..."
+          className="w-full pl-10 pr-4 py-3 bg-surface-container border border-outline-variant rounded-xl text-body-md text-on-surface outline-none transition-colors duration-150 focus:border-primary placeholder:text-on-surface-variant"
+          aria-label="Search templates"
+        />
       </div>
 
       {/* Category Filter */}
-      <div className="category-filter">
-        <button
-          className={`filter-btn ${selectedCategory === "all" ? "active" : ""}`}
-          onClick={() => setSelectedCategory("all")}
-        >
-          <LayoutTemplate size={16} />
-          All
-        </button>
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-none" role="tablist" aria-label="Filter by category">
+        <Chip variant="filter" selected={selectedCategory === "all"} onClick={() => setSelectedCategory("all")} role="tab" aria-selected={selectedCategory === "all"}>
+          <LayoutTemplate size={14} className="mr-1" /> All
+        </Chip>
         {Object.entries(TEMPLATE_CATEGORIES).map(([key, cat]) => {
           const Icon = CATEGORY_ICONS[key];
           return (
-            <button
-              key={key}
-              className={`filter-btn ${selectedCategory === key ? "active" : ""}`}
-              onClick={() => setSelectedCategory(key)}
-              style={{ "--filter-color": cat.color }}
-            >
-              <Icon size={16} />
-              {cat.label}
-            </button>
+            <Chip key={key} variant="filter" selected={selectedCategory === key} onClick={() => setSelectedCategory(key)} role="tab" aria-selected={selectedCategory === key}>
+              <Icon size={14} className="mr-1" /> {cat.label}
+            </Chip>
           );
         })}
       </div>
 
       {/* Templates List */}
-      <div className="templates-list">
+      <div className="flex flex-col gap-3">
         {isLoading ? (
-          <div className="loading-state">
-            <div className="loading-spinner" />
-            <p>Loading templates...</p>
+          <div className="flex flex-col items-center justify-center py-12 text-on-surface-variant">
+            <div className="w-10 h-10 border-3 border-surface-container-highest border-t-primary rounded-full animate-spin mb-3" />
+            <p className="text-body-sm">Loading templates...</p>
           </div>
         ) : filteredTemplates.length === 0 ? (
           <EmptyState
             icon={<LayoutTemplate />}
             title="No templates found"
-            description={
-              searchQuery
-                ? "Try a different search term"
-                : "Create your first meal template to get started"
-            }
-            action={
-              <Button variant="primary" onClick={() => setShowBuilder(true)}>
-                <Plus size={18} />
-                Create Template
-              </Button>
-            }
+            description={searchQuery ? "Try a different search term" : "Create your first meal template to get started"}
+            actionLabel={!searchQuery ? "Create Template" : undefined}
+            onAction={!searchQuery ? () => setShowBuilder(true) : undefined}
           />
         ) : (
-          <StaggerContainer className="template-grid">
-            {filteredTemplates.map((template) => {
-              const CategoryIcon = CATEGORY_ICONS[template.category] || Tag;
-              const isExpanded = expandedTemplate === template.id;
-              const categoryConfig = TEMPLATE_CATEGORIES[template.category];
-
-              return (
-                <StaggerItem key={template.id}>
-                  <Card
-                    className={`template-card ${isExpanded ? "expanded" : ""} ${template.isPrebuilt ? "prebuilt" : ""}`}
-                  >
-                    {/* Template Header */}
-                    <div
-                      className="template-header"
-                      onClick={() =>
-                        setExpandedTemplate(isExpanded ? null : template.id)
-                      }
-                    >
-                      <div className="template-info">
-                        <div
-                          className="category-badge"
-                          style={{
-                            backgroundColor: categoryConfig?.color || "#9b59b6",
-                          }}
-                        >
-                          <CategoryIcon size={14} />
-                        </div>
-                        <div className="template-details">
-                          <h3 className="template-name">
-                            {template.name}
-                            {template.isPrebuilt && (
-                              <span className="prebuilt-badge">Library</span>
-                            )}
-                          </h3>
-                          <p className="template-description">
-                            {template.description}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="template-summary">
-                        <span className="template-calories">
-                          {Math.round(template.totalNutrition?.calories || 0)}{" "}
-                          cal
-                        </span>
-                        <span className="meal-count">
-                          {template.meals?.length || 0} meals
-                        </span>
-                        {isExpanded ? (
-                          <ChevronUp size={18} />
-                        ) : (
-                          <ChevronDown size={18} />
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Expanded Content */}
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          className="template-content"
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                        >
-                          {/* Nutrition Summary */}
-                          <div className="nutrition-summary">
-                            <CompactMacros
-                              protein={template.totalNutrition?.protein || 0}
-                              carbs={template.totalNutrition?.carbs || 0}
-                              fat={template.totalNutrition?.fat || 0}
-                            />
-                          </div>
-
-                          {/* Tags */}
-                          {template.tags && template.tags.length > 0 && (
-                            <div className="template-tags">
-                              {template.tags.map((tag) => (
-                                <span key={tag} className="tag">
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Meals */}
-                          <div className="template-meals">
-                            {template.meals?.map((meal) => {
-                              const MealIcon =
-                                MEAL_ICONS[meal.mealType] || Cookie;
-                              const mealCalories = meal.foods?.reduce(
-                                (sum, f) => sum + (f.calories || 0),
-                                0,
-                              );
-
-                              return (
-                                <div key={meal.id} className="meal-item">
-                                  <div className="meal-info">
-                                    <MealIcon size={16} className="meal-icon" />
-                                    <div className="meal-details">
-                                      <span className="meal-name">
-                                        {meal.name}
-                                      </span>
-                                      <span className="meal-foods">
-                                        {meal.foods?.length || 0} foods •{" "}
-                                        {Math.round(mealCalories)} cal
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <Button
-                                    variant="secondary"
-                                    size="xs"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleLogMeal(template, meal);
-                                    }}
-                                  >
-                                    <Play size={12} />
-                                    Log
-                                  </Button>
-                                </div>
-                              );
-                            })}
-                          </div>
-
-                          {/* Actions */}
-                          <div className="template-actions">
-                            <Button
-                              variant="primary"
-                              size="sm"
-                              onClick={() => handleLogTemplate(template)}
-                              className="log-all-btn"
-                            >
-                              <Play size={16} />
-                              Log All Meals
-                            </Button>
-
-                            <div className="secondary-actions">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleEditTemplate(template)}
-                                title={
-                                  template.isPrebuilt ? "Edit as copy" : "Edit"
-                                }
-                              >
-                                <Edit3 size={16} />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() =>
-                                  handleDuplicateTemplate(template)
-                                }
-                                title="Duplicate"
-                              >
-                                <Copy size={16} />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleExportTemplate(template)}
-                                title="Export"
-                              >
-                                <Download size={16} />
-                              </Button>
-                              {!template.isPrebuilt && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleDeleteTemplate(template)}
-                                  title="Delete"
-                                  className="delete-btn"
-                                >
-                                  <Trash2 size={16} />
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </Card>
-                </StaggerItem>
-              );
-            })}
+          <StaggerContainer className="flex flex-col gap-3 lg:grid lg:grid-cols-2 lg:gap-4">
+            {filteredTemplates.map((template) => (
+              <StaggerItem key={template.id}>
+                <TemplateCard
+                  template={template}
+                  isExpanded={expandedTemplate === template.id}
+                  onToggleExpand={() => setExpandedTemplate(expandedTemplate === template.id ? null : template.id)}
+                  onLog={handleLogTemplate}
+                  onLogMeal={handleLogMeal}
+                  onEdit={handleEditTemplate}
+                  onDuplicate={handleDuplicateTemplate}
+                  onExport={handleExportTemplate}
+                  onDelete={handleDeleteTemplate}
+                />
+              </StaggerItem>
+            ))}
           </StaggerContainer>
         )}
       </div>
@@ -666,58 +444,209 @@ function TemplatesPage() {
       <AnimatePresence>
         {showImportModal && (
           <motion.div
-            className="modal-overlay"
+            className="fixed inset-0 bg-scrim/40 flex items-end sm:items-center justify-center z-50 p-0 sm:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onClick={() => setShowImportModal(false)}
           >
             <motion.div
-              className="import-modal"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-surface w-full max-w-125 rounded-t-3xl sm:rounded-3xl p-6 max-h-[85vh] overflow-y-auto"
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <div className="modal-header">
-                <h3>
-                  <Upload size={20} />
-                  Import Template
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="flex items-center gap-2 text-title-lg font-semibold text-on-surface m-0">
+                  <Upload size={20} /> Import Template
                 </h3>
-                <Button
-                  variant="ghost"
-                  size="sm"
+                <button
+                  className="flex items-center justify-center w-10 h-10 bg-transparent border-none rounded-full text-on-surface-variant cursor-pointer hover:bg-surface-container-high"
                   onClick={() => setShowImportModal(false)}
+                  aria-label="Close"
                 >
                   <X size={20} />
-                </Button>
+                </button>
               </div>
-
-              <div className="modal-body">
-                <p>Paste the template JSON below:</p>
-                <textarea
-                  value={importJson}
-                  onChange={(e) => setImportJson(e.target.value)}
-                  placeholder='{"name": "Template Name", ...}'
-                  rows={10}
-                />
-              </div>
-
-              <div className="modal-actions">
-                <Button
-                  variant="secondary"
-                  onClick={() => setShowImportModal(false)}
-                >
-                  Cancel
-                </Button>
-                <Button variant="primary" onClick={handleImportTemplates}>
-                  <Upload size={16} />
-                  Import
-                </Button>
+              <p className="text-body-sm text-on-surface-variant mb-3">Paste the template JSON below:</p>
+              <textarea
+                value={importJson}
+                onChange={(e) => setImportJson(e.target.value)}
+                placeholder='{"name": "Template Name", ...}'
+                rows={10}
+                className="w-full p-3 border border-outline-variant rounded-xl bg-surface-container text-body-sm text-on-surface font-mono resize-y outline-none transition-colors duration-150 focus:border-primary mb-4"
+              />
+              <div className="flex justify-end gap-2">
+                <M3Button variant="text" onClick={() => setShowImportModal(false)}>Cancel</M3Button>
+                <M3Button variant="filled" icon={<Upload size={16} />} onClick={handleImportTemplates}>Import</M3Button>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </Main>
+  );
+}
+
+/* =============================================
+   SUB-COMPONENTS
+   ============================================= */
+
+/** Template card with expandable detail */
+function TemplateCard({
+  template,
+  isExpanded,
+  onToggleExpand,
+  onLog,
+  onLogMeal,
+  onEdit,
+  onDuplicate,
+  onExport,
+  onDelete,
+}) {
+  const CategoryIcon = CATEGORY_ICONS[template.category] || Tag;
+  const categoryConfig = TEMPLATE_CATEGORIES[template.category];
+
+  return (
+    <M3Card
+      variant="filled"
+      className={`overflow-hidden transition-shadow duration-200 ${isExpanded ? "shadow-md" : ""} ${template.isPrebuilt ? "border-l-3 border-l-primary" : ""}`}
+    >
+      {/* Header (clickable) */}
+      <button
+        className="flex items-start justify-between w-full px-4 py-3 bg-transparent border-none cursor-pointer text-left text-on-surface transition-colors duration-150 hover:bg-surface-container-high"
+        onClick={onToggleExpand}
+        aria-expanded={isExpanded}
+      >
+        <div className="flex gap-3 flex-1 min-w-0">
+          <div
+            className="flex items-center justify-center w-9 h-9 rounded-lg text-inverse-surface shrink-0"
+            style={{ backgroundColor: categoryConfig?.color || "#9b59b6" }}
+          >
+            <CategoryIcon size={14} />
+          </div>
+          <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+            <span className="flex items-center gap-2 text-body-md font-semibold">
+              {template.name}
+              {template.isPrebuilt && (
+                <span className="text-label-sm font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  Library
+                </span>
+              )}
+            </span>
+            {template.description && (
+              <span className="text-body-sm text-on-surface-variant line-clamp-2">
+                {template.description}
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="flex items-center gap-3 shrink-0 ml-3">
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="text-body-sm font-bold text-primary tabular-nums">
+              {Math.round(template.totalNutrition?.calories || 0)} cal
+            </span>
+            <span className="text-label-sm text-on-surface-variant">
+              {template.meals?.length || 0} meals
+            </span>
+          </div>
+          {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </div>
+      </button>
+
+      {/* Expanded Content */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            className="overflow-hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="border-t border-outline-variant px-4 py-3">
+              {/* Nutrition */}
+              <div className="px-3 py-3 bg-surface-container rounded-xl mb-3">
+                <CompactMacros
+                  protein={template.totalNutrition?.protein || 0}
+                  carbs={template.totalNutrition?.carbs || 0}
+                  fat={template.totalNutrition?.fat || 0}
+                />
+              </div>
+
+              {/* Tags */}
+              {template.tags?.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {template.tags.map((tag) => (
+                    <span key={tag} className="px-2 py-1 bg-surface-container-high rounded-full text-label-sm text-on-surface-variant">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Meals */}
+              <div className="flex flex-col gap-2 mb-3">
+                {template.meals?.map((meal) => {
+                  const MealIcon = MEAL_ICONS[meal.mealType] || Cookie;
+                  const mealCalories = meal.foods?.reduce((sum, f) => sum + (f.calories || 0), 0);
+                  return (
+                    <div key={meal.id} className="flex items-center justify-between px-3 py-2.5 bg-surface-container border border-outline-variant rounded-lg">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <MealIcon size={16} className="text-on-surface-variant shrink-0" />
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-body-sm font-medium text-on-surface truncate">{meal.name}</span>
+                          <span className="text-label-sm text-on-surface-variant">
+                            {meal.foods?.length || 0} foods • {Math.round(mealCalories)} cal
+                          </span>
+                        </div>
+                      </div>
+                      <M3Button variant="tonal" size="sm" icon={<Play size={12} />} onClick={(e) => { e.stopPropagation(); onLogMeal(template, meal); }}>
+                        Log
+                      </M3Button>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-between pt-3 border-t border-outline-variant flex-wrap gap-2">
+                <M3Button variant="filled" size="sm" icon={<Play size={16} />} onClick={() => onLog(template)}>
+                  Log All Meals
+                </M3Button>
+                <div className="flex gap-1">
+                  <IconBtn icon={<Edit3 size={16} />} label={template.isPrebuilt ? "Edit as copy" : "Edit"} onClick={() => onEdit(template)} />
+                  <IconBtn icon={<Copy size={16} />} label="Duplicate" onClick={() => onDuplicate(template)} />
+                  <IconBtn icon={<Download size={16} />} label="Export" onClick={() => onExport(template)} />
+                  {!template.isPrebuilt && (
+                    <IconBtn icon={<Trash2 size={16} />} label="Delete" onClick={() => onDelete(template)} danger />
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </M3Card>
+  );
+}
+
+/** Small icon-only action button */
+function IconBtn({ icon, label, onClick, danger = false }) {
+  return (
+    <button
+      className={`flex items-center justify-center w-9 h-9 bg-transparent border-none rounded-lg cursor-pointer transition-colors duration-150 ${
+        danger
+          ? "text-on-surface-variant hover:bg-error/10 hover:text-error"
+          : "text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface"
+      }`}
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      aria-label={label}
+      title={label}
+    >
+      {icon}
+    </button>
   );
 }
 

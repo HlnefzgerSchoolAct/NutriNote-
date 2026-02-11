@@ -19,7 +19,7 @@ if (!fs.existsSync(src)) {
       await sharp(src).resize(size, size, { fit: "cover" }).toFile(out);
       console.log("Wrote", out);
     }
-    // Create favicon.ico (48x48 while supporting multiple sizes)
+    // Create favicon.ico (48x48 while supporting multiple sizes) 
     const icoOut = path.join(outDir, "favicon.ico");
     await sharp(src).resize(48, 48).toFile(icoOut);
     console.log("Wrote", icoOut);

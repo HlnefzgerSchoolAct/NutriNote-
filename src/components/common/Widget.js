@@ -3,7 +3,7 @@ import React, {
   createContext,
   useContext,
 } from "react";
-import { motion, Reorder, useDragControls } from "framer-motion";
+import { motion, Reorder } from "framer-motion";
 import {
   GripVertical,
   X,
@@ -134,8 +134,6 @@ const Widget = forwardRef(
     ref,
   ) => {
     const { editing, onRemove: gridOnRemove } = useContext(WidgetGridContext);
-    // eslint-disable-next-line no-unused-vars
-    const _dragControls = useDragControls();
 
     const handleRemove = (e) => {
       e.stopPropagation();
@@ -392,8 +390,6 @@ export const CalorieWidget = ({
   ...props
 }) => {
   const actualRemaining = remaining ?? goal - consumed;
-  // eslint-disable-next-line no-unused-vars
-  const _percentage = Math.min((consumed / goal) * 100, 100);
 
   return (
     <Widget
@@ -431,9 +427,6 @@ export const MacroWidget = ({
   onClick,
   ...props
 }) => {
-  // eslint-disable-next-line no-unused-vars
-  const _percentage = Math.min((value / goal) * 100, 100);
-
   return (
     <Widget
       size="small"

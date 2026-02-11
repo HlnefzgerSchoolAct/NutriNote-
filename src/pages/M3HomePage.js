@@ -59,7 +59,7 @@ import {
   getTotalCaloriesEaten,
   getTotalCaloriesBurned,
   loadStreakData,
-  loadHydrationLog,
+  loadWaterLog,
   loadWeightLog,
 } from "../utils/localStorage";
 
@@ -125,7 +125,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
       setCurrentMacros(macros);
 
       // Hydration
-      const hydration = loadHydrationLog();
+      const hydration = loadWaterLog();
       setHydrationData({
         current: hydration?.glasses || 0,
         goal: hydration?.goal || 8,

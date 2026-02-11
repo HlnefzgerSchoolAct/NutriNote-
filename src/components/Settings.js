@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   loadPreferences,
   savePreferences,
@@ -6,24 +6,27 @@ import {
   saveMacroGoals,
   getMacroPresets,
   calculateMacroGrams,
-  exportAllData,
   clearAllData,
   resetOnboarding,
   loadUserProfile,
   saveUserProfile,
+  saveDailyTarget,
   loadMicronutrientGoals,
   saveMicronutrientGoals,
   calculatePersonalizedMicronutrientGoals,
   MICRONUTRIENT_INFO,
 } from "../utils/localStorage";
+import { createFocusTrap } from "../utils/a11y";
+import DataManagementSheet from "./DataManagement";
 import "./Settings.css";
 
-function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
+function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget, onDailyTargetUpdate }) {
   const [preferences, setPreferences] = useState(loadPreferences());
   const [macroGoals, setMacroGoals] = useState(loadMacroGoals());
   const [profile, setProfile] = useState(loadUserProfile());
   const [activeTab, setActiveTab] = useState("general");
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [showDataManagement, setShowDataManagement] = useState(false);
   const [customMacros, setCustomMacros] = useState({
     protein: macroGoals.percentages?.protein || 30,
     carbs: macroGoals.percentages?.carbs || 40,
@@ -31,8 +34,27 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
   });
   const [microGoals, setMicroGoals] = useState(loadMicronutrientGoals());
   const [editingMicros, setEditingMicros] = useState({});
+  const modalRef = useRef(null);
+  const focusTrapRef = useRef(null);
 
   const presets = getMacroPresets();
+
+  // Focus trap for accessibility
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      focusTrapRef.current = createFocusTrap(modalRef.current, {
+        escapeDeactivates: true,
+        onDeactivate: onClose,
+      });
+      focusTrapRef.current.activate();
+    }
+    return () => {
+      if (focusTrapRef.current) {
+        focusTrapRef.current.deactivate();
+        focusTrapRef.current = null;
+      }
+    };
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -119,19 +141,35 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
     if (onProfileUpdate) {
       onProfileUpdate(profile);
     }
-  };
-
-  const handleExport = () => {
-    const data = exportAllData();
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `nutrinoteplus-backup-${new Date().toISOString().split("T")[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Auto-recalculate TDEE when profile changes
+    if (profile && profile.weight && profile.heightFeet && profile.age && profile.gender) {
+      const weightKg = parseFloat(profile.weight) / 2.20462;
+      const heightInches = parseInt(profile.heightFeet) * 12 + parseInt(profile.heightInches || 0);
+      const heightCm = heightInches * 2.54;
+      const age = parseInt(profile.age);
+      let bmr;
+      if (profile.gender === "male") {
+        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+      } else {
+        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+      }
+      const multipliers = {
+        sedentary: 1.2, light: 1.375, moderate: 1.55,
+        active: 1.725, veryActive: 1.9,
+      };
+      const tdee = Math.round(bmr * (multipliers[profile.activityLevel] || 1.55));
+      let adjustment = 0;
+      if (profile.goal === "lose") adjustment = -(parseInt(profile.customAdjustment) || 500);
+      else if (profile.goal === "gain") adjustment = parseInt(profile.customAdjustment) || 300;
+      const newTarget = tdee + adjustment;
+      saveDailyTarget(newTarget);
+      if (onDailyTargetUpdate) onDailyTargetUpdate(newTarget);
+      // Recalculate macros based on new target
+      const currentPercentages = macroGoals.percentages || { protein: 30, carbs: 40, fat: 30 };
+      const newMacros = calculateMacroGrams(newTarget, { ...currentPercentages, name: macroGoals.preset || "Custom" });
+      setMacroGoals(newMacros);
+      saveMacroGoals(newMacros);
+    }
   };
 
   const handleClearData = () => {
@@ -155,7 +193,7 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
       aria-modal="true"
       aria-labelledby="settings-title"
     >
-      <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="settings-modal" ref={modalRef} onClick={(e) => e.stopPropagation()}>
         <div className="settings-header">
           <h2 id="settings-title">Settings</h2>
           <button
@@ -682,12 +720,6 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
                 <button className="save-btn" onClick={saveProfileChanges}>
                   Save Profile Changes
                 </button>
-
-                <p className="setting-note">
-                  Note: Changing these values won't automatically recalculate
-                  your calorie target. Go to the Macros tab and click
-                  "Recalculate" after saving.
-                </p>
               </div>
             </div>
           )}
@@ -697,7 +729,7 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
               <h3>Data Management</h3>
 
               <div className="data-actions">
-                <button className="data-btn export" onClick={handleExport}>
+                <button className="data-btn export" onClick={() => setShowDataManagement(true)}>
                   <svg
                     width="20"
                     height="20"
@@ -710,7 +742,7 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
                   </svg>
-                  Export All Data
+                  Export / Import Data
                 </button>
 
                 <button
@@ -777,6 +809,12 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget }) {
           )}
         </div>
       </div>
+
+      {/* Data Management Sheet */}
+      <DataManagementSheet
+        isOpen={showDataManagement}
+        onClose={() => setShowDataManagement(false)}
+      />
     </div>
   );
 }

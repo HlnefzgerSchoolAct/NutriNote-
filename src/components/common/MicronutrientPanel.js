@@ -49,16 +49,18 @@ const MicronutrientPanel = memo(function MicronutrientPanel({
     (key) => totals[key] !== null && totals[key] !== undefined && totals[key] > 0
   );
 
-  // Count warnings
-  const warnings = Object.entries(totals).reduce((count, [key, value]) => {
-    const info = MICRONUTRIENT_INFO[key];
-    const goal = goals[key];
-    if (!info || !goal || value === null) return count;
-    
-    if (info.warnHigh && value > goal) return count + 1;
-    if (info.warnLow && value < goal * 0.5) return count + 1;
-    return count;
-  }, 0);
+  // Count warnings (only meaningful when user has logged food)
+  const warnings = hasData
+    ? Object.entries(totals).reduce((count, [key, value]) => {
+        const info = MICRONUTRIENT_INFO[key];
+        const goal = goals[key];
+        if (!info || !goal || value === null) return count;
+        
+        if (info.warnHigh && value > goal) return count + 1;
+        if (info.warnLow && value < goal * 0.5) return count + 1;
+        return count;
+      }, 0)
+    : 0;
 
   return (
     <div className={`ds-micro-panel ${isOpen ? "ds-micro-panel--open" : ""} ${className}`}>

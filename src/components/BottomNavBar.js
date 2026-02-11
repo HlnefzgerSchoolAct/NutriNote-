@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, UtensilsCrossed, Calendar, User, ChefHat } from "lucide-react";
+import { Home, UtensilsCrossed, Calendar, User, ChefHat, ClipboardList } from "lucide-react";
 import { motion } from "framer-motion";
 import "./BottomNavBar.css";
 
@@ -8,6 +8,7 @@ const navItems = [
   { path: "/", label: "Home", icon: Home },
   { path: "/log", label: "Log", icon: UtensilsCrossed },
   { path: "/recipes", label: "Recipes", icon: ChefHat },
+  { path: "/templates", label: "Templates", icon: ClipboardList },
   { path: "/history", label: "History", icon: Calendar },
   { path: "/profile", label: "Profile", icon: User },
 ];

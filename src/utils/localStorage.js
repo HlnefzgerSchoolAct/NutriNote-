@@ -356,7 +356,7 @@ const checkAndResetDaily = () => {
       const history = loadFromLocalStorage(STORAGE_KEYS.FOOD_HISTORY, {});
       history[savedDate] = currentFoodLog;
 
-      // Keep only last 7 days
+      // Keep only last 7 days of detailed food history
       const dates = Object.keys(history).sort();
       if (dates.length > 7) {
         const datesToKeep = dates.slice(-7);
@@ -372,6 +372,7 @@ const checkAndResetDaily = () => {
 
     clearLocalStorage(STORAGE_KEYS.FOOD_LOG);
     clearLocalStorage(STORAGE_KEYS.EXERCISE_LOG);
+    clearLocalStorage(STORAGE_KEYS.WATER_LOG);
     saveToLocalStorage(STORAGE_KEYS.CURRENT_DATE, todaysDate);
   }
 };
@@ -404,7 +405,7 @@ export const loadFoodLog = () => {
 export const addFoodEntry = (foodEntry) => {
   const currentLog = loadFoodLog();
   const newEntry = {
-    id: Date.now(),
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2),
     ...foodEntry,
     timestamp: new Date().toISOString(),
   };
@@ -431,7 +432,7 @@ export const loadExerciseLog = () => {
 export const addExerciseEntry = (exerciseEntry) => {
   const currentLog = loadExerciseLog();
   const newEntry = {
-    id: Date.now(),
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2),
     ...exerciseEntry,
     timestamp: new Date().toISOString(),
   };
@@ -488,9 +489,10 @@ export const saveDailyDataToHistory = () => {
     target: target,
   };
 
+  // Keep 30 days of summary history for monthly calendar view
   const dates = Object.keys(history).sort();
-  if (dates.length > 7) {
-    const datesToKeep = dates.slice(-7);
+  if (dates.length > 30) {
+    const datesToKeep = dates.slice(-30);
     const newHistory = {};
     datesToKeep.forEach((date) => {
       newHistory[date] = history[date];
@@ -566,6 +568,7 @@ export const getWeeklyGraphData = () => {
 };
 
 export const loadWaterLog = () => {
+  checkAndResetDaily();
   return loadFromLocalStorage(STORAGE_KEYS.WATER_LOG, 0);
 };
 
@@ -795,7 +798,7 @@ export const calculatePersonalizedMicronutrientGoals = (profile = null) => {
   // Activity level adjustments (higher activity = higher needs for some nutrients)
   if (profile?.activityLevel) {
     const level = profile.activityLevel.toLowerCase();
-    if (level === "very_active" || level === "extra_active") {
+    if (level === "very_active" || level === "extra_active" || level === "active" || level === "veryactive") {
       goals.potassium = Math.round(goals.potassium * 1.1);
       goals.magnesium = Math.round(goals.magnesium * 1.1);
       goals.iron = Math.round(goals.iron * 1.1);
@@ -826,6 +829,12 @@ export const getMicronutrientWarnings = () => {
   const totals = getTotalMicronutrients();
   const goals = loadMicronutrientGoals();
   const warnings = [];
+
+  // Don't show warnings if no food has been logged yet
+  const hasAnyData = Object.values(totals).some(
+    (v) => v !== null && v !== undefined && v > 0,
+  );
+  if (!hasAnyData) return warnings;
 
   // High sodium warning
   if (totals.sodium > goals.sodium) {
@@ -1109,7 +1118,7 @@ export const addFoodEntryWithMeal = (foodEntry, mealType = null) => {
 
   const currentLog = loadFoodLog();
   const newEntry = {
-    id: Date.now(),
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2),
     ...foodEntry,
     mealType,
     timestamp: new Date().toISOString(),
@@ -1365,7 +1374,7 @@ export const saveFoodLogToHistory = () => {
   const history = loadFromLocalStorage(STORAGE_KEYS.FOOD_HISTORY, {});
   history[today] = foodLog;
 
-  // Keep only last 7 days of detailed history
+  // Keep only last 7 days of detailed food history (to conserve localStorage space)
   const dates = Object.keys(history).sort();
   if (dates.length > 7) {
     const datesToKeep = dates.slice(-7);

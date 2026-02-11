@@ -1,510 +1,87 @@
-/* ============================================
-   HOME PAGE STYLES
-   Professional Design System v2.0
-   ============================================ */
+/**
+ * Home Page - Minimal CSS
+ * Only styles that can't be expressed as Tailwind utilities
+ */
 
-.home-page {
-  padding: var(--space-4);
-  padding-top: var(--space-6);
-  padding-bottom: calc(var(--bottom-nav-height) + var(--space-8));
-  max-width: var(--content-max-lg);
-  margin: 0 auto;
-}
-
-/* ============================================
-   STREAK BANNER
-   ============================================ */
-
+/* Streak banner gradient using M3 tokens */
 .streak-banner {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  background: var(--gradient-primary-subtle);
-  border: 1px solid var(--border-primary-subtle);
-  border-radius: var(--radius-xl);
-  margin-bottom: var(--space-4);
+  background: linear-gradient(
+    135deg,
+    var(--md-sys-color-tertiary-container) 0%,
+    var(--md-sys-color-secondary-container) 100%
+  );
 }
 
-.streak-banner__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: var(--color-primary-500);
-  border-radius: var(--radius-lg);
-  color: var(--text-inverse);
+.streak-banner:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
 }
 
-.streak-banner__content {
-  flex: 1;
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-1);
-}
-
-.streak-banner__count {
-  font-size: var(--text-xl);
-  font-weight: var(--font-bold);
-  color: var(--color-primary-500);
-}
-
-.streak-banner__label {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-}
-
-.streak-banner__sparkle {
-  color: var(--color-primary-400);
-  animation: sparkle 2s ease-in-out infinite;
-}
-
+/* Sparkle animation */
 @keyframes sparkle {
   0%,
   100% {
-    opacity: 0.5;
+    opacity: 1;
     transform: scale(1);
   }
   50% {
-    opacity: 1;
-    transform: scale(1.1);
+    opacity: 0.6;
+    transform: scale(0.9);
   }
 }
 
-/* ============================================
-   PROGRESS HERO
-   ============================================ */
-
-.progress-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: var(--space-6) 0;
-  margin-bottom: var(--space-4);
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
 }
 
-.progress-hero__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* Tabular nums helper */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 
-.progress-hero__value {
-  font-size: var(--text-4xl);
-  font-weight: var(--font-bold);
-  color: var(--text-primary);
-  line-height: 1;
-}
-
-.progress-hero__value.over {
-  color: var(--color-error);
-}
-
-.progress-hero__label {
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  margin-top: var(--space-1);
-}
-
-/* ============================================
-   QUICK STATS
-   ============================================ */
-
-.quick-stats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  margin-top: var(--space-6);
-  padding: var(--space-3) var(--space-5);
-  background: var(--surface-elevated);
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--border-subtle);
-}
-
-.quick-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 60px;
-}
-
-.quick-stat__value {
-  font-size: var(--text-lg);
-  font-weight: var(--font-bold);
-  color: var(--text-primary);
-}
-
-.quick-stat__label {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-
-.quick-stat__divider {
-  width: 1px;
-  height: 32px;
-  background: var(--border-default);
-}
-
-/* ============================================
-   SECTION STYLING
-   ============================================ */
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--space-4);
-}
-
-.section-title {
-  font-size: var(--text-lg);
-  font-weight: var(--font-semibold);
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.section-link {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-2);
-  background: transparent;
-  border: none;
-  color: var(--color-primary-500);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  cursor: pointer;
-  transition: var(--transition-fast);
-  border-radius: var(--radius-md);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .section-link:hover {
-    background: var(--bg-primary-subtle);
-  }
-}
-
-/* ============================================
-   MACROS CARD
-   ============================================ */
-
-.macros-card {
-  margin-bottom: var(--space-4);
-}
-
-.macros-card .ds-card__body {
-  padding: var(--space-5);
-}
-
-.macros-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-/* ============================================
-   SUMMARY SECTION
-   ============================================ */
-
-.summary-section {
-  margin-bottom: var(--space-4);
-}
-
-.summary-section .section-title {
-  margin-bottom: var(--space-4);
-}
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-3);
-}
-
-.summary-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-}
-
-.summary-card .ds-card__body {
-  padding: var(--space-4);
-  width: 100%;
-}
-
-.summary-card__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-lg);
-}
-
-.summary-card__icon--target {
-  background: var(--bg-primary-light);
-  color: var(--color-primary-500);
-}
-
-.summary-card__icon--eaten {
-  background: var(--bg-success-light);
-  color: var(--color-success);
-}
-
-.summary-card__icon--burned {
-  background: var(--bg-primary-light);
-  color: var(--color-info);
-}
-
-.summary-card__icon--remaining {
-  background: var(--bg-success-light);
-  color: var(--color-success);
-}
-
-.summary-card__icon--over {
-  background: var(--bg-error-light);
-  color: var(--color-error);
-}
-
-.summary-card__content {
-  display: flex;
-  flex-direction: column;
-}
-
-.summary-card__value {
-  font-size: var(--text-xl);
-  font-weight: var(--font-bold);
-  color: var(--text-primary);
-}
-
-.summary-card__label {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-
-.summary-card--over .summary-card__value {
-  color: var(--color-error);
-}
-
-/* ============================================
-   RECENT FOODS CARD
-   ============================================ */
-
-.recent-foods-card {
-  margin-bottom: var(--space-4);
-}
-
-.recent-foods-card .ds-card__body {
-  padding: var(--space-5);
-}
-
-.recent-foods-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.recent-food-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--space-3);
-  background: var(--surface-tertiary);
-  border-radius: var(--radius-lg);
-  transition: var(--transition-fast);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .recent-food-item:hover {
-    background: var(--surface-raised);
-  }
-}
-
-.recent-food-item__info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-0-5);
-  min-width: 0;
-  flex: 1;
-}
-
-.recent-food-item__name {
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.recent-food-item__meta {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-}
-
-.recent-food-item__calories {
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  color: var(--color-primary-500);
-  white-space: nowrap;
-  margin-left: var(--space-3);
-}
-
-/* ============================================
-   GUIDANCE CARD
-   ============================================ */
-
-.guidance-card {
-  padding: var(--space-4);
-  border-radius: var(--radius-xl);
-  text-align: center;
-  margin-bottom: var(--space-4);
-}
-
-.guidance-card p {
-  margin: 0;
-  font-size: var(--text-sm);
-  line-height: var(--leading-relaxed);
-}
-
-.guidance-card strong {
-  font-weight: var(--font-semibold);
-}
-
-.guidance-card--success {
-  background: var(--bg-success-subtle);
-  border: 1px solid var(--border-success-subtle);
-  color: var(--color-success);
-}
-
-.guidance-card--success strong {
-  color: var(--color-success);
-}
-
-.guidance-card--warning {
-  background: var(--bg-error-subtle);
-  border: 1px solid var(--border-error-subtle);
-  color: var(--color-error);
-}
-
-.guidance-card--warning strong {
-  color: var(--color-error);
-}
-
-.guidance-card--perfect {
-  background: var(--gradient-primary-subtle);
-  border: 1px solid var(--border-primary-subtle);
-  color: var(--color-primary-500);
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
+/* ===== Responsive tweaks ===== */
 
 @media (max-width: 380px) {
-  .quick-stats {
-    gap: var(--space-3);
-    padding: var(--space-2) var(--space-3);
-  }
-
-  .quick-stat__value {
-    font-size: var(--text-base);
-  }
-
-  .summary-grid {
-    gap: var(--space-2);
+  .home-page .flex.gap-6 {
+    gap: 12px;
   }
 }
 
-/* ============================================
-   DESKTOP LAYOUT
-   Two-column grid for better use of space
-   ============================================ */
+/* ===== Dark mode streak banner ===== */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .streak-banner {
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--md-sys-color-tertiary-container) 30%, transparent) 0%,
+      color-mix(in srgb, var(--md-sys-color-secondary-container) 25%, transparent) 100%
+    );
+  }
+}
 
-@media (min-width: 1024px) {
+[data-theme="dark"] .streak-banner {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--md-sys-color-tertiary-container) 30%, transparent) 0%,
+    color-mix(in srgb, var(--md-sys-color-secondary-container) 25%, transparent) 100%
+  );
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-sparkle {
+    animation: none;
+  }
+}
+
+/* ===== Print ===== */
+@media print {
   .home-page {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-6);
-    align-items: start;
-    max-width: var(--content-max-xl);
+    padding: 0;
+    max-width: none;
   }
 
-  /* Streak banner spans both columns */
-  .streak-banner {
-    grid-column: 1 / -1;
-  }
-
-  /* Progress hero spans full width with centered content */
-  .progress-hero {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    justify-content: center;
-    gap: var(--space-8);
-    padding: var(--space-8);
-    background: var(--surface-container-low);
-    border-radius: var(--radius-2xl);
-    border: 1px solid var(--border-subtle);
-  }
-
-  .progress-hero .quick-stats {
-    margin-top: 0;
-    flex-direction: column;
-    background: var(--surface-base);
-    padding: var(--space-4);
-    gap: var(--space-3);
-  }
-
-  .progress-hero .quick-stats .quick-stat__divider {
-    width: 100%;
-    height: 1px;
-  }
-
-  /* Macros card spans both columns */
-  .macros-card {
-    grid-column: 1 / -1;
-  }
-
-  /* Summary grid spans both columns */
-  .summary-grid {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  /* Recent section in left column */
-  .recent-section {
-    grid-column: 1;
-  }
-
-  /* Guidance card in right column */
-  .guidance-card {
-    grid-column: 2;
-  }
-
-  /* Add hover effects for cards */
-  .summary-card {
-    transition: all var(--transition-normal);
-  }
-
-  .summary-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .recent-food-item {
-    transition: all var(--transition-fast);
-  }
-
-  .recent-food-item:hover {
-    transform: translateX(4px);
+  .streak-banner,
+  .m3-fab {
+    display: none !important;
   }
 }

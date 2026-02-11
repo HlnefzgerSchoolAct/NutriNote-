@@ -4,16 +4,17 @@
   "description": "NutriNote+ - A calorie tracking app for students with BMR, TDEE, and MET-based activity tracking",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "server": "node proxy-server.js",
     "server:dev": "nodemon proxy-server.js",
-    "dev": "concurrently \"npm run server:dev\" \"npm start\"",
+    "dev": "concurrently \"npm run server:dev\" \"vite\"",
     "generate-icons": "node scripts/generate-icons.js",
     "generate-sw": "node scripts/generate-sw.js",
     "postbuild": "node scripts/generate-sw.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "vitest",
+    "eject": "echo 'No eject needed with Vite'"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -45,11 +46,15 @@
     "workbox-build": "^7.4.0"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react": "^5.1.4",
     "concurrently": "^9.2.1",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.3.1"
   },
   "eslintConfig": {
     "extends": [

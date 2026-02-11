@@ -347,25 +347,7 @@ export const useSnackbar = () => {
  * Standalone snackbar functions (for use without provider)
  * These create their own portal
  */
-let standaloneContainer = null;
-// eslint-disable-next-line no-unused-vars
-let _standaloneSnackbars = [];
-// eslint-disable-next-line no-unused-vars
-let _standaloneIdCounter = 0;
-
-// eslint-disable-next-line no-unused-vars
-const _getStandaloneContainer = () => {
-  if (!standaloneContainer && typeof document !== "undefined") {
-    standaloneContainer = document.createElement("div");
-    standaloneContainer.className =
-      "m3-snackbar-container m3-snackbar-container--bottom-center";
-    document.body.appendChild(standaloneContainer);
-  }
-  return standaloneContainer;
-};
-
-export const showSnackbar = (options) => {
-  // For standalone use, recommend using SnackbarProvider instead
+export const showSnackbar = () => {
   console.warn(
     "showSnackbar is deprecated. Use SnackbarProvider and useSnackbar hook instead.",
   );

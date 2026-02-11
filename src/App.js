@@ -13,7 +13,7 @@ import { WifiOff } from "lucide-react";
 import "./App.css";
 
 // Design System
-import { ToastProvider } from "./components/common";
+import { ToastProvider, SnackbarProvider, A11yProvider } from "./components/common";
 
 // Usability Components
 import {
@@ -30,10 +30,8 @@ import DesktopSidebar from "./components/DesktopSidebar";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./components/ErrorBoundary.css";
 import FloatingActionButton from "./components/FloatingActionButton";
-import UserProfile from "./components/UserProfile";
-import ActivityTracker from "./components/ActivityTracker";
-import Results from "./components/Results";
-import WelcomeScreen from "./components/WelcomeScreen";
+import Onboarding from "./components/Onboarding";
+import { TooltipProvider } from "./components/OnboardingTooltips";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -50,6 +48,7 @@ import {
   saveDailyTarget,
   loadDailyTarget,
   hasCompletedOnboarding,
+  markOnboardingComplete,
   loadMacroGoals,
   saveMacroGoals,
   calculateMacroGrams,
@@ -179,111 +178,83 @@ function AppContent({
     saveUserProfile(profile);
   };
 
-  const handleOnboardingComplete = () => {
-    setMacroGoals(loadMacroGoals());
-    setOnboardingStep(1);
-  };
+  const handleNewOnboardingComplete = (data) => {
+    // Map Onboarding.js output to app state
+    // Onboarding uses metric (kg, cm), convert back to imperial for stored profile
+    const weightLbs = data.weight ? Math.round(parseFloat(data.weight) * 2.20462) : 150;
+    const heightCm = parseFloat(data.height) || 170;
+    const heightTotalInches = Math.round(heightCm / 2.54);
+    const heightFeet = Math.floor(heightTotalInches / 12);
+    const heightInches = heightTotalInches % 12;
 
-  const handleProfileSubmit = (profile) => {
+    const profile = {
+      name: data.name || '',
+      age: data.age || '30',
+      gender: data.sex || 'male',
+      weight: weightLbs.toString(),
+      heightFeet: heightFeet.toString(),
+      heightInches: heightInches.toString(),
+      activityLevel: data.activityLevel || 'moderate',
+      goal: data.goal || 'maintain',
+      customAdjustment: data.goal === 'lose' ? '500' : data.goal === 'gain' ? '300' : '0',
+    };
+
     setUserProfile(profile);
     saveUserProfile(profile);
-    setOnboardingStep(2);
-  };
 
-  const handleActivitiesSubmit = (activityData) => {
-    setActivities(activityData);
-    setOnboardingStep(3);
-  };
-
-  const handleResultsComplete = (target) => {
+    const target = data.calorieGoal || 2000;
     setDailyTarget(target);
     saveDailyTarget(target);
 
-    // Calculate and save macro goals based on calories
-    const savedMacros = loadMacroGoals();
-    const preset = savedMacros.preset
-      ? getMacroPresets()[
-          Object.keys(getMacroPresets()).find(
-            (k) => getMacroPresets()[k].name === savedMacros.preset,
-          )
-        ]
-      : getMacroPresets().balanced;
-    const newMacros = calculateMacroGrams(
-      target,
-      preset || getMacroPresets().balanced,
-    );
-    saveMacroGoals(newMacros);
-    setMacroGoals(newMacros);
+    // Save macro goals
+    if (data.macroGoals) {
+      const totalCal = (data.macroGoals.protein * 4) + (data.macroGoals.carbs * 4) + (data.macroGoals.fat * 9);
+      const proteinPct = totalCal > 0 ? Math.round((data.macroGoals.protein * 4 / totalCal) * 100) : 30;
+      const carbsPct = totalCal > 0 ? Math.round((data.macroGoals.carbs * 4 / totalCal) * 100) : 40;
+      const fatPct = 100 - proteinPct - carbsPct;
+      const macros = {
+        protein: data.macroGoals.protein,
+        carbs: data.macroGoals.carbs,
+        fat: data.macroGoals.fat,
+        preset: 'Custom',
+        percentages: { protein: proteinPct, carbs: carbsPct, fat: fatPct },
+      };
+      saveMacroGoals(macros);
+      setMacroGoals(macros);
+    }
 
+    markOnboardingComplete();
     setIsOnboarding(false);
     setOnboardingStep(4);
   };
 
-  const resetApp = () => {
-    setOnboardingStep(1);
-    setIsOnboarding(true);
-    setUserProfile(null);
-    setActivities([]);
+  const handleOnboardingSkip = () => {
+    // Set sensible defaults
+    const defaultProfile = {
+      age: '30', gender: 'male', weight: '160',
+      heightFeet: '5', heightInches: '10',
+      activityLevel: 'moderate', goal: 'maintain', customAdjustment: '0',
+    };
+    setUserProfile(defaultProfile);
+    saveUserProfile(defaultProfile);
     setDailyTarget(2000);
+    saveDailyTarget(2000);
+    const defaultMacros = calculateMacroGrams(2000, getMacroPresets().balanced);
+    saveMacroGoals(defaultMacros);
+    setMacroGoals(defaultMacros);
+    markOnboardingComplete();
+    setIsOnboarding(false);
+    setOnboardingStep(4);
   };
 
   // Show onboarding flow
   if (isOnboarding) {
     return (
       <div className="onboarding-container">
-        {onboardingStep === 0 && (
-          <WelcomeScreen
-            onComplete={handleOnboardingComplete}
-            dailyTarget={dailyTarget}
-          />
-        )}
-
-        {onboardingStep > 0 && onboardingStep < 4 && (
-          <>
-            <header className="app-header compact">
-              <h1>NutriNote+</h1>
-              <p>Setup</p>
-            </header>
-
-            <div className="container">
-              <div className="progress-bar">
-                <div className={`step ${onboardingStep >= 1 ? "active" : ""}`}>
-                  <span className="step-number">1</span>
-                  <span className="step-label">Profile</span>
-                </div>
-                <div className={`step ${onboardingStep >= 2 ? "active" : ""}`}>
-                  <span className="step-number">2</span>
-                  <span className="step-label">Activities</span>
-                </div>
-                <div className={`step ${onboardingStep >= 3 ? "active" : ""}`}>
-                  <span className="step-number">3</span>
-                  <span className="step-label">Results</span>
-                </div>
-              </div>
-
-              {onboardingStep === 1 && (
-                <UserProfile onSubmit={handleProfileSubmit} />
-              )}
-
-              {onboardingStep === 2 && userProfile && (
-                <ActivityTracker
-                  userProfile={userProfile}
-                  onSubmit={handleActivitiesSubmit}
-                  onBack={() => setOnboardingStep(1)}
-                />
-              )}
-
-              {onboardingStep === 3 && userProfile && (
-                <Results
-                  userProfile={userProfile}
-                  activities={activities}
-                  onComplete={handleResultsComplete}
-                  onReset={resetApp}
-                />
-              )}
-            </div>
-          </>
-        )}
+        <Onboarding
+          onComplete={handleNewOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
       </div>
     );
   }
@@ -337,6 +308,7 @@ function AppContent({
                   userProfile={userProfile}
                   dailyTarget={dailyTarget}
                   onProfileUpdate={handleProfileUpdate}
+                  onDailyTargetUpdate={(t) => setDailyTarget(t)}
                 />
               }
             />
@@ -554,6 +526,8 @@ function App() {
   return (
     <BrowserRouter>
       <KeyboardShortcutsProvider>
+        <A11yProvider>
+        <SnackbarProvider>
         <ErrorBoundary>
           <div className="App">
             {/* Enhanced skip links for accessibility */}
@@ -576,23 +550,27 @@ function App() {
             )}
 
             <ToastProvider />
-            <QuickSearchWrapper />
-            <AppContent
-              userProfile={userProfile}
-              setUserProfile={setUserProfile}
-              dailyTarget={dailyTarget}
-              setDailyTarget={setDailyTarget}
-              macroGoals={macroGoals}
-              setMacroGoals={setMacroGoals}
-              isOnboarding={isOnboarding}
-              setIsOnboarding={setIsOnboarding}
-              onboardingStep={onboardingStep}
-              setOnboardingStep={setOnboardingStep}
-              activities={activities}
-              setActivities={setActivities}
-            />
+            <TooltipProvider>
+              <QuickSearchWrapper />
+              <AppContent
+                userProfile={userProfile}
+                setUserProfile={setUserProfile}
+                dailyTarget={dailyTarget}
+                setDailyTarget={setDailyTarget}
+                macroGoals={macroGoals}
+                setMacroGoals={setMacroGoals}
+                isOnboarding={isOnboarding}
+                setIsOnboarding={setIsOnboarding}
+                onboardingStep={onboardingStep}
+                setOnboardingStep={setOnboardingStep}
+                activities={activities}
+                setActivities={setActivities}
+              />
+            </TooltipProvider>
           </div>
         </ErrorBoundary>
+        </SnackbarProvider>
+        </A11yProvider>
       </KeyboardShortcutsProvider>
       <Analytics />
     </BrowserRouter>

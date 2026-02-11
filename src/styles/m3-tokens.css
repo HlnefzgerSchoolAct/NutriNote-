@@ -129,12 +129,88 @@
      Opacity overlays for interaction states
      ======================================== */
 
+  /* M3 Motion / Easing Tokens */
+  --m3-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --m3-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --m3-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --m3-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --m3-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --m3-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  --m3-motion-duration-short1: 50ms;
+  --m3-motion-duration-short2: 100ms;
+  --m3-motion-duration-short3: 150ms;
+  --m3-motion-duration-short4: 200ms;
+  --m3-motion-duration-medium1: 250ms;
+  --m3-motion-duration-medium2: 300ms;
+  --m3-motion-duration-medium3: 350ms;
+  --m3-motion-duration-medium4: 400ms;
+  --m3-motion-duration-long1: 450ms;
+  --m3-motion-duration-long2: 500ms;
+  --m3-motion-duration-long3: 550ms;
+  --m3-motion-duration-long4: 600ms;
+
   --md-sys-state-hover-opacity: 0.08;
   --md-sys-state-focus-opacity: 0.12;
   --md-sys-state-pressed-opacity: 0.12;
   --md-sys-state-dragged-opacity: 0.16;
   --md-sys-state-disabled-opacity: 0.38;
   --md-sys-state-disabled-container-opacity: 0.12;
+
+  /* ========================================
+     M3 COMPONENT VARIABLE BRIDGE
+     Maps --m3-* names used in component CSS
+     to the canonical --md-sys-color-* tokens
+     ======================================== */
+  --m3-primary: var(--md-sys-color-primary);
+  --m3-on-primary: var(--md-sys-color-on-primary);
+  --m3-primary-container: var(--md-sys-color-primary-container);
+  --m3-on-primary-container: var(--md-sys-color-on-primary-container);
+  --m3-primary-rgb: 26, 115, 232;
+  --m3-secondary: var(--md-sys-color-secondary);
+  --m3-on-secondary: var(--md-sys-color-on-secondary);
+  --m3-secondary-container: var(--md-sys-color-secondary-container);
+  --m3-tertiary: var(--md-sys-color-tertiary);
+  --m3-error: var(--md-sys-color-error);
+  --m3-error-container: var(--md-sys-color-error-container);
+  --m3-surface: var(--md-sys-color-surface);
+  --m3-on-surface: var(--md-sys-color-on-surface);
+  --m3-surface-variant: var(--md-sys-color-surface-variant);
+  --m3-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --m3-surface-container-lowest: var(--md-sys-color-surface-container-lowest);
+  --m3-surface-container-low: var(--md-sys-color-surface-container-low);
+  --m3-surface-container: var(--md-sys-color-surface-container);
+  --m3-surface-container-high: var(--md-sys-color-surface-container-high);
+  --m3-surface-container-highest: var(--md-sys-color-surface-container-highest);
+  --m3-outline: var(--md-sys-color-outline);
+  --m3-outline-variant: var(--md-sys-color-outline-variant);
+  --m3-inverse-surface: var(--md-sys-color-inverse-surface);
+  --m3-inverse-on-surface: var(--md-sys-color-inverse-on-surface);
+  --m3-inverse-primary: var(--md-sys-color-inverse-primary);
+  --m3-scrim: var(--md-sys-color-scrim);
+  --m3-focus-ring: var(--md-sys-color-primary);
+
+  /* M3 shape tokens */
+  --m3-shape-none: 0px;
+  --m3-shape-extra-small: 4px;
+  --m3-shape-small: 8px;
+  --m3-shape-medium: 12px;
+  --m3-shape-large: 16px;
+  --m3-shape-extra-large: 28px;
+  --m3-shape-full: 9999px;
+
+  /* M3 elevation tokens */
+  --m3-elevation-0: none;
+  --m3-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --m3-elevation-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --m3-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --m3-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.3);
+  --m3-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.3);
+
+  /* M3 state opacity shortcuts */
+  --m3-state-hover-opacity: var(--md-sys-state-hover-opacity);
+  --m3-state-focus-opacity: var(--md-sys-state-focus-opacity);
+  --m3-state-pressed-opacity: var(--md-sys-state-pressed-opacity);
 
   /* Pre-computed State Layer Colors */
   --m3-state-layer-primary: rgba(
@@ -340,6 +416,7 @@
     --m3-streak-container: #7c2d12;
 
     /* Alpha utilities - Dark */
+    --m3-primary-rgb: 168, 199, 250;
     --m3-primary-alpha-10: rgba(168, 199, 250, 0.1);
     --m3-primary-alpha-20: rgba(168, 199, 250, 0.2);
     --m3-primary-alpha-40: rgba(168, 199, 250, 0.4);
@@ -393,6 +470,7 @@
   --md-sys-color-inverse-surface: #e5e1e6;
   --md-sys-color-inverse-on-surface: #303033;
   --md-sys-color-inverse-primary: #185abc;
+  --m3-primary-rgb: 168, 199, 250;
 }
 
 /* ============================================

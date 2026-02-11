@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Bot } from "lucide-react";
+import { Bot, Camera } from "lucide-react";
 import { estimateNutrition } from "../services/aiNutritionService";
 import { CompactMicronutrients } from "./common";
+import FoodPhotoCapture from "./FoodPhotoCapture";
 import devLog from "../utils/devLog";
 import "./AIFoodInput.css";
 
@@ -13,6 +14,7 @@ function AIFoodInput({
 }) {
   const [foodDescription, setFoodDescription] = useState("");
   const [quantity, setQuantity] = useState("1");
+  const [showPhotoCapture, setShowPhotoCapture] = useState(false);
   const [unit, setUnit] = useState("serving");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -136,10 +138,28 @@ function AIFoodInput({
 
   return (
     <div className="ai-food-input">
-      <h3 className="ai-food-title">
-        <Bot size={20} aria-hidden="true" /> AI Nutrition Estimator
-      </h3>
+      <div className="ai-food-title-row">
+        <h3 className="ai-food-title">
+          <Bot size={20} aria-hidden="true" /> AI Nutrition Estimator
+        </h3>
+        <button
+          type="button"
+          className="ai-photo-toggle-btn"
+          onClick={() => setShowPhotoCapture((prev) => !prev)}
+          title={showPhotoCapture ? "Switch to text input" : "Identify food from photo"}
+        >
+          <Camera size={18} />
+          {showPhotoCapture ? "Text Input" : "Photo ID"}
+        </button>
+      </div>
 
+      {showPhotoCapture ? (
+        <FoodPhotoCapture
+          onAddFood={onAddFood}
+          onClose={() => setShowPhotoCapture(false)}
+        />
+      ) : (
+      <>
       <form onSubmit={handleEstimate} className="ai-food-form">
         <div className="ai-form-group">
           <label htmlFor="ai-food-description" className="ai-label">
@@ -179,8 +199,9 @@ function AIFoodInput({
           </div>
 
           <div className="ai-form-group">
-            <label className="ai-label">Unit</label>
+            <label className="ai-label" htmlFor="ai-unit-select">Unit</label>
             <select
+              id="ai-unit-select"
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
               className="ai-select"
@@ -261,6 +282,8 @@ function AIFoodInput({
             ✓ Add to Food Log
           </button>
         </div>
+      )}
+      </>
       )}
     </div>
   );

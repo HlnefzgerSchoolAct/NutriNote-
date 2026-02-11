@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+/**
+ * Profile Page — M3 Redesign with Tailwind
+ * User profile, streak, stats, achievements, hydration, settings
+ */
+
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   User,
@@ -16,14 +21,16 @@ import {
   Ruler,
   Sparkles,
 } from "lucide-react";
-import "./ProfilePage.css";
 import {
-  Card,
-  Button,
-  ProgressRing,
+  M3Card,
+  M3CardContent,
+  M3Button,
+  M3ProgressRing,
   StaggerContainer,
   StaggerItem,
   SkeletonPage,
+  Main,
+  VisuallyHidden,
 } from "../components/common";
 import HydrationTracker from "../components/HydrationTracker";
 import Settings from "../components/Settings";
@@ -32,59 +39,58 @@ import {
   loadWeeklyHistory,
   loadWeightLog,
 } from "../utils/localStorage";
+import "./ProfilePage.css";
 
 const ACHIEVEMENTS = [
-  {
-    id: "streak3",
-    name: "3 Day Streak",
-    icon: Flame,
-    check: (data) => data.currentStreak >= 3,
-  },
-  {
-    id: "streak7",
-    name: "Week Warrior",
-    icon: Award,
-    check: (data) => data.currentStreak >= 7,
-  },
-  {
-    id: "days14",
-    name: "2 Weeks Strong",
-    icon: Calendar,
-    check: (data) => data.daysTracked >= 14,
-  },
-  {
-    id: "days30",
-    name: "Monthly Master",
-    icon: Sparkles,
-    check: (data) => data.daysTracked >= 30,
-  },
-  {
-    id: "streak14",
-    name: "Fortnight Fire",
-    icon: Flame,
-    check: (data) => data.longestStreak >= 14,
-  },
-  {
-    id: "days60",
-    name: "Power User",
-    icon: Award,
-    check: (data) => data.daysTracked >= 60,
-  },
+  { id: "streak3",  name: "3 Day Streak",    icon: Flame,    check: (d) => d.currentStreak >= 3 },
+  { id: "streak7",  name: "Week Warrior",    icon: Award,    check: (d) => d.currentStreak >= 7 },
+  { id: "days14",   name: "2 Weeks Strong",  icon: Calendar, check: (d) => d.daysTracked >= 14 },
+  { id: "days30",   name: "Monthly Master",  icon: Sparkles, check: (d) => d.daysTracked >= 30 },
+  { id: "streak14", name: "Fortnight Fire",  icon: Flame,    check: (d) => d.longestStreak >= 14 },
+  { id: "days60",   name: "Power User",      icon: Award,    check: (d) => d.daysTracked >= 60 },
 ];
 
-function ProfilePage({ userProfile, dailyTarget, onProfileUpdate }) {
+const ACTIVITY_LABELS = {
+  sedentary: "Sedentary",
+  lightly_active: "Lightly Active",
+  moderately_active: "Moderately Active",
+  very_active: "Very Active",
+  extra_active: "Extra Active",
+};
+
+function ProfilePage({ userProfile, dailyTarget, onProfileUpdate, onDailyTargetUpdate }) {
   const [showSettings, setShowSettings] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [streakData, setStreakData] = useState({
-    currentStreak: 0,
-    longestStreak: 0,
-  });
-  const [stats, setStats] = useState({
-    daysTracked: 0,
-    avgCalories: 0,
-    weightChange: null,
-    totalCaloriesBurned: 0,
-  });
+  const [streakData, setStreakData] = useState({ currentStreak: 0, longestStreak: 0 });
+  const [stats, setStats] = useState({ daysTracked: 0, avgCalories: 0, weightChange: null, totalCaloriesBurned: 0 });
+
+  const loadStats = useCallback(() => {
+    const streak = loadStreakData();
+    setStreakData(streak);
+
+    const history = loadWeeklyHistory();
+    const dates = Object.keys(history);
+    const daysTracked = dates.length;
+    let totalCalories = 0, totalBurned = 0;
+    dates.forEach((date) => {
+      totalCalories += history[date]?.eaten || 0;
+      totalBurned += history[date]?.burned || 0;
+    });
+
+    const weightLog = loadWeightLog();
+    let weightChange = null;
+    if (weightLog?.length >= 2) {
+      const sorted = [...weightLog].sort((a, b) => new Date(a.date) - new Date(b.date));
+      weightChange = sorted[sorted.length - 1].weight - sorted[0].weight;
+    }
+
+    setStats({
+      daysTracked,
+      avgCalories: daysTracked > 0 ? Math.round(totalCalories / daysTracked) : 0,
+      weightChange,
+      totalCaloriesBurned: totalBurned,
+    });
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -92,369 +98,201 @@ function ProfilePage({ userProfile, dailyTarget, onProfileUpdate }) {
       setLoading(false);
     }, 300);
     return () => clearTimeout(timer);
-  }, []);
+  }, [loadStats]);
 
-  const loadStats = () => {
-    const streak = loadStreakData();
-    setStreakData(streak);
-
-    const history = loadWeeklyHistory();
-    const dates = Object.keys(history);
-    const daysTracked = dates.length;
-
-    let totalCalories = 0;
-    let totalBurned = 0;
-    dates.forEach((date) => {
-      totalCalories += history[date]?.eaten || 0;
-      totalBurned += history[date]?.burned || 0;
-    });
-    const avgCalories =
-      daysTracked > 0 ? Math.round(totalCalories / daysTracked) : 0;
-
-    const weightLog = loadWeightLog();
-    let weightChange = null;
-    if (weightLog && weightLog.length >= 2) {
-      const sortedLog = [...weightLog].sort(
-        (a, b) => new Date(a.date) - new Date(b.date),
-      );
-      const first = sortedLog[0].weight;
-      const last = sortedLog[sortedLog.length - 1].weight;
-      weightChange = last - first;
-    }
-
-    setStats({
-      daysTracked,
-      avgCalories,
-      weightChange,
-      totalCaloriesBurned: totalBurned,
-    });
-  };
-
-  const getHeightDisplay = () => {
+  // ===== Helpers =====
+  const heightDisplay = useMemo(() => {
     if (!userProfile) return "—";
-    const feet = userProfile.heightFeet || 0;
-    const inches = userProfile.heightInches || 0;
-    return `${feet}'${inches}"`;
-  };
+    return `${userProfile.heightFeet || 0}'${userProfile.heightInches || 0}"`;
+  }, [userProfile]);
 
-  const getGoalDisplay = () => {
+  const goalDisplay = useMemo(() => {
     if (!userProfile) return "—";
-    switch (userProfile.goal) {
-      case "lose":
-        return "Lose Weight";
-      case "gain":
-        return "Gain Weight";
-      default:
-        return "Maintain Weight";
-    }
-  };
+    return userProfile.goal === "lose" ? "Lose Weight" : userProfile.goal === "gain" ? "Gain Weight" : "Maintain Weight";
+  }, [userProfile]);
 
-  const getGoalIcon = () => {
+  const GoalIcon = useMemo(() => {
     if (!userProfile) return Target;
-    switch (userProfile.goal) {
-      case "lose":
-        return TrendingDown;
-      case "gain":
-        return TrendingUp;
-      default:
-        return Target;
-    }
-  };
+    return userProfile.goal === "lose" ? TrendingDown : userProfile.goal === "gain" ? TrendingUp : Target;
+  }, [userProfile]);
 
-  const getActivityDisplay = () => {
-    if (!userProfile) return "—";
-    const levels = {
-      sedentary: "Sedentary",
-      lightly_active: "Lightly Active",
-      moderately_active: "Moderately Active",
-      very_active: "Very Active",
-      extra_active: "Extra Active",
-    };
-    return levels[userProfile.activityLevel] || "—";
-  };
+  const activityDisplay = useMemo(() => {
+    return ACTIVITY_LABELS[userProfile?.activityLevel] || "—";
+  }, [userProfile]);
 
-  const unlockedCount = ACHIEVEMENTS.filter((a) =>
-    a.check({ ...streakData, ...stats }),
-  ).length;
+  const unlockedCount = useMemo(
+    () => ACHIEVEMENTS.filter((a) => a.check({ ...streakData, ...stats })).length,
+    [streakData, stats],
+  );
 
-  const GoalIcon = getGoalIcon();
-
-  if (loading) {
-    return <SkeletonPage />;
-  }
+  if (loading) return <SkeletonPage />;
 
   return (
-    <div className="profile-page">
+    <Main className="px-4 pt-6 pb-24 max-w-150 mx-auto md:max-w-210 lg:pb-8 lg:pl-70">
+      <VisuallyHidden>
+        <h1>Your Profile</h1>
+      </VisuallyHidden>
+
       {/* Settings Modal */}
       <Settings
         isOpen={showSettings}
-        onClose={() => {
-          setShowSettings(false);
-          loadStats();
-        }}
+        onClose={() => { setShowSettings(false); loadStats(); }}
         onProfileUpdate={onProfileUpdate}
         dailyTarget={dailyTarget}
+        onDailyTargetUpdate={onDailyTargetUpdate}
       />
 
       {/* Profile Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Card variant="elevated" className="profile-header">
-          <div className="avatar">
-            <User size={32} />
-            {streakData.currentStreak >= 7 && (
-              <div className="avatar-badge">
-                <Flame size={12} />
-              </div>
-            )}
-          </div>
-          <div className="profile-info">
-            <h1 className="profile-name">Your Profile</h1>
-            <div className="profile-goal-badge">
-              <GoalIcon size={14} />
-              <span>{getGoalDisplay()}</span>
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+        <M3Card variant="elevated" className="mb-5">
+          <M3CardContent className="flex items-center gap-4 relative">
+            {/* Avatar */}
+            <div className="relative w-16 h-16 rounded-full bg-linear-to-br from-primary to-primary/80 flex items-center justify-center text-on-primary shrink-0 shadow-lg">
+              <User size={32} />
+              {streakData.currentStreak >= 7 && (
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-linear-to-br from-warning to-warning/80 rounded-full flex items-center justify-center text-on-primary border-2 border-surface shadow-sm">
+                  <Flame size={12} />
+                </div>
+              )}
             </div>
-          </div>
-          <motion.button
-            className="settings-btn"
-            onClick={() => setShowSettings(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <SettingsIcon size={22} />
-          </motion.button>
-        </Card>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <h2 className="text-title-lg font-bold text-on-surface m-0 mb-1">Your Profile</h2>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 rounded-full text-label-sm font-medium text-primary">
+                <GoalIcon size={14} /> {goalDisplay}
+              </span>
+            </div>
+
+            {/* Settings button */}
+            <motion.button
+              className="flex items-center justify-center w-11 h-11 bg-surface-container border border-outline-variant rounded-xl text-on-surface-variant cursor-pointer transition-colors duration-150 hover:border-primary hover:text-primary"
+              onClick={() => setShowSettings(true)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Open settings"
+            >
+              <SettingsIcon size={22} />
+            </motion.button>
+          </M3CardContent>
+        </M3Card>
       </motion.div>
 
-      {/* Main Stats Ring */}
-      <motion.div
-        className="main-stats-section"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1, duration: 0.5 }}
-      >
-        <Card variant="glass" className="streak-hero">
-          <ProgressRing
-            value={Math.min(streakData.currentStreak, 30)}
-            max={30}
-            size={140}
-            strokeWidth={12}
-            color="primary"
-            showGlow
-          >
-            <div className="streak-content">
-              <Flame size={24} className="streak-icon" />
-              <span className="streak-number">{streakData.currentStreak}</span>
-              <span className="streak-label">day streak</span>
+      {/* Streak Hero */}
+      <motion.div className="mb-5" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1, duration: 0.4 }}>
+        <M3Card variant="filled" className="flex flex-col items-center py-8 px-6 gap-4">
+          <M3ProgressRing value={Math.min(streakData.currentStreak, 30)} max={30} size={140} strokeWidth={12} color="primary" showGlow>
+            <div className="flex flex-col items-center gap-1">
+              <Flame size={24} className="text-primary streak-icon" />
+              <span className="text-display-sm font-bold text-on-surface leading-none tabular-nums">{streakData.currentStreak}</span>
+              <span className="text-label-sm text-on-surface-variant uppercase tracking-wider">day streak</span>
             </div>
-          </ProgressRing>
-          <div className="streak-meta">
-            <div className="streak-record">
-              <Award size={16} />
-              <span>Best: {streakData.longestStreak} days</span>
-            </div>
+          </M3ProgressRing>
+          <div className="flex items-center gap-1.5 text-body-sm text-on-surface-variant">
+            <Award size={16} className="text-warning" />
+            <span>Best: {streakData.longestStreak} days</span>
           </div>
-        </Card>
+        </M3Card>
       </motion.div>
 
       {/* Quick Stats Grid */}
-      <StaggerContainer className="quick-stats-grid">
+      <StaggerContainer className="grid grid-cols-2 gap-3 mb-5 max-[400px]:grid-cols-1">
         <StaggerItem>
-          <Card variant="interactive" className="stat-box" hoverable>
-            <div className="stat-icon-wrap fire">
-              <Target size={20} />
-            </div>
-            <div className="stat-content">
-              <span className="stat-number">
-                {dailyTarget?.toLocaleString()}
-              </span>
-              <span className="stat-label">Daily Goal</span>
-            </div>
-          </Card>
+          <QuickStat icon={<Target size={20} />} iconClass="bg-primary/15 text-primary" value={dailyTarget?.toLocaleString()} label="Daily Goal" />
         </StaggerItem>
-
         <StaggerItem>
-          <Card variant="interactive" className="stat-box" hoverable>
-            <div className="stat-icon-wrap calendar">
-              <Calendar size={20} />
-            </div>
-            <div className="stat-content">
-              <span className="stat-number">{stats.daysTracked}</span>
-              <span className="stat-label">Days Tracked</span>
-            </div>
-          </Card>
+          <QuickStat icon={<Calendar size={20} />} iconClass="bg-info/15 text-info" value={stats.daysTracked} label="Days Tracked" />
         </StaggerItem>
-
         <StaggerItem>
-          <Card variant="interactive" className="stat-box" hoverable>
-            <div className="stat-icon-wrap trend">
-              <TrendingUp size={20} />
-            </div>
-            <div className="stat-content">
-              <span className="stat-number">
-                {stats.avgCalories?.toLocaleString()}
-              </span>
-              <span className="stat-label">Avg Intake</span>
-            </div>
-          </Card>
+          <QuickStat icon={<TrendingUp size={20} />} iconClass="bg-success/15 text-success" value={stats.avgCalories?.toLocaleString()} label="Avg Intake" />
         </StaggerItem>
-
         <StaggerItem>
-          <Card variant="interactive" className="stat-box" hoverable>
-            <div className="stat-icon-wrap activity">
-              <Activity size={20} />
-            </div>
-            <div className="stat-content">
-              <span className="stat-number">
-                {stats.totalCaloriesBurned?.toLocaleString()}
-              </span>
-              <span className="stat-label">Total Burned</span>
-            </div>
-          </Card>
+          <QuickStat icon={<Activity size={20} />} iconClass="bg-info/15 text-info" value={stats.totalCaloriesBurned?.toLocaleString()} label="Total Burned" />
         </StaggerItem>
       </StaggerContainer>
 
       {/* Weight Progress */}
       {stats.weightChange !== null && (
-        <motion.section
-          className="profile-section profile-section--weight"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Card variant="elevated" className="weight-progress-card">
-            <div className="weight-progress-header">
-              <div className="weight-icon-wrap">
-                <Scale size={20} />
+        <motion.section className="mb-5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          <M3Card variant="elevated">
+            <M3CardContent>
+              <div className="flex items-center gap-3 text-body-sm font-medium text-on-surface-variant mb-3">
+                <div className="flex items-center justify-center w-9 h-9 bg-tertiary/15 text-tertiary rounded-xl">
+                  <Scale size={20} />
+                </div>
+                <span>Weight Progress</span>
               </div>
-              <span>Weight Progress</span>
-            </div>
-            <div className="weight-progress-content">
-              <span
-                className={`weight-change ${stats.weightChange < 0 ? "loss" : stats.weightChange > 0 ? "gain" : ""}`}
-              >
-                {stats.weightChange > 0 ? "+" : ""}
-                {stats.weightChange.toFixed(1)} lbs
-              </span>
-              <span className="weight-change-label">
-                {stats.weightChange < 0
-                  ? "Lost so far"
-                  : stats.weightChange > 0
-                    ? "Gained so far"
-                    : "No change yet"}
-              </span>
-            </div>
-          </Card>
+              <div className="flex items-baseline gap-3">
+                <span className={`text-display-sm font-bold tabular-nums ${stats.weightChange < 0 ? "text-success" : stats.weightChange > 0 ? "text-primary" : "text-on-surface"}`}>
+                  {stats.weightChange > 0 ? "+" : ""}{stats.weightChange.toFixed(1)} lbs
+                </span>
+                <span className="text-body-sm text-on-surface-variant">
+                  {stats.weightChange < 0 ? "Lost so far" : stats.weightChange > 0 ? "Gained so far" : "No change yet"}
+                </span>
+              </div>
+            </M3CardContent>
+          </M3Card>
         </motion.section>
       )}
 
-      {/* User Details */}
-      <motion.section
-        className="profile-section profile-section--details"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-      >
-        <div className="section-header">
-          <User size={18} className="section-icon" />
-          <h2 className="section-title">Personal Info</h2>
-        </div>
-        <Card variant="elevated" className="details-card">
-          <div className="detail-row">
-            <div className="detail-left">
-              <Calendar size={16} className="detail-icon" />
-              <span className="detail-label">Age</span>
-            </div>
-            <span className="detail-value">
-              {userProfile?.age || "—"} years
-            </span>
-          </div>
-          <div className="detail-row">
-            <div className="detail-left">
-              <User size={16} className="detail-icon" />
-              <span className="detail-label">Gender</span>
-            </div>
-            <span className="detail-value">
-              {userProfile?.gender
-                ? userProfile.gender.charAt(0).toUpperCase() +
-                  userProfile.gender.slice(1)
-                : "—"}
-            </span>
-          </div>
-          <div className="detail-row">
-            <div className="detail-left">
-              <Ruler size={16} className="detail-icon" />
-              <span className="detail-label">Height</span>
-            </div>
-            <span className="detail-value">{getHeightDisplay()}</span>
-          </div>
-          <div className="detail-row">
-            <div className="detail-left">
-              <Scale size={16} className="detail-icon" />
-              <span className="detail-label">Weight</span>
-            </div>
-            <span className="detail-value">
-              {userProfile?.weight || "—"} lbs
-            </span>
-          </div>
-          <div className="detail-row">
-            <div className="detail-left">
-              <Activity size={16} className="detail-icon" />
-              <span className="detail-label">Activity</span>
-            </div>
-            <span className="detail-value">{getActivityDisplay()}</span>
-          </div>
-        </Card>
+      {/* Personal Info */}
+      <motion.section className="mb-5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+        <SectionHeader icon={<User size={18} />} title="Personal Info" />
+        <M3Card variant="elevated" className="overflow-hidden">
+          <DetailRow icon={<Calendar size={16} />} label="Age" value={`${userProfile?.age || "—"} years`} />
+          <DetailRow icon={<User size={16} />} label="Gender" value={userProfile?.gender ? userProfile.gender.charAt(0).toUpperCase() + userProfile.gender.slice(1) : "—"} />
+          <DetailRow icon={<Ruler size={16} />} label="Height" value={heightDisplay} />
+          <DetailRow icon={<Scale size={16} />} label="Weight" value={`${userProfile?.weight || "—"} lbs`} />
+          <DetailRow icon={<Activity size={16} />} label="Activity" value={activityDisplay} last />
+        </M3Card>
       </motion.section>
 
-      {/* Hydration Tracker */}
-      <motion.section
-        className="profile-section profile-section--hydration"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-      >
-        <div className="section-header">
-          <Droplets size={18} className="section-icon hydration" />
-          <h2 className="section-title">Daily Hydration</h2>
-        </div>
-        <Card variant="elevated">
+      {/* Hydration */}
+      <motion.section className="mb-5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+        <SectionHeader icon={<Droplets size={18} />} title="Daily Hydration" iconClass="text-info" />
+        <M3Card variant="elevated">
           <HydrationTracker userProfile={userProfile} />
-        </Card>
+        </M3Card>
       </motion.section>
 
       {/* Achievements */}
-      <motion.section
-        className="profile-section profile-section--achievements"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-      >
-        <div className="section-header">
-          <Award size={18} className="section-icon achievement" />
-          <h2 className="section-title">Achievements</h2>
-          <span className="achievement-count">
+      <motion.section className="mb-5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+        <div className="flex items-center gap-2 mb-3">
+          <Award size={18} className="text-warning" aria-hidden="true" />
+          <h2 className="text-title-md font-semibold text-on-surface m-0 flex-1">Achievements</h2>
+          <span className="text-body-sm text-on-surface-variant bg-surface-container-high px-2 py-1 rounded-full">
             {unlockedCount}/{ACHIEVEMENTS.length}
           </span>
         </div>
-        <div className="achievements-grid">
+        <div className="grid grid-cols-3 gap-3 max-[400px]:grid-cols-2 lg:grid-cols-6">
           {ACHIEVEMENTS.map((achievement) => {
             const isUnlocked = achievement.check({ ...streakData, ...stats });
             const Icon = achievement.icon;
             return (
               <motion.div
                 key={achievement.id}
-                className={`achievement ${isUnlocked ? "unlocked" : "locked"}`}
+                className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border text-center transition-all duration-200 ${
+                  isUnlocked
+                    ? "bg-warning/8 border-warning/30"
+                    : "bg-surface-container border-outline-variant opacity-50"
+                }`}
                 whileHover={isUnlocked ? { scale: 1.05, y: -2 } : undefined}
               >
-                <div className="achievement-icon">
+                <div className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-200 ${
+                  isUnlocked
+                    ? "bg-linear-to-br from-warning to-warning/80 text-on-primary shadow-md"
+                    : "bg-surface-container-high text-on-surface-variant"
+                }`}>
                   <Icon size={24} />
                 </div>
-                <span className="achievement-name">{achievement.name}</span>
-                {isUnlocked && <span className="achievement-badge">✓</span>}
+                <span className="text-label-sm font-medium text-on-surface-variant leading-tight">
+                  {achievement.name}
+                </span>
+                {isUnlocked && (
+                  <span className="absolute top-2 right-2 w-4.5 h-4.5 bg-success text-on-primary rounded-full text-label-sm flex items-center justify-center font-bold">
+                    ✓
+                  </span>
+                )}
               </motion.div>
             );
           })}
@@ -462,24 +300,58 @@ function ProfilePage({ userProfile, dailyTarget, onProfileUpdate }) {
       </motion.section>
 
       {/* Settings Link */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-      >
-        <Button
-          variant="outline"
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}>
+        <M3Button
+          variant="outlined"
           fullWidth
-          className="settings-link"
           onClick={() => setShowSettings(true)}
+          className="justify-between mb-4"
         >
-          <div className="link-content">
-            <SettingsIcon size={20} />
-            <span>Settings & Preferences</span>
-          </div>
+          <span className="flex items-center gap-3">
+            <SettingsIcon size={20} /> Settings &amp; Preferences
+          </span>
           <ChevronRight size={20} />
-        </Button>
+        </M3Button>
       </motion.div>
+    </Main>
+  );
+}
+
+/* =============================================
+   SUB-COMPONENTS
+   ============================================= */
+
+function SectionHeader({ icon, title, iconClass = "text-primary" }) {
+  return (
+    <div className="flex items-center gap-2 mb-3">
+      <span className={iconClass} aria-hidden="true">{icon}</span>
+      <h2 className="text-title-md font-semibold text-on-surface m-0">{title}</h2>
+    </div>
+  );
+}
+
+function QuickStat({ icon, iconClass, value, label }) {
+  return (
+    <M3Card variant="filled" className="flex items-center gap-3 p-4">
+      <div className={`flex items-center justify-center w-11 h-11 rounded-xl shrink-0 ${iconClass}`}>
+        {icon}
+      </div>
+      <div className="flex flex-col min-w-0">
+        <span className="text-title-md font-bold text-on-surface leading-tight tabular-nums">{value}</span>
+        <span className="text-label-sm text-on-surface-variant">{label}</span>
+      </div>
+    </M3Card>
+  );
+}
+
+function DetailRow({ icon, label, value, last = false }) {
+  return (
+    <div className={`flex items-center justify-between px-4 py-4 transition-colors duration-150 hover:bg-surface-container ${last ? "" : "border-b border-outline-variant"}`}>
+      <div className="flex items-center gap-3">
+        <span className="text-on-surface-variant">{icon}</span>
+        <span className="text-body-sm text-on-surface-variant">{label}</span>
+      </div>
+      <span className="text-body-sm font-semibold text-on-surface">{value}</span>
     </div>
   );
 }

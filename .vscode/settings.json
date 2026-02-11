@@ -5,9 +5,12 @@
     "source.fixAll.eslint": "explicit"
   },
   "files.associations": {
-    "*.css": "css",
+    "*.css": "tailwindcss",
     "*.js": "javascriptreact"
   },
+  "css.validate": false,
+  "css.lint.unknownAtRules": "ignore",
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
   },

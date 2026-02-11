@@ -72,10 +72,8 @@ function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
         <div
           className="fab-backdrop"
           onClick={() => setIsOpen(false)}
-          role="button"
-          aria-label="Close menu"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && setIsOpen(false)}
+          role="presentation"
+          aria-hidden="true"
         />
       )}
     </div>
