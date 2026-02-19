@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import { Bot, Camera } from "lucide-react";
-import { estimateNutrition } from "../services/aiNutritionService";
-=======
-import { Bot, ExternalLink } from "lucide-react";
+import { Bot, Camera, ExternalLink } from "lucide-react";
 import { estimateWithUSDA } from "../services/aiNutritionService";
->>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
 import { CompactMicronutrients } from "./common";
 import FoodPhotoCapture from "./FoodPhotoCapture";
 import devLog from "../utils/devLog";
@@ -26,7 +21,6 @@ function AIFoodInput({
   const [error, setError] = useState("");
   const [estimatedNutrition, setEstimatedNutrition] = useState(null);
 
-  // Handle prefill from barcode scanner fallback
   useEffect(() => {
     if (prefillDescription) {
       setFoodDescription(prefillDescription);
@@ -62,13 +56,11 @@ function AIFoodInput({
         setLoadingStage,
       );
 
-      // Round nutrition values (quantity/serving size is already factored in by estimateWithUSDA)
       const scaledNutrition = {
         calories: Math.round(nutrition.calories),
         protein: Math.round(nutrition.protein * 10) / 10,
         carbs: Math.round(nutrition.carbs * 10) / 10,
         fat: Math.round(nutrition.fat * 10) / 10,
-        // Micronutrients
         fiber: nutrition.fiber,
         sodium: nutrition.sodium,
         sugar: nutrition.sugar,
@@ -89,7 +81,6 @@ function AIFoodInput({
         magnesium: nutrition.magnesium,
         zinc: nutrition.zinc,
         potassium: nutrition.potassium,
-        // Provenance metadata (passed through for display and food entry)
         source: nutrition.source || "ai",
         fdcId: nutrition.fdcId,
         usdaDescription: nutrition.usdaDescription,
@@ -110,9 +101,7 @@ function AIFoodInput({
 
   const handleAddFood = () => {
     if (!estimatedNutrition) return;
-
     const isUSDA = estimatedNutrition.source === "usda";
-
     const foodEntry = {
       id: Date.now(),
       name: `${quantity} ${unit} ${foodDescription}`,
@@ -120,7 +109,6 @@ function AIFoodInput({
       protein: estimatedNutrition.protein,
       carbs: estimatedNutrition.carbs,
       fat: estimatedNutrition.fat,
-      // Micronutrients
       fiber: estimatedNutrition.fiber,
       sodium: estimatedNutrition.sodium,
       sugar: estimatedNutrition.sugar,
@@ -142,23 +130,14 @@ function AIFoodInput({
       zinc: estimatedNutrition.zinc,
       potassium: estimatedNutrition.potassium,
       timestamp: new Date().toISOString(),
-<<<<<<< HEAD
-      aiEstimated: estimatedNutrition._source === "ai_estimate",
-      nutritionSource: estimatedNutrition._source || "ai_estimate",
-      usdaFoodName: estimatedNutrition._usdaFoodName,
-=======
       aiEstimated: !isUSDA,
       ...(isUSDA && {
         fdcId: estimatedNutrition.fdcId,
         usdaDescription: estimatedNutrition.usdaDescription,
         dataType: estimatedNutrition.dataType,
       }),
->>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
     };
-
     onAddFood(foodEntry);
-
-    // Reset form
     setFoodDescription("");
     setQuantity("1");
     setUnit("serving");
@@ -176,189 +155,178 @@ function AIFoodInput({
           type="button"
           className="ai-photo-toggle-btn"
           onClick={() => setShowPhotoCapture((prev) => !prev)}
-          title={showPhotoCapture ? "Switch to text input" : "Identify food from photo"}
+          title={
+            showPhotoCapture
+              ? "Switch to text input"
+              : "Identify food from photo"
+          }
         >
           <Camera size={18} />
           {showPhotoCapture ? "Text Input" : "Photo ID"}
         </button>
       </div>
-
       {showPhotoCapture ? (
         <FoodPhotoCapture
           onAddFood={onAddFood}
           onClose={() => setShowPhotoCapture(false)}
         />
       ) : (
-      <>
-      <form onSubmit={handleEstimate} className="ai-food-form">
-        <div className="ai-form-group">
-          <label htmlFor="ai-food-description" className="ai-label">
-            What did you eat?
-          </label>
-          <input
-            id="ai-food-description"
-            type="text"
-            value={foodDescription}
-            onChange={(e) => setFoodDescription(e.target.value)}
-            placeholder="e.g., grilled chicken with rice and vegetables"
-            className="ai-input"
-            disabled={loading}
-          />
-          <small className="ai-hint">
-            Be specific for better estimates (e.g., "1 medium apple" or "8oz
-            sirloin steak")
-          </small>
-        </div>
-
-        <div className="ai-form-row">
-          <div className="ai-form-group">
-            <label htmlFor="ai-food-quantity" className="ai-label">
-              Quantity
-            </label>
-            <input
-              id="ai-food-quantity"
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              placeholder="1"
-              step="0.5"
-              min="0"
-              className="ai-input"
-              disabled={loading}
-            />
-          </div>
-
-          <div className="ai-form-group">
-            <label className="ai-label" htmlFor="ai-unit-select">Unit</label>
-            <select
-              id="ai-unit-select"
-              value={unit}
-              onChange={(e) => setUnit(e.target.value)}
-              className="ai-select"
+        <>
+          <form onSubmit={handleEstimate} className="ai-food-form">
+            <div className="ai-form-group">
+              <label htmlFor="ai-food-description" className="ai-label">
+                What did you eat?
+              </label>
+              <input
+                id="ai-food-description"
+                type="text"
+                value={foodDescription}
+                onChange={(e) => setFoodDescription(e.target.value)}
+                placeholder="e.g., grilled chicken with rice and vegetables"
+                className="ai-input"
+                disabled={loading}
+              />
+              <small className="ai-hint">
+                Be specific for better estimates (e.g., "1 medium apple" or "8oz
+                sirloin steak")
+              </small>
+            </div>
+            <div className="ai-form-row">
+              <div className="ai-form-group">
+                <label htmlFor="ai-food-quantity" className="ai-label">
+                  Quantity
+                </label>
+                <input
+                  id="ai-food-quantity"
+                  type="number"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  placeholder="1"
+                  step="0.5"
+                  min="0"
+                  className="ai-input"
+                  disabled={loading}
+                />
+              </div>
+              <div className="ai-form-group">
+                <label className="ai-label" htmlFor="ai-unit-select">
+                  Unit
+                </label>
+                <select
+                  id="ai-unit-select"
+                  value={unit}
+                  onChange={(e) => setUnit(e.target.value)}
+                  className="ai-select"
+                  disabled={loading}
+                >
+                  <option value="serving">serving</option>
+                  <option value="cup">cup</option>
+                  <option value="oz">oz</option>
+                  <option value="g">gram</option>
+                  <option value="tbsp">tbsp</option>
+                  <option value="tsp">tsp</option>
+                  <option value="piece">piece</option>
+                  <option value="slice">slice</option>
+                </select>
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="ai-estimate-btn"
               disabled={loading}
             >
-              <option value="serving">serving</option>
-              <option value="cup">cup</option>
-              <option value="oz">oz</option>
-              <option value="g">gram</option>
-              <option value="tbsp">tbsp</option>
-              <option value="tsp">tsp</option>
-              <option value="piece">piece</option>
-              <option value="slice">slice</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="submit" className="ai-estimate-btn" disabled={loading}>
-          {loading ? (
-            <>
-              <div className="spinner"></div>
-              {loadingStage || "Estimating..."}
-            </>
-          ) : (
-            "Estimate Nutrition"
-          )}
-        </button>
-      </form>
-
-      {error && <div className="ai-error">{error}</div>}
-
-      {estimatedNutrition && (
-        <div className="ai-result-container">
-          <div className="ai-result-header">
-            <h4 className="ai-result-title">
-<<<<<<< HEAD
-              Estimated for: {quantity} {unit} {foodDescription}
-            </h4>
-            <span className={"ai-source-badge " + (estimatedNutrition._source?.startsWith("usda") ? "badge-usda" : "badge-ai")}>
-              {estimatedNutrition._source === "usda" ? "USDA" : estimatedNutrition._source === "usda_ai_assisted" ? "USDA (AI-assisted)" : "AI Est."}
-            </span>
-          </div>
-          {estimatedNutrition._usdaFoodName && (
-            <p className="ai-usda-match">Matched: {estimatedNutrition._usdaFoodName}</p>
-          )}
-=======
-              {quantity} {unit} {foodDescription}
-            </h4>
-            {estimatedNutrition.source === "usda" ? (
-              <span className="ai-source-badge ai-source-badge--usda">
-                USDA Verified
-              </span>
-            ) : (
-              <span className="ai-source-badge ai-source-badge--ai">
-                AI Estimated
-              </span>
-            )}
-          </div>
-          {estimatedNutrition.source === "usda" &&
-            estimatedNutrition.usdaDescription && (
-              <p className="ai-usda-match">
-                Matched:{" "}
-                {estimatedNutrition.fdcId ? (
-                  <a
-                    href={`https://fdc.nal.usda.gov/food-details/${estimatedNutrition.fdcId}/nutrients`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ai-usda-link"
-                  >
-                    {estimatedNutrition.usdaDescription}
-                    <ExternalLink
-                      size={11}
-                      style={{ marginLeft: 3, verticalAlign: "middle" }}
-                    />
-                  </a>
+              {loading ? (
+                <>
+                  <div className="spinner"></div>
+                  {loadingStage || "Estimating..."}
+                </>
+              ) : (
+                "Estimate Nutrition"
+              )}
+            </button>
+          </form>
+          {error && <div className="ai-error">{error}</div>}
+          {estimatedNutrition && (
+            <div className="ai-result-container">
+              <div className="ai-result-header">
+                <h4 className="ai-result-title">
+                  {quantity} {unit} {foodDescription}
+                </h4>
+                {estimatedNutrition.source === "usda" ? (
+                  <span className="ai-source-badge ai-source-badge--usda">
+                    USDA Verified
+                  </span>
                 ) : (
-                  estimatedNutrition.usdaDescription
+                  <span className="ai-source-badge ai-source-badge--ai">
+                    AI Estimated
+                  </span>
                 )}
-              </p>
-            )}
->>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
-          <div className="ai-nutrition-grid">
-            <div className="ai-nutrition-item">
-              <div className="ai-nutrition-value">
-                {estimatedNutrition.calories}
               </div>
-              <div className="ai-nutrition-label">Calories</div>
-            </div>
-            <div className="ai-nutrition-item">
-              <div className="ai-nutrition-value">
-                {estimatedNutrition.protein}g
+              {estimatedNutrition.source === "usda" &&
+                estimatedNutrition.usdaDescription && (
+                  <p className="ai-usda-match">
+                    Matched:{" "}
+                    {estimatedNutrition.fdcId ? (
+                      <a
+                        href={`https://fdc.nal.usda.gov/food-details/${estimatedNutrition.fdcId}/nutrients`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ai-usda-link"
+                      >
+                        {estimatedNutrition.usdaDescription}
+                        <ExternalLink
+                          size={11}
+                          style={{ marginLeft: 3, verticalAlign: "middle" }}
+                        />
+                      </a>
+                    ) : (
+                      estimatedNutrition.usdaDescription
+                    )}
+                  </p>
+                )}
+              <div className="ai-nutrition-grid">
+                <div className="ai-nutrition-item">
+                  <div className="ai-nutrition-value">
+                    {estimatedNutrition.calories}
+                  </div>
+                  <div className="ai-nutrition-label">Calories</div>
+                </div>
+                <div className="ai-nutrition-item">
+                  <div className="ai-nutrition-value">
+                    {estimatedNutrition.protein}g
+                  </div>
+                  <div className="ai-nutrition-label">Protein</div>
+                </div>
+                <div className="ai-nutrition-item">
+                  <div className="ai-nutrition-value">
+                    {estimatedNutrition.carbs}g
+                  </div>
+                  <div className="ai-nutrition-label">Carbs</div>
+                </div>
+                <div className="ai-nutrition-item">
+                  <div className="ai-nutrition-value">
+                    {estimatedNutrition.fat}g
+                  </div>
+                  <div className="ai-nutrition-label">Fat</div>
+                </div>
               </div>
-              <div className="ai-nutrition-label">Protein</div>
-            </div>
-            <div className="ai-nutrition-item">
-              <div className="ai-nutrition-value">
-                {estimatedNutrition.carbs}g
-              </div>
-              <div className="ai-nutrition-label">Carbs</div>
-            </div>
-            <div className="ai-nutrition-item">
-              <div className="ai-nutrition-value">
-                {estimatedNutrition.fat}g
-              </div>
-              <div className="ai-nutrition-label">Fat</div>
-            </div>
-          </div>
-
-          {/* Micronutrient highlights */}
-          {(estimatedNutrition.fiber ||
-            estimatedNutrition.sodium ||
-            estimatedNutrition.sugar) && (
-            <div className="ai-micros-section">
-              <CompactMicronutrients
-                fiber={estimatedNutrition.fiber}
-                sodium={estimatedNutrition.sodium}
-                sugar={estimatedNutrition.sugar}
-              />
+              {(estimatedNutrition.fiber ||
+                estimatedNutrition.sodium ||
+                estimatedNutrition.sugar) && (
+                <div className="ai-micros-section">
+                  <CompactMicronutrients
+                    fiber={estimatedNutrition.fiber}
+                    sodium={estimatedNutrition.sodium}
+                    sugar={estimatedNutrition.sugar}
+                  />
+                </div>
+              )}
+              <button className="ai-add-btn" onClick={handleAddFood}>
+                ✓ Add to Food Log
+              </button>
             </div>
           )}
-
-          <button className="ai-add-btn" onClick={handleAddFood}>
-            ✓ Add to Food Log
-          </button>
-        </div>
-      )}
-      </>
+        </>
       )}
     </div>
   );
