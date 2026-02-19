@@ -294,6 +294,179 @@ Example: {"calories": 95, "protein": 0.5, "carbs": 25, "fat": 0.3}`;
   }
 });
 
+// Parse food for USDA - converts natural language into structured USDA query
+app.post("/api/parse-food", nutritionLimiter, async (req, res) => {
+  const { foodDescription, quantity, unit } = req.body || {};
+
+  if (
+    !foodDescription ||
+    typeof foodDescription !== "string" ||
+    !foodDescription.trim()
+  ) {
+    return res
+      .status(400)
+      .json({ error: "foodDescription is required", code: "MISSING_INPUT" });
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) {
+    return res
+      .status(500)
+      .json({
+        error: "Server configuration error",
+        code: "SERVER_CONFIG_ERROR",
+      });
+  }
+
+  const trimmed = foodDescription.trim().slice(0, 200);
+
+  const systemPrompt = `You are a USDA nutrition database expert. Convert food descriptions into optimized USDA FoodData Central search queries.
+
+Respond ONLY with a valid JSON object — no prose, no markdown:
+{
+  "searchQuery": "primary USDA search query (2-5 words, USDA naming format)",
+  "servingSizeGrams": <total weight in grams for the given quantity/unit>,
+  "alternateQueries": ["backup query 1", "backup query 2"],
+  "preferBranded": <true if this is clearly a packaged/branded food, false otherwise>
+}
+
+USDA naming conventions:
+- Use comma-separated descriptors: "Chicken, breast, cooked, grilled"
+- Prefer USDA-style names over colloquial names
+- For generic foods: "Apple, raw" not "fresh apple"
+- For cooked methods: append after food name
+- Omit quantity/serving info from searchQuery
+
+Serving size estimation (grams):
+- 1 cup cooked rice ≈ 186g, 1 cup raw leafy greens ≈ 30g
+- 1 oz = 28.35g, 1 tbsp oil ≈ 14g, 1 medium apple ≈ 182g
+- 1 serving = estimate based on food type
+- If unit is "g", use quantity directly`;
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+    const response = await fetch(
+      "https://ai.hackclub.com/proxy/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://nutrinoteplus.hackclub.com",
+          "X-Title": "NutriNote+",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: [
+            { role: "system", content: systemPrompt },
+            {
+              role: "user",
+              content: `Food: "${trimmed}" | Quantity: ${quantity ?? 1} | Unit: ${unit ?? "serving"}`,
+            },
+          ],
+          temperature: 0.1,
+          max_tokens: 250,
+        }),
+        signal: controller.signal,
+      },
+    );
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      return res
+        .status(502)
+        .json({ error: "AI service error", code: "API_ERROR" });
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content;
+    if (!content)
+      return res
+        .status(502)
+        .json({ error: "Empty AI response", code: "EMPTY_RESPONSE" });
+
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch)
+      return res
+        .status(502)
+        .json({ error: "Could not parse AI response", code: "PARSE_ERROR" });
+
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonMatch[0]);
+    } catch {
+      return res
+        .status(502)
+        .json({ error: "Invalid JSON from AI", code: "PARSE_ERROR" });
+    }
+
+    const servingGrams = parseFloat(parsed.servingSizeGrams);
+    return res.status(200).json({
+      searchQuery: (parsed.searchQuery || trimmed).trim().slice(0, 100),
+      servingSizeGrams:
+        isFinite(servingGrams) && servingGrams > 0 ? servingGrams : 100,
+      alternateQueries: Array.isArray(parsed.alternateQueries)
+        ? parsed.alternateQueries.slice(0, 3).map(String)
+        : [],
+      preferBranded: Boolean(parsed.preferBranded),
+    });
+  } catch (error) {
+    if (error.name === "AbortError")
+      return res
+        .status(504)
+        .json({ error: "Request timed out", code: "TIMEOUT" });
+    console.error("[parse-food] error:", error.message);
+    return res
+      .status(500)
+      .json({ error: "Unexpected error", code: "UNEXPECTED_ERROR" });
+  }
+});
+
+// USDA FoodData Central proxy - keeps USDA_API_KEY server-side
+app.post("/api/usda-search", async (req, res) => {
+  const { query, dataTypes, pageSize = 10 } = req.body || {};
+
+  if (!query || typeof query !== "string" || !query.trim()) {
+    return res.status(400).json({ error: "query is required" });
+  }
+
+  const apiKey = process.env.USDA_API_KEY;
+  const params = new URLSearchParams({
+    query: query.trim(),
+    pageSize: String(Math.min(Number(pageSize) || 10, 25)),
+  });
+  // USDA requires each dataType as a separate repeated parameter
+  if (Array.isArray(dataTypes) && dataTypes.length > 0) {
+    for (const dt of dataTypes) params.append("dataType", dt);
+  }
+  if (apiKey) params.set("api_key", apiKey);
+
+  try {
+    const upstream = await fetch(
+      `https://api.nal.usda.gov/fdc/v1/foods/search?${params}`,
+      {
+        headers: { Accept: "application/json" },
+      },
+    );
+
+    if (!upstream.ok) {
+      console.error("[usda-search] upstream error:", upstream.status);
+      return res
+        .status(upstream.status)
+        .json({ error: "USDA API error", status: upstream.status });
+    }
+
+    const data = await upstream.json();
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error("[usda-search] error:", error.message);
+    return res.status(502).json({ error: "Failed to reach USDA API" });
+  }
+});
+
 // Legacy endpoint (deprecated) - redirect to new endpoint
 app.post("/api/openrouter", nutritionLimiter, (req, res) => {
   console.warn("[WARN] Deprecated /api/openrouter endpoint called");

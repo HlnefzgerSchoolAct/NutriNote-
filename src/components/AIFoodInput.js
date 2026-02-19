@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { Bot, Camera } from "lucide-react";
 import { estimateNutrition } from "../services/aiNutritionService";
+=======
+import { Bot, ExternalLink } from "lucide-react";
+import { estimateWithUSDA } from "../services/aiNutritionService";
+>>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
 import { CompactMicronutrients } from "./common";
 import FoodPhotoCapture from "./FoodPhotoCapture";
 import devLog from "../utils/devLog";
@@ -17,6 +22,7 @@ function AIFoodInput({
   const [showPhotoCapture, setShowPhotoCapture] = useState(false);
   const [unit, setUnit] = useState("serving");
   const [loading, setLoading] = useState(false);
+  const [loadingStage, setLoadingStage] = useState("");
   const [error, setError] = useState("");
   const [estimatedNutrition, setEstimatedNutrition] = useState(null);
 
@@ -46,12 +52,17 @@ function AIFoodInput({
     }
 
     setLoading(true);
+    setLoadingStage("Preparing...");
 
     try {
-      const fullDescription = `${quantity} ${unit} of ${foodDescription}`;
-      const nutrition = await estimateNutrition(fullDescription);
+      const nutrition = await estimateWithUSDA(
+        foodDescription,
+        quantity,
+        unit,
+        setLoadingStage,
+      );
 
-      // Round nutrition values (quantity is already included in the AI prompt)
+      // Round nutrition values (quantity/serving size is already factored in by estimateWithUSDA)
       const scaledNutrition = {
         calories: Math.round(nutrition.calories),
         protein: Math.round(nutrition.protein * 10) / 10,
@@ -78,6 +89,11 @@ function AIFoodInput({
         magnesium: nutrition.magnesium,
         zinc: nutrition.zinc,
         potassium: nutrition.potassium,
+        // Provenance metadata (passed through for display and food entry)
+        source: nutrition.source || "ai",
+        fdcId: nutrition.fdcId,
+        usdaDescription: nutrition.usdaDescription,
+        dataType: nutrition.dataType,
       };
 
       setEstimatedNutrition(scaledNutrition);
@@ -88,11 +104,14 @@ function AIFoodInput({
       devLog.error("Estimation error:", err);
     } finally {
       setLoading(false);
+      setLoadingStage("");
     }
   };
 
   const handleAddFood = () => {
     if (!estimatedNutrition) return;
+
+    const isUSDA = estimatedNutrition.source === "usda";
 
     const foodEntry = {
       id: Date.now(),
@@ -123,9 +142,18 @@ function AIFoodInput({
       zinc: estimatedNutrition.zinc,
       potassium: estimatedNutrition.potassium,
       timestamp: new Date().toISOString(),
+<<<<<<< HEAD
       aiEstimated: estimatedNutrition._source === "ai_estimate",
       nutritionSource: estimatedNutrition._source || "ai_estimate",
       usdaFoodName: estimatedNutrition._usdaFoodName,
+=======
+      aiEstimated: !isUSDA,
+      ...(isUSDA && {
+        fdcId: estimatedNutrition.fdcId,
+        usdaDescription: estimatedNutrition.usdaDescription,
+        dataType: estimatedNutrition.dataType,
+      }),
+>>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
     };
 
     onAddFood(foodEntry);
@@ -225,7 +253,7 @@ function AIFoodInput({
           {loading ? (
             <>
               <div className="spinner"></div>
-              Estimating...
+              {loadingStage || "Estimating..."}
             </>
           ) : (
             "Estimate Nutrition"
@@ -239,6 +267,7 @@ function AIFoodInput({
         <div className="ai-result-container">
           <div className="ai-result-header">
             <h4 className="ai-result-title">
+<<<<<<< HEAD
               Estimated for: {quantity} {unit} {foodDescription}
             </h4>
             <span className={"ai-source-badge " + (estimatedNutrition._source?.startsWith("usda") ? "badge-usda" : "badge-ai")}>
@@ -248,6 +277,42 @@ function AIFoodInput({
           {estimatedNutrition._usdaFoodName && (
             <p className="ai-usda-match">Matched: {estimatedNutrition._usdaFoodName}</p>
           )}
+=======
+              {quantity} {unit} {foodDescription}
+            </h4>
+            {estimatedNutrition.source === "usda" ? (
+              <span className="ai-source-badge ai-source-badge--usda">
+                USDA Verified
+              </span>
+            ) : (
+              <span className="ai-source-badge ai-source-badge--ai">
+                AI Estimated
+              </span>
+            )}
+          </div>
+          {estimatedNutrition.source === "usda" &&
+            estimatedNutrition.usdaDescription && (
+              <p className="ai-usda-match">
+                Matched:{" "}
+                {estimatedNutrition.fdcId ? (
+                  <a
+                    href={`https://fdc.nal.usda.gov/food-details/${estimatedNutrition.fdcId}/nutrients`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ai-usda-link"
+                  >
+                    {estimatedNutrition.usdaDescription}
+                    <ExternalLink
+                      size={11}
+                      style={{ marginLeft: 3, verticalAlign: "middle" }}
+                    />
+                  </a>
+                ) : (
+                  estimatedNutrition.usdaDescription
+                )}
+              </p>
+            )}
+>>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
           <div className="ai-nutrition-grid">
             <div className="ai-nutrition-item">
               <div className="ai-nutrition-value">

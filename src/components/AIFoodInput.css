@@ -219,15 +219,34 @@
   margin: 0;
 }
 
+<<<<<<< HEAD
 .ai-source-badge {
   font-size: 0.7rem;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: var(--radius-sm);
+=======
+.ai-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.ai-source-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+>>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
   white-space: nowrap;
   flex-shrink: 0;
 }
 
+<<<<<<< HEAD
 .ai-source-badge.badge-usda {
   background: #e8f5e9;
   color: #2e7d32;
@@ -243,6 +262,48 @@
   color: var(--text-tertiary);
   margin: 0 0 var(--space-sm) 0;
   font-style: italic;
+=======
+.ai-source-badge--usda {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.ai-source-badge--ai {
+  background: #ede9fe;
+  color: #5b21b6;
+  border: 1px solid #ddd6fe;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ai-source-badge--usda {
+    background: #064e3b;
+    color: #6ee7b7;
+    border-color: #065f46;
+  }
+  .ai-source-badge--ai {
+    background: #2e1065;
+    color: #c4b5fd;
+    border-color: #4c1d95;
+  }
+}
+
+.ai-usda-match {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  margin: calc(-1 * var(--space-xs)) 0 var(--space-md);
+  line-height: 1.4;
+}
+
+.ai-usda-link {
+  color: var(--text-link, #0284c7);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ai-usda-link:hover {
+  color: var(--text-link-hover, #0369a1);
+>>>>>>> f5a1245 (Change primary color from #f97316 to #3b82f6 in src/)
 }
 
 .ai-nutrition-grid {

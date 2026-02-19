@@ -1,10 +1,17 @@
 /**
  * AI Nutrition Service
- * Handles nutrition estimation via backend proxy with caching
+ * Handles nutrition estimation via backend proxy with caching.
+ * Also provides a hybrid USDA-first estimation path:
+ *   1. AI parses the food description into a structured USDA query
+ *   2. USDA FoodData Central API returns validated nutrition (per 100g)
+ *   3. Values are scaled to the actual serving size
+ *   4. Falls back to pure AI estimation if USDA lookup fails
+ *
  * Backend uses Hack Club's AI proxy (https://ai.hackclub.com)
  */
 
 import devLog from "../utils/devLog";
+import { searchUSDAFood, mapUSDANutrients } from "./usdaFoodDataService";
 
 const CACHE_KEY = "nutrinoteplus_ai_nutrition_cache";
 const API_ENDPOINT = "/api/estimate-nutrition";
@@ -294,4 +301,116 @@ export function getCacheStats() {
     expiredEntries: entries.length - validEntries.length,
     cacheSize: JSON.stringify(cache).length,
   };
+}
+
+// ─── Hybrid USDA + AI estimation ─────────────────────────────────────────────
+
+const PARSE_ENDPOINT = "/api/parse-food";
+
+/**
+ * Ask the AI backend to convert a natural-language food description into a
+ * structured query for USDA FoodData Central.
+ *
+ * @param {string} description - Food name (e.g., "grilled chicken breast")
+ * @param {string|number} quantity - Numeric quantity (e.g., 1.5)
+ * @param {string} unit - Unit string (e.g., "cup", "oz", "serving")
+ * @returns {Promise<{searchQuery:string, servingSizeGrams:number, alternateQueries:string[], preferBranded:boolean}|null>}
+ */
+export async function parseFoodForUSDA(description, quantity, unit) {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+    const response = await fetch(PARSE_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ foodDescription: description, quantity, unit }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      devLog.warn("parse-food API returned", response.status);
+      return null;
+    }
+
+    const data = await response.json();
+    devLog.log("🧠 AI parsed food for USDA:", data);
+    return data;
+  } catch (error) {
+    devLog.warn("parseFoodForUSDA failed:", error.message);
+    return null;
+  }
+}
+
+/**
+ * Hybrid nutrition estimator.
+ *
+ * Flow:
+ *   1. Check cache for the composite key `{quantity} {unit} {description}`
+ *   2. AI parses the description → USDA search query + serving size in grams
+ *   3. Try each search query in order until a USDA result is found
+ *   4. Map USDA nutrient data to app format, scaled to serving size
+ *   5. On any failure → fall back to pure AI estimation (estimateNutrition)
+ *
+ * @param {string} description - Food description (e.g., "brown rice with butter")
+ * @param {string|number} quantity - Serving quantity
+ * @param {string} unit - Serving unit
+ * @param {Function} [onStage] - Optional callback called with a string describing current stage
+ * @returns {Promise<Object>} Nutrition data with a `source` field: "usda" | "ai"
+ */
+export async function estimateWithUSDA(description, quantity, unit, onStage) {
+  const compositeKey = `${quantity} ${unit} of ${description}`;
+
+  // Only use cache if the result came from USDA — AI fallbacks should be
+  // retried so a transient USDA failure doesn't permanently bypass the lookup.
+  const cached = getCachedNutrition(compositeKey);
+  if (cached && cached.source === "usda") return cached;
+
+  devLog.log("🔄 Starting hybrid estimation for:", compositeKey);
+
+  // ── Step 1: AI parses the food description ──────────────────────────────
+  onStage?.("Parsing food description...");
+  const parsed = await parseFoodForUSDA(description, quantity, unit);
+
+  if (parsed) {
+    const { searchQuery, servingSizeGrams, alternateQueries, preferBranded } =
+      parsed;
+    const queries = [searchQuery, ...alternateQueries].filter(Boolean);
+
+    // ── Step 2: Try each USDA query ──────────────────────────────────────
+    onStage?.("Looking up in USDA database...");
+    for (const query of queries) {
+      const foods = await searchUSDAFood(query, preferBranded);
+      if (!foods || foods.length === 0) continue;
+
+      const best = foods[0]; // already sorted by Foundation > SR Legacy > ...
+      const nutrition = mapUSDANutrients(best, servingSizeGrams);
+
+      if (nutrition.calories > 0) {
+        devLog.log(
+          `✅ USDA hit: "${best.description}" (${best.dataType}, fdcId: ${best.fdcId})`,
+        );
+        // Cache under the composite key so repeat lookups are instant
+        cacheNutrition(compositeKey, nutrition);
+        return nutrition;
+      }
+    }
+
+    devLog.log("⚠️ No usable USDA result found, falling back to AI");
+  } else {
+    devLog.log("⚠️ AI parsing failed, falling back to AI estimation");
+  }
+
+  // ── Step 3: AI fallback ─────────────────────────────────────────────────
+  onStage?.("Estimating with AI...");
+  const aiResult = await estimateNutrition(compositeKey);
+  // Don't permanently cache the AI fallback — next request should retry USDA.
+  // estimateNutrition caches internally; clear that entry so the next call
+  // goes through the full hybrid path again.
+  const cache = getCache();
+  delete cache[compositeKey.toLowerCase().trim()];
+  saveCache(cache);
+  return { ...aiResult, source: "ai" };
 }
