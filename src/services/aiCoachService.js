@@ -18,6 +18,9 @@ import {
   loadStreakData,
   loadWaterLog,
   loadWeightLog,
+  loadWeeklyHistory,
+  loadFavoriteFoods,
+  loadMicronutrientGoals,
 } from "../utils/localStorage";
 
 const API_ENDPOINT = "/api/ai-coach";
@@ -62,6 +65,36 @@ export function buildUserContext() {
     ? weightLog[weightLog.length - 1]
     : null;
 
+  const weeklyHistory = loadWeeklyHistory();
+  const today = new Date().toISOString().split("T")[0];
+  const last7Days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    last7Days.push(d.toISOString().split("T")[0]);
+  }
+  const weeklySummary = last7Days.map((date) => {
+    const day = weeklyHistory[date];
+    return day ? { date, eaten: day.eaten, target: day.target } : { date, eaten: 0, target: 0 };
+  });
+
+  const weightTrend = weightLog?.length
+    ? weightLog.slice(-5).map((e) => ({ date: e.date, weight: e.weight, unit: e.unit }))
+    : null;
+
+  const favorites = loadFavoriteFoods();
+  const favoriteFoodNames = favorites.slice(0, 15).map((f) => f.name);
+
+  const microGoals = loadMicronutrientGoals();
+  const micronutrientGoals = microGoals
+    ? {
+        fiber: microGoals.fiber,
+        sodium: microGoals.sodium,
+        sugar: microGoals.sugar,
+        iron: microGoals.iron,
+      }
+    : null;
+
   return {
     profile: profile
       ? {
@@ -95,10 +128,15 @@ export function buildUserContext() {
     },
     recentFoodNames,
     streak: streakData?.currentStreak ?? 0,
+    longestStreak: streakData?.longestStreak ?? 0,
     waterOz: typeof waterOz === "number" ? waterOz : 0,
     latestWeight: latestWeight
       ? { date: latestWeight.date, weight: latestWeight.weight, unit: latestWeight.unit }
       : null,
+    weeklySummary,
+    weightTrend,
+    favoriteFoodNames: favoriteFoodNames.length ? favoriteFoodNames : null,
+    micronutrientGoals,
   };
 }
 
@@ -110,21 +148,24 @@ const ERROR_MESSAGES = {
   EMPTY_RESPONSE: "The coach couldn't generate a response. Please try again.",
   SERVER_CONFIG_ERROR: "Server configuration error. Please contact support.",
   NETWORK_ERROR: "Network error. Check your connection and try again.",
+  INVALID_RESPONSE: "The coach service couldn't respond properly. Please try again. If this persists, restart the dev server (npm run dev).",
 };
 
 /**
  * Send a message to the AI coach and get a reply.
  * @param {string} message - User message
  * @param {Object} [userContext] - Optional pre-built context (built automatically if omitted)
+ * @param {Array<{role: string, content: string}>} [conversationHistory] - Prior messages for context
  * @returns {Promise<string>} Coach reply
  */
-export async function sendCoachMessage(message, userContext) {
+export async function sendCoachMessage(message, userContext, conversationHistory) {
   const trimmed = (message || "").trim();
   if (!trimmed) {
     throw new Error("Please enter a message.");
   }
 
   const context = userContext ?? buildUserContext();
+  const history = Array.isArray(conversationHistory) ? conversationHistory : [];
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
@@ -133,7 +174,11 @@ export async function sendCoachMessage(message, userContext) {
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: trimmed, userContext: context }),
+      body: JSON.stringify({
+        message: trimmed,
+        userContext: context,
+        conversationHistory: history,
+      }),
       signal: controller.signal,
     });
 
@@ -141,9 +186,10 @@ export async function sendCoachMessage(message, userContext) {
 
     let data;
     try {
-      data = await response.json();
+      const text = await response.text();
+      data = text ? JSON.parse(text) : {};
     } catch {
-      throw new Error("Invalid response from server.");
+      throw new Error(ERROR_MESSAGES.INVALID_RESPONSE);
     }
 
     if (!response.ok) {

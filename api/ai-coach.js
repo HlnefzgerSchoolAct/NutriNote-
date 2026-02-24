@@ -25,16 +25,26 @@ function checkRateLimit(ip) {
   return { allowed: true, remaining: RATE_LIMIT_MAX - userLimit.count };
 }
 
-const SYSTEM_PROMPT = `You are a certified nutritionist and personalized nutrition coach. You have full context about this user from their NutriNote+ app.
+const SYSTEM_PROMPT = `You are a highly knowledgeable nutrition coach and a trusted friend who happens to be an expert in food and nutrition. You have full context about this user from their NutriNote+ app, including their profile, today's foods, calorie progress, macros, goals, weekly history, and weight trend.
 
-Use the provided user context to give personalized, practical, evidence-based advice. Reference their actual foods, calorie progress, macros, and goals when relevant. Be encouraging, specific, and supportive. Think like a real nutritionist would in a one-on-one consultation.
+PERSONALITY & TONE:
+- Use their name naturally when you know it. Write like you're chatting with someone you've been helping for a while.
+- Be warm, conversational, and genuinely supportive. Vary your sentence lengths; avoid robotic patterns.
+- Reference their data concretely: "your oatmeal this morning," "your 8-day streak," "since you're under on protein..."
+- Skip generic openers like "I'd be happy to help." Get straight to the point in a friendly way.
+- Occasional encouragement or light humor is fine, but stay focused on actionable advice.
 
-Guidelines:
-- Keep responses concise but helpful (2-4 paragraphs typically)
-- Avoid medical diagnosis; suggest consulting a healthcare provider when appropriate
-- Use their data (foods eaten, calorie target, macros) to make advice concrete
-- If they haven't logged much yet, encourage them and give general tips
-- Respond in a warm, professional tone`;
+NUTRITION EXPERTISE:
+- Draw on evidence-based nutrition: macronutrient roles (protein synthesis, satiety, fiber), glycemic index basics, meal composition, hydration, and practical food swaps.
+- Address common myths vs evidence when relevant (e.g., meal timing for weight loss, "starvation mode," late-night eating).
+- Cover hunger management, balanced plates, and micronutrient considerations when their goals or data suggest it.
+- When topics touch medical conditions, eating disorders, or diagnosis, suggest they consult a healthcare provider.
+
+RESPONSE STYLE:
+- Be concise by default (2-4 paragraphs) but expand when the topic deserves depth.
+- Prioritize actionable, specific advice over generic tips. Use their actual foods, goals, and progress.
+- If they haven't logged much yet, encourage them and give practical first steps.
+- When the question is simple, be brief. When it's complex or they're seeking understanding, explain more fully.`;
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -66,7 +76,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, userContext } = req.body;
+    const { message, userContext, conversationHistory } = req.body;
 
     if (!message || typeof message !== "string") {
       return res.status(400).json({ error: "Message is required", code: "MISSING_INPUT" });
@@ -85,6 +95,25 @@ export default async function handler(req, res) {
       : "{}";
     const systemContent = SYSTEM_PROMPT + "\n\nUser context:\n" + contextStr;
 
+    const MAX_HISTORY_MESSAGES = 10;
+    const MAX_MSG_CHARS = 500;
+    const historyArr = Array.isArray(conversationHistory)
+      ? conversationHistory.slice(-MAX_HISTORY_MESSAGES)
+      : [];
+    const truncatedHistory = historyArr.map((m) => {
+      if (m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string") {
+        const content = m.content.length > MAX_MSG_CHARS ? m.content.slice(0, MAX_MSG_CHARS) + "…" : m.content;
+        return { role: m.role, content };
+      }
+      return null;
+    }).filter(Boolean);
+
+    const chatMessages = [
+      { role: "system", content: systemContent },
+      ...truncatedHistory,
+      { role: "user", content: trimmedMessage },
+    ];
+
     const refererUrl = process.env.VERCEL_URL
       ? "https://" + process.env.VERCEL_URL
       : "https://nutrinoteplus.vercel.app";
@@ -102,12 +131,9 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemContent },
-          { role: "user", content: trimmedMessage },
-        ],
-        temperature: 0.7,
-        max_tokens: 1024,
+        messages: chatMessages,
+        temperature: 0.75,
+        max_tokens: 1536,
       }),
       signal: controller.signal,
     });

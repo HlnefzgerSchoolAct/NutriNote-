@@ -5,17 +5,82 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Send, Loader2, Sparkles } from "lucide-react";
+import {
+  MessageCircle,
+  Send,
+  Loader2,
+  Sparkles,
+  TrendingUp,
+  UtensilsCrossed,
+  Droplet,
+  Target,
+  Flame,
+  HelpCircle,
+  AlertCircle,
+} from "lucide-react";
 import { M3Card, M3CardContent, M3Button, M3TextField, Main } from "../components/common";
 import { buildUserContext, sendCoachMessage } from "../services/aiCoachService";
 import "./CoachPage.css";
 
-const SUGGESTED_PROMPTS = [
+const DEFAULT_PROMPTS = [
   "How am I doing today?",
   "Suggest a healthy dinner within my calories",
   "What can I improve in my eating habits?",
   "Give me tips to hit my protein goal",
 ];
+
+function getSuggestedPrompts() {
+  try {
+    const ctx = buildUserContext();
+    const prompts = [];
+    const hour = new Date().getHours();
+    const isEvening = hour >= 16;
+    const hasNoFoods = !ctx.today?.foods?.length;
+    const remaining = ctx.today?.remaining ?? 0;
+    const macros = ctx.today?.macros ?? {};
+    const goals = ctx.macroGoals ?? {};
+    const proteinGoal = goals.protein ?? 0;
+    const proteinNow = macros.protein ?? 0;
+    const waterOz = ctx.waterOz ?? 0;
+    const streak = ctx.streak ?? 0;
+    const hasWeightTrend = ctx.weightTrend?.length >= 2;
+
+    if (hasNoFoods) {
+      prompts.push("What should I focus on when logging my first meals?");
+    }
+    if (proteinGoal > 0 && proteinNow < proteinGoal * 0.6) {
+      prompts.push("How can I hit my protein goal today?");
+    }
+    if (isEvening && remaining > 200) {
+      prompts.push("Suggest a dinner that fits my remaining calories");
+    }
+    if (waterOz < 32) {
+      prompts.push("Tips for staying hydrated?");
+    }
+    if (hasWeightTrend && ctx.profile?.goal) {
+      prompts.push("How does my progress look?");
+    }
+    if (streak >= 5) {
+      prompts.push("How can I keep my streak going?");
+    }
+
+    if (prompts.length === 0) prompts.push(...DEFAULT_PROMPTS);
+    return prompts.slice(0, 4);
+  } catch {
+    return DEFAULT_PROMPTS.slice(0, 4);
+  }
+}
+
+function getPromptIcon(prompt) {
+  const p = prompt.toLowerCase();
+  if (p.includes("protein") || p.includes("goal")) return Target;
+  if (p.includes("dinner") || p.includes("meal")) return UtensilsCrossed;
+  if (p.includes("hydrat") || p.includes("water")) return Droplet;
+  if (p.includes("progress") || p.includes("look")) return TrendingUp;
+  if (p.includes("streak")) return Flame;
+  if (p.includes("focus") || p.includes("first")) return HelpCircle;
+  return MessageCircle;
+}
 
 const STORAGE_KEY = "nutrinoteplus_coach_messages";
 const MAX_STORED_MESSAGES = 20;
@@ -70,7 +135,8 @@ function CoachPage() {
     setLoading(true);
 
     try {
-      const reply = await sendCoachMessage(trimmed, buildUserContext());
+      const context = buildUserContext();
+      const reply = await sendCoachMessage(trimmed, context, messages);
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
@@ -110,11 +176,15 @@ function CoachPage() {
             <div className="coach-messages-wrap" ref={listRef}>
               {!hasMessages && !loading && (
                 <div className="coach-welcome">
-                  <Sparkles
-                    size={40}
-                    className="coach-welcome__icon"
-                    aria-hidden
-                  />
+                  <div className="coach-welcome__icon-container">
+                    <span className="coach-welcome__decoration coach-welcome__decoration--1" aria-hidden />
+                    <span className="coach-welcome__decoration coach-welcome__decoration--2" aria-hidden />
+                    <span className="coach-welcome__decoration coach-welcome__decoration--3" aria-hidden />
+                    <div className="coach-welcome__icon-bg">
+                      <Sparkles size={36} className="coach-welcome__icon" aria-hidden />
+                    </div>
+                  </div>
+                  <h2 className="coach-welcome__title">Your nutrition coach</h2>
                   <p className="coach-welcome__text">
                     Ask me anything about your nutrition. I know your profile,
                     today&apos;s foods, calorie progress, and goals.
@@ -123,16 +193,20 @@ function CoachPage() {
                     Try one of these to get started:
                   </p>
                   <div className="coach-suggestions">
-                    {SUGGESTED_PROMPTS.map((prompt) => (
-                      <button
-                        key={prompt}
-                        type="button"
-                        className="coach-suggestion"
-                        onClick={() => handleSuggestedClick(prompt)}
-                      >
-                        {prompt}
-                      </button>
-                    ))}
+                    {getSuggestedPrompts().map((prompt) => {
+                      const Icon = getPromptIcon(prompt);
+                      return (
+                        <button
+                          key={prompt}
+                          type="button"
+                          className="coach-suggestion"
+                          onClick={() => handleSuggestedClick(prompt)}
+                        >
+                          <Icon size={16} className="coach-suggestion__icon" aria-hidden />
+                          {prompt}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -147,6 +221,11 @@ function CoachPage() {
                       exit={{ opacity: 0 }}
                       className={`coach-message coach-message--${msg.role}`}
                     >
+                      {msg.role === "assistant" && (
+                        <div className="coach-message__avatar" aria-hidden>
+                          <MessageCircle size={16} strokeWidth={2} />
+                        </div>
+                      )}
                       <div className="coach-message__content">{msg.content}</div>
                     </motion.div>
                   ))}
@@ -156,12 +235,14 @@ function CoachPage() {
                       animate={{ opacity: 1 }}
                       className="coach-message coach-message--assistant coach-message--loading"
                     >
-                      <Loader2
-                        size={20}
-                        className="coach-message__loader"
-                        aria-hidden
-                      />
-                      <span>Thinking...</span>
+                      <div className="coach-message__avatar" aria-hidden>
+                        <MessageCircle size={16} strokeWidth={2} />
+                      </div>
+                      <div className="coach-typing-dots" aria-hidden>
+                        <span className="coach-typing-dot" />
+                        <span className="coach-typing-dot" />
+                        <span className="coach-typing-dot" />
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -170,10 +251,12 @@ function CoachPage() {
 
             {error && (
               <div className="coach-error" role="alert">
-                {error}
+                <AlertCircle size={18} className="coach-error__icon" aria-hidden />
+                <span>{error}</span>
               </div>
             )}
 
+            <div className="coach-input-bar">
             <form onSubmit={handleSubmit} className="coach-input-wrap">
               <M3TextField
                 variant="outlined"
@@ -203,6 +286,7 @@ function CoachPage() {
                 )}
               </M3Button>
             </form>
+            </div>
           </M3CardContent>
         </M3Card>
       </div>
