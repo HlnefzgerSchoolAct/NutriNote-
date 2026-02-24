@@ -42,8 +42,8 @@ html {
   -moz-osx-font-smoothing: grayscale;
   /* App-like: prevent text selection highlight on touch */
   -webkit-tap-highlight-color: transparent;
-  /* App-like: prevent pull-to-refresh on mobile */
-  overscroll-behavior: none;
+  /* Prevent pull-to-refresh while allowing normal scroll */
+  overscroll-behavior-y: contain;
   /* Prevent horizontal overflow */
   overflow-x: hidden;
   max-width: 100vw;
@@ -58,9 +58,11 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
-  padding-top: max(var(--safe-area-top), 12px);
-  /* App-like: smoother scrolling on iOS */
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  padding-top: max(var(--safe-area-top), 12px);
+  /* Ensure touch scrolling works on mobile */
+  touch-action: pan-y pan-x;
 }
 
 /* ===== Typography ===== */
