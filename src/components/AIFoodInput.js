@@ -3,6 +3,8 @@ import { Bot, Camera, ExternalLink } from "lucide-react";
 import { estimateWithUSDA } from "../services/aiNutritionService";
 import { CompactMicronutrients } from "./common";
 import FoodPhotoCapture from "./FoodPhotoCapture";
+import ConfirmAIFoodSheet from "./ConfirmAIFoodSheet";
+import { loadPreferences } from "../utils/localStorage";
 import devLog from "../utils/devLog";
 import "./AIFoodInput.css";
 /**
@@ -22,6 +24,7 @@ function AIFoodInput({
   const [loadingStage, setLoadingStage] = useState("");
   const [error, setError] = useState("");
   const [estimatedNutrition, setEstimatedNutrition] = useState(null);
+  const [showConfirmSheet, setShowConfirmSheet] = useState(false);
 
   useEffect(() => {
     if (prefillDescription) {
@@ -103,6 +106,21 @@ function AIFoodInput({
 
   const handleAddFood = () => {
     if (!estimatedNutrition) return;
+    
+    const preferences = loadPreferences();
+    const shouldConfirm = preferences.confirmAIFoods ?? true;
+
+    if (shouldConfirm) {
+      // Show confirmation sheet
+      setShowConfirmSheet(true);
+    } else {
+      // Add directly without confirmation
+      addFoodDirectly();
+    }
+  };
+
+  const addFoodDirectly = () => {
+    if (!estimatedNutrition) return;
     const isUSDA = estimatedNutrition.source === "usda";
     const foodEntry = {
       id: Date.now(),
@@ -140,11 +158,21 @@ function AIFoodInput({
       }),
     };
     onAddFood(foodEntry);
+    resetForm();
+  };
+
+  const resetForm = () => {
     setFoodDescription("");
     setQuantity("1");
     setUnit("serving");
     setEstimatedNutrition(null);
     setError("");
+  };
+
+  const handleConfirmFood = (foodEntry) => {
+    onAddFood(foodEntry);
+    resetForm();
+    setShowConfirmSheet(false);
   };
 
   return (
@@ -330,6 +358,15 @@ function AIFoodInput({
           )}
         </>
       )}
+      <ConfirmAIFoodSheet
+        open={showConfirmSheet}
+        onClose={() => setShowConfirmSheet(false)}
+        onConfirm={handleConfirmFood}
+        nutritionData={estimatedNutrition}
+        initialDescription={foodDescription}
+        initialQuantity={parseFloat(quantity) || 1}
+        initialUnit={unit}
+      />
     </div>
   );
 }

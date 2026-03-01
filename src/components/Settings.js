@@ -53,6 +53,7 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget, onDailyTarget
   const [editingMicros, setEditingMicros] = useState({});
   const modalRef = useRef(null);
   const focusTrapRef = useRef(null);
+  const tabsContainerRef = useRef(null);
 
   const presets = getMacroPresets();
 
@@ -81,6 +82,20 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget, onDailyTarget
       setMicroGoals(loadMicronutrientGoals());
     }
   }, [isOpen]);
+
+  // Scroll active tab into view when changed
+  useEffect(() => {
+    if (isOpen && tabsContainerRef.current && activeTab) {
+      const activeTabButton = tabsContainerRef.current.querySelector('.settings-tab.active');
+      if (activeTabButton) {
+        activeTabButton.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }
+  }, [activeTab, isOpen]);
 
   const handlePreferenceChange = (key, value) => {
     const updated = { ...preferences, [key]: value };
@@ -252,7 +267,7 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget, onDailyTarget
           </button>
         </div>
 
-        <div className="settings-tabs" role="tablist">
+        <div className="settings-tabs" role="tablist" ref={tabsContainerRef}>
           <button
             className={`settings-tab ${activeTab === "general" ? "active" : ""}`}
             onClick={() => setActiveTab("general")}
@@ -372,6 +387,28 @@ function Settings({ isOpen, onClose, onProfileUpdate, dailyTarget, onDailyTarget
                   <option value="manual">Always enter manually</option>
                   <option value="auto">Estimate from calories</option>
                 </select>
+              </div>
+
+              <div className="setting-item">
+                <div className="setting-info">
+                  <span className="setting-label">Confirm AI-detected foods</span>
+                  <span className="setting-description">
+                    Review and adjust AI results before logging
+                  </span>
+                </div>
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={preferences.confirmAIFoods ?? true}
+                    onChange={(e) =>
+                      handlePreferenceChange(
+                        "confirmAIFoods",
+                        e.target.checked,
+                      )
+                    }
+                  />
+                  <span className="toggle-slider"></span>
+                </label>
               </div>
 
               <h3>Notifications</h3>

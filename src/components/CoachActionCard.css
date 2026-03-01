@@ -1,0 +1,424 @@
+/**
+ * CoachActionCard — Inline action cards for AI coach messages.
+ * Material 3 inspired design with approve/deny/undo states.
+ */
+
+/* ===== Container ===== */
+.coach-action-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* ===== Card ===== */
+.coach-action-card {
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.coach-action-card--approved {
+  border-color: var(--color-success, #22c55e);
+  background: color-mix(
+    in srgb,
+    var(--color-success, #22c55e) 6%,
+    var(--surface-secondary)
+  );
+}
+
+.coach-action-card--denied {
+  border-color: var(--border-subtle);
+  opacity: 0.65;
+}
+
+.coach-action-card--error {
+  border-color: var(--color-error, #ef4444);
+  background: color-mix(
+    in srgb,
+    var(--color-error, #ef4444) 6%,
+    var(--surface-secondary)
+  );
+}
+
+/* ===== Header ===== */
+.coach-action__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.coach-action__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-100);
+  color: var(--color-primary-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.coach-action__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.coach-action__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-primary-600);
+}
+
+.coach-action__desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* ===== Food Details ===== */
+.coach-action__foods {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+  padding: var(--space-2);
+  background: var(--surface-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.coach-action__food-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.coach-action__food-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coach-action__food-macros {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ===== Recipe Details ===== */
+.coach-action__recipe {
+  margin-bottom: var(--space-2);
+}
+
+.coach-action__recipe-meta {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+}
+
+.coach-action__tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  text-transform: capitalize;
+}
+
+.coach-action__ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.coach-action__ingredient {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  padding: 2px var(--space-2);
+  background: var(--surface-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.coach-action__ingredient--more {
+  font-style: italic;
+  color: var(--text-tertiary);
+}
+
+/* ===== Settings Details ===== */
+.coach-action__settings {
+  margin-bottom: var(--space-2);
+  padding: var(--space-2);
+  background: var(--surface-tertiary);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.coach-action__setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.85rem;
+}
+
+.coach-action__setting-label {
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.coach-action__setting-value {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* ===== Buttons ===== */
+.coach-action__buttons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.coach-action__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    box-shadow 0.15s,
+    transform 0.1s;
+}
+
+.coach-action__btn:active {
+  transform: scale(0.97);
+}
+
+.coach-action__btn--approve {
+  background: var(--color-primary-500);
+  color: var(--text-inverse, #fff);
+  border-color: var(--color-primary-600);
+}
+
+.coach-action__btn--approve:hover {
+  background: var(--color-primary-600);
+  box-shadow: var(--shadow-sm);
+}
+
+.coach-action__btn--deny {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-default);
+}
+
+.coach-action__btn--deny:hover {
+  background: var(--surface-interactive-hover);
+  color: var(--text-primary);
+}
+
+/* ===== Status ===== */
+.coach-action__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  padding: var(--space-1) 0;
+}
+
+.coach-action__spinner {
+  animation: coach-action-spin 0.8s linear infinite;
+}
+
+@keyframes coach-action-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== Result ===== */
+.coach-action__result {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  padding: var(--space-1) 0;
+  flex-wrap: wrap;
+}
+
+.coach-action__result--approved {
+  color: var(--color-success, #22c55e);
+}
+
+.coach-action__result--error {
+  color: var(--color-error, #ef4444);
+}
+
+.coach-action__result--denied {
+  color: var(--text-tertiary);
+}
+
+.coach-action__result-icon {
+  flex-shrink: 0;
+}
+
+.coach-action__result-text {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.coach-action__undo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  background: var(--surface-secondary);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  flex-shrink: 0;
+}
+
+.coach-action__undo-btn:hover:not(:disabled) {
+  background: var(--surface-interactive-hover);
+  color: var(--text-primary);
+}
+
+.coach-action__undo-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ===== Dark Mode ===== */
+[data-theme="dark"] .coach-action-card,
+:root:not([data-theme="light"]) .coach-action-card {
+  background: var(--surface-container);
+  border-color: var(--m3-outline-variant, var(--border-default));
+}
+
+[data-theme="dark"] .coach-action-card--approved,
+:root:not([data-theme="light"]) .coach-action-card--approved {
+  border-color: color-mix(
+    in srgb,
+    var(--color-success, #22c55e) 50%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--color-success, #22c55e) 8%,
+    var(--surface-container)
+  );
+}
+
+[data-theme="dark"] .coach-action-card--error,
+:root:not([data-theme="light"]) .coach-action-card--error {
+  border-color: color-mix(
+    in srgb,
+    var(--color-error, #ef4444) 50%,
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--color-error, #ef4444) 8%,
+    var(--surface-container)
+  );
+}
+
+[data-theme="dark"] .coach-action__icon,
+:root:not([data-theme="light"]) .coach-action__icon {
+  background: color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+  color: var(--color-primary-300);
+}
+
+[data-theme="dark"] .coach-action__tag,
+:root:not([data-theme="light"]) .coach-action__tag {
+  background: color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+  color: var(--color-primary-300);
+}
+
+[data-theme="dark"] .coach-action__foods,
+[data-theme="dark"] .coach-action__settings,
+:root:not([data-theme="light"]) .coach-action__foods,
+:root:not([data-theme="light"]) .coach-action__settings {
+  background: color-mix(
+    in srgb,
+    var(--surface-base) 50%,
+    var(--surface-container)
+  );
+}
+
+[data-theme="dark"] .coach-action__btn--approve,
+:root:not([data-theme="light"]) .coach-action__btn--approve {
+  background: var(--color-primary-500);
+  color: #fff;
+}
+
+[data-theme="dark"] .coach-action__btn--deny,
+:root:not([data-theme="light"]) .coach-action__btn--deny {
+  border-color: var(--m3-outline-variant, var(--border-default));
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .coach-action__undo-btn,
+:root:not([data-theme="light"]) .coach-action__undo-btn {
+  background: var(--surface-container);
+  border-color: var(--m3-outline-variant, var(--border-default));
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .coach-action-card {
+    padding: var(--space-2);
+  }
+
+  .coach-action__desc {
+    font-size: 0.8rem;
+  }
+
+  .coach-action__btn {
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.75rem;
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .coach-action__spinner {
+    animation: none;
+  }
+
+  .coach-action__btn:active {
+    transform: none;
+  }
+}

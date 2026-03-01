@@ -18,8 +18,15 @@ import {
   HelpCircle,
   AlertCircle,
 } from "lucide-react";
-import { M3Card, M3CardContent, M3Button, M3TextField, Main } from "../components/common";
+import {
+  M3Card,
+  M3CardContent,
+  M3Button,
+  M3TextField,
+  Main,
+} from "../components/common";
 import { buildUserContext, sendCoachMessage } from "../services/aiCoachService";
+import CoachActionCards from "../components/CoachActionCard";
 import "./CoachPage.css";
 
 const DEFAULT_PROMPTS = [
@@ -100,7 +107,10 @@ function loadStoredMessages() {
 
 function saveMessages(messages) {
   try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-MAX_STORED_MESSAGES)));
+    sessionStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(messages.slice(-MAX_STORED_MESSAGES)),
+    );
   } catch {
     // ignore
   }
@@ -136,8 +146,15 @@ function CoachPage() {
 
     try {
       const context = buildUserContext();
-      const reply = await sendCoachMessage(trimmed, context, messages);
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      const { reply, actions } = await sendCoachMessage(
+        trimmed,
+        context,
+        messages,
+      );
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: reply, actions: actions || null },
+      ]);
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -177,11 +194,24 @@ function CoachPage() {
               {!hasMessages && !loading && (
                 <div className="coach-welcome">
                   <div className="coach-welcome__icon-container">
-                    <span className="coach-welcome__decoration coach-welcome__decoration--1" aria-hidden />
-                    <span className="coach-welcome__decoration coach-welcome__decoration--2" aria-hidden />
-                    <span className="coach-welcome__decoration coach-welcome__decoration--3" aria-hidden />
+                    <span
+                      className="coach-welcome__decoration coach-welcome__decoration--1"
+                      aria-hidden
+                    />
+                    <span
+                      className="coach-welcome__decoration coach-welcome__decoration--2"
+                      aria-hidden
+                    />
+                    <span
+                      className="coach-welcome__decoration coach-welcome__decoration--3"
+                      aria-hidden
+                    />
                     <div className="coach-welcome__icon-bg">
-                      <Sparkles size={36} className="coach-welcome__icon" aria-hidden />
+                      <Sparkles
+                        size={36}
+                        className="coach-welcome__icon"
+                        aria-hidden
+                      />
                     </div>
                   </div>
                   <h2 className="coach-welcome__title">Your nutrition coach</h2>
@@ -202,7 +232,11 @@ function CoachPage() {
                           className="coach-suggestion"
                           onClick={() => handleSuggestedClick(prompt)}
                         >
-                          <Icon size={16} className="coach-suggestion__icon" aria-hidden />
+                          <Icon
+                            size={16}
+                            className="coach-suggestion__icon"
+                            aria-hidden
+                          />
                           {prompt}
                         </button>
                       );
@@ -226,7 +260,14 @@ function CoachPage() {
                           <MessageCircle size={16} strokeWidth={2} />
                         </div>
                       )}
-                      <div className="coach-message__content">{msg.content}</div>
+                      <div className="coach-message__body">
+                        <div className="coach-message__content">
+                          {msg.content}
+                        </div>
+                        {msg.role === "assistant" && msg.actions && (
+                          <CoachActionCards actions={msg.actions} />
+                        )}
+                      </div>
                     </motion.div>
                   ))}
                   {loading && (
@@ -251,41 +292,45 @@ function CoachPage() {
 
             {error && (
               <div className="coach-error" role="alert">
-                <AlertCircle size={18} className="coach-error__icon" aria-hidden />
+                <AlertCircle
+                  size={18}
+                  className="coach-error__icon"
+                  aria-hidden
+                />
                 <span>{error}</span>
               </div>
             )}
 
             <div className="coach-input-bar">
-            <form onSubmit={handleSubmit} className="coach-input-wrap">
-              <M3TextField
-                variant="outlined"
-                placeholder="Ask your nutrition coach..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                disabled={loading}
-                fullWidth
-                className="coach-input"
-                multiline
-                rows={1}
-                maxLength={2000}
-              />
-              <M3Button
-                type="submit"
-                variant="filled"
-                color="primary"
-                iconButton
-                disabled={!input.trim() || loading}
-                aria-label="Send message"
-                className="coach-send-btn"
-              >
-                {loading ? (
-                  <Loader2 size={20} className="coach-send-spinner" />
-                ) : (
-                  <Send size={20} />
-                )}
-              </M3Button>
-            </form>
+              <form onSubmit={handleSubmit} className="coach-input-wrap">
+                <M3TextField
+                  variant="outlined"
+                  placeholder="Ask your nutrition coach..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={loading}
+                  fullWidth
+                  className="coach-input"
+                  multiline
+                  rows={1}
+                  maxLength={2000}
+                />
+                <M3Button
+                  type="submit"
+                  variant="filled"
+                  color="primary"
+                  iconButton
+                  disabled={!input.trim() || loading}
+                  aria-label="Send message"
+                  className="coach-send-btn"
+                >
+                  {loading ? (
+                    <Loader2 size={20} className="coach-send-spinner" />
+                  ) : (
+                    <Send size={20} />
+                  )}
+                </M3Button>
+              </form>
             </div>
           </M3CardContent>
         </M3Card>

@@ -728,6 +728,7 @@ const DEFAULT_PREFERENCES = {
   reminderBreakfast: "08:00",
   reminderLunch: "12:30",
   reminderDinner: "18:30",
+  confirmAIFoods: true, // Show confirmation sheet for AI-detected foods
 };
 
 export const loadPreferences = () => {

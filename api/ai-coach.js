@@ -44,7 +44,41 @@ RESPONSE STYLE:
 - Be concise by default (2-4 paragraphs) but expand when the topic deserves depth.
 - Prioritize actionable, specific advice over generic tips. Use their actual foods, goals, and progress.
 - If they haven't logged much yet, encourage them and give practical first steps.
-- When the question is simple, be brief. When it's complex or they're seeking understanding, explain more fully.`;
+- When the question is simple, be brief. When it's complex or they're seeking understanding, explain more fully.
+
+ACTIONS — You can propose actions that the user can approve to modify their NutriNote+ data directly.
+When the user asks you to log food, create a recipe, or update their settings/goals, include an "actions" JSON block at the END of your response (after your conversational text). The block MUST follow this exact format — a line containing only \`\`\`actions followed by valid JSON, then a line containing only \`\`\`:
+
+\`\`\`actions
+[...array of action objects...]
+\`\`\`
+
+IMPORTANT: Only include the actions block when the user explicitly asks you to log, create, update, or change something. Never include it for general advice or informational questions.
+
+ACTION TYPES:
+
+1. **log_food** — Log one or more foods to today's diary.
+   Each item: { "action": "log_food", "foods": [ { "name": "Grilled Chicken Breast", "calories": 165, "protein": 31, "carbs": 0, "fat": 3.6, "fiber": 0, "sodium": 74, "sugar": 0, "mealType": "lunch" } ] }
+   - mealType must be one of: "breakfast", "lunch", "dinner", "snack"
+   - Include as many macro/micro fields as you can estimate accurately.
+
+2. **create_recipe** — Create and save a new recipe.
+   { "action": "create_recipe", "recipe": { "name": "Protein Power Bowl", "category": "lunch", "servings": 2, "ingredients": [ { "name": "Quinoa", "quantity": 1, "unit": "cup", "calories": 222, "protein": 8, "carbs": 39, "fat": 3.5 }, { "name": "Grilled Chicken", "quantity": 6, "unit": "oz", "calories": 280, "protein": 52, "carbs": 0, "fat": 6 } ], "notes": "High protein post-workout meal" } }
+   - category must be one of: "breakfast", "lunch", "dinner", "snack"
+
+3. **update_settings** — Update user profile, goals, or targets. Only include the fields being changed.
+   { "action": "update_settings", "settings": { "weight": 175, "dailyTarget": 2200, "goal": "muscle_gain", "activityLevel": "active", "macroGoals": { "protein": 180, "carbs": 250, "fat": 70 } } }
+   - goal must be one of: "weight_loss", "maintain", "muscle_gain"
+   - activityLevel must be one of: "sedentary", "lightly_active", "active", "very_active", "extra_active"
+   - For macroGoals, provide gram values (not percentages).
+
+Rules for actions:
+- Always describe what you're about to do in your conversational text BEFORE the actions block.
+- Only include actions the user asked for. Don't proactively add actions unless the user requests them.
+- Be accurate with nutrition values — use your knowledge of USDA data.
+- For food logging, estimate realistic portion sizes if the user doesn't specify.
+- Each actions block is an array that can contain multiple action objects.
+- The user will see each action and can approve or deny it before it executes.`;
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -53,7 +87,9 @@ export default async function handler(req, res) {
 
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" });
+    return res
+      .status(405)
+      .json({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" });
   }
 
   const startTime = Date.now();
@@ -72,27 +108,42 @@ export default async function handler(req, res) {
   const openrouterKey = process.env.OPENROUTER_API_KEY;
   if (!openrouterKey) {
     console.error("[ERROR] Missing OPENROUTER_API_KEY");
-    return res.status(500).json({ error: "Server configuration error", code: "SERVER_CONFIG_ERROR" });
+    return res
+      .status(500)
+      .json({
+        error: "Server configuration error",
+        code: "SERVER_CONFIG_ERROR",
+      });
   }
 
   try {
     const { message, userContext, conversationHistory } = req.body;
 
     if (!message || typeof message !== "string") {
-      return res.status(400).json({ error: "Message is required", code: "MISSING_INPUT" });
+      return res
+        .status(400)
+        .json({ error: "Message is required", code: "MISSING_INPUT" });
     }
 
     const trimmedMessage = message.trim();
     if (trimmedMessage.length === 0) {
-      return res.status(400).json({ error: "Message cannot be empty", code: "EMPTY_INPUT" });
+      return res
+        .status(400)
+        .json({ error: "Message cannot be empty", code: "EMPTY_INPUT" });
     }
     if (trimmedMessage.length > 2000) {
-      return res.status(400).json({ error: "Message too long (max 2000 characters)", code: "INPUT_TOO_LONG" });
+      return res
+        .status(400)
+        .json({
+          error: "Message too long (max 2000 characters)",
+          code: "INPUT_TOO_LONG",
+        });
     }
 
-    const contextStr = userContext && typeof userContext === "object"
-      ? JSON.stringify(userContext, null, 0)
-      : "{}";
+    const contextStr =
+      userContext && typeof userContext === "object"
+        ? JSON.stringify(userContext, null, 0)
+        : "{}";
     const systemContent = SYSTEM_PROMPT + "\n\nUser context:\n" + contextStr;
 
     const MAX_HISTORY_MESSAGES = 10;
@@ -100,13 +151,22 @@ export default async function handler(req, res) {
     const historyArr = Array.isArray(conversationHistory)
       ? conversationHistory.slice(-MAX_HISTORY_MESSAGES)
       : [];
-    const truncatedHistory = historyArr.map((m) => {
-      if (m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string") {
-        const content = m.content.length > MAX_MSG_CHARS ? m.content.slice(0, MAX_MSG_CHARS) + "…" : m.content;
-        return { role: m.role, content };
-      }
-      return null;
-    }).filter(Boolean);
+    const truncatedHistory = historyArr
+      .map((m) => {
+        if (
+          m &&
+          (m.role === "user" || m.role === "assistant") &&
+          typeof m.content === "string"
+        ) {
+          const content =
+            m.content.length > MAX_MSG_CHARS
+              ? m.content.slice(0, MAX_MSG_CHARS) + "…"
+              : m.content;
+          return { role: m.role, content };
+        }
+        return null;
+      })
+      .filter(Boolean);
 
     const chatMessages = [
       { role: "system", content: systemContent },
@@ -121,53 +181,101 @@ export default async function handler(req, res) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 30000);
 
-    const response = await fetch("https://ai.hackclub.com/proxy/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + openrouterKey,
-        "Content-Type": "application/json",
-        "HTTP-Referer": refererUrl,
-        "X-Title": "NutriNote+",
+    const response = await fetch(
+      "https://ai.hackclub.com/proxy/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + openrouterKey,
+          "Content-Type": "application/json",
+          "HTTP-Referer": refererUrl,
+          "X-Title": "NutriNote+",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: chatMessages,
+          temperature: 0.75,
+          max_tokens: 1536,
+        }),
+        signal: controller.signal,
       },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: chatMessages,
-        temperature: 0.75,
-        max_tokens: 1536,
-      }),
-      signal: controller.signal,
-    });
+    );
 
     clearTimeout(timeout);
 
     if (!response.ok) {
       const status = response.status;
       if (status === 429) {
-        return res.status(429).json({ error: "AI service rate limited. Please wait.", code: "API_RATE_LIMITED" });
+        return res
+          .status(429)
+          .json({
+            error: "AI service rate limited. Please wait.",
+            code: "API_RATE_LIMITED",
+          });
       }
       if (status === 401) {
-        return res.status(401).json({ error: "Authentication failed", code: "AUTH_ERROR" });
+        return res
+          .status(401)
+          .json({ error: "Authentication failed", code: "AUTH_ERROR" });
       }
-      return res.status(502).json({ error: "AI service temporarily unavailable", code: "API_ERROR" });
+      return res
+        .status(502)
+        .json({
+          error: "AI service temporarily unavailable",
+          code: "API_ERROR",
+        });
     }
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content?.trim();
+    const rawReply = data.choices?.[0]?.message?.content?.trim();
 
-    if (!reply) {
-      return res.status(502).json({ error: "AI returned empty response", code: "EMPTY_RESPONSE" });
+    if (!rawReply) {
+      return res
+        .status(502)
+        .json({ error: "AI returned empty response", code: "EMPTY_RESPONSE" });
+    }
+
+    // Parse actions block from the reply if present
+    let reply = rawReply;
+    let actions = null;
+    const actionsMatch = rawReply.match(/```actions\s*\n([\s\S]*?)```/);
+    if (actionsMatch) {
+      try {
+        actions = JSON.parse(actionsMatch[1].trim());
+        // Validate each action has a valid type
+        const validTypes = ["log_food", "create_recipe", "update_settings"];
+        actions = actions.filter((a) => a && validTypes.includes(a.action));
+        if (actions.length === 0) actions = null;
+      } catch {
+        // If JSON parsing fails, ignore the actions block
+        actions = null;
+      }
+      // Remove the actions block from the conversational text
+      reply = rawReply.replace(/```actions\s*\n[\s\S]*?```/, "").trim();
     }
 
     const duration = Date.now() - startTime;
-    console.log("[INFO] Coach response in " + duration + "ms");
+    console.log(
+      "[INFO] Coach response in " +
+        duration +
+        "ms" +
+        (actions ? " (with " + actions.length + " actions)" : ""),
+    );
 
-    return res.status(200).json({ reply, responseTime: duration });
+    return res.status(200).json({ reply, actions, responseTime: duration });
   } catch (error) {
     const duration = Date.now() - startTime;
     if (error.name === "AbortError") {
-      return res.status(504).json({ error: "Request timed out", code: "TIMEOUT" });
+      return res
+        .status(504)
+        .json({ error: "Request timed out", code: "TIMEOUT" });
     }
     console.error("[ERROR] " + error.message + " after " + duration + "ms");
-    return res.status(500).json({ error: "An unexpected error occurred", code: "UNEXPECTED_ERROR" });
+    return res
+      .status(500)
+      .json({
+        error: "An unexpected error occurred",
+        code: "UNEXPECTED_ERROR",
+      });
   }
 }

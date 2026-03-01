@@ -73,6 +73,8 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-padding-inline: var(--space-5);
+  scroll-behavior: smooth;
 }
 
 .settings-tabs::-webkit-scrollbar {

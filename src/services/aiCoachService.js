@@ -75,11 +75,15 @@ export function buildUserContext() {
   }
   const weeklySummary = last7Days.map((date) => {
     const day = weeklyHistory[date];
-    return day ? { date, eaten: day.eaten, target: day.target } : { date, eaten: 0, target: 0 };
+    return day
+      ? { date, eaten: day.eaten, target: day.target }
+      : { date, eaten: 0, target: 0 };
   });
 
   const weightTrend = weightLog?.length
-    ? weightLog.slice(-5).map((e) => ({ date: e.date, weight: e.weight, unit: e.unit }))
+    ? weightLog
+        .slice(-5)
+        .map((e) => ({ date: e.date, weight: e.weight, unit: e.unit }))
     : null;
 
   const favorites = loadFavoriteFoods();
@@ -102,9 +106,10 @@ export function buildUserContext() {
           age: profile.age || null,
           gender: profile.gender || null,
           weight: profile.weight || null,
-          height: profile.heightFeet && profile.heightInches
-            ? `${profile.heightFeet}'${profile.heightInches}"`
-            : null,
+          height:
+            profile.heightFeet && profile.heightInches
+              ? `${profile.heightFeet}'${profile.heightInches}"`
+              : null,
           activityLevel: profile.activityLevel || null,
           goal: profile.goal || null,
           customAdjustment: profile.customAdjustment || null,
@@ -131,7 +136,11 @@ export function buildUserContext() {
     longestStreak: streakData?.longestStreak ?? 0,
     waterOz: typeof waterOz === "number" ? waterOz : 0,
     latestWeight: latestWeight
-      ? { date: latestWeight.date, weight: latestWeight.weight, unit: latestWeight.unit }
+      ? {
+          date: latestWeight.date,
+          weight: latestWeight.weight,
+          unit: latestWeight.unit,
+        }
       : null,
     weeklySummary,
     weightTrend,
@@ -148,17 +157,22 @@ const ERROR_MESSAGES = {
   EMPTY_RESPONSE: "The coach couldn't generate a response. Please try again.",
   SERVER_CONFIG_ERROR: "Server configuration error. Please contact support.",
   NETWORK_ERROR: "Network error. Check your connection and try again.",
-  INVALID_RESPONSE: "The coach service couldn't respond properly. Please try again. If this persists, restart the dev server (npm run dev).",
+  INVALID_RESPONSE:
+    "The coach service couldn't respond properly. Please try again. If this persists, restart the dev server (npm run dev).",
 };
 
 /**
- * Send a message to the AI coach and get a reply.
+ * Send a message to the AI coach and get a reply (with optional actions).
  * @param {string} message - User message
  * @param {Object} [userContext] - Optional pre-built context (built automatically if omitted)
  * @param {Array<{role: string, content: string}>} [conversationHistory] - Prior messages for context
- * @returns {Promise<string>} Coach reply
+ * @returns {Promise<{reply: string, actions: Array|null}>} Coach reply and optional actions
  */
-export async function sendCoachMessage(message, userContext, conversationHistory) {
+export async function sendCoachMessage(
+  message,
+  userContext,
+  conversationHistory,
+) {
   const trimmed = (message || "").trim();
   if (!trimmed) {
     throw new Error("Please enter a message.");
@@ -205,7 +219,7 @@ export async function sendCoachMessage(message, userContext, conversationHistory
       throw new Error(ERROR_MESSAGES.EMPTY_RESPONSE);
     }
 
-    return reply;
+    return { reply, actions: data.actions || null };
   } catch (error) {
     clearTimeout(timeout);
 

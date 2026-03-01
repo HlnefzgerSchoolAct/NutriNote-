@@ -7,6 +7,8 @@ import {
   resizeImage,
 } from "../services/photoFoodService";
 import { CompactMicronutrients } from "./common";
+import ConfirmAIFoodSheet from "./ConfirmAIFoodSheet";
+import { loadPreferences } from "../utils/localStorage";
 import devLog from "../utils/devLog";
 import "./FoodPhotoCapture.css";
 
@@ -18,6 +20,8 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
   const [results, setResults] = useState(null);
   const [cameraError, setCameraError] = useState("");
   const [addedFoods, setAddedFoods] = useState(new Set());
+  const [showConfirmSheet, setShowConfirmSheet] = useState(false);
+  const [pendingFoodItem, setPendingFoodItem] = useState(null);
 
   const videoRef = useRef(null);
   const streamRef = useRef(null);
@@ -149,6 +153,23 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
 
   const handleAddFoodItem = useCallback(
     (foodItem) => {
+      const preferences = loadPreferences();
+      const shouldConfirm = preferences.confirmAIFoods ?? true;
+
+      if (shouldConfirm) {
+        // Show confirmation sheet
+        setPendingFoodItem(foodItem);
+        setShowConfirmSheet(true);
+      } else {
+        // Add directly without confirmation
+        addFoodItemDirectly(foodItem);
+      }
+    },
+    [],
+  );
+
+  const addFoodItemDirectly = useCallback(
+    (foodItem) => {
       const foodEntry = {
         id: Date.now() + Math.random(),
         name: foodItem.serving + " " + foodItem.name,
@@ -188,14 +209,39 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
     [onAddFood],
   );
 
+  const handleConfirmFood = useCallback(
+    (foodEntry) => {
+      onAddFood(foodEntry);
+      if (pendingFoodItem) {
+        setAddedFoods((prev) => new Set([...prev, pendingFoodItem.name]));
+      }
+      setShowConfirmSheet(false);
+      setPendingFoodItem(null);
+    },
+    [onAddFood, pendingFoodItem],
+  );
+
   const handleAddAll = useCallback(() => {
     if (!results?.foods) return;
-    results.foods.forEach((food) => {
-      if (!addedFoods.has(food.name)) {
-        handleAddFoodItem(food);
+    
+    const preferences = loadPreferences();
+    const shouldConfirm = preferences.confirmAIFoods ?? true;
+    
+    if (shouldConfirm) {
+      // Add foods one by one with confirmation (only add first unconfirmed food)
+      const nextFood = results.foods.find(food => !addedFoods.has(food.name));
+      if (nextFood) {
+        handleAddFoodItem(nextFood);
       }
-    });
-  }, [results, addedFoods, handleAddFoodItem]);
+    } else {
+      // Add all directly without confirmation
+      results.foods.forEach((food) => {
+        if (!addedFoods.has(food.name)) {
+          addFoodItemDirectly(food);
+        }
+      });
+    }
+  }, [results, addedFoods, handleAddFoodItem, addFoodItemDirectly]);
 
   const handleClose = useCallback(() => {
     stopCamera();
@@ -406,6 +452,23 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
             </button>
           </div>
         </div>
+      )}
+      {pendingFoodItem && (
+        <ConfirmAIFoodSheet
+          open={showConfirmSheet}
+          onClose={() => {
+            setShowConfirmSheet(false);
+            setPendingFoodItem(null);
+          }}
+          onConfirm={handleConfirmFood}
+          nutritionData={{
+            ...pendingFoodItem.nutrition,
+            source: pendingFoodItem.source,
+          }}
+          initialDescription={pendingFoodItem.name}
+          initialQuantity={1}
+          initialUnit={pendingFoodItem.serving?.split(' ')[0] || 'serving'}
+        />
       )}
     </div>
   );
