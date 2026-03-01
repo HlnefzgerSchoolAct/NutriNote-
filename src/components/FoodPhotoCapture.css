@@ -410,6 +410,19 @@
   color: #1e40af;
 }
 
+.badge-corrected {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-warning {
+  background: #fee2e2;
+  color: #991b1b;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
 [data-theme="dark"] .badge-usda {
   background: #064e3b;
   color: #6ee7b7;
@@ -418,6 +431,94 @@
 [data-theme="dark"] .badge-ai {
   background: #1e3a5f;
   color: #93c5fd;
+}
+
+[data-theme="dark"] .badge-corrected {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .badge-warning {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* Multi-model confidence badges */
+.badge-confidence-high {
+  background: #d1fae5;
+  color: #065f46;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.badge-confidence-medium {
+  background: #fef3c7;
+  color: #92400e;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.badge-confidence-low {
+  background: #fee2e2;
+  color: #991b1b;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+[data-theme="dark"] .badge-confidence-high {
+  background: #064e3b;
+  color: #6ee7b7;
+}
+
+[data-theme="dark"] .badge-confidence-medium {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+[data-theme="dark"] .badge-confidence-low {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* Multi-model info banner */
+.photo-multimodel-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: #d1fae5;
+  color: #065f46;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+}
+
+[data-theme="dark"] .photo-multimodel-banner {
+  background: #064e3b;
+  color: #6ee7b7;
+}
+
+/* Meal-level outlier banner */
+.photo-meal-outlier-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+}
+
+[data-theme="dark"] .photo-meal-outlier-banner {
+  background: #78350f;
+  color: #fcd34d;
 }
 
 /* Macros Grid */
@@ -542,4 +643,184 @@
   .photo-food-macros {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* ========================================
+   Enhanced: Multi-food, Candidates, Ingredients, Realism
+======================================== */
+
+/* Realism error variant */
+.photo-error--realism {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .photo-error--realism {
+  background: #450a0a;
+  border-color: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* Food card warning state */
+.photo-food-card--warning {
+  border-left: 3px solid #f59e0b;
+}
+
+/* Badges row */
+.photo-food-badges {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Decomposed count in summary */
+.photo-decomposed-count {
+  color: var(--text-tertiary);
+  font-size: var(--text-xs);
+}
+
+/* USDA Candidates Dropdown */
+.photo-candidates {
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.photo-candidates-label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-weight: var(--font-semibold);
+}
+
+.photo-candidates-select {
+  flex: 1;
+  font-size: var(--text-xs);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font-family: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.photo-candidates-select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+/* Ingredient Decomposition */
+.photo-ingredients {
+  margin-bottom: var(--space-sm);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-xs);
+}
+
+.photo-ingredients-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  width: 100%;
+  padding: var(--space-xs) 0;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-family: inherit;
+  cursor: pointer;
+  transition: color var(--transition-base);
+}
+
+.photo-ingredients-toggle:hover {
+  color: var(--text-primary);
+}
+
+.photo-ingredients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-xs) 0;
+}
+
+.photo-ingredient-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 3px var(--space-xs);
+  background: var(--surface-base);
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+}
+
+.photo-ingredient-name {
+  flex: 1;
+  color: var(--text-primary);
+  font-weight: var(--font-medium);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.photo-ingredient-serving {
+  color: var(--text-tertiary);
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.photo-ingredient-cal {
+  color: var(--text-secondary);
+  font-weight: var(--font-semibold);
+  flex-shrink: 0;
+}
+
+.photo-ingredient-source {
+  font-size: 9px;
+  padding: 1px 4px;
+  border-radius: 999px;
+  font-weight: var(--font-bold);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.ing-usda {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.ing-ai {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+[data-theme="dark"] .ing-usda {
+  background: #064e3b;
+  color: #6ee7b7;
+}
+
+[data-theme="dark"] .ing-ai {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+.photo-ingredient-total {
+  padding: var(--space-xs);
+  margin-top: 2px;
+  background: var(--surface-tertiary);
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  text-align: right;
 }

@@ -1,5 +1,19 @@
 import React, { useState, useRef, useCallback } from "react";
-import { Camera, ImagePlus, X, RotateCcw, Check, Loader2 } from "lucide-react";
+import {
+  Camera,
+  ImagePlus,
+  X,
+  RotateCcw,
+  Check,
+  Loader2,
+  ChevronDown,
+  ChevronUp,
+  AlertTriangle,
+  Utensils,
+  Shield,
+  ShieldCheck,
+  ShieldAlert,
+} from "lucide-react";
 import {
   identifyFoodFromPhoto,
   captureVideoFrame,
@@ -17,11 +31,14 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
   const [capturedImage, setCapturedImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [errorCode, setErrorCode] = useState(null);
   const [results, setResults] = useState(null);
   const [cameraError, setCameraError] = useState("");
   const [addedFoods, setAddedFoods] = useState(new Set());
   const [showConfirmSheet, setShowConfirmSheet] = useState(false);
   const [pendingFoodItem, setPendingFoodItem] = useState(null);
+  const [expandedIngredients, setExpandedIngredients] = useState(new Set());
+  const [selectedCandidates, setSelectedCandidates] = useState({});
 
   const videoRef = useRef(null);
   const streamRef = useRef(null);
@@ -63,7 +80,9 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
       devLog.error("Camera error:", err);
 
       if (err.name === "NotAllowedError") {
-        setCameraError("Camera access denied. Please allow camera permissions and try again.");
+        setCameraError(
+          "Camera access denied. Please allow camera permissions and try again.",
+        );
       } else if (err.name === "NotFoundError") {
         setCameraError("No camera found on this device.");
       } else if (err.name === "NotReadableError") {
@@ -121,7 +140,10 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
     setCapturedImage(null);
     setResults(null);
     setError("");
+    setErrorCode(null);
     setAddedFoods(new Set());
+    setExpandedIngredients(new Set());
+    setSelectedCandidates({});
     setMode("select");
   }, []);
 
@@ -130,13 +152,16 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
 
     setLoading(true);
     setError("");
+    setErrorCode(null);
     setMode("loading");
 
     try {
       const data = await identifyFoodFromPhoto(capturedImage);
 
       if (!data.foods || data.foods.length === 0) {
-        setError(data.message || "No food detected in the image. Try a clearer photo.");
+        setError(
+          data.message || "No food detected in the image. Try a clearer photo.",
+        );
         setMode("preview");
       } else {
         setResults(data);
@@ -145,7 +170,14 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
     } catch (err) {
       devLog.error("Photo identification error:", err);
       setError(err.message || "Failed to identify food. Please try again.");
-      setMode("preview");
+      setErrorCode(err.code || null);
+
+      // For realism failures, show terminal error — user must retake
+      if (err.code === "REALISM_VALIDATION_FAILED") {
+        setMode("preview");
+      } else {
+        setMode("preview");
+      }
     } finally {
       setLoading(false);
     }
@@ -156,16 +188,32 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
       const preferences = loadPreferences();
       const shouldConfirm = preferences.confirmAIFoods ?? true;
 
+      // If user selected a different USDA candidate, use that candidate's nutrition
+      const candidateKey = foodItem.id || foodItem.name;
+      const selectedIdx = selectedCandidates[candidateKey];
+      let effectiveItem = foodItem;
+      if (
+        selectedIdx !== undefined &&
+        foodItem.candidates &&
+        foodItem.candidates[selectedIdx]
+      ) {
+        const candidate = foodItem.candidates[selectedIdx];
+        effectiveItem = {
+          ...foodItem,
+          nutrition: candidate.nutrition,
+          source: "usda",
+          usdaFoodName: candidate.description,
+        };
+      }
+
       if (shouldConfirm) {
-        // Show confirmation sheet
-        setPendingFoodItem(foodItem);
+        setPendingFoodItem(effectiveItem);
         setShowConfirmSheet(true);
       } else {
-        // Add directly without confirmation
-        addFoodItemDirectly(foodItem);
+        addFoodItemDirectly(effectiveItem);
       }
     },
-    [],
+    [selectedCandidates],
   );
 
   const addFoodItemDirectly = useCallback(
@@ -201,10 +249,11 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
         aiEstimated: true,
         photoScanned: true,
         nutritionSource: foodItem.source,
+        ...(foodItem.ingredients && { ingredients: foodItem.ingredients }),
       };
 
       onAddFood(foodEntry);
-      setAddedFoods((prev) => new Set([...prev, foodItem.name]));
+      setAddedFoods((prev) => new Set([...prev, foodItem.id || foodItem.name]));
     },
     [onAddFood],
   );
@@ -213,7 +262,10 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
     (foodEntry) => {
       onAddFood(foodEntry);
       if (pendingFoodItem) {
-        setAddedFoods((prev) => new Set([...prev, pendingFoodItem.name]));
+        setAddedFoods(
+          (prev) =>
+            new Set([...prev, pendingFoodItem.id || pendingFoodItem.name]),
+        );
       }
       setShowConfirmSheet(false);
       setPendingFoodItem(null);
@@ -223,25 +275,44 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
 
   const handleAddAll = useCallback(() => {
     if (!results?.foods) return;
-    
+
     const preferences = loadPreferences();
     const shouldConfirm = preferences.confirmAIFoods ?? true;
-    
+
     if (shouldConfirm) {
-      // Add foods one by one with confirmation (only add first unconfirmed food)
-      const nextFood = results.foods.find(food => !addedFoods.has(food.name));
+      const nextFood = results.foods.find(
+        (food) => !addedFoods.has(food.id || food.name),
+      );
       if (nextFood) {
         handleAddFoodItem(nextFood);
       }
     } else {
-      // Add all directly without confirmation
       results.foods.forEach((food) => {
-        if (!addedFoods.has(food.name)) {
+        if (!addedFoods.has(food.id || food.name)) {
           addFoodItemDirectly(food);
         }
       });
     }
   }, [results, addedFoods, handleAddFoodItem, addFoodItemDirectly]);
+
+  const toggleIngredients = useCallback((foodId) => {
+    setExpandedIngredients((prev) => {
+      const next = new Set(prev);
+      if (next.has(foodId)) {
+        next.delete(foodId);
+      } else {
+        next.add(foodId);
+      }
+      return next;
+    });
+  }, []);
+
+  const selectCandidate = useCallback((foodId, candidateIndex) => {
+    setSelectedCandidates((prev) => ({
+      ...prev,
+      [foodId]: candidateIndex,
+    }));
+  }, []);
 
   const handleClose = useCallback(() => {
     stopCamera();
@@ -267,10 +338,14 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
       {mode === "select" && (
         <div className="photo-select-mode">
           <p className="photo-hint">
-            Take a photo or upload an image of your food to identify it and get nutrition info.
+            Take a photo or upload an image of your food to identify it and get
+            nutrition info.
           </p>
           <div className="photo-input-buttons">
-            <button className="photo-input-btn camera-btn" onClick={startCamera}>
+            <button
+              className="photo-input-btn camera-btn"
+              onClick={startCamera}
+            >
               <Camera size={24} />
               <span>Take Photo</span>
             </button>
@@ -332,7 +407,11 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
       {(mode === "preview" || mode === "loading") && capturedImage && (
         <div className="photo-preview-mode">
           <div className="photo-preview-container">
-            <img src={capturedImage} alt="Food to identify" className="photo-preview-img" />
+            <img
+              src={capturedImage}
+              alt="Food to identify"
+              className="photo-preview-img"
+            />
             {mode === "loading" && (
               <div className="photo-loading-overlay">
                 <Loader2 size={32} className="photo-spinner" />
@@ -340,7 +419,19 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
               </div>
             )}
           </div>
-          {error && <div className="photo-error">{error}</div>}
+          {error && (
+            <div
+              className={`photo-error${errorCode === "REALISM_VALIDATION_FAILED" ? " photo-error--realism" : ""}`}
+            >
+              {errorCode === "REALISM_VALIDATION_FAILED" && (
+                <AlertTriangle
+                  size={16}
+                  style={{ marginRight: 6, flexShrink: 0 }}
+                />
+              )}
+              {error}
+            </div>
+          )}
           {mode === "preview" && (
             <div className="photo-preview-actions">
               <button className="photo-retake-btn" onClick={handleRetake}>
@@ -364,10 +455,22 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
       {mode === "results" && results && (
         <div className="photo-results-mode">
           <div className="photo-preview-small">
-            <img src={capturedImage} alt="Identified food" className="photo-thumb" />
+            <img
+              src={capturedImage}
+              alt="Identified food"
+              className="photo-thumb"
+            />
             <div className="photo-results-summary">
               <span className="photo-results-count">
-                {results.foods.length} food{results.foods.length !== 1 ? "s" : ""} identified
+                {results.foods.length} food
+                {results.foods.length !== 1 ? "s" : ""} identified
+                {results.foods.some((f) => f.ingredients) && (
+                  <span className="photo-decomposed-count">
+                    {" "}
+                    ({results.foods.filter((f) => f.ingredients).length}{" "}
+                    decomposed)
+                  </span>
+                )}
               </span>
               <span className="photo-results-time">
                 {(results.responseTime / 1000).toFixed(1)}s
@@ -375,51 +478,254 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
             </div>
           </div>
 
+          {/* Multi-model info banner */}
+          {results.multiModelInfo && (
+            <div className="photo-multimodel-banner">
+              <ShieldCheck size={14} />
+              <span>
+                Cross-verified with{" "}
+                {results.multiModelInfo.gemini?.success &&
+                results.multiModelInfo.claude?.success
+                  ? "2 AI models"
+                  : "1 AI model"}
+                {results.multiModelInfo.agreed != null && (
+                  <>
+                    {" "}
+                    — {results.multiModelInfo.agreed} food
+                    {results.multiModelInfo.agreed !== 1 ? "s" : ""} agreed
+                  </>
+                )}
+              </span>
+            </div>
+          )}
+
+          {/* Meal-level outlier warning */}
+          {results.mealOutlierDetection?.hasAggregateOutliers && (
+            <div className="photo-meal-outlier-banner">
+              <AlertTriangle size={14} />
+              <span>{results.mealOutlierDetection.summary}</span>
+            </div>
+          )}
+
           <div className="photo-food-list">
             {results.foods.map((food, index) => {
-              const isAdded = addedFoods.has(food.name);
+              const foodKey = food.id || food.name;
+              const isAdded = addedFoods.has(foodKey);
+              const isIngredientsExpanded = expandedIngredients.has(foodKey);
+              const selectedCandidateIdx = selectedCandidates[foodKey];
+              const displayNutrition =
+                selectedCandidateIdx !== undefined &&
+                food.candidates?.[selectedCandidateIdx]
+                  ? food.candidates[selectedCandidateIdx].nutrition
+                  : food.nutrition;
+              const validationFailed =
+                food.realismValidation && !food.realismValidation.valid;
+
               return (
-                <div key={index} className="photo-food-card">
+                <div
+                  key={foodKey}
+                  className={`photo-food-card${validationFailed ? " photo-food-card--warning" : ""}`}
+                >
                   <div className="photo-food-header">
                     <div className="photo-food-info">
-                      <span className="photo-food-name">{food.name}</span>
+                      <span className="photo-food-name">
+                        {food.name}
+                        {food.ingredients && (
+                          <Utensils
+                            size={12}
+                            style={{ marginLeft: 4, opacity: 0.6 }}
+                            title="Complex dish (decomposed)"
+                          />
+                        )}
+                      </span>
                       <span className="photo-food-serving">{food.serving}</span>
                     </div>
-                    <span
-                      className={
-                        "photo-source-badge " +
-                        (food.source === "usda" ? "badge-usda" : "badge-ai")
-                      }
-                    >
-                      {food.source === "usda" ? "USDA" : "AI Est."}
-                    </span>
+                    <div className="photo-food-badges">
+                      {/* Multi-model confidence badge */}
+                      {food.multiModelValidation && (
+                        <span
+                          className={`photo-source-badge ${
+                            food.multiModelValidation.confidence >= 0.8
+                              ? "badge-confidence-high"
+                              : food.multiModelValidation.confidence >= 0.6
+                                ? "badge-confidence-medium"
+                                : "badge-confidence-low"
+                          }`}
+                          title={
+                            "Detected by: " +
+                            food.multiModelValidation.agreedModels.join(", ") +
+                            " (" +
+                            Math.round(
+                              food.multiModelValidation.confidence * 100,
+                            ) +
+                            "%)"
+                          }
+                        >
+                          {food.multiModelValidation.agreedModels.length >=
+                          2 ? (
+                            <>
+                              <ShieldCheck size={10} /> Verified
+                            </>
+                          ) : (
+                            <>
+                              <Shield size={10} />{" "}
+                              {Math.round(
+                                food.multiModelValidation.confidence * 100,
+                              )}
+                              %
+                            </>
+                          )}
+                        </span>
+                      )}
+                      {/* Outlier correction badge */}
+                      {food.outlierDetection?.totalCorrected > 0 && (
+                        <span
+                          className="photo-source-badge badge-corrected"
+                          title={
+                            food.outlierDetection.totalCorrected +
+                            " nutrient(s) auto-corrected"
+                          }
+                        >
+                          <ShieldAlert size={10} /> Adjusted
+                        </span>
+                      )}
+                      {validationFailed && (
+                        <span
+                          className="photo-source-badge badge-warning"
+                          title={food.realismValidation.issues.join("; ")}
+                        >
+                          <AlertTriangle size={10} /> Approx
+                        </span>
+                      )}
+                      <span
+                        className={
+                          "photo-source-badge " +
+                          (food.source === "usda"
+                            ? "badge-usda"
+                            : food.source.includes("corrected")
+                              ? "badge-corrected"
+                              : "badge-ai")
+                        }
+                      >
+                        {food.source === "usda"
+                          ? "USDA"
+                          : food.source.includes("corrected")
+                            ? "Corrected"
+                            : "AI Est."}
+                      </span>
+                    </div>
                   </div>
+
+                  {/* USDA Candidates Selector */}
+                  {food.candidates && food.candidates.length > 1 && (
+                    <div className="photo-candidates">
+                      <label className="photo-candidates-label">
+                        USDA Match:
+                      </label>
+                      <select
+                        className="photo-candidates-select"
+                        value={selectedCandidateIdx ?? 0}
+                        onChange={(e) =>
+                          selectCandidate(foodKey, parseInt(e.target.value, 10))
+                        }
+                      >
+                        {food.candidates.map((candidate, cIdx) => (
+                          <option key={candidate.fdcId || cIdx} value={cIdx}>
+                            {candidate.description} (
+                            {candidate.nutrition.calories} cal)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   <div className="photo-food-macros">
                     <div className="photo-macro">
-                      <span className="photo-macro-value">{food.nutrition.calories}</span>
+                      <span className="photo-macro-value">
+                        {displayNutrition.calories}
+                      </span>
                       <span className="photo-macro-label">Cal</span>
                     </div>
                     <div className="photo-macro">
-                      <span className="photo-macro-value protein">{food.nutrition.protein}g</span>
+                      <span className="photo-macro-value protein">
+                        {displayNutrition.protein}g
+                      </span>
                       <span className="photo-macro-label">Protein</span>
                     </div>
                     <div className="photo-macro">
-                      <span className="photo-macro-value carbs">{food.nutrition.carbs}g</span>
+                      <span className="photo-macro-value carbs">
+                        {displayNutrition.carbs}g
+                      </span>
                       <span className="photo-macro-label">Carbs</span>
                     </div>
                     <div className="photo-macro">
-                      <span className="photo-macro-value fat">{food.nutrition.fat}g</span>
+                      <span className="photo-macro-value fat">
+                        {displayNutrition.fat}g
+                      </span>
                       <span className="photo-macro-label">Fat</span>
                     </div>
                   </div>
 
-                  {(food.nutrition.fiber || food.nutrition.sodium || food.nutrition.sugar) && (
+                  {(displayNutrition.fiber ||
+                    displayNutrition.sodium ||
+                    displayNutrition.sugar) && (
                     <div className="photo-food-micros">
                       <CompactMicronutrients
-                        fiber={food.nutrition.fiber}
-                        sodium={food.nutrition.sodium}
-                        sugar={food.nutrition.sugar}
+                        fiber={displayNutrition.fiber}
+                        sodium={displayNutrition.sodium}
+                        sugar={displayNutrition.sugar}
                       />
+                    </div>
+                  )}
+
+                  {/* Ingredient Decomposition */}
+                  {food.ingredients && food.ingredients.length > 0 && (
+                    <div className="photo-ingredients">
+                      <button
+                        className="photo-ingredients-toggle"
+                        onClick={() => toggleIngredients(foodKey)}
+                      >
+                        <Utensils size={12} />
+                        {food.ingredients.length} ingredient
+                        {food.ingredients.length !== 1 ? "s" : ""}
+                        {isIngredientsExpanded ? (
+                          <ChevronUp size={14} />
+                        ) : (
+                          <ChevronDown size={14} />
+                        )}
+                      </button>
+                      {isIngredientsExpanded && (
+                        <div className="photo-ingredients-list">
+                          {food.ingredients.map((ing, ingIdx) => (
+                            <div key={ingIdx} className="photo-ingredient-item">
+                              <span className="photo-ingredient-name">
+                                {ing.name}
+                              </span>
+                              <span className="photo-ingredient-serving">
+                                {ing.serving}
+                              </span>
+                              {ing.nutrition && (
+                                <span className="photo-ingredient-cal">
+                                  {ing.nutrition.calories} cal
+                                </span>
+                              )}
+                              <span
+                                className={`photo-ingredient-source ${ing.source === "usda" ? "ing-usda" : "ing-ai"}`}
+                              >
+                                {ing.source === "usda" ? "USDA" : "AI"}
+                              </span>
+                            </div>
+                          ))}
+                          {food.ingredientNutrition && (
+                            <div className="photo-ingredient-total">
+                              <span>
+                                Ingredient total:{" "}
+                                {food.ingredientNutrition.calories} cal
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -442,11 +748,12 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
           </div>
 
           <div className="photo-results-actions">
-            {results.foods.length > 1 && addedFoods.size < results.foods.length && (
-              <button className="photo-add-all-btn" onClick={handleAddAll}>
-                <Check size={16} /> Add All to Log
-              </button>
-            )}
+            {results.foods.length > 1 &&
+              addedFoods.size < results.foods.length && (
+                <button className="photo-add-all-btn" onClick={handleAddAll}>
+                  <Check size={16} /> Add All to Log
+                </button>
+              )}
             <button className="photo-retake-btn" onClick={handleRetake}>
               <RotateCcw size={16} /> Scan Another
             </button>
@@ -464,10 +771,13 @@ function FoodPhotoCapture({ onAddFood, onClose }) {
           nutritionData={{
             ...pendingFoodItem.nutrition,
             source: pendingFoodItem.source,
+            outlierDetection: pendingFoodItem.outlierDetection || null,
+            multiModelConfidence:
+              pendingFoodItem.multiModelValidation?.confidence ?? null,
           }}
           initialDescription={pendingFoodItem.name}
           initialQuantity={1}
-          initialUnit={pendingFoodItem.serving?.split(' ')[0] || 'serving'}
+          initialUnit={pendingFoodItem.serving?.split(" ")[0] || "serving"}
         />
       )}
     </div>

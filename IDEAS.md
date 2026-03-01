@@ -36,9 +36,9 @@ This document tracks ideas to be implemented and upcoming features for NutriNote
 
 ### Advanced Food Recognition
 
-- [ ] **Multi-Food Detection** - Detect all foods on a plate in a single image
-- [ ] **Individual USDA Lookup** - Query USDA database for each detected food separately
-- [ ] **Ingredient-Level Analysis** - Break down complex meals into individual ingredients
+- [x] **Multi-Food Detection** - Detect all foods on a plate in a single image ✅ Implemented - Vision AI detects up to 25 foods per photo
+- [x] **Individual USDA Lookup** - Query USDA database for each detected food separately ✅ Implemented - Top 3-5 USDA candidates per food with selectable dropdown
+- [x] **Ingredient-Level Analysis** - Break down complex meals into individual ingredients ✅ Implemented - Auto AI decomposition for complex dishes with per-ingredient USDA lookup
 
 ### Enhanced AI Coach
 
@@ -48,9 +48,8 @@ This document tracks ideas to be implemented and upcoming features for NutriNote
 
 ### Data Quality & Accuracy
 
-- [ ] **Multi-Step AI Validation** - Cross-check food recognition using multiple models
-- [ ] **Cross-Reference Databases** - Compare USDA data with other reputable sources
-- [ ] **AI Outlier Detection** - Detect and warn about unusual micronutrient values
+- [x] **Multi-Step AI Validation** - Cross-check food recognirtion using multiple models ✅ Implemented - Dual-model detection (Gemini + Claude) with confidence scoring, fuzzy food name matching, and merged results
+- [x] **AI Outlier Detection** - Detect and warn about unusual micronutrient values ✅ Implemented - Per-food outlier detection with auto-correction (>5x typical), cross-nutrient consistency checks, and meal-level aggregate warnings
 
 ---
 
@@ -62,8 +61,6 @@ This document tracks ideas to be implemented and upcoming features for NutriNote
 - [ ] **Contextual Learning** - Adapt suggestions based on user history and corrections
 - [ ] **User-Specific AI Profiles** - Learn individual habits and preferences
 - [ ] **Advanced Image Segmentation** - Context-aware recognition for precise food identification
-- [ ] **Continuous Learning Loop** - Use user feedback to retrain models
-- [ ] **Real-Time Model Updates** - Cloud-based retraining for new foods and corrections
 
 ### Platform Enhancements
 

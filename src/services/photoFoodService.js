@@ -1,12 +1,15 @@
 /**
  * Photo Food Identification Service
  * Sends food photos to the backend for AI identification + USDA nutrition lookup
+ *
+ * Enhanced: Multi-food detection (20+), per-food USDA candidates,
+ * ingredient decomposition, and realism validation error handling
  */
 
 import devLog from "../utils/devLog";
 
 const API_ENDPOINT = "/api/identify-food-photo";
-const REQUEST_TIMEOUT = 30000; // 30 seconds
+const REQUEST_TIMEOUT = 60000; // 60 seconds (increased for multi-food + decomposition)
 
 /**
  * Resize an image to max dimension while maintaining aspect ratio
@@ -83,6 +86,8 @@ function formatErrorMessage(errorData, status) {
     TIMEOUT: "Request timed out. Please try again with a clearer photo.",
     SERVER_CONFIG_ERROR: "Service not configured. Please contact support.",
     AUTH_ERROR: "Authentication error. Please try again later.",
+    REALISM_VALIDATION_FAILED:
+      "Nutrition values appear unrealistic for the detected foods. Please retake the photo with better lighting or angle.",
   };
 
   if (errorData?.code && errorMessages[errorData.code]) {
@@ -90,6 +95,7 @@ function formatErrorMessage(errorData, status) {
   }
 
   if (status === 429) return errorMessages.RATE_LIMITED;
+  if (status === 422) return errorMessages.REALISM_VALIDATION_FAILED;
   if (status >= 500) return "Server error. Please try again.";
 
   return errorData?.error || "Failed to identify food. Please try again.";
@@ -98,7 +104,16 @@ function formatErrorMessage(errorData, status) {
 /**
  * Identify food from a photo
  * @param {string} base64Image - Base64 data URL of the food image
- * @returns {Promise<{foods: Array, message?: string}>} Identified foods with nutrition
+ * @returns {Promise<Object>} Result with foods array, each containing:
+ *   - id: unique identifier
+ *   - name: food name
+ *   - serving: estimated serving string
+ *   - nutrition: full macro+micro object
+ *   - source: "usda" | "ai_estimate" | "ai_estimate_corrected"
+ *   - candidates: array of USDA candidate matches (top 5)
+ *   - ingredients: array of decomposed ingredients (for complex dishes)
+ *   - ingredientNutrition: aggregated nutrition from ingredients
+ *   - realismValidation: { valid, issues }
  */
 export async function identifyFoodFromPhoto(base64Image) {
   devLog.log("📸 Identifying food from photo...");
@@ -136,26 +151,39 @@ export async function identifyFoodFromPhoto(base64Image) {
         errorData = { error: response.statusText };
       }
 
+      // Preserve the error code for the UI to distinguish realism failures
       const message = formatErrorMessage(errorData, response.status);
-      throw new Error(message);
+      const err = new Error(message);
+      err.code = errorData?.code || "UNKNOWN";
+      err.foods = errorData?.foods || null; // Partial results on realism failure
+      throw err;
     }
 
     const data = await response.json();
-    devLog.log("📸 Photo identification result:", data);
+    devLog.log("📸 Photo identification result:", {
+      foodCount: data.foods?.length,
+      decomposed: data.foods?.filter((f) => f.ingredients)?.length,
+      totalIdentified: data.totalIdentified,
+      responseTime: data.responseTime,
+    });
 
     return data;
   } catch (error) {
     clearTimeout(timeout);
 
     if (error.name === "AbortError") {
-      throw new Error("Photo analysis timed out. Please try again with a clearer photo.");
+      throw new Error(
+        "Photo analysis timed out. Please try again with a clearer photo.",
+      );
     }
 
-    // Re-throw formatted errors
+    // Re-throw formatted errors (including realism failures)
     if (error.message && !error.message.includes("fetch")) {
       throw error;
     }
 
-    throw new Error("Could not connect to the server. Check your internet connection.");
+    throw new Error(
+      "Could not connect to the server. Check your internet connection.",
+    );
   }
 }

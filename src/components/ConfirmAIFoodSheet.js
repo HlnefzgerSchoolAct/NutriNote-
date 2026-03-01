@@ -4,7 +4,14 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Minus, Plus, Sparkles } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  Sparkles,
+  AlertTriangle,
+  CheckCircle,
+  Info,
+} from "lucide-react";
 import {
   BottomSheet,
   M3Button,
@@ -67,15 +74,16 @@ export const ConfirmAIFoodSheet = ({
   useEffect(() => {
     if (open && nutritionData) {
       // Set initial name from description and quantity
-      const initialName = initialQuantity && initialUnit && initialDescription
-        ? `${initialQuantity} ${initialUnit} ${initialDescription}`
-        : initialDescription;
-      
+      const initialName =
+        initialQuantity && initialUnit && initialDescription
+          ? `${initialQuantity} ${initialUnit} ${initialDescription}`
+          : initialDescription;
+
       setName(initialName);
       setQuantity(initialQuantity || 1);
       setUnit(initialUnit || "serving");
       setMealType(getMealTypeByTime());
-      
+
       // Store base nutrition values (already scaled to initialQuantity)
       setBaseNutrition(nutritionData);
     }
@@ -93,27 +101,67 @@ export const ConfirmAIFoodSheet = ({
       protein: Math.round(baseNutrition.protein * scale * 10) / 10,
       carbs: Math.round(baseNutrition.carbs * scale * 10) / 10,
       fat: Math.round(baseNutrition.fat * scale * 10) / 10,
-      fiber: baseNutrition.fiber ? Math.round(baseNutrition.fiber * scale * 10) / 10 : undefined,
-      sodium: baseNutrition.sodium ? Math.round(baseNutrition.sodium * scale) : undefined,
-      sugar: baseNutrition.sugar ? Math.round(baseNutrition.sugar * scale * 10) / 10 : undefined,
-      cholesterol: baseNutrition.cholesterol ? Math.round(baseNutrition.cholesterol * scale) : undefined,
+      fiber: baseNutrition.fiber
+        ? Math.round(baseNutrition.fiber * scale * 10) / 10
+        : undefined,
+      sodium: baseNutrition.sodium
+        ? Math.round(baseNutrition.sodium * scale)
+        : undefined,
+      sugar: baseNutrition.sugar
+        ? Math.round(baseNutrition.sugar * scale * 10) / 10
+        : undefined,
+      cholesterol: baseNutrition.cholesterol
+        ? Math.round(baseNutrition.cholesterol * scale)
+        : undefined,
       // Micronutrients
-      vitaminA: baseNutrition.vitaminA ? Math.round(baseNutrition.vitaminA * scale) : undefined,
-      vitaminC: baseNutrition.vitaminC ? Math.round(baseNutrition.vitaminC * scale * 10) / 10 : undefined,
-      vitaminD: baseNutrition.vitaminD ? Math.round(baseNutrition.vitaminD * scale * 10) / 10 : undefined,
-      vitaminE: baseNutrition.vitaminE ? Math.round(baseNutrition.vitaminE * scale * 10) / 10 : undefined,
-      vitaminK: baseNutrition.vitaminK ? Math.round(baseNutrition.vitaminK * scale * 10) / 10 : undefined,
-      vitaminB1: baseNutrition.vitaminB1 ? Math.round(baseNutrition.vitaminB1 * scale * 100) / 100 : undefined,
-      vitaminB2: baseNutrition.vitaminB2 ? Math.round(baseNutrition.vitaminB2 * scale * 100) / 100 : undefined,
-      vitaminB3: baseNutrition.vitaminB3 ? Math.round(baseNutrition.vitaminB3 * scale * 10) / 10 : undefined,
-      vitaminB6: baseNutrition.vitaminB6 ? Math.round(baseNutrition.vitaminB6 * scale * 100) / 100 : undefined,
-      vitaminB12: baseNutrition.vitaminB12 ? Math.round(baseNutrition.vitaminB12 * scale * 100) / 100 : undefined,
-      folate: baseNutrition.folate ? Math.round(baseNutrition.folate * scale) : undefined,
-      calcium: baseNutrition.calcium ? Math.round(baseNutrition.calcium * scale) : undefined,
-      iron: baseNutrition.iron ? Math.round(baseNutrition.iron * scale * 10) / 10 : undefined,
-      magnesium: baseNutrition.magnesium ? Math.round(baseNutrition.magnesium * scale) : undefined,
-      zinc: baseNutrition.zinc ? Math.round(baseNutrition.zinc * scale * 10) / 10 : undefined,
-      potassium: baseNutrition.potassium ? Math.round(baseNutrition.potassium * scale) : undefined,
+      vitaminA: baseNutrition.vitaminA
+        ? Math.round(baseNutrition.vitaminA * scale)
+        : undefined,
+      vitaminC: baseNutrition.vitaminC
+        ? Math.round(baseNutrition.vitaminC * scale * 10) / 10
+        : undefined,
+      vitaminD: baseNutrition.vitaminD
+        ? Math.round(baseNutrition.vitaminD * scale * 10) / 10
+        : undefined,
+      vitaminE: baseNutrition.vitaminE
+        ? Math.round(baseNutrition.vitaminE * scale * 10) / 10
+        : undefined,
+      vitaminK: baseNutrition.vitaminK
+        ? Math.round(baseNutrition.vitaminK * scale * 10) / 10
+        : undefined,
+      vitaminB1: baseNutrition.vitaminB1
+        ? Math.round(baseNutrition.vitaminB1 * scale * 100) / 100
+        : undefined,
+      vitaminB2: baseNutrition.vitaminB2
+        ? Math.round(baseNutrition.vitaminB2 * scale * 100) / 100
+        : undefined,
+      vitaminB3: baseNutrition.vitaminB3
+        ? Math.round(baseNutrition.vitaminB3 * scale * 10) / 10
+        : undefined,
+      vitaminB6: baseNutrition.vitaminB6
+        ? Math.round(baseNutrition.vitaminB6 * scale * 100) / 100
+        : undefined,
+      vitaminB12: baseNutrition.vitaminB12
+        ? Math.round(baseNutrition.vitaminB12 * scale * 100) / 100
+        : undefined,
+      folate: baseNutrition.folate
+        ? Math.round(baseNutrition.folate * scale)
+        : undefined,
+      calcium: baseNutrition.calcium
+        ? Math.round(baseNutrition.calcium * scale)
+        : undefined,
+      iron: baseNutrition.iron
+        ? Math.round(baseNutrition.iron * scale * 10) / 10
+        : undefined,
+      magnesium: baseNutrition.magnesium
+        ? Math.round(baseNutrition.magnesium * scale)
+        : undefined,
+      zinc: baseNutrition.zinc
+        ? Math.round(baseNutrition.zinc * scale * 10) / 10
+        : undefined,
+      potassium: baseNutrition.potassium
+        ? Math.round(baseNutrition.potassium * scale)
+        : undefined,
     };
   };
 
@@ -188,10 +236,93 @@ export const ConfirmAIFoodSheet = ({
     <BottomSheet open={open} onClose={onClose} title="Confirm Food" fullHeight>
       <div className="confirm-ai-food-sheet">
         {/* Source Badge */}
-        <div className="confirm-ai-food-sheet__badge">
-          <Sparkles size={14} />
-          <span>{isUSDA ? "USDA Data" : "AI Estimated"}</span>
+        <div className="confirm-ai-food-sheet__badge-row">
+          <div className="confirm-ai-food-sheet__badge">
+            <Sparkles size={14} />
+            <span>{isUSDA ? "USDA Data" : "AI Estimated"}</span>
+          </div>
+
+          {/* Multi-Model Confidence Badge */}
+          {nutritionData?.multiModelConfidence != null && (
+            <div
+              className={`confirm-ai-food-sheet__badge ${
+                nutritionData.multiModelConfidence >= 0.8
+                  ? "confirm-ai-food-sheet__badge--high"
+                  : nutritionData.multiModelConfidence >= 0.6
+                    ? "confirm-ai-food-sheet__badge--medium"
+                    : "confirm-ai-food-sheet__badge--low"
+              }`}
+            >
+              <CheckCircle size={14} />
+              <span>
+                {Math.round(nutritionData.multiModelConfidence * 100)}%
+                confidence
+              </span>
+            </div>
+          )}
         </div>
+
+        {/* Outlier Auto-Correction Notices */}
+        {nutritionData?.outlierDetection?.detected && (
+          <div className="confirm-ai-food-sheet__outlier-section">
+            {/* Auto-corrections */}
+            {Object.keys(nutritionData.outlierDetection.autoCorrections || {})
+              .length > 0 && (
+              <div className="confirm-ai-food-sheet__outlier-card confirm-ai-food-sheet__outlier-card--corrected">
+                <div className="confirm-ai-food-sheet__outlier-header">
+                  <CheckCircle size={14} />
+                  <span>Auto-corrected values</span>
+                </div>
+                <div className="confirm-ai-food-sheet__outlier-items">
+                  {Object.entries(
+                    nutritionData.outlierDetection.autoCorrections,
+                  ).map(([nutrient, correction]) => (
+                    <div
+                      key={nutrient}
+                      className="confirm-ai-food-sheet__outlier-item"
+                    >
+                      <span className="confirm-ai-food-sheet__outlier-nutrient">
+                        {nutrient}
+                      </span>
+                      <span className="confirm-ai-food-sheet__outlier-detail">
+                        <s>{correction.original}</s> → {correction.correctedTo}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Warnings (non-auto-corrected) */}
+            {(nutritionData.outlierDetection.flaggedNutrients || []).filter(
+              (f) => f.severity === "warning",
+            ).length > 0 && (
+              <div className="confirm-ai-food-sheet__outlier-card confirm-ai-food-sheet__outlier-card--warning">
+                <div className="confirm-ai-food-sheet__outlier-header">
+                  <AlertTriangle size={14} />
+                  <span>Unusual values detected</span>
+                </div>
+                <div className="confirm-ai-food-sheet__outlier-items">
+                  {(nutritionData.outlierDetection.flaggedNutrients || [])
+                    .filter((f) => f.severity === "warning")
+                    .map((flag, idx) => (
+                      <div
+                        key={idx}
+                        className="confirm-ai-food-sheet__outlier-item"
+                      >
+                        <span className="confirm-ai-food-sheet__outlier-nutrient">
+                          {flag.nutrient}
+                        </span>
+                        <span className="confirm-ai-food-sheet__outlier-detail">
+                          {flag.value} ({flag.ratio}x typical)
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Name Field */}
         <div className="confirm-ai-food-sheet__field">
