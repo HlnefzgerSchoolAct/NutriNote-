@@ -45,6 +45,7 @@ import {
   SkeletonPage,
 } from '../components/common';
 import { FeatureHighlight, APP_TOOLTIPS } from '../components/OnboardingTooltips';
+import BuyMeACoffeeWidget from '../components/BuyMeACoffeeWidget';
 import { haptics } from '../utils/haptics';
 import {
   loadFoodLog,
@@ -453,6 +454,9 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
 
       {/* Micronutrient Warnings */}
       <NutrientWarnings show={true} autoHide={true} autoHideDelay={15000} />
+
+      {/* Buy Me a Coffee Widget */}
+      <BuyMeACoffeeWidget />
     </Main>
   );
 }
