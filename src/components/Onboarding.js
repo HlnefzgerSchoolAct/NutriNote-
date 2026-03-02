@@ -12,8 +12,8 @@ import {
   Flame,
   User,
   Activity,
-  Utensils,
 } from 'lucide-react';
+import ThemedLogo from './ThemedLogo';
 import {
   loadOnboardingDraft,
   saveOnboardingDraft,
@@ -417,10 +417,7 @@ const Onboarding = ({
 const WelcomeStep = ({ isExiting, name, onNameChange, onSkipSetup }) => (
   <div className={`m3-onboarding__step ${isExiting ? 'm3-onboarding__step--exiting' : ''}`}>
     <div className="m3-onboarding__illustration">
-      <div className="m3-onboarding__illustration-container">
-        <div className="m3-onboarding__illustration-bg" />
-        <Utensils className="m3-onboarding__illustration-icon" size={80} />
-      </div>
+      <ThemedLogo className="m3-onboarding__brand-logo" height={64} />
     </div>
     
     <h1 className="m3-onboarding__title">Welcome to NutriNote+</h1>

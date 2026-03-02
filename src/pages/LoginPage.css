@@ -16,9 +16,13 @@
   text-align: center;
 }
 
-.login-icon {
-  color: var(--primary);
-  margin-bottom: var(--space-md);
+.login-brand-logo {
+  height: 52px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  margin: 0 auto var(--space-md);
+  display: block;
 }
 
 .login-card h1 {

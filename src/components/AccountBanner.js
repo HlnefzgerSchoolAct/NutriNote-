@@ -6,8 +6,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Cloud, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { M3Button } from "./common";
+import ThemedLogo from "./ThemedLogo";
 import "./AccountBanner.css";
 
 function AccountBanner({ onDismiss, dismissed }) {
@@ -28,7 +29,7 @@ function AccountBanner({ onDismiss, dismissed }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
     >
-      <Cloud size={20} className="account-banner__icon" aria-hidden />
+      <ThemedLogo className="account-banner__logo" height={28} ariaHidden />
       <div className="account-banner__content">
         <p className="account-banner__title">Sign in to sync across devices</p>
         <p className="account-banner__subtitle">

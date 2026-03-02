@@ -6,6 +6,7 @@ import {
   saveMacroGoals,
   savePreferences,
 } from "../utils/localStorage";
+import ThemedLogo from "./ThemedLogo";
 import "./WelcomeScreen.css";
 
 function WelcomeScreen({ onComplete, dailyTarget }) {
@@ -19,20 +20,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
       content: (
         <div className="welcome-content">
           <div className="welcome-icon">
-            <svg viewBox="0 0 100 100" width="100" height="100">
-              <circle
-                cx="50"
-                cy="50"
-                r="45"
-                fill="none"
-                stroke="#3b82f6"
-                strokeWidth="3"
-              />
-              <path
-                d="M50 25 L55 45 L75 45 L60 58 L65 78 L50 65 L35 78 L40 58 L25 45 L45 45 Z"
-                fill="#3b82f6"
-              />
-            </svg>
+            <ThemedLogo className="welcome-brand-logo" ariaHidden />
           </div>
           <p className="welcome-text">
             Your personal nutrition tracker powered by AI. Track calories,

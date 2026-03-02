@@ -12,6 +12,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import SyncStatusIndicator from "./SyncStatusIndicator";
+import ThemedLogo from "./ThemedLogo";
 import "./DesktopSidebar.css";
 
 const navItems = [
@@ -43,11 +44,7 @@ function DesktopSidebar({
   return (
     <aside className="desktop-sidebar">
       <div className="sidebar-header">
-        <div className="sidebar-logo">NN+</div>
-        <div>
-          <h1 className="sidebar-title">NutriNote+</h1>
-          <p className="sidebar-subtitle">Nutrition Tracker</p>
-        </div>
+        <ThemedLogo className="sidebar-brand-logo" height={36} />
       </div>
 
       <nav id="navigation" className="sidebar-nav" aria-label="Main navigation">

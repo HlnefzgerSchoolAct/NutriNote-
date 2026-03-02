@@ -68,7 +68,13 @@
 
 .welcome-icon {
   margin-bottom: var(--space-xl);
-  animation: pulse 2s ease-in-out infinite;
+}
+
+.welcome-brand-logo {
+  height: 56px;
+  width: auto;
+  max-width: 240px;
+  object-fit: contain;
 }
 
 @keyframes pulse {

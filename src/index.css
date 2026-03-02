@@ -140,11 +140,22 @@ a:hover {
 .app-header h1::before {
   content: "";
   display: inline-block;
-  width: 32px;
+  width: 120px;
   height: 32px;
-  background: url("/NutriNote.png") center/cover no-repeat;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-glow-sm);
+  background: url("/IconTBB.png") left center/contain no-repeat;
+  border-radius: 0;
+  box-shadow: none;
+  vertical-align: middle;
+}
+
+[data-theme="dark"] .app-header h1::before {
+  background-image: url("/IconTBW.png");
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .app-header h1::before {
+    background-image: url("/IconTBW.png");
+  }
 }
 
 .app-header p {

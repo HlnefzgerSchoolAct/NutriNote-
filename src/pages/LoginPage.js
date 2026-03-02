@@ -5,9 +5,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Cloud, LogIn, Loader2 } from "lucide-react";
+import { LogIn, Loader2 } from "lucide-react";
 import { M3Button, Main } from "../components/common";
 import { useAuth } from "../contexts/AuthContext";
+import ThemedLogo from "../components/ThemedLogo";
 import "./LoginPage.css";
 
 function LoginPage() {
@@ -135,8 +136,8 @@ function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <Cloud size={48} className="login-icon" aria-hidden />
-        <h1>Sign in to NutriNote</h1>
+        <ThemedLogo className="login-brand-logo" ariaHidden />
+        <h1>Sign in to NutriNote+</h1>
         <p className="login-subtitle">
           Sync your food logs, recipes, and preferences across all your devices.
         </p>

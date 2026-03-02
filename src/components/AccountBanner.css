@@ -9,8 +9,11 @@
   border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.06));
 }
 
-.account-banner__icon {
-  color: var(--primary);
+.account-banner__logo {
+  height: 28px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 

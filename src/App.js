@@ -7,6 +7,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import ThemedLogo from "./components/ThemedLogo";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { SyncStatusProvider, useSyncStatus } from "./contexts/SyncStatusContext";
 import { Analytics } from "@vercel/analytics/react";
@@ -525,7 +526,7 @@ function App() {
       <div className="App loading">
         <div className="loading-screen">
           <div className="loading-screen__logo">
-            <img src="/NutriNote.png" alt="" aria-hidden />
+            <ThemedLogo height={72} ariaHidden />
           </div>
           <div className="loading-screen__spinner" aria-hidden />
           <p className="loading-screen__label">Loading NutriNote+</p>

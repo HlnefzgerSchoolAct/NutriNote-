@@ -1,5 +1,6 @@
 import React from "react";
 import * as Sentry from "@sentry/react";
+import ThemedLogo from "./ThemedLogo";
 
 /**
  * Error Boundary Component
@@ -37,7 +38,9 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="error-boundary">
           <div className="error-boundary__content">
-            <div className="error-boundary__icon">⚠️</div>
+            <div className="error-boundary__icon">
+              <ThemedLogo className="error-boundary__logo" height={48} />
+            </div>
             <h1 className="error-boundary__title">Something went wrong</h1>
             <p className="error-boundary__message">
               We're sorry, but something unexpected happened. Please try
