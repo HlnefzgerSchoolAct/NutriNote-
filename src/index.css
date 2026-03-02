@@ -901,6 +901,13 @@ a:hover {
 }
 
 /* ===== Buy Me a Coffee Widget Theme Customization ===== */
+/* Hide widget on mobile devices - desktop only */
+@media (max-width: 768px) {
+  .bmc-btn-container {
+    display: none !important;
+  }
+}
+
 /* Override widget button color for dark mode */
 [data-theme='dark'] .bmc-btn {
   background-color: #60a5fa !important;
