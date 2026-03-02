@@ -39,7 +39,7 @@ class ErrorBoundary extends React.Component {
         <div className="error-boundary">
           <div className="error-boundary__content">
             <div className="error-boundary__icon">
-              <ThemedLogo className="error-boundary__logo" height={48} />
+              <ThemedLogo className="error-boundary__logo" height={120} />
             </div>
             <h1 className="error-boundary__title">Something went wrong</h1>
             <p className="error-boundary__message">

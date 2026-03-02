@@ -17,11 +17,11 @@
 }
 
 .login-brand-logo {
-  height: 52px;
+  height: 120px;
   width: auto;
-  max-width: 220px;
+  max-width: 380px;
   object-fit: contain;
-  margin: 0 auto var(--space-md);
+  margin: 0 auto var(--space-xl);
   display: block;
 }
 
@@ -86,8 +86,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .login-tabs {

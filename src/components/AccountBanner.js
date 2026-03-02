@@ -29,7 +29,7 @@ function AccountBanner({ onDismiss, dismissed }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
     >
-      <ThemedLogo className="account-banner__logo" height={28} ariaHidden />
+      <ThemedLogo className="account-banner__logo" height={44} ariaHidden />
       <div className="account-banner__content">
         <p className="account-banner__title">Sign in to sync across devices</p>
         <p className="account-banner__subtitle">

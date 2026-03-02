@@ -9,13 +9,20 @@ import {
 } from "react-router-dom";
 import ThemedLogo from "./components/ThemedLogo";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { SyncStatusProvider, useSyncStatus } from "./contexts/SyncStatusContext";
+import {
+  SyncStatusProvider,
+  useSyncStatus,
+} from "./contexts/SyncStatusContext";
 import { Analytics } from "@vercel/analytics/react";
 import { WifiOff, X } from "lucide-react";
 import "./App.css";
 
 // Design System
-import { ToastProvider, SnackbarProvider, A11yProvider } from "./components/common";
+import {
+  ToastProvider,
+  SnackbarProvider,
+  A11yProvider,
+} from "./components/common";
 
 // Usability Components
 import {
@@ -100,7 +107,9 @@ function SyncBridgeSetup() {
           });
       });
       setRecipeSyncCallback((recipes) => syncRecipesToCloud(uid, recipes));
-      setTemplateSyncCallback((templates) => syncTemplatesToCloud(uid, templates));
+      setTemplateSyncCallback((templates) =>
+        syncTemplatesToCloud(uid, templates),
+      );
     } else {
       setSyncBridge(null);
       setRecipeSyncCallback(null);
@@ -117,11 +126,7 @@ function SyncBridgeSetup() {
 
 // Page transition wrapper — animations disabled to avoid blank page on tab switch
 function PageWrapper({ children }) {
-  return (
-    <div className="page-wrapper">
-      {children}
-    </div>
-  );
+  return <div className="page-wrapper">{children}</div>;
 }
 
 // QuickSearch wrapper with keyboard shortcut integration
@@ -138,7 +143,11 @@ function QuickSearchWrapper() {
     registerShortcut("ctrl+l", () => navigate("/log"), "Go to Log");
     registerShortcut("ctrl+r", () => navigate("/recipes"), "Go to Recipes");
     registerShortcut("ctrl+p", () => navigate("/profile"), "Go to Profile");
-    registerShortcut("ctrl+shift+c", () => navigate("/coach"), "Go to AI Coach");
+    registerShortcut(
+      "ctrl+shift+c",
+      () => navigate("/coach"),
+      "Go to AI Coach",
+    );
 
     return () => {
       unregisterShortcut("ctrl+k");
@@ -231,7 +240,9 @@ function AppContent({
       heightFeet = data.heightFeet?.toString() || "5";
       heightInches = data.heightInches?.toString() || "10";
     } else {
-      weightLbs = data.weight ? Math.round(parseFloat(data.weight) * 2.20462) : 150;
+      weightLbs = data.weight
+        ? Math.round(parseFloat(data.weight) * 2.20462)
+        : 150;
       const heightCm = parseFloat(data.height) || 170;
       const heightTotalInches = Math.round(heightCm / 2.54);
       heightFeet = Math.floor(heightTotalInches / 12).toString();
@@ -239,15 +250,16 @@ function AppContent({
     }
 
     const profile = {
-      name: data.name || '',
-      age: data.age || '30',
-      gender: data.sex || 'male',
+      name: data.name || "",
+      age: data.age || "30",
+      gender: data.sex || "male",
       weight: weightLbs.toString(),
       heightFeet: heightFeet.toString(),
       heightInches: heightInches.toString(),
-      activityLevel: data.activityLevel || 'moderate',
-      goal: data.goal || 'maintain',
-      customAdjustment: data.goal === 'lose' ? '500' : data.goal === 'gain' ? '300' : '0',
+      activityLevel: data.activityLevel || "moderate",
+      goal: data.goal || "maintain",
+      customAdjustment:
+        data.goal === "lose" ? "500" : data.goal === "gain" ? "300" : "0",
     };
 
     setUserProfile(profile);
@@ -259,15 +271,24 @@ function AppContent({
 
     // Save macro goals
     if (data.macroGoals) {
-      const totalCal = (data.macroGoals.protein * 4) + (data.macroGoals.carbs * 4) + (data.macroGoals.fat * 9);
-      const proteinPct = totalCal > 0 ? Math.round((data.macroGoals.protein * 4 / totalCal) * 100) : 30;
-      const carbsPct = totalCal > 0 ? Math.round((data.macroGoals.carbs * 4 / totalCal) * 100) : 40;
+      const totalCal =
+        data.macroGoals.protein * 4 +
+        data.macroGoals.carbs * 4 +
+        data.macroGoals.fat * 9;
+      const proteinPct =
+        totalCal > 0
+          ? Math.round(((data.macroGoals.protein * 4) / totalCal) * 100)
+          : 30;
+      const carbsPct =
+        totalCal > 0
+          ? Math.round(((data.macroGoals.carbs * 4) / totalCal) * 100)
+          : 40;
       const fatPct = 100 - proteinPct - carbsPct;
       const macros = {
         protein: data.macroGoals.protein,
         carbs: data.macroGoals.carbs,
         fat: data.macroGoals.fat,
-        preset: 'Custom',
+        preset: "Custom",
         percentages: { protein: proteinPct, carbs: carbsPct, fat: fatPct },
       };
       saveMacroGoals(macros);
@@ -282,9 +303,14 @@ function AppContent({
   const handleOnboardingSkip = () => {
     // Set sensible defaults
     const defaultProfile = {
-      age: '30', gender: 'male', weight: '160',
-      heightFeet: '5', heightInches: '10',
-      activityLevel: 'moderate', goal: 'maintain', customAdjustment: '0',
+      age: "30",
+      gender: "male",
+      weight: "160",
+      heightFeet: "5",
+      heightInches: "10",
+      activityLevel: "moderate",
+      goal: "maintain",
+      customAdjustment: "0",
     };
     setUserProfile(defaultProfile);
     saveUserProfile(defaultProfile);
@@ -316,10 +342,7 @@ function AppContent({
   return (
     <>
       <SyncBridgeSetup />
-      <InstallBanner
-        isMobile={isMobile}
-        isStandalone={isStandalone}
-      />
+      <InstallBanner isMobile={isMobile} isStandalone={isStandalone} />
       <DesktopSidebar
         dailyTarget={dailyTarget}
         caloriesEaten={caloriesData.eaten}
@@ -526,7 +549,7 @@ function App() {
       <div className="App loading">
         <div className="loading-screen">
           <div className="loading-screen__logo">
-            <ThemedLogo height={72} ariaHidden />
+            <ThemedLogo height={140} ariaHidden />
           </div>
           <div className="loading-screen__spinner" aria-hidden />
           <p className="loading-screen__label">Loading NutriNote+</p>
@@ -538,67 +561,72 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-      <KeyboardShortcutsProvider>
-        <A11yProvider>
-        <SnackbarProvider>
-        <ErrorBoundary>
-          <SyncStatusProvider>
-          <div className="App">
-            {/* Enhanced skip links for accessibility */}
-            <SkipLinks
-              links={[
-                { target: "main-content", label: "Skip to main content" },
-                { target: "navigation", label: "Skip to navigation" },
-              ]}
-            />
+        <KeyboardShortcutsProvider>
+          <A11yProvider>
+            <SnackbarProvider>
+              <ErrorBoundary>
+                <SyncStatusProvider>
+                  <div className="App">
+                    {/* Enhanced skip links for accessibility */}
+                    <SkipLinks
+                      links={[
+                        {
+                          target: "main-content",
+                          label: "Skip to main content",
+                        },
+                        { target: "navigation", label: "Skip to navigation" },
+                      ]}
+                    />
 
-            {/* Live region for screen reader announcements */}
-            <LiveRegion />
+                    {/* Live region for screen reader announcements */}
+                    <LiveRegion />
 
-            <UpdateBanner />
+                    <UpdateBanner />
 
-            {/* Offline indicator */}
-            {isOffline && !offlineBannerDismissed && (
-              <div className="offline-banner" role="alert">
-                <WifiOff size={16} aria-hidden />
-                <span>You're offline. Some features may be limited.</span>
-                <button
-                  type="button"
-                  className="offline-banner__dismiss"
-                  onClick={() => setOfflineBannerDismissed(true)}
-                  aria-label="Dismiss offline notice"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            )}
+                    {/* Offline indicator */}
+                    {isOffline && !offlineBannerDismissed && (
+                      <div className="offline-banner" role="alert">
+                        <WifiOff size={16} aria-hidden />
+                        <span>
+                          You're offline. Some features may be limited.
+                        </span>
+                        <button
+                          type="button"
+                          className="offline-banner__dismiss"
+                          onClick={() => setOfflineBannerDismissed(true)}
+                          aria-label="Dismiss offline notice"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    )}
 
-            <ToastProvider />
-            <TooltipProvider>
-              <QuickSearchWrapper />
-              <AppContent
-                userProfile={userProfile}
-                setUserProfile={setUserProfile}
-                dailyTarget={dailyTarget}
-                setDailyTarget={setDailyTarget}
-                macroGoals={macroGoals}
-                setMacroGoals={setMacroGoals}
-                isOnboarding={isOnboarding}
-                setIsOnboarding={setIsOnboarding}
-                onboardingStep={onboardingStep}
-                setOnboardingStep={setOnboardingStep}
-                activities={activities}
-                setActivities={setActivities}
-                isMobile={isMobile}
-                isStandalone={isStandalone}
-              />
-            </TooltipProvider>
-          </div>
-          </SyncStatusProvider>
-        </ErrorBoundary>
-        </SnackbarProvider>
-        </A11yProvider>
-      </KeyboardShortcutsProvider>
+                    <ToastProvider />
+                    <TooltipProvider>
+                      <QuickSearchWrapper />
+                      <AppContent
+                        userProfile={userProfile}
+                        setUserProfile={setUserProfile}
+                        dailyTarget={dailyTarget}
+                        setDailyTarget={setDailyTarget}
+                        macroGoals={macroGoals}
+                        setMacroGoals={setMacroGoals}
+                        isOnboarding={isOnboarding}
+                        setIsOnboarding={setIsOnboarding}
+                        onboardingStep={onboardingStep}
+                        setOnboardingStep={setOnboardingStep}
+                        activities={activities}
+                        setActivities={setActivities}
+                        isMobile={isMobile}
+                        isStandalone={isStandalone}
+                      />
+                    </TooltipProvider>
+                  </div>
+                </SyncStatusProvider>
+              </ErrorBoundary>
+            </SnackbarProvider>
+          </A11yProvider>
+        </KeyboardShortcutsProvider>
       </AuthProvider>
       <Analytics />
     </BrowserRouter>

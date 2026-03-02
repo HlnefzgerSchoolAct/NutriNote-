@@ -117,8 +117,14 @@ function LoginPage() {
             Sign in with Google to sync your data across devices.
           </p>
           <div className="login-unavailable" role="alert">
-            <p>Firebase is not configured. Add environment variables to enable accounts:</p>
-            <code>VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID, ...</code>
+            <p>
+              Firebase is not configured. Add environment variables to enable
+              accounts:
+            </p>
+            <code>
+              VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN,
+              VITE_FIREBASE_PROJECT_ID, ...
+            </code>
           </div>
           <M3Button variant="outlined" onClick={() => navigate(-1)}>
             Go back
@@ -136,7 +142,7 @@ function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <ThemedLogo className="login-brand-logo" ariaHidden />
+        <ThemedLogo className="login-brand-logo" height={120} ariaHidden />
         <h1>Sign in to NutriNote+</h1>
         <p className="login-subtitle">
           Sync your food logs, recipes, and preferences across all your devices.
@@ -146,7 +152,10 @@ function LoginPage() {
           <button
             type="button"
             className={`login-tab ${mode === "google" ? "active" : ""}`}
-            onClick={() => { setMode("google"); setError(null); }}
+            onClick={() => {
+              setMode("google");
+              setError(null);
+            }}
             role="tab"
           >
             Google
@@ -154,7 +163,11 @@ function LoginPage() {
           <button
             type="button"
             className={`login-tab ${mode === "email" || mode === "forgot" || mode === "signup" ? "active" : ""}`}
-            onClick={() => { setMode("email"); setError(null); setPasswordResetSent(false); }}
+            onClick={() => {
+              setMode("email");
+              setError(null);
+              setPasswordResetSent(false);
+            }}
             role="tab"
           >
             Email
@@ -178,7 +191,13 @@ function LoginPage() {
             <M3Button
               variant="filled"
               fullWidth
-              leadingIcon={loading ? <Loader2 size={20} className="spin" /> : <LogIn size={20} />}
+              leadingIcon={
+                loading ? (
+                  <Loader2 size={20} className="spin" />
+                ) : (
+                  <LogIn size={20} />
+                )
+              }
               onClick={handleGoogleSignIn}
               disabled={loading}
               aria-label={loading ? "Signing in..." : "Sign in with Google"}
@@ -214,7 +233,9 @@ function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="login-input"
-                autoComplete={mode === "email" ? "current-password" : "new-password"}
+                autoComplete={
+                  mode === "email" ? "current-password" : "new-password"
+                }
                 required
               />
             )}
@@ -273,7 +294,10 @@ function LoginPage() {
                 <button
                   type="button"
                   className="login-link"
-                  onClick={() => { setMode("email"); setError(null); }}
+                  onClick={() => {
+                    setMode("email");
+                    setError(null);
+                  }}
                 >
                   Already have an account? Sign in
                 </button>

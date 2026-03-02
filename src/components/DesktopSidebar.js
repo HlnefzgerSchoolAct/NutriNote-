@@ -44,7 +44,7 @@ function DesktopSidebar({
   return (
     <aside className="desktop-sidebar">
       <div className="sidebar-header">
-        <ThemedLogo className="sidebar-brand-logo" height={36} />
+        <ThemedLogo className="sidebar-brand-logo" height={64} />
       </div>
 
       <nav id="navigation" className="sidebar-nav" aria-label="Main navigation">

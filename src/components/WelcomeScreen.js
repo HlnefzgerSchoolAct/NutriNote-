@@ -20,7 +20,11 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
       content: (
         <div className="welcome-content">
           <div className="welcome-icon">
-            <ThemedLogo className="welcome-brand-logo" ariaHidden />
+            <ThemedLogo
+              className="welcome-brand-logo"
+              height={140}
+              ariaHidden
+            />
           </div>
           <p className="welcome-text">
             Your personal nutrition tracker powered by AI. Track calories,
