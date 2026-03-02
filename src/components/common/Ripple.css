@@ -110,12 +110,12 @@
 
 /* Disabled state */
 .m3-ripple-container:disabled,
-.m3-ripple-container[aria-disabled="true"] {
+.m3-ripple-container[aria-disabled='true'] {
   pointer-events: none;
 }
 
 .m3-ripple-container:disabled .m3-state-layer,
-.m3-ripple-container[aria-disabled="true"] .m3-state-layer {
+.m3-ripple-container[aria-disabled='true'] .m3-state-layer {
   display: none;
 }
 
@@ -142,8 +142,7 @@
     opacity: 1;
   }
   100% {
-    transform: translate(var(--x, 100px), var(--y, 100px))
-      rotate(var(--rotation, 720deg)) scale(0);
+    transform: translate(var(--x, 100px), var(--y, 100px)) rotate(var(--rotation, 720deg)) scale(0);
     opacity: 0;
   }
 }
@@ -261,7 +260,7 @@
 }
 
 .m3-shimmer::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(

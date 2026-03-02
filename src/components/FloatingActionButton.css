@@ -26,13 +26,30 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-glow-blue);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--duration-long, 300ms)
+    var(--ease-spring, cubic-bezier(0.175, 0.885, 0.32, 1.275));
   -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.fab-main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--duration-short, 100ms) ease;
 }
 
 .fab-main:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
   box-shadow: var(--shadow-glow-xl);
+}
+
+.fab-main:hover::before {
+  opacity: 1;
 }
 
 .fab-main:focus-visible {
@@ -41,7 +58,7 @@
 }
 
 .fab-main:active {
-  transform: scale(0.95);
+  transform: scale(0.93);
 }
 
 .fab-container.open .fab-main {
@@ -85,7 +102,7 @@
   border-radius: var(--radius-full);
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--duration-medium, 200ms) var(--ease-emphasized, ease);
   box-shadow: var(--shadow-md);
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
@@ -95,6 +112,13 @@
   background: var(--surface-tertiary);
   border-color: var(--color-primary-500);
   color: var(--color-primary-500);
+  transform: translateX(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.fab-option:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus), var(--shadow-md);
 }
 
 .fab-option:active {
@@ -149,5 +173,24 @@
   .fab-container {
     right: var(--space-xl);
     bottom: var(--space-xl);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fab-main,
+  .fab-option,
+  .fab-options,
+  .fab-main svg {
+    transition: none;
+  }
+
+  .fab-main:hover,
+  .fab-option:hover {
+    transform: none;
+  }
+
+  .fab-backdrop {
+    animation: none;
   }
 }

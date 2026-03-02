@@ -4,8 +4,7 @@
  * After execution, shows success/failure and an Undo option (time-limited).
  */
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   UtensilsCrossed,
   ChefHat,
@@ -15,13 +14,11 @@ import {
   Undo2,
   Loader2,
   AlertCircle,
-} from "lucide-react";
-import {
-  executeAction,
-  describeAction,
-  undoAction,
-} from "../services/coachActionsService";
-import "./CoachActionCard.css";
+} from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+import { executeAction, describeAction, undoAction } from '../services/coachActionsService';
+import './CoachActionCard.css';
 
 const UNDO_TIMEOUT_MS = 15000; // 15 seconds to undo
 
@@ -32,13 +29,13 @@ const ACTION_ICONS = {
 };
 
 const ACTION_LABELS = {
-  log_food: "Log Food",
-  create_recipe: "Create Recipe",
-  update_settings: "Update Settings",
+  log_food: 'Log Food',
+  create_recipe: 'Create Recipe',
+  update_settings: 'Update Settings',
 };
 
 function CoachActionCard({ action, index, onActionComplete }) {
-  const [status, setStatus] = useState("pending"); // pending | executing | approved | denied | error
+  const [status, setStatus] = useState('pending'); // pending | executing | approved | denied | error
   const [result, setResult] = useState(null);
   const [rollback, setRollback] = useState(null);
   const [undoAvailable, setUndoAvailable] = useState(false);
@@ -46,7 +43,7 @@ function CoachActionCard({ action, index, onActionComplete }) {
   const undoTimerRef = useRef(null);
 
   const Icon = ACTION_ICONS[action?.action] || Settings;
-  const label = ACTION_LABELS[action?.action] || "Action";
+  const label = ACTION_LABELS[action?.action] || 'Action';
   const description = describeAction(action);
 
   // Clear undo timer on unmount
@@ -57,11 +54,11 @@ function CoachActionCard({ action, index, onActionComplete }) {
   }, []);
 
   const handleApprove = useCallback(async () => {
-    setStatus("executing");
+    setStatus('executing');
     try {
       const res = await executeAction(action);
       if (res.success) {
-        setStatus("approved");
+        setStatus('approved');
         setResult(res.message);
         setRollback(res.rollback || null);
         setUndoAvailable(!!res.rollback);
@@ -73,16 +70,16 @@ function CoachActionCard({ action, index, onActionComplete }) {
           }, UNDO_TIMEOUT_MS);
         }
 
-        onActionComplete?.(index, "approved", res);
+        onActionComplete?.(index, 'approved', res);
       } else {
-        setStatus("error");
+        setStatus('error');
         setResult(res.message);
-        onActionComplete?.(index, "error", res);
+        onActionComplete?.(index, 'error', res);
       }
     } catch (err) {
-      setStatus("error");
-      setResult(err.message || "Unexpected error");
-      onActionComplete?.(index, "error", {
+      setStatus('error');
+      setResult(err.message || 'Unexpected error');
+      onActionComplete?.(index, 'error', {
         success: false,
         message: err.message,
       });
@@ -90,9 +87,9 @@ function CoachActionCard({ action, index, onActionComplete }) {
   }, [action, index, onActionComplete]);
 
   const handleDeny = useCallback(() => {
-    setStatus("denied");
-    setResult("Action skipped");
-    onActionComplete?.(index, "denied", null);
+    setStatus('denied');
+    setResult('Action skipped');
+    onActionComplete?.(index, 'denied', null);
   }, [index, onActionComplete]);
 
   const handleUndo = useCallback(async () => {
@@ -101,16 +98,16 @@ function CoachActionCard({ action, index, onActionComplete }) {
     try {
       const res = await undoAction(rollback);
       if (res.success) {
-        setStatus("denied");
-        setResult("Undone — " + res.message);
+        setStatus('denied');
+        setResult('Undone — ' + res.message);
         setUndoAvailable(false);
         if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-        onActionComplete?.(index, "undone", res);
+        onActionComplete?.(index, 'undone', res);
       } else {
-        setResult((prev) => prev + " (undo failed: " + res.message + ")");
+        setResult((prev) => prev + ' (undo failed: ' + res.message + ')');
       }
     } catch {
-      setResult((prev) => prev + " (undo failed)");
+      setResult((prev) => prev + ' (undo failed)');
     } finally {
       setUndoing(false);
     }
@@ -118,7 +115,7 @@ function CoachActionCard({ action, index, onActionComplete }) {
 
   // Render food details for log_food actions
   const renderFoodDetails = () => {
-    if (action.action !== "log_food" || !action.foods?.length) return null;
+    if (action.action !== 'log_food' || !action.foods?.length) return null;
     return (
       <div className="coach-action__foods">
         {action.foods.map((food, i) => (
@@ -126,9 +123,9 @@ function CoachActionCard({ action, index, onActionComplete }) {
             <span className="coach-action__food-name">{food.name}</span>
             <span className="coach-action__food-macros">
               {Math.round(food.calories)} cal
-              {food.protein ? ` · ${Math.round(food.protein)}g P` : ""}
-              {food.carbs ? ` · ${Math.round(food.carbs)}g C` : ""}
-              {food.fat ? ` · ${Math.round(food.fat)}g F` : ""}
+              {food.protein ? ` · ${Math.round(food.protein)}g P` : ''}
+              {food.carbs ? ` · ${Math.round(food.carbs)}g C` : ''}
+              {food.fat ? ` · ${Math.round(food.fat)}g F` : ''}
             </span>
           </div>
         ))}
@@ -138,17 +135,15 @@ function CoachActionCard({ action, index, onActionComplete }) {
 
   // Render recipe details
   const renderRecipeDetails = () => {
-    if (action.action !== "create_recipe" || !action.recipe) return null;
+    if (action.action !== 'create_recipe' || !action.recipe) return null;
     const r = action.recipe;
     return (
       <div className="coach-action__recipe">
         <div className="coach-action__recipe-meta">
-          {r.category && (
-            <span className="coach-action__tag">{r.category}</span>
-          )}
+          {r.category && <span className="coach-action__tag">{r.category}</span>}
           {r.servings && (
             <span className="coach-action__tag">
-              {r.servings} serving{r.servings !== 1 ? "s" : ""}
+              {r.servings} serving{r.servings !== 1 ? 's' : ''}
             </span>
           )}
         </div>
@@ -172,28 +167,27 @@ function CoachActionCard({ action, index, onActionComplete }) {
 
   // Render settings details
   const renderSettingsDetails = () => {
-    if (action.action !== "update_settings" || !action.settings) return null;
+    if (action.action !== 'update_settings' || !action.settings) return null;
     const s = action.settings;
     const items = [];
     if (s.weight !== undefined)
       items.push({
-        label: "Weight",
-        value: `${s.weight} ${s.weightUnit || "lbs"}`,
+        label: 'Weight',
+        value: `${s.weight} ${s.weightUnit || 'lbs'}`,
       });
     if (s.dailyTarget !== undefined)
-      items.push({ label: "Daily Target", value: `${s.dailyTarget} cal` });
-    if (s.goal !== undefined)
-      items.push({ label: "Goal", value: s.goal.replace(/_/g, " ") });
+      items.push({ label: 'Daily Target', value: `${s.dailyTarget} cal` });
+    if (s.goal !== undefined) items.push({ label: 'Goal', value: s.goal.replace(/_/g, ' ') });
     if (s.activityLevel !== undefined)
       items.push({
-        label: "Activity",
-        value: s.activityLevel.replace(/_/g, " "),
+        label: 'Activity',
+        value: s.activityLevel.replace(/_/g, ' '),
       });
     if (s.macroGoals) {
       const m = s.macroGoals;
       items.push({
-        label: "Macros",
-        value: `P:${m.protein || "–"}g C:${m.carbs || "–"}g F:${m.fat || "–"}g`,
+        label: 'Macros',
+        value: `P:${m.protein || '–'}g C:${m.carbs || '–'}g F:${m.fat || '–'}g`,
       });
     }
     if (items.length === 0) return null;
@@ -228,7 +222,7 @@ function CoachActionCard({ action, index, onActionComplete }) {
       </div>
 
       {/* Details */}
-      {status === "pending" && (
+      {status === 'pending' && (
         <>
           {renderFoodDetails()}
           {renderRecipeDetails()}
@@ -238,7 +232,7 @@ function CoachActionCard({ action, index, onActionComplete }) {
 
       {/* Actions / Status */}
       <AnimatePresence mode="wait">
-        {status === "pending" && (
+        {status === 'pending' && (
           <motion.div
             key="buttons"
             className="coach-action__buttons"
@@ -265,7 +259,7 @@ function CoachActionCard({ action, index, onActionComplete }) {
           </motion.div>
         )}
 
-        {status === "executing" && (
+        {status === 'executing' && (
           <motion.div
             key="executing"
             className="coach-action__status"
@@ -277,27 +271,19 @@ function CoachActionCard({ action, index, onActionComplete }) {
           </motion.div>
         )}
 
-        {(status === "approved" ||
-          status === "error" ||
-          status === "denied") && (
+        {(status === 'approved' || status === 'error' || status === 'denied') && (
           <motion.div
             key="result"
             className={`coach-action__result coach-action__result--${status}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            {status === "approved" && (
-              <Check size={14} className="coach-action__result-icon" />
-            )}
-            {status === "error" && (
-              <AlertCircle size={14} className="coach-action__result-icon" />
-            )}
-            {status === "denied" && (
-              <X size={14} className="coach-action__result-icon" />
-            )}
+            {status === 'approved' && <Check size={14} className="coach-action__result-icon" />}
+            {status === 'error' && <AlertCircle size={14} className="coach-action__result-icon" />}
+            {status === 'denied' && <X size={14} className="coach-action__result-icon" />}
             <span className="coach-action__result-text">{result}</span>
 
-            {status === "approved" && undoAvailable && (
+            {status === 'approved' && undoAvailable && (
               <button
                 className="coach-action__undo-btn"
                 onClick={handleUndo}

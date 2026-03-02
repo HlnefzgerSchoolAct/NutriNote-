@@ -1,6 +1,6 @@
-import React, { useEffect, useState, memo } from "react";
-import { motion } from "framer-motion";
-import "./MacroBar.css";
+import { motion } from 'framer-motion';
+import React, { useEffect, useState, memo } from 'react';
+import './MacroBar.css';
 
 /**
  * Animated Macro Progress Bar
@@ -10,13 +10,13 @@ const MacroBar = ({
   value = 0,
   max = 100,
   label,
-  color = "primary",
-  size = "md",
+  color = 'primary',
+  size = 'md',
   showValue = true,
   showPercentage = false,
-  unit = "g",
+  unit = 'g',
   animated = true,
-  className = "",
+  className = '',
 }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -29,14 +29,14 @@ const MacroBar = ({
 
   // Color mapping
   const colorClasses = {
-    primary: "ds-macro-bar--primary",
-    protein: "ds-macro-bar--protein",
-    carbs: "ds-macro-bar--carbs",
-    fat: "ds-macro-bar--fat",
-    calories: "ds-macro-bar--calories",
-    success: "ds-macro-bar--success",
-    warning: "ds-macro-bar--warning",
-    danger: "ds-macro-bar--danger",
+    primary: 'ds-macro-bar--primary',
+    protein: 'ds-macro-bar--protein',
+    carbs: 'ds-macro-bar--carbs',
+    fat: 'ds-macro-bar--fat',
+    calories: 'ds-macro-bar--calories',
+    success: 'ds-macro-bar--success',
+    warning: 'ds-macro-bar--warning',
+    danger: 'ds-macro-bar--danger',
   };
 
   const displayValue = Math.round(value);
@@ -44,7 +44,7 @@ const MacroBar = ({
 
   return (
     <div
-      className={`ds-macro-bar ${colorClasses[color] || ""} ds-macro-bar--${size} ${isOverLimit ? "ds-macro-bar--over" : ""} ${className}`}
+      className={`ds-macro-bar ${colorClasses[color] || ''} ds-macro-bar--${size} ${isOverLimit ? 'ds-macro-bar--over' : ''} ${className}`}
       role="progressbar"
       aria-valuenow={value}
       aria-valuemin={0}
@@ -63,9 +63,7 @@ const MacroBar = ({
               {unit}
             </span>
             {showPercentage && (
-              <span className="ds-macro-bar__percentage">
-                ({Math.round(percentage)}%)
-              </span>
+              <span className="ds-macro-bar__percentage">({Math.round(percentage)}%)</span>
             )}
           </span>
         )}
@@ -108,9 +106,7 @@ const MacroBar = ({
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <span className="ds-macro-bar__overage-text">
-              +{Math.round(value - max)}
-            </span>
+            <span className="ds-macro-bar__overage-text">+{Math.round(value - max)}</span>
           </motion.div>
         )}
       </div>
@@ -130,27 +126,22 @@ export const MacroBarGroup = ({
   carbsTarget,
   fatTarget,
   showLabels = true,
-  className = "",
+  className = '',
 }) => (
   <div className={`ds-macro-bar-group ${className}`}>
     <MacroBar
       value={protein}
       max={proteinTarget}
-      label={showLabels ? "Protein" : undefined}
+      label={showLabels ? 'Protein' : undefined}
       color="protein"
     />
     <MacroBar
       value={carbs}
       max={carbsTarget}
-      label={showLabels ? "Carbs" : undefined}
+      label={showLabels ? 'Carbs' : undefined}
       color="carbs"
     />
-    <MacroBar
-      value={fat}
-      max={fatTarget}
-      label={showLabels ? "Fat" : undefined}
-      color="fat"
-    />
+    <MacroBar value={fat} max={fatTarget} label={showLabels ? 'Fat' : undefined} color="fat" />
   </div>
 );
 
@@ -163,24 +154,20 @@ export const CompactMacros = memo(function CompactMacros({
   carbs,
   fat,
   calories,
-  className = "",
+  className = '',
 }) {
   return (
     <div className={`ds-compact-macros ${className}`}>
       {calories !== undefined && (
         <span className="ds-compact-macros__item ds-compact-macros__item--calories">
-          <span className="ds-compact-macros__value">
-            {Math.round(calories)}
-          </span>
+          <span className="ds-compact-macros__value">{Math.round(calories)}</span>
           <span className="ds-compact-macros__unit">cal</span>
         </span>
       )}
       {protein !== undefined && (
         <span className="ds-compact-macros__item ds-compact-macros__item--protein">
           <span className="ds-compact-macros__dot" />
-          <span className="ds-compact-macros__value">
-            {Math.round(protein)}g
-          </span>
+          <span className="ds-compact-macros__value">{Math.round(protein)}g</span>
           <span className="ds-compact-macros__label">P</span>
         </span>
       )}

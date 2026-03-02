@@ -11,15 +11,16 @@ import React, {
   useRef,
   useCallback,
   useMemo,
-} from "react";
+} from 'react';
+
 import {
   FocusTrap as FocusTrapUtil,
   announce,
   RovingTabIndex,
   generateId,
   prefersReducedMotion,
-} from "../../utils/a11y";
-import "../../styles/a11y.css";
+} from '../../utils/a11y';
+import '../../styles/a11y.css';
 
 /**
  * Accessibility Context - For app-wide a11y settings
@@ -51,50 +52,50 @@ export const A11yProvider = ({ children }) => {
   useEffect(() => {
     setReducedMotion(prefersReducedMotion());
 
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const contrastQuery = window.matchMedia("(prefers-contrast: more)");
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const contrastQuery = window.matchMedia('(prefers-contrast: more)');
 
     const handleMotionChange = (e) => setReducedMotion(e.matches);
     const handleContrastChange = (e) => setHighContrast(e.matches);
 
-    motionQuery.addEventListener("change", handleMotionChange);
-    contrastQuery.addEventListener("change", handleContrastChange);
+    motionQuery.addEventListener('change', handleMotionChange);
+    contrastQuery.addEventListener('change', handleContrastChange);
 
     setHighContrast(contrastQuery.matches);
 
     return () => {
-      motionQuery.removeEventListener("change", handleMotionChange);
-      contrastQuery.removeEventListener("change", handleContrastChange);
+      motionQuery.removeEventListener('change', handleMotionChange);
+      contrastQuery.removeEventListener('change', handleContrastChange);
     };
   }, []);
 
   // Detect keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Tab") {
+      if (e.key === 'Tab') {
         setKeyboardNav(true);
-        document.body.classList.add("m3-keyboard-nav");
+        document.body.classList.add('m3-keyboard-nav');
       }
     };
 
     const handleMouseDown = () => {
       setKeyboardNav(false);
-      document.body.classList.remove("m3-keyboard-nav");
+      document.body.classList.remove('m3-keyboard-nav');
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousedown', handleMouseDown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousedown', handleMouseDown);
     };
   }, []);
 
   // Apply body classes
   useEffect(() => {
-    document.body.classList.toggle("m3-large-text", largeText);
-    document.body.classList.toggle("m3-underlined-links", underlineLinks);
+    document.body.classList.toggle('m3-large-text', largeText);
+    document.body.classList.toggle('m3-underlined-links', underlineLinks);
   }, [largeText, underlineLinks]);
 
   const contextValue = useMemo(
@@ -108,12 +109,10 @@ export const A11yProvider = ({ children }) => {
       setUnderlineLinks,
       announce,
     }),
-    [reducedMotion, highContrast, largeText, underlineLinks, keyboardNav],
+    [reducedMotion, highContrast, largeText, underlineLinks, keyboardNav]
   );
 
-  return (
-    <A11yContext.Provider value={contextValue}>{children}</A11yContext.Provider>
-  );
+  return <A11yContext.Provider value={contextValue}>{children}</A11yContext.Provider>;
 };
 
 /**
@@ -121,8 +120,8 @@ export const A11yProvider = ({ children }) => {
  */
 export const SkipLinks = ({
   links = [
-    { id: "main-content", label: "Skip to main content" },
-    { id: "main-navigation", label: "Skip to navigation" },
+    { id: 'main-content', label: 'Skip to main content' },
+    { id: 'main-navigation', label: 'Skip to navigation' },
   ],
 }) => {
   return (
@@ -142,13 +141,11 @@ export const SkipLinks = ({
  */
 export const VisuallyHidden = ({
   children,
-  as: Component = "span",
+  as: Component = 'span',
   focusable = false,
   ...props
 }) => {
-  const className = focusable
-    ? "m3-visually-hidden-focusable"
-    : "m3-visually-hidden";
+  const className = focusable ? 'm3-visually-hidden-focusable' : 'm3-visually-hidden';
 
   return (
     <Component className={className} {...props}>
@@ -160,9 +157,7 @@ export const VisuallyHidden = ({
 /**
  * Screen Reader Only Content
  */
-export const SrOnly = ({ children }) => (
-  <span className="m3-sr-only">{children}</span>
-);
+export const SrOnly = ({ children }) => <span className="m3-sr-only">{children}</span>;
 
 /**
  * Live Region Component
@@ -170,9 +165,9 @@ export const SrOnly = ({ children }) => (
  */
 export const LiveRegion = ({
   children,
-  politeness = "polite",
+  politeness = 'polite',
   atomic = true,
-  relevant = "additions text",
+  relevant = 'additions text',
 }) => {
   return (
     <div
@@ -190,7 +185,7 @@ export const LiveRegion = ({
  * Use Live Announcer Hook
  */
 export const useAnnounce = () => {
-  const announceMessage = useCallback((message, priority = "polite") => {
+  const announceMessage = useCallback((message, priority = 'polite') => {
     announce(message, priority);
   }, []);
 
@@ -277,13 +272,12 @@ export const useRovingTabIndex = (options = {}) => {
  */
 export const TouchTarget = ({
   children,
-  size = "default",
-  as: Component = "div",
-  className = "",
+  size = 'default',
+  as: Component = 'div',
+  className = '',
   ...props
 }) => {
-  const sizeClass =
-    size === "small" ? "m3-touch-target-small" : "m3-touch-target";
+  const sizeClass = size === 'small' ? 'm3-touch-target-small' : 'm3-touch-target';
 
   return (
     <Component className={`${sizeClass} ${className}`} {...props}>
@@ -296,16 +290,11 @@ export const TouchTarget = ({
  * Error Message Component
  * Properly associated error messages for form fields
  */
-export const ErrorMessage = ({ id, children, className = "" }) => {
+export const ErrorMessage = ({ id, children, className = '' }) => {
   if (!children) return null;
 
   return (
-    <div
-      id={id}
-      className={`m3-error-message ${className}`}
-      role="alert"
-      aria-live="polite"
-    >
+    <div id={id} className={`m3-error-message ${className}`} role="alert" aria-live="polite">
       {children}
     </div>
   );
@@ -314,7 +303,7 @@ export const ErrorMessage = ({ id, children, className = "" }) => {
 /**
  * Required Indicator Component
  */
-export const Required = ({ label = "required" }) => (
+export const Required = ({ label = 'required' }) => (
   <span className="m3-required" aria-label={label}>
     *
   </span>
@@ -323,19 +312,19 @@ export const Required = ({ label = "required" }) => (
 /**
  * Status Message Component
  */
-export const StatusMessage = ({ type = "info", children, className = "" }) => {
+export const StatusMessage = ({ type = 'info', children, className = '' }) => {
   const roleMap = {
-    success: "status",
-    error: "alert",
-    warning: "alert",
-    info: "status",
+    success: 'status',
+    error: 'alert',
+    warning: 'alert',
+    info: 'status',
   };
 
   return (
     <div
       className={`m3-status m3-status--${type} ${className}`}
       role={roleMap[type]}
-      aria-live={type === "error" ? "assertive" : "polite"}
+      aria-live={type === 'error' ? 'assertive' : 'polite'}
     >
       {children}
     </div>
@@ -345,13 +334,9 @@ export const StatusMessage = ({ type = "info", children, className = "" }) => {
 /**
  * Loading Indicator Component
  */
-export const LoadingIndicator = ({ label = "Loading...", className = "" }) => {
+export const LoadingIndicator = ({ label = 'Loading...', className = '' }) => {
   return (
-    <div
-      className={`m3-loading-indicator ${className}`}
-      role="status"
-      aria-live="polite"
-    >
+    <div className={`m3-loading-indicator ${className}`} role="status" aria-live="polite">
       <div className="m3-loading-spinner" aria-hidden="true" />
       <VisuallyHidden>{label}</VisuallyHidden>
     </div>
@@ -362,12 +347,7 @@ export const LoadingIndicator = ({ label = "Loading...", className = "" }) => {
  * Accessible Label Component
  * For associating labels with form controls
  */
-export const Label = ({
-  htmlFor,
-  required = false,
-  children,
-  className = "",
-}) => {
+export const Label = ({ htmlFor, required = false, children, className = '' }) => {
   return (
     <label htmlFor={htmlFor} className={className}>
       {children}
@@ -380,20 +360,15 @@ export const Label = ({
  * Landmark Region Component
  */
 export const Landmark = ({
-  as: Component = "section",
+  as: Component = 'section',
   role,
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledby,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledby,
   children,
   ...props
 }) => {
   return (
-    <Component
-      role={role}
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledby}
-      {...props}
-    >
+    <Component role={role} aria-label={ariaLabel} aria-labelledby={ariaLabelledby} {...props}>
       {children}
     </Component>
   );
@@ -411,7 +386,7 @@ export const Main = ({ children, ...props }) => (
 /**
  * Navigation Landmark
  */
-export const Nav = ({ label = "Main navigation", children, ...props }) => (
+export const Nav = ({ label = 'Main navigation', children, ...props }) => (
   <nav id="main-navigation" aria-label={label} {...props}>
     {children}
   </nav>
@@ -420,7 +395,7 @@ export const Nav = ({ label = "Main navigation", children, ...props }) => (
 /**
  * Use unique ID hook
  */
-export const useId = (prefix = "a11y") => {
+export const useId = (prefix = 'a11y') => {
   const [id] = useState(() => generateId(prefix));
   return id;
 };
@@ -434,11 +409,11 @@ export const useReducedMotion = () => {
   useEffect(() => {
     setReduced(prefersReducedMotion());
 
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
     const handler = (e) => setReduced(e.matches);
 
-    query.addEventListener("change", handler);
-    return () => query.removeEventListener("change", handler);
+    query.addEventListener('change', handler);
+    return () => query.removeEventListener('change', handler);
   }, []);
 
   return reduced;

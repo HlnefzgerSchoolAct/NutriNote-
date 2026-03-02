@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-  loadWeightLog,
-  addWeightEntry,
-  getWeightTrend,
-} from "../utils/localStorage";
-import "./WeightTracker.css";
+import React, { useState, useEffect } from 'react';
+
+import { loadWeightLog, addWeightEntry, getWeightTrend } from '../utils/localStorage';
+import './WeightTracker.css';
 
 function WeightTracker({ userProfile }) {
   const [weightLog, setWeightLog] = useState([]);
-  const [newWeight, setNewWeight] = useState("");
+  const [newWeight, setNewWeight] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [trend, setTrend] = useState(null);
 
@@ -25,7 +22,7 @@ function WeightTracker({ userProfile }) {
       addWeightEntry(weight);
       setWeightLog(loadWeightLog());
       setTrend(getWeightTrend());
-      setNewWeight("");
+      setNewWeight('');
       setShowForm(false);
     }
   };
@@ -37,18 +34,18 @@ function WeightTracker({ userProfile }) {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
   const getTrendIcon = () => {
-    if (!trend || trend.change === 0) return "→";
-    return trend.change > 0 ? "↑" : "↓";
+    if (!trend || trend.change === 0) return '→';
+    return trend.change > 0 ? '↑' : '↓';
   };
 
   const getTrendClass = () => {
-    if (!trend || trend.change === 0) return "neutral";
+    if (!trend || trend.change === 0) return 'neutral';
     // For weight loss goals, down is good
-    return trend.change < 0 ? "positive" : "negative";
+    return trend.change < 0 ? 'positive' : 'negative';
   };
 
   const latestWeight = getLatestWeight();
@@ -61,8 +58,7 @@ function WeightTracker({ userProfile }) {
           <h3>Weight Tracker</h3>
           {trend && trend.change !== 0 && (
             <span className={`weight-trend ${getTrendClass()}`}>
-              {getTrendIcon()} {Math.abs(trend.change).toFixed(1)} lbs (
-              {trend.period})
+              {getTrendIcon()} {Math.abs(trend.change).toFixed(1)} lbs ({trend.period})
             </span>
           )}
         </div>
@@ -71,7 +67,7 @@ function WeightTracker({ userProfile }) {
           onClick={() => setShowForm(!showForm)}
           aria-label="Log weight"
         >
-          {showForm ? "✕" : "+"}
+          {showForm ? '✕' : '+'}
         </button>
       </div>
 
@@ -117,25 +113,23 @@ function WeightTracker({ userProfile }) {
           <div className="weight-entries">
             {recentEntries.map((entry, index) => (
               <div key={entry.date} className="weight-entry">
-                <span className="weight-entry-date">
-                  {formatDate(entry.date)}
-                </span>
+                <span className="weight-entry-date">{formatDate(entry.date)}</span>
                 <span className="weight-entry-value">{entry.weight} lbs</span>
                 {index < recentEntries.length - 1 && (
                   <span
                     className={`weight-entry-change ${
                       entry.weight > recentEntries[index + 1].weight
-                        ? "up"
+                        ? 'up'
                         : entry.weight < recentEntries[index + 1].weight
-                          ? "down"
-                          : ""
+                          ? 'down'
+                          : ''
                     }`}
                   >
                     {entry.weight > recentEntries[index + 1].weight
-                      ? "↑"
+                      ? '↑'
                       : entry.weight < recentEntries[index + 1].weight
-                        ? "↓"
-                        : ""}
+                        ? '↓'
+                        : ''}
                   </span>
                 )}
               </div>
@@ -145,9 +139,7 @@ function WeightTracker({ userProfile }) {
       )}
 
       {weightLog.length === 0 && (
-        <p className="weight-empty">
-          Track your weight to see your progress over time
-        </p>
+        <p className="weight-empty">Track your weight to see your progress over time</p>
       )}
     </div>
   );

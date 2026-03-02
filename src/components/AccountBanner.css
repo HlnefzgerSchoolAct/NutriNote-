@@ -10,9 +10,9 @@
 }
 
 .account-banner__logo {
-  height: 44px;
+  height: 88px;
   width: auto;
-  max-width: 200px;
+  max-width: 400px;
   object-fit: contain;
   flex-shrink: 0;
 }

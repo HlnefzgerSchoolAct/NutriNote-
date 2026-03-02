@@ -46,7 +46,7 @@
 
 /* Divider between buttons */
 .m3-segmented-button:not(:last-child)::after {
-  content: "";
+  content: '';
   position: absolute;
   right: 0;
   top: 8px;
@@ -58,7 +58,7 @@
 
 /* State layer */
 .m3-segmented-button::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-color: currentColor;
@@ -149,8 +149,7 @@
 }
 
 /* Hide icon when check is shown */
-.m3-segmented-button--selected.m3-segmented-button--has-icon
-  .m3-segmented-button__icon {
+.m3-segmented-button--selected.m3-segmented-button--has-icon .m3-segmented-button__icon {
   display: none;
 }
 
@@ -222,9 +221,7 @@
   height: 16px;
 }
 
-.m3-segmented-button-group--compact
-  .m3-segmented-button--selected
-  .m3-segmented-button__check {
+.m3-segmented-button-group--compact .m3-segmented-button--selected .m3-segmented-button__check {
   width: 16px;
 }
 

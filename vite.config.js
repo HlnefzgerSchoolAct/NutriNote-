@@ -1,12 +1,24 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import path from 'path';
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@utils': path.resolve(__dirname, './src/utils'),
+      '@services': path.resolve(__dirname, './src/services'),
+      '@contexts': path.resolve(__dirname, './src/contexts'),
+      '@constants': path.resolve(__dirname, './src/constants'),
+      '@types': path.resolve(__dirname, './src/types'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@pages': path.resolve(__dirname, './src/pages'),
+      '@styles': path.resolve(__dirname, './src/styles'),
+    },
+  },
   build: {
     outDir: 'build',
     sourcemap: true,
@@ -28,10 +40,11 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     'process.env.PUBLIC_URL': JSON.stringify(''),
   },
-  // Treat .js files as JSX (CRA compatibility)
+  // Treat .js files as JSX (CRA compatibility) + support .ts/.tsx
+  // Use 'tsx' loader for all source files — it's a superset that handles JS, JSX, TS, and TSX
   esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.js$/,
+    loader: 'tsx',
+    include: /src\/.*\.[jt]sx?$/,
     exclude: [],
   },
   optimizeDeps: {

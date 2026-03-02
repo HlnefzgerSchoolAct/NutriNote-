@@ -1,6 +1,6 @@
-import React, { forwardRef, useMemo } from "react";
-import { motion } from "framer-motion";
-import "./Chart.css";
+import { motion } from 'framer-motion';
+import React, { forwardRef, useMemo } from 'react';
+import './Chart.css';
 
 /**
  * Chart Container Component
@@ -12,34 +12,34 @@ export const ChartContainer = forwardRef(
       title,
       subtitle,
       actions,
-      variant = "default",
+      variant = 'default',
       loading = false,
       empty = false,
-      emptyText = "No data available",
-      size = "default",
-      className = "",
+      emptyText = 'No data available',
+      size = 'default',
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     const containerClasses = [
-      "m3-chart",
-      variant === "transparent" && "m3-chart--transparent",
-      variant === "bordered" && "m3-chart--bordered",
-      loading && "m3-chart--loading",
-      empty && "m3-chart--empty",
+      'm3-chart',
+      variant === 'transparent' && 'm3-chart--transparent',
+      variant === 'bordered' && 'm3-chart--bordered',
+      loading && 'm3-chart--loading',
+      empty && 'm3-chart--empty',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const bodyClasses = [
-      "m3-chart__body",
-      size === "small" && "m3-chart__body--small",
-      size === "large" && "m3-chart__body--large",
+      'm3-chart__body',
+      size === 'small' && 'm3-chart__body--small',
+      size === 'large' && 'm3-chart__body--large',
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     if (empty) {
       return (
@@ -63,10 +63,10 @@ export const ChartContainer = forwardRef(
         <div className={bodyClasses}>{children}</div>
       </div>
     );
-  },
+  }
 );
 
-ChartContainer.displayName = "ChartContainer";
+ChartContainer.displayName = 'ChartContainer';
 
 /**
  * Bar Chart Component
@@ -78,18 +78,15 @@ export const BarChart = ({
   animate = true,
   color,
   formatValue = (v) => v,
-  className = "",
+  className = '',
   ...props
 }) => {
-  const maxValue = useMemo(
-    () => Math.max(...data.map((d) => d.value), 1),
-    [data],
-  );
+  const maxValue = useMemo(() => Math.max(...data.map((d) => d.value), 1), [data]);
 
   return (
     <div
       className={`m3-bar-chart ${className}`}
-      style={{ "--chart-height": `${height}px` }}
+      style={{ '--chart-height': `${height}px` }}
       {...props}
     >
       {data.map((item, index) => {
@@ -100,11 +97,11 @@ export const BarChart = ({
           <div key={item.label || index} className="m3-bar">
             <div className="m3-bar__wrapper">
               <motion.div
-                className={`m3-bar__fill ${animate ? "m3-bar__fill--animated" : ""}`}
+                className={`m3-bar__fill ${animate ? 'm3-bar__fill--animated' : ''}`}
                 style={{
-                  "--bar-color": barColor,
-                  "--bar-height": `${barHeight}%`,
-                  "--animation-delay": `${index * 50}ms`,
+                  '--bar-color': barColor,
+                  '--bar-height': `${barHeight}%`,
+                  '--animation-delay': `${index * 50}ms`,
                   height: animate ? undefined : `${barHeight}%`,
                 }}
                 initial={animate ? { height: 0 } : false}
@@ -115,11 +112,7 @@ export const BarChart = ({
                   ease: [0.4, 0, 0.2, 1],
                 }}
               >
-                {showValues && (
-                  <span className="m3-bar__value">
-                    {formatValue(item.value)}
-                  </span>
-                )}
+                {showValues && <span className="m3-bar__value">{formatValue(item.value)}</span>}
               </motion.div>
             </div>
             <span className="m3-bar__label">{item.label}</span>
@@ -140,16 +133,13 @@ export const DonutChart = ({
   centerValue,
   centerLabel,
   animate = true,
-  className = "",
+  className = '',
   ...props
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
-  const total = useMemo(
-    () => data.reduce((sum, item) => sum + item.value, 0),
-    [data],
-  );
+  const total = useMemo(() => data.reduce((sum, item) => sum + item.value, 0), [data]);
 
   // Calculate segments
   const segments = useMemo(() => {
@@ -208,9 +198,7 @@ export const DonutChart = ({
           {centerValue !== undefined && (
             <span className="m3-donut-chart__center-value">{centerValue}</span>
           )}
-          {centerLabel && (
-            <span className="m3-donut-chart__center-label">{centerLabel}</span>
-          )}
+          {centerLabel && <span className="m3-donut-chart__center-label">{centerLabel}</span>}
         </div>
       )}
     </div>
@@ -225,12 +213,12 @@ export const Sparkline = ({
   width = 80,
   height = 24,
   strokeWidth = 2,
-  variant = "default",
-  className = "",
+  variant = 'default',
+  className = '',
   ...props
 }) => {
   const path = useMemo(() => {
-    if (data.length < 2) return "";
+    if (data.length < 2) return '';
 
     const min = Math.min(...data);
     const max = Math.max(...data);
@@ -238,23 +226,20 @@ export const Sparkline = ({
 
     const points = data.map((value, index) => {
       const x = (index / (data.length - 1)) * width;
-      const y =
-        height -
-        ((value - min) / range) * (height - strokeWidth * 2) -
-        strokeWidth;
+      const y = height - ((value - min) / range) * (height - strokeWidth * 2) - strokeWidth;
       return `${x},${y}`;
     });
 
-    return `M ${points.join(" L ")}`;
+    return `M ${points.join(' L ')}`;
   }, [data, width, height, strokeWidth]);
 
   const sparklineClasses = [
-    "m3-sparkline",
-    variant !== "default" && `m3-sparkline--${variant}`,
+    'm3-sparkline',
+    variant !== 'default' && `m3-sparkline--${variant}`,
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <svg className={sparklineClasses} width={width} height={height} {...props}>
@@ -275,7 +260,7 @@ export const M3ProgressRing = ({
   showLabel = false,
   label,
   animate = true,
-  className = "",
+  className = '',
   ...props
 }) => {
   const radius = (size - strokeWidth) / 2;
@@ -284,11 +269,7 @@ export const M3ProgressRing = ({
   const offset = circumference - percentage * circumference;
 
   return (
-    <div
-      className={`m3-progress-ring ${className}`}
-      style={{ "--ring-color": color }}
-      {...props}
-    >
+    <div className={`m3-progress-ring ${className}`} style={{ '--ring-color': color }} {...props}>
       <svg
         className="m3-progress-ring__svg"
         width={size}
@@ -332,14 +313,11 @@ export const MultiRingProgress = ({
   strokeWidth = 6,
   gap = 4,
   animate = true,
-  className = "",
+  className = '',
   ...props
 }) => {
   return (
-    <div
-      className={`m3-progress-ring m3-progress-ring--multi ${className}`}
-      {...props}
-    >
+    <div className={`m3-progress-ring m3-progress-ring--multi ${className}`} {...props}>
       <svg
         className="m3-progress-ring__svg"
         width={size}
@@ -390,27 +368,24 @@ export const MultiRingProgress = ({
  */
 export const ChartLegend = ({
   items = [],
-  direction = "horizontal",
+  direction = 'horizontal',
   showValues = false,
-  className = "",
+  className = '',
   ...props
 }) => {
   const legendClasses = [
-    "m3-chart__legend",
-    direction === "vertical" && "m3-chart__legend--vertical",
+    'm3-chart__legend',
+    direction === 'vertical' && 'm3-chart__legend--vertical',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={legendClasses} {...props}>
       {items.map((item, index) => (
         <div key={item.label || index} className="m3-chart__legend-item">
-          <span
-            className="m3-chart__legend-color"
-            style={{ backgroundColor: item.color }}
-          />
+          <span className="m3-chart__legend-color" style={{ backgroundColor: item.color }} />
           <span className="m3-chart__legend-label">{item.label}</span>
           {showValues && item.value !== undefined && (
             <span className="m3-chart__legend-value">{item.value}</span>
@@ -431,27 +406,27 @@ export const MacroRings = ({
   size = 100,
   strokeWidth = 8,
   animate = true,
-  className = "",
+  className = '',
   ...props
 }) => {
   const rings = [
     {
-      label: "Protein",
+      label: 'Protein',
       value: protein.value,
       max: protein.goal,
-      color: "var(--m3-macro-protein, #EF5350)",
+      color: 'var(--m3-macro-protein, #EF5350)',
     },
     {
-      label: "Carbs",
+      label: 'Carbs',
       value: carbs.value,
       max: carbs.goal,
-      color: "var(--m3-macro-carbs, #42A5F5)",
+      color: 'var(--m3-macro-carbs, #42A5F5)',
     },
     {
-      label: "Fat",
+      label: 'Fat',
       value: fat.value,
       max: fat.goal,
-      color: "var(--m3-macro-fat, #FFCA28)",
+      color: 'var(--m3-macro-fat, #FFCA28)',
     },
   ];
 
@@ -477,10 +452,10 @@ export const WeekChart = ({
   height = 120,
   showGoalLine = true,
   animate = true,
-  className = "",
+  className = '',
   ...props
 }) => {
-  const days = ["M", "T", "W", "T", "F", "S", "S"];
+  const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   const maxValue = Math.max(...data.map((d) => d.value || 0), goal || 1);
 
   // Ensure we have 7 days of data
@@ -492,25 +467,21 @@ export const WeekChart = ({
   }));
 
   return (
-    <div
-      className={`m3-chart ${className}`}
-      style={{ padding: "12px" }}
-      {...props}
-    >
+    <div className={`m3-chart ${className}`} style={{ padding: '12px' }} {...props}>
       <div
         className="m3-bar-chart"
-        style={{ "--chart-height": `${height}px`, position: "relative" }}
+        style={{ '--chart-height': `${height}px`, position: 'relative' }}
       >
         {/* Goal line */}
         {showGoalLine && goal && (
           <div
             style={{
-              position: "absolute",
+              position: 'absolute',
               left: 0,
               right: 0,
               bottom: `${(goal / maxValue) * 100}%`,
-              borderTop: "2px dashed var(--m3-outline-variant)",
-              pointerEvents: "none",
+              borderTop: '2px dashed var(--m3-outline-variant)',
+              pointerEvents: 'none',
               zIndex: 1,
             }}
           />
@@ -525,9 +496,9 @@ export const WeekChart = ({
                 <motion.div
                   className="m3-bar__fill"
                   style={{
-                    "--bar-color": item.isToday
-                      ? "var(--m3-primary)"
-                      : item.color || "var(--m3-primary-container)",
+                    '--bar-color': item.isToday
+                      ? 'var(--m3-primary)'
+                      : item.color || 'var(--m3-primary-container)',
                     opacity: item.isToday ? 1 : 0.6,
                   }}
                   initial={animate ? { height: 0 } : false}
@@ -543,7 +514,7 @@ export const WeekChart = ({
                 className="m3-bar__label"
                 style={{
                   fontWeight: item.isToday ? 600 : 400,
-                  color: item.isToday ? "var(--m3-primary)" : undefined,
+                  color: item.isToday ? 'var(--m3-primary)' : undefined,
                 }}
               >
                 {item.label}

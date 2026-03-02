@@ -10,6 +10,14 @@
     var(--md-sys-color-tertiary-container) 0%,
     var(--md-sys-color-secondary-container) 100%
   );
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.streak-banner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .streak-banner:focus-visible {
@@ -22,16 +30,59 @@
   0%,
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
   50% {
     opacity: 0.6;
-    transform: scale(0.9);
+    transform: scale(0.85) rotate(15deg);
   }
 }
 
 .animate-sparkle {
   animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Recent food item hover */
+.home-recent-food {
+  transition:
+    background 200ms ease,
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+.home-recent-food:hover {
+  background: var(--m3-surface-container-high, #ece6f0) !important;
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.home-recent-food:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Quick action buttons grid hover */
+.home-quick-action {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+.home-quick-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Guidance card pulse on appear */
+@keyframes guidance-appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.guidance-card {
+  animation: guidance-appear 400ms ease both;
 }
 
 /* Tabular nums helper */
@@ -49,7 +100,7 @@
 
 /* ===== Dark mode streak banner ===== */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .streak-banner {
+  :root:not([data-theme='light']) .streak-banner {
     background: linear-gradient(
       135deg,
       color-mix(in srgb, var(--md-sys-color-tertiary-container) 30%, transparent) 0%,
@@ -58,7 +109,7 @@
   }
 }
 
-[data-theme="dark"] .streak-banner {
+[data-theme='dark'] .streak-banner {
   background: linear-gradient(
     135deg,
     color-mix(in srgb, var(--md-sys-color-tertiary-container) 30%, transparent) 0%,
@@ -69,6 +120,18 @@
 /* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   .animate-sparkle {
+    animation: none;
+  }
+  .streak-banner {
+    transition-duration: 0.01ms !important;
+  }
+  .home-recent-food {
+    transition-duration: 0.01ms !important;
+  }
+  .home-quick-action {
+    transition-duration: 0.01ms !important;
+  }
+  .guidance-card {
     animation: none;
   }
 }

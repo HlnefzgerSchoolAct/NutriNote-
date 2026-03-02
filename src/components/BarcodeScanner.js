@@ -1,19 +1,20 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import { BrowserMultiFormatReader } from "@zxing/browser";
-import { X, Flashlight, FlashlightOff, Camera, RefreshCw } from "lucide-react";
-import { lookupBarcode, calculateNutrition } from "../services/barcodeService";
-import devLog from "../utils/devLog";
-import "./BarcodeScanner.css";
+import { BrowserMultiFormatReader } from '@zxing/browser';
+import { X, Flashlight, FlashlightOff, Camera, RefreshCw } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+
+import { lookupBarcode, calculateNutrition } from '../services/barcodeService';
+import devLog from '../utils/devLog';
+import './BarcodeScanner.css';
 
 function BarcodeScanner({ onAddFood, onSwitchToAI }) {
-  const [mode, setMode] = useState("idle"); // idle, scan, serving, manual
+  const [mode, setMode] = useState('idle'); // idle, scan, serving, manual
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [product, setProduct] = useState(null);
-  const [manualBarcode, setManualBarcode] = useState("");
-  const [quantity, setQuantity] = useState("1");
-  const [unit, setUnit] = useState("serving");
-  const [cameraError, setCameraError] = useState("");
+  const [manualBarcode, setManualBarcode] = useState('');
+  const [quantity, setQuantity] = useState('1');
+  const [unit, setUnit] = useState('serving');
+  const [cameraError, setCameraError] = useState('');
   const [torchOn, setTorchOn] = useState(false);
   const [torchSupported, setTorchSupported] = useState(false);
 
@@ -30,7 +31,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
         // but setting to null prevents further decode callbacks
         codeReaderRef.current = null;
       } catch (e) {
-        devLog.warn("Error stopping barcode reader:", e);
+        devLog.warn('Error stopping barcode reader:', e);
       }
     }
     if (streamRef.current) {
@@ -49,16 +50,16 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
     async (barcode) => {
       stopCamera();
       setLoading(true);
-      setError("");
+      setError('');
 
       try {
         const productData = await lookupBarcode(barcode);
         setProduct(productData);
-        setMode("serving");
+        setMode('serving');
 
         if (productData.servingQuantity) {
-          setQuantity("1");
-          setUnit("serving");
+          setQuantity('1');
+          setUnit('serving');
         }
       } catch (err) {
         setError(err.message);
@@ -67,19 +68,19 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
         setLoading(false);
       }
     },
-    [stopCamera],
+    [stopCamera]
   );
 
   const startCamera = useCallback(async () => {
-    setCameraError("");
-    setError("");
-    setMode("scan");
+    setCameraError('');
+    setError('');
+    setMode('scan');
 
     try {
       // Enhanced camera constraints for better focus and quality
       const constraints = {
         video: {
-          facingMode: { ideal: "environment" },
+          facingMode: { ideal: 'environment' },
           width: { ideal: 1920, min: 1280 },
           height: { ideal: 1080, min: 720 },
         },
@@ -102,16 +103,13 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
         }
 
         // Apply continuous autofocus if supported
-        if (
-          capabilities.focusMode &&
-          capabilities.focusMode.includes("continuous")
-        ) {
+        if (capabilities.focusMode && capabilities.focusMode.includes('continuous')) {
           try {
             await videoTrack.applyConstraints({
-              advanced: [{ focusMode: "continuous" }],
+              advanced: [{ focusMode: 'continuous' }],
             });
           } catch (e) {
-            devLog.log("Continuous autofocus not applied:", e);
+            devLog.log('Continuous autofocus not applied:', e);
           }
         }
       }
@@ -125,29 +123,25 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       codeReaderRef.current = new BrowserMultiFormatReader();
 
       // Start continuous scanning
-      codeReaderRef.current.decodeFromVideoDevice(
-        undefined,
-        videoRef.current,
-        (result, err) => {
-          if (result) {
-            handleBarcodeDetected(result.getText());
-          }
-        },
-      );
+      codeReaderRef.current.decodeFromVideoDevice(undefined, videoRef.current, (result, err) => {
+        if (result) {
+          handleBarcodeDetected(result.getText());
+        }
+      });
     } catch (err) {
-      devLog.error("Camera access error:", err);
+      devLog.error('Camera access error:', err);
 
-      if (err.name === "NotAllowedError") {
+      if (err.name === 'NotAllowedError') {
         setCameraError(
-          "Camera access denied. Please allow camera access in your browser settings.",
+          'Camera access denied. Please allow camera access in your browser settings.'
         );
-      } else if (err.name === "NotFoundError") {
-        setCameraError("No camera found on this device.");
+      } else if (err.name === 'NotFoundError') {
+        setCameraError('No camera found on this device.');
       } else {
-        setCameraError("Could not access camera. Please try again.");
+        setCameraError('Could not access camera. Please try again.');
       }
 
-      setMode("manual");
+      setMode('manual');
     }
   }, [handleBarcodeDetected]);
 
@@ -160,7 +154,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       });
       setTorchOn(!torchOn);
     } catch (e) {
-      devLog.warn("Torch control failed:", e);
+      devLog.warn('Torch control failed:', e);
     }
   };
 
@@ -175,7 +169,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
     e.preventDefault();
 
     if (!manualBarcode.trim()) {
-      setError("Please enter a barcode");
+      setError('Please enter a barcode');
       return;
     }
 
@@ -189,12 +183,10 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       product.nutritionPer100g,
       parseFloat(quantity),
       unit,
-      product.servingQuantity || 100,
+      product.servingQuantity || 100
     );
 
-    const displayName = product.brand
-      ? `${product.name} (${product.brand})`
-      : product.name;
+    const displayName = product.brand ? `${product.name} (${product.brand})` : product.name;
 
     const foodEntry = {
       id: Date.now(),
@@ -212,33 +204,33 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
 
     // Reset state
     setProduct(null);
-    setMode("idle");
-    setQuantity("1");
-    setUnit("serving");
-    setError("");
-    setManualBarcode("");
+    setMode('idle');
+    setQuantity('1');
+    setUnit('serving');
+    setError('');
+    setManualBarcode('');
   };
 
   const handleTryAIEstimator = () => {
     stopCamera();
-    setMode("idle");
+    setMode('idle');
     if (onSwitchToAI) {
-      onSwitchToAI(product?.name || "");
+      onSwitchToAI(product?.name || '');
     }
   };
 
   const handleScanAgain = () => {
     setProduct(null);
-    setError("");
-    setManualBarcode("");
+    setError('');
+    setManualBarcode('');
     startCamera();
   };
 
   const handleClose = () => {
     stopCamera();
-    setMode("idle");
+    setMode('idle');
     setProduct(null);
-    setError("");
+    setError('');
   };
 
   const handleOpenScanner = () => {
@@ -250,14 +242,14 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
         product.nutritionPer100g,
         parseFloat(quantity) || 0,
         unit,
-        product.servingQuantity || 100,
+        product.servingQuantity || 100
       )
     : null;
 
   return (
     <div className="barcode-scanner">
       {/* Idle State - Launch Button */}
-      {mode === "idle" && (
+      {mode === 'idle' && (
         <div className="scanner-idle">
           <button
             className="launch-scanner-btn"
@@ -289,14 +281,10 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       )}
 
       {/* Fullscreen Scanner Modal */}
-      {mode === "scan" && (
+      {mode === 'scan' && (
         <div className="scanner-fullscreen-modal">
           {/* Close Button */}
-          <button
-            className="scanner-close-btn"
-            onClick={handleClose}
-            aria-label="Close scanner"
-          >
+          <button className="scanner-close-btn" onClick={handleClose} aria-label="Close scanner">
             <X size={24} />
           </button>
 
@@ -306,15 +294,9 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
               <button
                 className="scanner-control-btn"
                 onClick={toggleTorch}
-                aria-label={
-                  torchOn ? "Turn off flashlight" : "Turn on flashlight"
-                }
+                aria-label={torchOn ? 'Turn off flashlight' : 'Turn on flashlight'}
               >
-                {torchOn ? (
-                  <FlashlightOff size={20} />
-                ) : (
-                  <Flashlight size={20} />
-                )}
+                {torchOn ? <FlashlightOff size={20} /> : <Flashlight size={20} />}
               </button>
             )}
           </div>
@@ -330,12 +312,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
             <>
               {/* Fullscreen Camera Preview */}
               <div className="fullscreen-camera">
-                <video
-                  ref={videoRef}
-                  className="fullscreen-video"
-                  playsInline
-                  muted
-                />
+                <video ref={videoRef} className="fullscreen-video" playsInline muted />
                 <div className="fullscreen-scan-target">
                   <div className="scan-corner top-left"></div>
                   <div className="scan-corner top-right"></div>
@@ -382,7 +359,7 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       )}
 
       {/* Error State with AI Fallback */}
-      {error && !loading && mode !== "scan" && (
+      {error && !loading && mode !== 'scan' && (
         <div className="scanner-error-container">
           <div className="scanner-error">{error}</div>
           <div className="scanner-fallback-buttons">
@@ -397,11 +374,9 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       )}
 
       {/* Manual Mode (after camera error) */}
-      {mode === "manual" && !loading && !error && (
+      {mode === 'manual' && !loading && !error && (
         <div className="scanner-manual-mode">
-          {cameraError && (
-            <div className="camera-error-banner">{cameraError}</div>
-          )}
+          {cameraError && <div className="camera-error-banner">{cameraError}</div>}
           <form onSubmit={handleManualSubmit} className="manual-form">
             <div className="form-group">
               <label htmlFor="barcode-input" className="form-label">
@@ -427,24 +402,16 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
       )}
 
       {/* Serving Size Mode */}
-      {mode === "serving" && product && !error && !loading && (
+      {mode === 'serving' && product && !error && !loading && (
         <div className="scanner-result-container">
           <div className="product-info">
             {product.imageUrl && (
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="product-image"
-              />
+              <img src={product.imageUrl} alt={product.name} className="product-image" />
             )}
             <div className="product-details">
               <h4 className="product-name">{product.name}</h4>
-              {product.brand && (
-                <p className="product-brand">{product.brand}</p>
-              )}
-              <p className="product-serving">
-                Serving: {product.servingSize || "100g"}
-              </p>
+              {product.brand && <p className="product-brand">{product.brand}</p>}
+              <p className="product-serving">Serving: {product.servingSize || '100g'}</p>
             </div>
           </div>
 
@@ -486,27 +453,19 @@ function BarcodeScanner({ onAddFood, onSwitchToAI }) {
               <h5 className="nutrition-preview-title">Nutrition</h5>
               <div className="nutrition-grid">
                 <div className="nutrition-item">
-                  <div className="nutrition-value">
-                    {calculatedNutrition.calories}
-                  </div>
+                  <div className="nutrition-value">{calculatedNutrition.calories}</div>
                   <div className="nutrition-label">Calories</div>
                 </div>
                 <div className="nutrition-item">
-                  <div className="nutrition-value">
-                    {calculatedNutrition.protein}g
-                  </div>
+                  <div className="nutrition-value">{calculatedNutrition.protein}g</div>
                   <div className="nutrition-label">Protein</div>
                 </div>
                 <div className="nutrition-item">
-                  <div className="nutrition-value">
-                    {calculatedNutrition.carbs}g
-                  </div>
+                  <div className="nutrition-value">{calculatedNutrition.carbs}g</div>
                   <div className="nutrition-label">Carbs</div>
                 </div>
                 <div className="nutrition-item">
-                  <div className="nutrition-value">
-                    {calculatedNutrition.fat}g
-                  </div>
+                  <div className="nutrition-value">{calculatedNutrition.fat}g</div>
                   <div className="nutrition-label">Fat</div>
                 </div>
               </div>

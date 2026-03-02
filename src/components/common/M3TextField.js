@@ -1,6 +1,6 @@
-import React, { forwardRef, useState, useRef, useId } from "react";
-import { Eye, EyeOff, X, AlertCircle, Search } from "lucide-react";
-import "./M3TextField.css";
+import { Eye, EyeOff, X, AlertCircle, Search } from 'lucide-react';
+import React, { forwardRef, useState, useRef, useId } from 'react';
+import './M3TextField.css';
 
 /**
  * Material Design 3 Text Field Component
@@ -35,12 +35,12 @@ import "./M3TextField.css";
 const M3TextField = forwardRef(
   (
     {
-      variant = "filled",
+      variant = 'filled',
       label,
       placeholder,
       value,
       defaultValue,
-      type = "text",
+      type = 'text',
       error,
       helperText,
       maxLength,
@@ -57,7 +57,7 @@ const M3TextField = forwardRef(
       dense = false,
       search = false,
       fullWidth = false,
-      className = "",
+      className = '',
       onChange,
       onFocus,
       onBlur,
@@ -74,14 +74,14 @@ const M3TextField = forwardRef(
       step,
       ...props
     },
-    ref,
+    ref
   ) => {
     const generatedId = useId();
     const inputId = id || generatedId;
     const helperId = `${inputId}-helper`;
 
     const inputRef = useRef(null);
-    const [internalValue, setInternalValue] = useState(defaultValue || "");
+    const [internalValue, setInternalValue] = useState(defaultValue || '');
     const [showPassword, setShowPassword] = useState(false);
 
     // Determine if controlled or uncontrolled
@@ -91,19 +91,19 @@ const M3TextField = forwardRef(
 
     // Build class list
     const fieldClasses = [
-      "m3-text-field",
+      'm3-text-field',
       `m3-text-field--${variant}`,
-      hasValue && "m3-text-field--has-value",
-      error && "m3-text-field--error",
-      disabled && "m3-text-field--disabled",
-      leadingIcon && "m3-text-field--has-leading",
-      dense && "m3-text-field--dense",
-      search && "m3-text-field--search",
-      fullWidth && "m3-text-field--full-width",
+      hasValue && 'm3-text-field--has-value',
+      error && 'm3-text-field--error',
+      disabled && 'm3-text-field--disabled',
+      leadingIcon && 'm3-text-field--has-leading',
+      dense && 'm3-text-field--dense',
+      search && 'm3-text-field--search',
+      fullWidth && 'm3-text-field--full-width',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     // Handle value change
     const handleChange = (e) => {
@@ -119,12 +119,12 @@ const M3TextField = forwardRef(
     // Handle clear button
     const handleClear = () => {
       const event = {
-        target: { value: "" },
-        currentTarget: { value: "" },
+        target: { value: '' },
+        currentTarget: { value: '' },
       };
 
       if (!isControlled) {
-        setInternalValue("");
+        setInternalValue('');
       }
 
       onChange?.(event);
@@ -144,13 +144,13 @@ const M3TextField = forwardRef(
     };
 
     // Determine input type
-    const inputType = type === "password" && showPassword ? "text" : type;
+    const inputType = type === 'password' && showPassword ? 'text' : type;
 
     // Input element props
     const inputProps = {
       ref: (node) => {
         inputRef.current = node;
-        if (typeof ref === "function") ref(node);
+        if (typeof ref === 'function') ref(node);
         else if (ref) ref.current = node;
       },
       id: inputId,
@@ -165,29 +165,26 @@ const M3TextField = forwardRef(
       readOnly,
       autoComplete,
       autoFocus,
-      placeholder: placeholder || " ",
+      placeholder: placeholder || ' ',
       maxLength,
       inputMode,
       pattern,
       min,
       max,
       step,
-      "aria-describedby": error || helperText ? helperId : undefined,
-      "aria-invalid": error ? "true" : undefined,
-      "aria-required": required ? "true" : undefined,
+      'aria-describedby': error || helperText ? helperId : undefined,
+      'aria-invalid': error ? 'true' : undefined,
+      'aria-required': required ? 'true' : undefined,
       className: multiline
-        ? "m3-text-field__input m3-text-field__input--textarea"
-        : "m3-text-field__input",
+        ? 'm3-text-field__input m3-text-field__input--textarea'
+        : 'm3-text-field__input',
     };
 
-    const InputElement = multiline ? "textarea" : "input";
+    const InputElement = multiline ? 'textarea' : 'input';
 
     return (
       <div className={fieldClasses} {...props}>
-        <div
-          className="m3-text-field__container"
-          onClick={handleContainerClick}
-        >
+        <div className="m3-text-field__container" onClick={handleContainerClick}>
           {/* Leading icon */}
           {(leadingIcon || search) && (
             <span className="m3-text-field__leading" aria-hidden="true">
@@ -239,12 +236,12 @@ const M3TextField = forwardRef(
             )}
 
             {/* Password toggle */}
-            {type === "password" && !disabled && (
+            {type === 'password' && !disabled && (
               <button
                 type="button"
                 className="m3-text-field__icon-button"
                 onClick={togglePassword}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff size={24} /> : <Eye size={24} />}
@@ -252,15 +249,12 @@ const M3TextField = forwardRef(
             )}
 
             {/* Custom trailing icon */}
-            {trailingIcon && !error && type !== "password" && trailingIcon}
+            {trailingIcon && !error && type !== 'password' && trailingIcon}
           </span>
 
           {/* Active indicator for filled variant */}
-          {variant === "filled" && (
-            <span
-              className="m3-text-field__active-indicator"
-              aria-hidden="true"
-            />
+          {variant === 'filled' && (
+            <span className="m3-text-field__active-indicator" aria-hidden="true" />
           )}
         </div>
 
@@ -278,65 +272,49 @@ const M3TextField = forwardRef(
         )}
       </div>
     );
-  },
+  }
 );
 
-M3TextField.displayName = "M3TextField";
+M3TextField.displayName = 'M3TextField';
 
 /**
  * M3 Search Field - Specialized search input
  */
 export const M3SearchField = forwardRef((props, ref) => {
   return (
-    <M3TextField
-      ref={ref}
-      search
-      variant="filled"
-      clearable
-      placeholder="Search..."
-      {...props}
-    />
+    <M3TextField ref={ref} search variant="filled" clearable placeholder="Search..." {...props} />
   );
 });
 
-M3SearchField.displayName = "M3SearchField";
+M3SearchField.displayName = 'M3SearchField';
 
 /**
  * M3 Password Field - Password input with visibility toggle
  */
 export const M3PasswordField = forwardRef((props, ref) => {
+  return <M3TextField ref={ref} type="password" autoComplete="current-password" {...props} />;
+});
+
+M3PasswordField.displayName = 'M3PasswordField';
+
+/**
+ * M3 Number Field - Numeric input with optional formatting
+ */
+export const M3NumberField = forwardRef(({ min, max, step = 1, ...props }, ref) => {
   return (
     <M3TextField
       ref={ref}
-      type="password"
-      autoComplete="current-password"
+      type="number"
+      inputMode="decimal"
+      min={min}
+      max={max}
+      step={step}
       {...props}
     />
   );
 });
 
-M3PasswordField.displayName = "M3PasswordField";
-
-/**
- * M3 Number Field - Numeric input with optional formatting
- */
-export const M3NumberField = forwardRef(
-  ({ min, max, step = 1, ...props }, ref) => {
-    return (
-      <M3TextField
-        ref={ref}
-        type="number"
-        inputMode="decimal"
-        min={min}
-        max={max}
-        step={step}
-        {...props}
-      />
-    );
-  },
-);
-
-M3NumberField.displayName = "M3NumberField";
+M3NumberField.displayName = 'M3NumberField';
 
 /**
  * M3 Text Area - Multiline text input
@@ -345,6 +323,6 @@ export const M3TextArea = forwardRef(({ rows = 4, ...props }, ref) => {
   return <M3TextField ref={ref} multiline rows={rows} {...props} />;
 });
 
-M3TextArea.displayName = "M3TextArea";
+M3TextArea.displayName = 'M3TextArea';
 
 export default M3TextField;

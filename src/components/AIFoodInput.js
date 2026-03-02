@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Bot, Camera, ExternalLink } from "lucide-react";
-import { estimateWithUSDA } from "../services/aiNutritionService";
-import { CompactMicronutrients } from "./common";
-import FoodPhotoCapture from "./FoodPhotoCapture";
-import ConfirmAIFoodSheet from "./ConfirmAIFoodSheet";
-import { loadPreferences } from "../utils/localStorage";
-import devLog from "../utils/devLog";
-import "./AIFoodInput.css";
+import { Bot, Camera, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { estimateWithUSDA } from '../services/aiNutritionService';
+import devLog from '../utils/devLog';
+import { loadPreferences } from '../utils/localStorage';
+
+import { CompactMicronutrients } from './common';
+import ConfirmAIFoodSheet from './ConfirmAIFoodSheet';
+import FoodPhotoCapture from './FoodPhotoCapture';
+import './AIFoodInput.css';
 /**
  *OOOooooo Food
  */
-function AIFoodInput({
-  onAddFood,
-  userWeight,
-  prefillDescription,
-  onDescriptionUsed,
-}) {
-  const [foodDescription, setFoodDescription] = useState("");
-  const [quantity, setQuantity] = useState("1");
+function AIFoodInput({ onAddFood, userWeight, prefillDescription, onDescriptionUsed }) {
+  const [foodDescription, setFoodDescription] = useState('');
+  const [quantity, setQuantity] = useState('1');
   const [showPhotoCapture, setShowPhotoCapture] = useState(false);
-  const [unit, setUnit] = useState("serving");
+  const [unit, setUnit] = useState('serving');
   const [loading, setLoading] = useState(false);
-  const [loadingStage, setLoadingStage] = useState("");
-  const [error, setError] = useState("");
+  const [loadingStage, setLoadingStage] = useState('');
+  const [error, setError] = useState('');
   const [estimatedNutrition, setEstimatedNutrition] = useState(null);
   const [showConfirmSheet, setShowConfirmSheet] = useState(false);
 
@@ -37,29 +34,24 @@ function AIFoodInput({
 
   const handleEstimate = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setEstimatedNutrition(null);
 
     if (!foodDescription.trim()) {
-      setError("Please enter a food description");
+      setError('Please enter a food description');
       return;
     }
 
     if (!quantity || parseFloat(quantity) <= 0) {
-      setError("Please enter a valid quantity");
+      setError('Please enter a valid quantity');
       return;
     }
 
     setLoading(true);
-    setLoadingStage("Preparing...");
+    setLoadingStage('Preparing...');
 
     try {
-      const nutrition = await estimateWithUSDA(
-        foodDescription,
-        quantity,
-        unit,
-        setLoadingStage,
-      );
+      const nutrition = await estimateWithUSDA(foodDescription, quantity, unit, setLoadingStage);
 
       const scaledNutrition = {
         calories: Math.round(nutrition.calories),
@@ -86,7 +78,7 @@ function AIFoodInput({
         magnesium: nutrition.magnesium,
         zinc: nutrition.zinc,
         potassium: nutrition.potassium,
-        source: nutrition.source || "ai",
+        source: nutrition.source || 'ai',
         fdcId: nutrition.fdcId,
         usdaDescription: nutrition.usdaDescription,
         dataType: nutrition.dataType,
@@ -94,19 +86,17 @@ function AIFoodInput({
 
       setEstimatedNutrition(scaledNutrition);
     } catch (err) {
-      setError(
-        err.message || "Failed to estimate nutrition. Please try again.",
-      );
-      devLog.error("Estimation error:", err);
+      setError(err.message || 'Failed to estimate nutrition. Please try again.');
+      devLog.error('Estimation error:', err);
     } finally {
       setLoading(false);
-      setLoadingStage("");
+      setLoadingStage('');
     }
   };
 
   const handleAddFood = () => {
     if (!estimatedNutrition) return;
-    
+
     const preferences = loadPreferences();
     const shouldConfirm = preferences.confirmAIFoods ?? true;
 
@@ -121,7 +111,7 @@ function AIFoodInput({
 
   const addFoodDirectly = () => {
     if (!estimatedNutrition) return;
-    const isUSDA = estimatedNutrition.source === "usda";
+    const isUSDA = estimatedNutrition.source === 'usda';
     const foodEntry = {
       id: Date.now(),
       name: `${quantity} ${unit} ${foodDescription}`,
@@ -162,11 +152,11 @@ function AIFoodInput({
   };
 
   const resetForm = () => {
-    setFoodDescription("");
-    setQuantity("1");
-    setUnit("serving");
+    setFoodDescription('');
+    setQuantity('1');
+    setUnit('serving');
     setEstimatedNutrition(null);
-    setError("");
+    setError('');
   };
 
   const handleConfirmFood = (foodEntry) => {
@@ -185,21 +175,14 @@ function AIFoodInput({
           type="button"
           className="ai-photo-toggle-btn"
           onClick={() => setShowPhotoCapture((prev) => !prev)}
-          title={
-            showPhotoCapture
-              ? "Switch to text input"
-              : "Identify food from photo"
-          }
+          title={showPhotoCapture ? 'Switch to text input' : 'Identify food from photo'}
         >
           <Camera size={18} />
-          {showPhotoCapture ? "Text Input" : "Photo ID"}
+          {showPhotoCapture ? 'Text Input' : 'Photo ID'}
         </button>
       </div>
       {showPhotoCapture ? (
-        <FoodPhotoCapture
-          onAddFood={onAddFood}
-          onClose={() => setShowPhotoCapture(false)}
-        />
+        <FoodPhotoCapture onAddFood={onAddFood} onClose={() => setShowPhotoCapture(false)} />
       ) : (
         <>
           <form onSubmit={handleEstimate} className="ai-food-form">
@@ -217,8 +200,7 @@ function AIFoodInput({
                 disabled={loading}
               />
               <small className="ai-hint">
-                Be specific for better estimates (e.g., "1 medium apple" or "8oz
-                sirloin steak")
+                Be specific for better estimates (e.g., "1 medium apple" or "8oz sirloin steak")
               </small>
             </div>
             <div className="ai-form-row">
@@ -260,18 +242,14 @@ function AIFoodInput({
                 </select>
               </div>
             </div>
-            <button
-              type="submit"
-              className="ai-estimate-btn"
-              disabled={loading}
-            >
+            <button type="submit" className="ai-estimate-btn" disabled={loading}>
               {loading ? (
                 <>
                   <div className="spinner"></div>
-                  {loadingStage || "Estimating..."}
+                  {loadingStage || 'Estimating...'}
                 </>
               ) : (
-                "Estimate Nutrition"
+                'Estimate Nutrition'
               )}
             </button>
           </form>
@@ -282,61 +260,45 @@ function AIFoodInput({
                 <h4 className="ai-result-title">
                   {quantity} {unit} {foodDescription}
                 </h4>
-                {estimatedNutrition.source === "usda" ? (
-                  <span className="ai-source-badge ai-source-badge--usda">
-                    USDA Verified
-                  </span>
+                {estimatedNutrition.source === 'usda' ? (
+                  <span className="ai-source-badge ai-source-badge--usda">USDA Verified</span>
                 ) : (
-                  <span className="ai-source-badge ai-source-badge--ai">
-                    AI Estimated
-                  </span>
+                  <span className="ai-source-badge ai-source-badge--ai">AI Estimated</span>
                 )}
               </div>
-              {estimatedNutrition.source === "usda" &&
-                estimatedNutrition.usdaDescription && (
-                  <p className="ai-usda-match">
-                    Matched:{" "}
-                    {estimatedNutrition.fdcId ? (
-                      <a
-                        href={`https://fdc.nal.usda.gov/food-details/${estimatedNutrition.fdcId}/nutrients`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ai-usda-link"
-                      >
-                        {estimatedNutrition.usdaDescription}
-                        <ExternalLink
-                          size={11}
-                          style={{ marginLeft: 3, verticalAlign: "middle" }}
-                        />
-                      </a>
-                    ) : (
-                      estimatedNutrition.usdaDescription
-                    )}
-                  </p>
-                )}
+              {estimatedNutrition.source === 'usda' && estimatedNutrition.usdaDescription && (
+                <p className="ai-usda-match">
+                  Matched:{' '}
+                  {estimatedNutrition.fdcId ? (
+                    <a
+                      href={`https://fdc.nal.usda.gov/food-details/${estimatedNutrition.fdcId}/nutrients`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ai-usda-link"
+                    >
+                      {estimatedNutrition.usdaDescription}
+                      <ExternalLink size={11} style={{ marginLeft: 3, verticalAlign: 'middle' }} />
+                    </a>
+                  ) : (
+                    estimatedNutrition.usdaDescription
+                  )}
+                </p>
+              )}
               <div className="ai-nutrition-grid">
                 <div className="ai-nutrition-item">
-                  <div className="ai-nutrition-value">
-                    {estimatedNutrition.calories}
-                  </div>
+                  <div className="ai-nutrition-value">{estimatedNutrition.calories}</div>
                   <div className="ai-nutrition-label">Calories</div>
                 </div>
                 <div className="ai-nutrition-item">
-                  <div className="ai-nutrition-value">
-                    {estimatedNutrition.protein}g
-                  </div>
+                  <div className="ai-nutrition-value">{estimatedNutrition.protein}g</div>
                   <div className="ai-nutrition-label">Protein</div>
                 </div>
                 <div className="ai-nutrition-item">
-                  <div className="ai-nutrition-value">
-                    {estimatedNutrition.carbs}g
-                  </div>
+                  <div className="ai-nutrition-value">{estimatedNutrition.carbs}g</div>
                   <div className="ai-nutrition-label">Carbs</div>
                 </div>
                 <div className="ai-nutrition-item">
-                  <div className="ai-nutrition-value">
-                    {estimatedNutrition.fat}g
-                  </div>
+                  <div className="ai-nutrition-value">{estimatedNutrition.fat}g</div>
                   <div className="ai-nutrition-label">Fat</div>
                 </div>
               </div>

@@ -222,8 +222,8 @@
 }
 
 /* ===== Live Regions ===== */
-[aria-live="polite"],
-[aria-live="assertive"] {
+[aria-live='polite'],
+[aria-live='assertive'] {
   /* Container is positioned off-screen but accessible to screen readers */
   clip: rect(0, 0, 0, 0);
 }
@@ -277,7 +277,7 @@
 }
 
 .m3-error-message::before {
-  content: "";
+  content: '';
   width: 16px;
   height: 16px;
   background: currentColor;
@@ -292,27 +292,27 @@
 }
 
 /* ===== Landmark Outlines (Debug Mode) ===== */
-.m3-debug-landmarks [role="main"],
+.m3-debug-landmarks [role='main'],
 .m3-debug-landmarks main {
   outline: 2px dashed blue;
 }
 
-.m3-debug-landmarks [role="navigation"],
+.m3-debug-landmarks [role='navigation'],
 .m3-debug-landmarks nav {
   outline: 2px dashed green;
 }
 
-.m3-debug-landmarks [role="banner"],
+.m3-debug-landmarks [role='banner'],
 .m3-debug-landmarks header {
   outline: 2px dashed orange;
 }
 
-.m3-debug-landmarks [role="contentinfo"],
+.m3-debug-landmarks [role='contentinfo'],
 .m3-debug-landmarks footer {
   outline: 2px dashed purple;
 }
 
-.m3-debug-landmarks [role="complementary"],
+.m3-debug-landmarks [role='complementary'],
 .m3-debug-landmarks aside {
   outline: 2px dashed cyan;
 }
@@ -356,15 +356,15 @@
 }
 
 /* ===== Button State Announcements ===== */
-.m3-button[aria-pressed="true"]::after,
-.m3-button[aria-expanded="true"]::after {
-  content: ", pressed";
+.m3-button[aria-pressed='true']::after,
+.m3-button[aria-expanded='true']::after {
+  content: ', pressed';
   position: absolute;
   left: -10000px;
 }
 
 /* ===== Loading States ===== */
-[aria-busy="true"] {
+[aria-busy='true'] {
   cursor: wait;
 }
 

@@ -3,15 +3,55 @@
   Minimal: only rules Tailwind can't express
 */
 
-.scrollbar-none { scrollbar-width: none; -ms-overflow-style: none; }
-.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
 
-.tabular-nums { font-variant-numeric: tabular-nums; }
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
 
-.border-l-3 { border-left-width: 3px; }
+.border-l-3 {
+  border-left-width: 3px;
+}
 
-@keyframes spin { to { transform: rotate(360deg); } }
-.animate-spin { animation: spin 1s linear infinite; }
+/* ===== Search input polish ===== */
+.templates-search-input {
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background 200ms ease;
+}
+.templates-search-input:hover:not(:focus) {
+  border-color: var(--m3-outline, #79747e);
+  background: var(--m3-surface-container-high, #ece6f0);
+}
+.templates-search-input:focus {
+  border-color: var(--m3-primary, #6750a4);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--m3-primary, #6750a4) 12%, transparent);
+}
+
+/* ===== Template card interactions ===== */
+.template-card-header:hover {
+  background: var(--m3-surface-container-high, #ece6f0) !important;
+}
+.template-card-header:focus-visible {
+  outline: 3px solid var(--m3-primary, #6750a4);
+  outline-offset: -3px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
 
 .line-clamp-2 {
   display: -webkit-box;
@@ -23,10 +63,14 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .animate-spin { animation-duration: 0.01ms !important; }
+  .animate-spin {
+    animation-duration: 0.01ms !important;
+  }
 }
 
 /* Print */
 @media print {
-  button:not([type="submit"]) { display: none; }
+  button:not([type='submit']) {
+    display: none;
+  }
 }

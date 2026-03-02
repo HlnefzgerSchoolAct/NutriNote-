@@ -3,14 +3,8 @@
  * Local-first: writes to localStorage immediately, syncs to Firestore in background
  */
 
-import {
-  doc,
-  setDoc,
-  getDoc,
-  deleteDoc,
-  writeBatch,
-} from "firebase/firestore";
-import { db, isFirebaseConfigured } from "./firebase";
+import { doc, setDoc, getDoc, deleteDoc, writeBatch } from 'firebase/firestore';
+
 import {
   loadUserProfile,
   saveLastSyncTime,
@@ -34,9 +28,11 @@ import {
   loadStreakData,
   markOnboardingComplete,
   STORAGE_KEYS,
-} from "../utils/localStorage";
-import { getAllRecipes, saveRecipe } from "./recipeDatabase";
-import { getAllTemplates, saveTemplate } from "./templateDatabase";
+} from '../utils/localStorage';
+
+import { db, isFirebaseConfigured } from './firebase';
+import { getAllRecipes, saveRecipe } from './recipeDatabase';
+import { getAllTemplates, saveTemplate } from './templateDatabase';
 
 const loadFromLocalStorage = (key, defaultValue = null) => {
   try {
@@ -58,13 +54,13 @@ const saveToLocalStorage = (key, data) => {
 };
 
 const USER_DATA_KEYS = [
-  "foodHistory",
-  "currentDate",
-  "onboarding",
-  "recentFoods",
-  "favoriteFoods",
-  "weightLog",
-  "streakData",
+  'foodHistory',
+  'currentDate',
+  'onboarding',
+  'recentFoods',
+  'favoriteFoods',
+  'weightLog',
+  'streakData',
 ];
 
 const STORAGE_KEY_MAP = {
@@ -84,7 +80,7 @@ const STORAGE_KEY_MAP = {
 export async function uploadLocalToCloud(userId) {
   if (!db || !isFirebaseConfigured()) return;
 
-  const userRef = doc(db, "users", userId);
+  const userRef = doc(db, 'users', userId);
   const profile = loadUserProfile();
   const dailyTarget = loadDailyTarget();
   const macroGoals = loadMacroGoals();
@@ -113,7 +109,7 @@ export async function uploadLocalToCloud(userId) {
     updatedAt: new Date().toISOString(),
   };
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split('T')[0];
   const foodLogDoc = {
     [today]: {
       entries: foodLog,
@@ -124,37 +120,37 @@ export async function uploadLocalToCloud(userId) {
   };
 
   const batch = writeBatch(db);
-  batch.set(doc(db, "users", userId, "data", "profile"), profileDoc);
-  batch.set(doc(db, "users", userId, "data", "foodLog"), foodLogDoc);
-  batch.set(
-    doc(db, "users", userId, "data", "history"),
-    { ...weeklyHistory, updatedAt: new Date().toISOString() }
-  );
-  batch.set(
-    doc(db, "users", userId, "data", "foodHistory"),
-    { ...foodHistory, updatedAt: new Date().toISOString() }
-  );
-  batch.set(
-    doc(db, "users", userId, "data", "favorites"),
-    { items: favoriteFoods, updatedAt: new Date().toISOString() }
-  );
-  batch.set(
-    doc(db, "users", userId, "data", "recentFoods"),
-    { items: recentFoods, updatedAt: new Date().toISOString() }
-  );
-  batch.set(
-    doc(db, "users", userId, "data", "weightLog"),
-    { items: weightLog, updatedAt: new Date().toISOString() }
-  );
-  batch.set(
-    doc(db, "users", userId, "data", "streakData"),
-    { ...streakData, updatedAt: new Date().toISOString() }
-  );
+  batch.set(doc(db, 'users', userId, 'data', 'profile'), profileDoc);
+  batch.set(doc(db, 'users', userId, 'data', 'foodLog'), foodLogDoc);
+  batch.set(doc(db, 'users', userId, 'data', 'history'), {
+    ...weeklyHistory,
+    updatedAt: new Date().toISOString(),
+  });
+  batch.set(doc(db, 'users', userId, 'data', 'foodHistory'), {
+    ...foodHistory,
+    updatedAt: new Date().toISOString(),
+  });
+  batch.set(doc(db, 'users', userId, 'data', 'favorites'), {
+    items: favoriteFoods,
+    updatedAt: new Date().toISOString(),
+  });
+  batch.set(doc(db, 'users', userId, 'data', 'recentFoods'), {
+    items: recentFoods,
+    updatedAt: new Date().toISOString(),
+  });
+  batch.set(doc(db, 'users', userId, 'data', 'weightLog'), {
+    items: weightLog,
+    updatedAt: new Date().toISOString(),
+  });
+  batch.set(doc(db, 'users', userId, 'data', 'streakData'), {
+    ...streakData,
+    updatedAt: new Date().toISOString(),
+  });
 
   await batch.commit();
   const now = new Date();
   saveLastSyncTime(now);
-  window.dispatchEvent(new CustomEvent("nutrinote-sync-complete", { detail: { time: now } }));
+  window.dispatchEvent(new CustomEvent('nutrinote-sync-complete', { detail: { time: now } }));
 
   // Sync recipes and templates (async, separate writes)
   try {
@@ -163,7 +159,7 @@ export async function uploadLocalToCloud(userId) {
     const templates = await getAllTemplates();
     await syncTemplatesToCloud(userId, templates);
   } catch (err) {
-    console.error("Recipe/template upload failed:", err);
+    console.error('Recipe/template upload failed:', err);
   }
 }
 
@@ -174,24 +170,14 @@ async function syncFromCloud(userId) {
   if (!db || !isFirebaseConfigured()) return;
 
   try {
-    const profileSnap = await getDoc(doc(db, "users", userId, "data", "profile"));
-    const foodLogSnap = await getDoc(doc(db, "users", userId, "data", "foodLog"));
-    const historySnap = await getDoc(doc(db, "users", userId, "data", "history"));
-    const foodHistorySnap = await getDoc(
-      doc(db, "users", userId, "data", "foodHistory")
-    );
-    const favoritesSnap = await getDoc(
-      doc(db, "users", userId, "data", "favorites")
-    );
-    const recentSnap = await getDoc(
-      doc(db, "users", userId, "data", "recentFoods")
-    );
-    const weightSnap = await getDoc(
-      doc(db, "users", userId, "data", "weightLog")
-    );
-    const streakSnap = await getDoc(
-      doc(db, "users", userId, "data", "streakData")
-    );
+    const profileSnap = await getDoc(doc(db, 'users', userId, 'data', 'profile'));
+    const foodLogSnap = await getDoc(doc(db, 'users', userId, 'data', 'foodLog'));
+    const historySnap = await getDoc(doc(db, 'users', userId, 'data', 'history'));
+    const foodHistorySnap = await getDoc(doc(db, 'users', userId, 'data', 'foodHistory'));
+    const favoritesSnap = await getDoc(doc(db, 'users', userId, 'data', 'favorites'));
+    const recentSnap = await getDoc(doc(db, 'users', userId, 'data', 'recentFoods'));
+    const weightSnap = await getDoc(doc(db, 'users', userId, 'data', 'weightLog'));
+    const streakSnap = await getDoc(doc(db, 'users', userId, 'data', 'streakData'));
 
     if (profileSnap.exists()) {
       const d = profileSnap.data();
@@ -207,7 +193,7 @@ async function syncFromCloud(userId) {
 
     if (foodLogSnap.exists()) {
       const d = foodLogSnap.data();
-      const today = new Date().toISOString().split("T")[0];
+      const today = new Date().toISOString().split('T')[0];
       const todayData = d[today];
       if (todayData) {
         if (todayData.entries) saveFoodLog(todayData.entries);
@@ -250,47 +236,80 @@ async function syncFromCloud(userId) {
     }
 
     // Load recipes and templates
-    const recipesSnap = await getDoc(doc(db, "users", userId, "data", "recipes"));
+    const recipesSnap = await getDoc(doc(db, 'users', userId, 'data', 'recipes'));
     if (recipesSnap.exists() && recipesSnap.data().items?.length > 0) {
       for (const recipe of recipesSnap.data().items) {
-        await saveRecipe({ ...recipe, id: recipe.id || Date.now() + Math.random() });
+        await saveRecipe({
+          ...recipe,
+          id: recipe.id || Date.now() + Math.random(),
+        });
       }
     }
 
-    const templatesSnap = await getDoc(doc(db, "users", userId, "data", "templates"));
+    const templatesSnap = await getDoc(doc(db, 'users', userId, 'data', 'templates'));
     if (templatesSnap.exists() && templatesSnap.data().items?.length > 0) {
       for (const template of templatesSnap.data().items) {
-        await saveTemplate({ ...template, id: template.id || Date.now() + Math.random() });
+        await saveTemplate({
+          ...template,
+          id: template.id || Date.now() + Math.random(),
+        });
       }
     }
     const now = new Date();
     saveLastSyncTime(now);
-    window.dispatchEvent(new CustomEvent("nutrinote-sync-complete", { detail: { time: now } }));
+    window.dispatchEvent(new CustomEvent('nutrinote-sync-complete', { detail: { time: now } }));
   } catch (err) {
-    console.error("syncFromCloud failed:", err);
+    console.error('syncFromCloud failed:', err);
   }
 }
 
 /**
- * Called when user signs in. Merge strategy:
- * - If cloud has data: pull from cloud (overwrite local)
- * - If cloud is empty but local has data: upload local to cloud (migration)
+ * Called when user signs in. Improved merge strategy:
+ * - If cloud has data AND local has data: compare timestamps, use the newer version.
+ *   If no timestamps available, prefer cloud (backwards-compatible).
+ * - If only cloud has data: pull from cloud.
+ * - If only local has data: upload to cloud (migration for first sign-in).
+ * - If neither has data: nothing to do.
  */
 export async function syncOnSignIn(user) {
   if (!user || !isFirebaseConfigured()) return;
 
   const userId = user.uid;
-  const profileSnap = await getDoc(doc(db, "users", userId, "data", "profile"));
 
-  if (profileSnap.exists()) {
-    await syncFromCloud(userId);
-  } else {
+  try {
+    const profileSnap = await getDoc(doc(db, 'users', userId, 'data', 'profile'));
+    const cloudExists = profileSnap.exists();
+    const cloudUpdatedAt = cloudExists ? profileSnap.data()?.updatedAt : null;
+
     const hasLocalData =
-    loadUserProfile() ||
-    loadFromLocalStorage(STORAGE_KEYS.FOOD_LOG, []).length > 0;
-    if (hasLocalData) {
+      loadUserProfile() || loadFromLocalStorage(STORAGE_KEYS.FOOD_LOG, []).length > 0;
+
+    const localSyncTime = loadFromLocalStorage(STORAGE_KEYS.LAST_SYNC_TIME, null);
+
+    if (cloudExists && hasLocalData) {
+      // Both cloud and local have data — compare timestamps
+      const cloudTime = cloudUpdatedAt ? new Date(cloudUpdatedAt).getTime() : 0;
+      const localTime = localSyncTime ? new Date(localSyncTime).getTime() : 0;
+
+      if (localTime > cloudTime && localTime > 0) {
+        // Local data is newer — upload to cloud
+        console.log('[sync] Local data is newer, uploading to cloud');
+        await uploadLocalToCloud(userId);
+      } else {
+        // Cloud data is newer (or equal/unknown) — pull from cloud
+        console.log('[sync] Cloud data is newer or equal, syncing from cloud');
+        await syncFromCloud(userId);
+      }
+    } else if (cloudExists) {
+      // Only cloud has data — pull from cloud
+      await syncFromCloud(userId);
+    } else if (hasLocalData) {
+      // Only local has data — upload (first-time migration)
       await uploadLocalToCloud(userId);
     }
+    // else: neither has data, nothing to do
+  } catch (err) {
+    console.error('syncOnSignIn failed:', err);
   }
 }
 
@@ -304,15 +323,15 @@ export async function syncToCloud(userId, dataType, payload) {
     const updatedAt = new Date().toISOString();
 
     switch (dataType) {
-      case "profile":
-        await setDoc(doc(db, "users", userId, "data", "profile"), {
+      case 'profile':
+        await setDoc(doc(db, 'users', userId, 'data', 'profile'), {
           ...payload,
           updatedAt,
         });
         break;
-      case "foodLog": {
-        const today = new Date().toISOString().split("T")[0];
-        const foodLogRef = doc(db, "users", userId, "data", "foodLog");
+      case 'foodLog': {
+        const today = new Date().toISOString().split('T')[0];
+        const foodLogRef = doc(db, 'users', userId, 'data', 'foodLog');
         const snap = await getDoc(foodLogRef);
         const existing = snap.exists() ? snap.data() : {};
         existing[today] = {
@@ -324,38 +343,38 @@ export async function syncToCloud(userId, dataType, payload) {
         await setDoc(foodLogRef, existing);
         break;
       }
-      case "history":
-        await setDoc(doc(db, "users", userId, "data", "history"), {
+      case 'history':
+        await setDoc(doc(db, 'users', userId, 'data', 'history'), {
           ...payload,
           updatedAt,
         });
         break;
-      case "foodHistory":
-        await setDoc(doc(db, "users", userId, "data", "foodHistory"), {
+      case 'foodHistory':
+        await setDoc(doc(db, 'users', userId, 'data', 'foodHistory'), {
           ...payload,
           updatedAt,
         });
         break;
-      case "favorites":
-        await setDoc(doc(db, "users", userId, "data", "favorites"), {
+      case 'favorites':
+        await setDoc(doc(db, 'users', userId, 'data', 'favorites'), {
           items: payload,
           updatedAt,
         });
         break;
-      case "recentFoods":
-        await setDoc(doc(db, "users", userId, "data", "recentFoods"), {
+      case 'recentFoods':
+        await setDoc(doc(db, 'users', userId, 'data', 'recentFoods'), {
           items: payload,
           updatedAt,
         });
         break;
-      case "weightLog":
-        await setDoc(doc(db, "users", userId, "data", "weightLog"), {
+      case 'weightLog':
+        await setDoc(doc(db, 'users', userId, 'data', 'weightLog'), {
           items: payload,
           updatedAt,
         });
         break;
-      case "streakData":
-        await setDoc(doc(db, "users", userId, "data", "streakData"), {
+      case 'streakData':
+        await setDoc(doc(db, 'users', userId, 'data', 'streakData'), {
           ...payload,
           updatedAt,
         });
@@ -364,7 +383,7 @@ export async function syncToCloud(userId, dataType, payload) {
         break;
     }
   } catch (err) {
-    console.error("syncToCloud failed:", err);
+    console.error('syncToCloud failed:', err);
     throw err;
   }
 }
@@ -372,16 +391,16 @@ export async function syncToCloud(userId, dataType, payload) {
 export { syncFromCloud };
 
 const USER_DATA_DOCS = [
-  "profile",
-  "foodLog",
-  "history",
-  "foodHistory",
-  "favorites",
-  "recentFoods",
-  "weightLog",
-  "streakData",
-  "recipes",
-  "templates",
+  'profile',
+  'foodLog',
+  'history',
+  'foodHistory',
+  'favorites',
+  'recentFoods',
+  'weightLog',
+  'streakData',
+  'recipes',
+  'templates',
 ];
 
 /**
@@ -390,7 +409,7 @@ const USER_DATA_DOCS = [
 export async function deleteUserCloudData(userId) {
   if (!db || !userId || !isFirebaseConfigured()) return;
   const promises = USER_DATA_DOCS.map((docId) =>
-    deleteDoc(doc(db, "users", userId, "data", docId))
+    deleteDoc(doc(db, 'users', userId, 'data', docId))
   );
   await Promise.allSettled(promises);
 }
@@ -401,12 +420,12 @@ export async function deleteUserCloudData(userId) {
 export async function syncRecipesToCloud(userId, recipes) {
   if (!db || !userId || !isFirebaseConfigured()) return;
   try {
-    await setDoc(doc(db, "users", userId, "data", "recipes"), {
+    await setDoc(doc(db, 'users', userId, 'data', 'recipes'), {
       items: recipes,
       updatedAt: new Date().toISOString(),
     });
   } catch (err) {
-    console.error("syncRecipesToCloud failed:", err);
+    console.error('syncRecipesToCloud failed:', err);
   }
 }
 
@@ -417,12 +436,12 @@ export async function syncTemplatesToCloud(userId, templates) {
   if (!db || !userId || !isFirebaseConfigured()) return;
   try {
     const userTemplates = (templates || []).filter((t) => !t.isPrebuilt);
-    await setDoc(doc(db, "users", userId, "data", "templates"), {
+    await setDoc(doc(db, 'users', userId, 'data', 'templates'), {
       items: userTemplates,
       updatedAt: new Date().toISOString(),
     });
   } catch (err) {
-    console.error("syncTemplatesToCloud failed:", err);
+    console.error('syncTemplatesToCloud failed:', err);
   }
 }
 
@@ -432,10 +451,10 @@ export async function syncTemplatesToCloud(userId, templates) {
 export async function loadRecipesFromCloud(userId) {
   if (!db || !userId || !isFirebaseConfigured()) return null;
   try {
-    const snap = await getDoc(doc(db, "users", userId, "data", "recipes"));
+    const snap = await getDoc(doc(db, 'users', userId, 'data', 'recipes'));
     return snap.exists() ? snap.data().items || [] : null;
   } catch (err) {
-    console.error("loadRecipesFromCloud failed:", err);
+    console.error('loadRecipesFromCloud failed:', err);
     return null;
   }
 }
@@ -446,10 +465,10 @@ export async function loadRecipesFromCloud(userId) {
 export async function loadTemplatesFromCloud(userId) {
   if (!db || !userId || !isFirebaseConfigured()) return null;
   try {
-    const snap = await getDoc(doc(db, "users", userId, "data", "templates"));
+    const snap = await getDoc(doc(db, 'users', userId, 'data', 'templates'));
     return snap.exists() ? snap.data().items || [] : null;
   } catch (err) {
-    console.error("loadTemplatesFromCloud failed:", err);
+    console.error('loadTemplatesFromCloud failed:', err);
     return null;
   }
 }

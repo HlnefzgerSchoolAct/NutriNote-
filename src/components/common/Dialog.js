@@ -1,15 +1,8 @@
-import React, { forwardRef, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  X,
-  Check,
-  AlertCircle,
-  AlertTriangle,
-  Info,
-  CheckCircle,
-} from "lucide-react";
-import { createPortal } from "react-dom";
-import "./Dialog.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Check, AlertCircle, AlertTriangle, Info, CheckCircle } from 'lucide-react';
+import React, { forwardRef, useCallback, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import './Dialog.css';
 
 /**
  * M3 Dialog Component
@@ -31,16 +24,16 @@ const Dialog = forwardRef(
       open,
       onClose,
       title,
-      type = "basic",
-      size = "md",
+      type = 'basic',
+      size = 'md',
       icon,
       dismissible = true,
       actions,
       children,
-      className = "",
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     const dialogRef = useRef(null);
     const previousActiveElement = useRef(null);
@@ -59,7 +52,7 @@ const Dialog = forwardRef(
           handleClose();
         }
       },
-      [handleClose],
+      [handleClose]
     );
 
     // Handle escape key
@@ -67,13 +60,13 @@ const Dialog = forwardRef(
       if (!open) return;
 
       const handleKeyDown = (e) => {
-        if (e.key === "Escape") {
+        if (e.key === 'Escape') {
           handleClose();
         }
       };
 
-      document.addEventListener("keydown", handleKeyDown);
-      return () => document.removeEventListener("keydown", handleKeyDown);
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
     }, [open, handleClose]);
 
     // Focus management
@@ -86,22 +79,22 @@ const Dialog = forwardRef(
         setTimeout(() => {
           if (dialogRef.current) {
             const firstFocusable = dialogRef.current.querySelector(
-              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
             firstFocusable?.focus();
           }
         }, 100);
 
         // Lock body scroll
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = 'hidden';
       } else {
         // Restore focus
         previousActiveElement.current?.focus();
-        document.body.style.overflow = "";
+        document.body.style.overflow = '';
       }
 
       return () => {
-        document.body.style.overflow = "";
+        document.body.style.overflow = '';
       };
     }, [open]);
 
@@ -112,10 +105,10 @@ const Dialog = forwardRef(
       const dialog = dialogRef.current;
 
       const handleTab = (e) => {
-        if (e.key !== "Tab") return;
+        if (e.key !== 'Tab') return;
 
         const focusableElements = dialog.querySelectorAll(
-          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
         );
 
         const firstElement = focusableElements[0];
@@ -134,21 +127,21 @@ const Dialog = forwardRef(
         }
       };
 
-      dialog.addEventListener("keydown", handleTab);
-      return () => dialog.removeEventListener("keydown", handleTab);
+      dialog.addEventListener('keydown', handleTab);
+      return () => dialog.removeEventListener('keydown', handleTab);
     }, [open]);
 
     // Get icon component
     const getIcon = () => {
       const iconProps = { size: 24 };
       switch (icon) {
-        case "info":
+        case 'info':
           return <Info {...iconProps} />;
-        case "warning":
+        case 'warning':
           return <AlertTriangle {...iconProps} />;
-        case "error":
+        case 'error':
           return <AlertCircle {...iconProps} />;
-        case "success":
+        case 'success':
           return <CheckCircle {...iconProps} />;
         default:
           return null;
@@ -157,13 +150,13 @@ const Dialog = forwardRef(
 
     // Build class names
     const dialogClasses = [
-      "m3-dialog",
+      'm3-dialog',
       `m3-dialog--${type}`,
-      size !== "md" && `m3-dialog--${size}`,
+      size !== 'md' && `m3-dialog--${size}`,
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     // Animation variants
     const scrimVariants = {
@@ -182,7 +175,7 @@ const Dialog = forwardRef(
         scale: 1,
         y: 0,
         transition: {
-          type: "spring",
+          type: 'spring',
           stiffness: 400,
           damping: 30,
         },
@@ -195,19 +188,19 @@ const Dialog = forwardRef(
     };
 
     const fullscreenVariants = {
-      hidden: { opacity: 0, y: "100%" },
+      hidden: { opacity: 0, y: '100%' },
       visible: {
         opacity: 1,
         y: 0,
         transition: {
-          type: "spring",
+          type: 'spring',
           stiffness: 400,
           damping: 40,
         },
       },
       exit: {
         opacity: 0,
-        y: "100%",
+        y: '100%',
         transition: { duration: 0.2 },
       },
     };
@@ -228,25 +221,23 @@ const Dialog = forwardRef(
             <motion.div
               ref={(node) => {
                 dialogRef.current = node;
-                if (typeof ref === "function") ref(node);
+                if (typeof ref === 'function') ref(node);
                 else if (ref) ref.current = node;
               }}
               className={dialogClasses}
-              variants={
-                type === "fullscreen" ? fullscreenVariants : dialogVariants
-              }
+              variants={type === 'fullscreen' ? fullscreenVariants : dialogVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
               role="dialog"
               aria-modal="true"
-              aria-labelledby={title ? "dialog-title" : undefined}
+              aria-labelledby={title ? 'dialog-title' : undefined}
               onClick={(e) => e.stopPropagation()}
               {...props}
             >
               {/* Header */}
               <div className="m3-dialog__header">
-                {type === "fullscreen" && (
+                {type === 'fullscreen' && (
                   <button
                     className="m3-dialog__close"
                     onClick={handleClose}
@@ -257,10 +248,8 @@ const Dialog = forwardRef(
                   </button>
                 )}
 
-                {icon && type === "alert" && (
-                  <div className={`m3-dialog__icon m3-dialog__icon--${icon}`}>
-                    {getIcon()}
-                  </div>
+                {icon && type === 'alert' && (
+                  <div className={`m3-dialog__icon m3-dialog__icon--${icon}`}>{getIcon()}</div>
                 )}
 
                 {title && (
@@ -282,15 +271,15 @@ const Dialog = forwardRef(
     );
 
     // Render in portal
-    if (typeof document !== "undefined") {
+    if (typeof document !== 'undefined') {
       return createPortal(content, document.body);
     }
 
     return content;
-  },
+  }
 );
 
-Dialog.displayName = "Dialog";
+Dialog.displayName = 'Dialog';
 
 /**
  * Alert Dialog - Pre-configured for alerts
@@ -301,8 +290,8 @@ export const AlertDialog = ({
   onConfirm,
   title,
   message,
-  confirmText = "OK",
-  icon = "info",
+  confirmText = 'OK',
+  icon = 'info',
   ...props
 }) => {
   return (
@@ -340,8 +329,8 @@ export const ConfirmDialog = ({
   onCancel,
   title,
   message,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
   destructive = false,
   ...props
 }) => {
@@ -367,7 +356,7 @@ export const ConfirmDialog = ({
             {cancelText}
           </button>
           <button
-            className={`m3-btn ${destructive ? "m3-btn--filled m3-btn--error" : "m3-btn--filled"}`}
+            className={`m3-btn ${destructive ? 'm3-btn--filled m3-btn--error' : 'm3-btn--filled'}`}
             onClick={handleConfirm}
           >
             {confirmText}
@@ -392,17 +381,17 @@ export const InputDialog = ({
   message,
   label,
   placeholder,
-  defaultValue = "",
-  submitText = "Submit",
-  cancelText = "Cancel",
-  type = "text",
+  defaultValue = '',
+  submitText = 'Submit',
+  cancelText = 'Cancel',
+  type = 'text',
   ...props
 }) => {
   const inputRef = useRef(null);
 
   const handleSubmit = (e) => {
     e?.preventDefault();
-    const value = inputRef.current?.value || "";
+    const value = inputRef.current?.value || '';
     onSubmit?.(value);
     onClose?.();
   };
@@ -422,18 +411,10 @@ export const InputDialog = ({
       type="confirm"
       actions={
         <>
-          <button
-            className="m3-btn m3-btn--text"
-            onClick={onClose}
-            type="button"
-          >
+          <button className="m3-btn m3-btn--text" onClick={onClose} type="button">
             {cancelText}
           </button>
-          <button
-            className="m3-btn m3-btn--filled"
-            onClick={handleSubmit}
-            type="submit"
-          >
+          <button className="m3-btn m3-btn--filled" onClick={handleSubmit} type="submit">
             {submitText}
           </button>
         </>
@@ -468,9 +449,7 @@ export const SelectionDialog = ({
   multiple = false,
   ...props
 }) => {
-  const [localSelected, setLocalSelected] = React.useState(
-    multiple ? selected || [] : selected,
-  );
+  const [localSelected, setLocalSelected] = React.useState(multiple ? selected || [] : selected);
 
   useEffect(() => {
     setLocalSelected(multiple ? selected || [] : selected);
@@ -519,21 +498,21 @@ export const SelectionDialog = ({
     >
       <ul className="m3-dialog__list">
         {options.map((option) => {
-          const value = typeof option === "string" ? option : option.value;
-          const label = typeof option === "string" ? option : option.label;
-          const subtitle = typeof option === "object" ? option.subtitle : null;
+          const value = typeof option === 'string' ? option : option.value;
+          const label = typeof option === 'string' ? option : option.label;
+          const subtitle = typeof option === 'object' ? option.subtitle : null;
           const checked = isSelected(value);
 
           return (
             <li
               key={value}
-              className={`m3-dialog__list-item ${checked ? "m3-dialog__list-item--selected" : ""}`}
+              className={`m3-dialog__list-item ${checked ? 'm3-dialog__list-item--selected' : ''}`}
               onClick={() => handleItemClick(value)}
-              role={multiple ? "checkbox" : "radio"}
+              role={multiple ? 'checkbox' : 'radio'}
               aria-checked={checked}
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
+                if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   handleItemClick(value);
                 }
@@ -541,9 +520,7 @@ export const SelectionDialog = ({
             >
               <div
                 className={
-                  multiple
-                    ? "m3-dialog__list-item-checkbox"
-                    : "m3-dialog__list-item-radio"
+                  multiple ? 'm3-dialog__list-item-checkbox' : 'm3-dialog__list-item-radio'
                 }
               >
                 {multiple ? (
@@ -554,11 +531,7 @@ export const SelectionDialog = ({
               </div>
               <div className="m3-dialog__list-item-content">
                 <div className="m3-dialog__list-item-title">{label}</div>
-                {subtitle && (
-                  <div className="m3-dialog__list-item-subtitle">
-                    {subtitle}
-                  </div>
-                )}
+                {subtitle && <div className="m3-dialog__list-item-subtitle">{subtitle}</div>}
               </div>
             </li>
           );

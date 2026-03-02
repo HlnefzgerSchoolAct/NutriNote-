@@ -1,17 +1,25 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Home, UtensilsCrossed, Calendar, User, ChefHat, ClipboardList, MessageCircle } from "lucide-react";
-import { motion } from "framer-motion";
-import "./BottomNavBar.css";
+import { motion } from 'framer-motion';
+import {
+  Home,
+  UtensilsCrossed,
+  Calendar,
+  User,
+  ChefHat,
+  ClipboardList,
+  MessageCircle,
+} from 'lucide-react';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './BottomNavBar.css';
 
 const navItems = [
-  { path: "/", label: "Home", icon: Home },
-  { path: "/log", label: "Log", icon: UtensilsCrossed },
-  { path: "/coach", label: "Coach", icon: MessageCircle },
-  { path: "/recipes", label: "Recipes", icon: ChefHat },
-  { path: "/templates", label: "Templates", icon: ClipboardList },
-  { path: "/history", label: "History", icon: Calendar },
-  { path: "/profile", label: "Profile", icon: User },
+  { path: '/', label: 'Home', icon: Home },
+  { path: '/log', label: 'Log', icon: UtensilsCrossed },
+  { path: '/coach', label: 'Coach', icon: MessageCircle },
+  { path: '/recipes', label: 'Recipes', icon: ChefHat },
+  { path: '/templates', label: 'Templates', icon: ClipboardList },
+  { path: '/history', label: 'History', icon: Calendar },
+  { path: '/profile', label: 'Profile', icon: User },
 ];
 
 function BottomNavBar() {
@@ -19,16 +27,12 @@ function BottomNavBar() {
   const navigate = useNavigate();
 
   // Don't show nav bar during onboarding
-  if (location.pathname.startsWith("/onboarding")) {
+  if (location.pathname.startsWith('/onboarding')) {
     return null;
   }
 
   return (
-    <nav
-      className="bottom-nav-bar"
-      role="navigation"
-      aria-label="Main navigation"
-    >
+    <nav className="bottom-nav-bar" role="navigation" aria-label="Main navigation">
       {navItems.map((item) => {
         const isActive = location.pathname === item.path;
         const Icon = item.icon;
@@ -36,12 +40,12 @@ function BottomNavBar() {
         return (
           <motion.button
             key={item.path}
-            className={`nav-item ${isActive ? "active" : ""}`}
+            className={`nav-item ${isActive ? 'active' : ''}`}
             onClick={() => navigate(item.path)}
             aria-label={item.label}
-            aria-current={isActive ? "page" : undefined}
+            aria-current={isActive ? 'page' : undefined}
             whileTap={{ scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             <div className="nav-item-content">
               {isActive && (
@@ -49,17 +53,13 @@ function BottomNavBar() {
                   className="nav-pill"
                   layoutId="navPill"
                   transition={{
-                    type: "spring",
+                    type: 'spring',
                     stiffness: 500,
                     damping: 30,
                   }}
                 />
               )}
-              <Icon
-                className="nav-icon"
-                size={22}
-                strokeWidth={isActive ? 2.5 : 1.75}
-              />
+              <Icon className="nav-icon" size={22} strokeWidth={isActive ? 2.5 : 1.75} />
             </div>
             <span className="nav-label">{item.label}</span>
           </motion.button>

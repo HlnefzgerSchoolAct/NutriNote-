@@ -3,8 +3,7 @@
  * Allows copying meals from one day to another
  */
 
-import React, { useState, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Copy,
   Calendar,
@@ -17,10 +16,12 @@ import {
   Moon,
   Utensils,
   Cookie,
-} from "lucide-react";
-import { haptics } from "../utils/haptics";
-import { loadFoodLog, addFoodEntry } from "../utils/localStorage";
-import "./CopyMealsSheet.css";
+} from 'lucide-react';
+import React, { useState, useCallback, useMemo } from 'react';
+
+import { haptics } from '../utils/haptics';
+import { loadFoodLog, addFoodEntry } from '../utils/localStorage';
+import './CopyMealsSheet.css';
 
 /**
  * Meal type icons
@@ -42,13 +43,13 @@ const formatDate = (date) => {
   yesterday.setDate(yesterday.getDate() - 1);
 
   const dateStr = date.toDateString();
-  if (dateStr === today.toDateString()) return "Today";
-  if (dateStr === yesterday.toDateString()) return "Yesterday";
+  if (dateStr === today.toDateString()) return 'Today';
+  if (dateStr === yesterday.toDateString()) return 'Yesterday';
 
   return date.toLocaleDateString(undefined, {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
   });
 };
 
@@ -68,7 +69,7 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
   // Get meals for source date
   const sourceMeals = useMemo(() => {
     const log = loadFoodLog();
-    const dateKey = sourceDate.toISOString().split("T")[0];
+    const dateKey = sourceDate.toISOString().split('T')[0];
     const dayLog = log[dateKey];
     if (!dayLog?.meals) return {};
 
@@ -122,7 +123,7 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
     haptics.medium();
 
     try {
-      const targetDateKey = targetDate.toISOString().split("T")[0];
+      const targetDateKey = targetDate.toISOString().split('T')[0];
 
       for (const mealType of selectedMeals) {
         const foods = sourceMeals[mealType];
@@ -146,7 +147,7 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
         onClose(true); // true = success
       }, 800);
     } catch (error) {
-      console.error("Failed to copy meals:", error);
+      console.error('Failed to copy meals:', error);
       haptics.error();
     } finally {
       setIsCopying(false);
@@ -191,10 +192,10 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
           {/* Sheet */}
           <motion.div
             className="copy-meals-sheet"
-            initial={{ y: "100%" }}
+            initial={{ y: '100%' }}
             animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             role="dialog"
             aria-modal="true"
             aria-labelledby="copy-meals-title"
@@ -237,8 +238,7 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
                 className="copy-meals-sheet__nav-btn"
                 onClick={() => changeSourceDate(1)}
                 disabled={
-                  sourceDate.toDateString() >=
-                  new Date(Date.now() - 86400000).toDateString()
+                  sourceDate.toDateString() >= new Date(Date.now() - 86400000).toDateString()
                 }
                 aria-label="Next day"
               >
@@ -258,15 +258,12 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
                     {Object.entries(sourceMeals).map(([mealType, foods]) => {
                       const MealIcon = MEAL_ICONS[mealType] || Utensils;
                       const isSelected = selectedMeals.has(mealType);
-                      const mealCalories = foods.reduce(
-                        (sum, f) => sum + (f.calories || 0),
-                        0,
-                      );
+                      const mealCalories = foods.reduce((sum, f) => sum + (f.calories || 0), 0);
 
                       return (
                         <li key={mealType}>
                           <button
-                            className={`copy-meals-sheet__meal ${isSelected ? "selected" : ""}`}
+                            className={`copy-meals-sheet__meal ${isSelected ? 'selected' : ''}`}
                             onClick={() => toggleMeal(mealType)}
                             aria-pressed={isSelected}
                           >
@@ -275,13 +272,11 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
                             </div>
                             <div className="copy-meals-sheet__meal-info">
                               <span className="copy-meals-sheet__meal-name">
-                                {mealType.charAt(0).toUpperCase() +
-                                  mealType.slice(1)}
+                                {mealType.charAt(0).toUpperCase() + mealType.slice(1)}
                               </span>
                               <span className="copy-meals-sheet__meal-detail">
                                 {foods.length} item
-                                {foods.length !== 1 ? "s" : ""} • {mealCalories}{" "}
-                                cal
+                                {foods.length !== 1 ? 's' : ''} • {mealCalories} cal
                               </span>
                             </div>
                             <div className="copy-meals-sheet__meal-check">
@@ -308,13 +303,13 @@ export const CopyMealsSheet = ({ isOpen, onClose, targetDate }) => {
                 <div className="copy-meals-sheet__summary">
                   <span>
                     {selectedMeals.size} meal
-                    {selectedMeals.size !== 1 ? "s" : ""} selected
+                    {selectedMeals.size !== 1 ? 's' : ''} selected
                   </span>
                   <span>{totalCalories} calories</span>
                 </div>
               )}
               <button
-                className={`copy-meals-sheet__submit ${copySuccess ? "success" : ""}`}
+                className={`copy-meals-sheet__submit ${copySuccess ? 'success' : ''}`}
                 onClick={handleCopy}
                 disabled={selectedMeals.size === 0 || isCopying}
               >

@@ -3,8 +3,7 @@
  * Dashboard with calorie progress, macros, widgets, and recent foods
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Flame,
   Utensils,
@@ -14,9 +13,10 @@ import {
   Scale,
   Activity,
   Plus,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import "./HomePage.css";
+} from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './HomePage.css';
 
 // M3 Design System Components
 import {
@@ -43,8 +43,9 @@ import {
   VisuallyHidden,
   useAnnounce,
   SkeletonPage,
-} from "../components/common";
-
+} from '../components/common';
+import { FeatureHighlight, APP_TOOLTIPS } from '../components/OnboardingTooltips';
+import { haptics } from '../utils/haptics';
 import {
   loadFoodLog,
   loadExerciseLog,
@@ -55,10 +56,7 @@ import {
   loadWeightLog,
   getTotalMicronutrients,
   loadMicronutrientGoals,
-} from "../utils/localStorage";
-
-import { haptics } from "../utils/haptics";
-import { FeatureHighlight, APP_TOOLTIPS } from "../components/OnboardingTooltips";
+} from '../utils/localStorage';
 
 function HomePage({ userProfile, dailyTarget, macroGoals }) {
   const navigate = useNavigate();
@@ -78,12 +76,12 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
   const [microGoals, setMicroGoals] = useState({});
   const [hydrationData, setHydrationData] = useState({ current: 0, goal: 8 });
   const [weightData, setWeightData] = useState({ current: null, trend: [] });
-  const [selectedTimeframe, setSelectedTimeframe] = useState("today");
+  const [selectedTimeframe, setSelectedTimeframe] = useState('today');
 
   // Computed values
   const remainingCalories = useMemo(
     () => dailyTarget - (caloriesEaten - caloriesBurned),
-    [dailyTarget, caloriesEaten, caloriesBurned],
+    [dailyTarget, caloriesEaten, caloriesBurned]
   );
   const isOverTarget = remainingCalories < 0;
   const netCalories = caloriesEaten - caloriesBurned;
@@ -107,7 +105,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
           carbs: acc.carbs + (entry.carbs || 0),
           fat: acc.fat + (entry.fat || 0),
         }),
-        { protein: 0, carbs: 0, fat: 0 },
+        { protein: 0, carbs: 0, fat: 0 }
       );
       setCurrentMacros(macros);
 
@@ -128,7 +126,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
         });
       }
     } catch (error) {
-      console.error("Failed to load data:", error);
+      console.error('Failed to load data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -142,9 +140,8 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
     const handleVisibilityChange = () => {
       if (!document.hidden) loadData();
     };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () =>
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [loadData]);
 
   // Screen reader announcement
@@ -153,7 +150,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
       const status = isOverTarget
         ? `You are ${Math.abs(remainingCalories)} calories over your goal`
         : `${remainingCalories} calories remaining`;
-      announce(status, "polite");
+      announce(status, 'polite');
     }
   }, [isLoading, isOverTarget, remainingCalories, announce]);
 
@@ -173,34 +170,34 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
           {streakData.currentStreak > 0 && (
             <StaggerItem>
               <FeatureHighlight tooltip={APP_TOOLTIPS.STREAK_COUNTER} showBadge={false}>
-              <motion.div
-                className="streak-banner flex items-center gap-3 px-4 py-3 mb-4 rounded-full cursor-pointer select-none"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => navigate("/history")}
-                role="button"
-                tabIndex={0}
-                aria-label={`${streakData.currentStreak} day streak. Tap to view history.`}
-              >
-                <div className="flex items-center justify-center w-9 h-9 rounded-full bg-tertiary text-on-tertiary">
-                  <Flame size={20} aria-hidden="true" />
-                </div>
-                <div className="flex-1 flex items-baseline gap-1">
-                  <span className="text-2xl font-bold text-on-tertiary-container tabular-nums">
-                    <AnimatedCounter value={streakData.currentStreak} />
-                  </span>
-                  <span className="text-body-sm font-medium text-on-tertiary-container opacity-80">
-                    day streak!
-                  </span>
-                </div>
-                <Sparkles
-                  size={16}
-                  className="text-tertiary animate-sparkle"
-                  aria-hidden="true"
-                />
-              </motion.div>
+                <motion.div
+                  className="streak-banner flex items-center gap-3 px-4 py-3 mb-4 rounded-full cursor-pointer select-none"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => navigate('/history')}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${streakData.currentStreak} day streak. Tap to view history.`}
+                >
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-tertiary text-on-tertiary">
+                    <Flame size={20} aria-hidden="true" />
+                  </div>
+                  <div className="flex-1 flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-on-tertiary-container tabular-nums">
+                      <AnimatedCounter value={streakData.currentStreak} />
+                    </span>
+                    <span className="text-body-sm font-medium text-on-tertiary-container opacity-80">
+                      day streak!
+                    </span>
+                  </div>
+                  <Sparkles
+                    size={16}
+                    className="text-tertiary animate-sparkle"
+                    aria-hidden="true"
+                  />
+                </motion.div>
               </FeatureHighlight>
             </StaggerItem>
           )}
@@ -209,51 +206,54 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
         {/* ===== Calorie Progress Card ===== */}
         <StaggerItem>
           <FeatureHighlight tooltip={APP_TOOLTIPS.CALORIE_RING} showBadge={false}>
-          <M3Card variant="elevated" className="mb-4">
-            <M3CardContent>
-              <div className="flex flex-col items-center gap-6 py-4 md:flex-row md:justify-around md:py-6">
-                <M3ProgressRing
-                  value={netCalories}
-                  max={dailyTarget}
-                  size={200}
-                  strokeWidth={16}
-                  color={isOverTarget ? "error" : "primary"}
-                  showText={false}
-                  animated
-                  aria-label={`${calorieProgress.toFixed(0)}% of daily calorie goal`}
-                >
-                  <div className="flex flex-col items-center justify-center text-center">
-                    <motion.span
-                      className={`text-5xl font-bold leading-none tabular-nums ${isOverTarget ? "text-error" : "text-on-surface"}`}
-                      key={remainingCalories}
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                    >
-                      <AnimatedCounter
-                        value={Math.abs(remainingCalories)}
-                        duration={800}
-                      />
-                    </motion.span>
-                    <span className="text-body-sm text-on-surface-variant uppercase tracking-wider mt-1">
-                      {isOverTarget ? "over" : "remaining"}
-                    </span>
-                  </div>
-                </M3ProgressRing>
+            <M3Card variant="elevated" className="mb-4">
+              <M3CardContent>
+                <div className="flex flex-col items-center gap-6 py-4 md:flex-row md:justify-around md:py-6">
+                  <M3ProgressRing
+                    value={netCalories}
+                    max={dailyTarget}
+                    size={200}
+                    strokeWidth={16}
+                    color={isOverTarget ? 'error' : 'primary'}
+                    showText={false}
+                    animated
+                    aria-label={`${calorieProgress.toFixed(0)}% of daily calorie goal`}
+                  >
+                    <div className="flex flex-col items-center justify-center text-center">
+                      <motion.span
+                        className={`text-5xl font-bold leading-none tabular-nums ${isOverTarget ? 'text-error' : 'text-on-surface'}`}
+                        key={remainingCalories}
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                      >
+                        <AnimatedCounter value={Math.abs(remainingCalories)} duration={800} />
+                      </motion.span>
+                      <span className="text-body-sm text-on-surface-variant uppercase tracking-wider mt-1">
+                        {isOverTarget ? 'over' : 'remaining'}
+                      </span>
+                    </div>
+                  </M3ProgressRing>
 
-                {/* Quick Stats */}
-                <div
-                  className="flex items-center justify-center gap-6 w-full py-2 md:flex-col md:w-auto md:gap-4"
-                  role="list"
-                >
-                  <QuickStat label="eaten" value={caloriesEaten} animated />
-                  <div className="w-px h-8 bg-outline-variant md:w-20 md:h-px" aria-hidden="true" />
-                  <QuickStat label="goal" value={dailyTarget} />
-                  <div className="w-px h-8 bg-outline-variant md:w-20 md:h-px" aria-hidden="true" />
-                  <QuickStat label="burned" value={caloriesBurned} animated />
+                  {/* Quick Stats */}
+                  <div
+                    className="flex items-center justify-center gap-6 w-full py-2 md:flex-col md:w-auto md:gap-4"
+                    role="list"
+                  >
+                    <QuickStat label="eaten" value={caloriesEaten} animated />
+                    <div
+                      className="w-px h-8 bg-outline-variant md:w-20 md:h-px"
+                      aria-hidden="true"
+                    />
+                    <QuickStat label="goal" value={dailyTarget} />
+                    <div
+                      className="w-px h-8 bg-outline-variant md:w-20 md:h-px"
+                      aria-hidden="true"
+                    />
+                    <QuickStat label="burned" value={caloriesBurned} animated />
+                  </div>
                 </div>
-              </div>
-            </M3CardContent>
-          </M3Card>
+              </M3CardContent>
+            </M3Card>
           </FeatureHighlight>
         </StaggerItem>
 
@@ -268,9 +268,15 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
               }}
               aria-label="Select timeframe"
             >
-              <Chip value="today" variant="filter">Today</Chip>
-              <Chip value="week" variant="filter">This Week</Chip>
-              <Chip value="month" variant="filter">This Month</Chip>
+              <Chip value="today" variant="filter">
+                Today
+              </Chip>
+              <Chip value="week" variant="filter">
+                This Week
+              </Chip>
+              <Chip value="month" variant="filter">
+                This Month
+              </Chip>
             </ChipGroup>
           </div>
         </StaggerItem>
@@ -284,7 +290,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
                 <M3Button
                   variant="text"
                   size="small"
-                  onClick={() => navigate("/log")}
+                  onClick={() => navigate('/log')}
                   aria-label="View macro details"
                 >
                   Details <ChevronRight size={16} />
@@ -336,7 +342,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
                 <WeightWidget
                   current={weightData.current}
                   trend={weightData.trend}
-                  unit={userProfile?.weightUnit || "kg"}
+                  unit={userProfile?.weightUnit || 'kg'}
                   size="small"
                 />
               )}
@@ -356,11 +362,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
             <Section
               title="Recent Foods"
               action={
-                <M3Button
-                  variant="text"
-                  size="small"
-                  onClick={() => navigate("/log")}
-                >
+                <M3Button variant="text" size="small" onClick={() => navigate('/log')}>
                   See All <ChevronRight size={16} />
                 </M3Button>
               }
@@ -369,12 +371,12 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
                 {recentFoods.slice(0, 3).map((food, index) => (
                   <motion.div
                     key={food.id || index}
-                    className="flex items-center gap-4 px-4 py-3 bg-surface-container rounded-md cursor-pointer transition-colors duration-150 hover:bg-surface-container-high focus-visible:outline-3 focus-visible:outline-primary focus-visible:outline-offset-2"
+                    className="home-recent-food flex items-center gap-4 px-4 py-3 bg-surface-container rounded-xl cursor-pointer focus-visible:outline-3 focus-visible:outline-primary focus-visible:outline-offset-2"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate("/log")}
+                    onClick={() => navigate('/log')}
                     role="button"
                     tabIndex={0}
                   >
@@ -386,7 +388,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
                         {food.name}
                       </span>
                       <span className="block text-body-sm text-on-surface-variant mt-0.5">
-                        {food.calories} cal • {food.portion || food.servingSize || "1 serving"}
+                        {food.calories} cal • {food.portion || food.servingSize || '1 serving'}
                       </span>
                     </div>
                     <ChevronRight
@@ -411,19 +413,19 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
           <Section title="Quick Actions">
             <Grid columns={2} gap={12}>
               <FeatureHighlight tooltip={APP_TOOLTIPS.ADD_FOOD_BUTTON} showBadge={false}>
-              <M3Button
-                variant="tonal"
-                icon={<Plus size={20} />}
-                onClick={() => navigate("/log")}
-                fullWidth
-              >
-                Log Food
-              </M3Button>
+                <M3Button
+                  variant="tonal"
+                  icon={<Plus size={20} />}
+                  onClick={() => navigate('/log')}
+                  fullWidth
+                >
+                  Log Food
+                </M3Button>
               </FeatureHighlight>
               <M3Button
                 variant="tonal"
                 icon={<Activity size={20} />}
-                onClick={() => navigate("/log", { state: { tab: "exercise" } })}
+                onClick={() => navigate('/log', { state: { tab: 'exercise' } })}
                 fullWidth
               >
                 Log Exercise
@@ -431,7 +433,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
               <M3Button
                 variant="outlined"
                 icon={<Droplets size={20} />}
-                onClick={() => navigate("/log", { state: { tab: "hydration" } })}
+                onClick={() => navigate('/log', { state: { tab: 'hydration' } })}
                 fullWidth
               >
                 Log Water
@@ -439,7 +441,7 @@ function HomePage({ userProfile, dailyTarget, macroGoals }) {
               <M3Button
                 variant="outlined"
                 icon={<Scale size={20} />}
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate('/profile')}
                 fullWidth
               >
                 Log Weight
@@ -474,30 +476,26 @@ function GuidanceCard({ remaining, isOver }) {
   const isPerfect = remaining === 0;
 
   let containerClass =
-    "px-4 py-4 rounded-xl text-center mb-4 text-body-sm leading-relaxed border ";
+    'guidance-card px-4 py-4 rounded-xl text-center mb-4 text-body-sm leading-relaxed border ';
   if (isOver) {
-    containerClass +=
-      "bg-error-container/30 border-error-container text-error";
+    containerClass += 'bg-error-container/30 border-error-container text-error';
   } else if (isPerfect) {
-    containerClass +=
-      "bg-primary-container/30 border-primary-container text-primary";
+    containerClass += 'bg-primary-container/30 border-primary-container text-primary';
   } else {
-    containerClass +=
-      "bg-success-container/30 border-success-container text-success";
+    containerClass += 'bg-success-container/30 border-success-container text-success';
   }
 
   return (
     <motion.div className={containerClass} layout>
       {remaining > 0 ? (
         <p className="m-0">
-          You have <strong>{remaining.toLocaleString()} calories</strong>{" "}
-          remaining today
+          You have <strong>{remaining.toLocaleString()} calories</strong> remaining today
         </p>
       ) : isPerfect ? (
         <p className="m-0">You've reached your daily target exactly! 🎯</p>
       ) : (
         <p className="m-0">
-          You've exceeded your target by{" "}
+          You've exceeded your target by{' '}
           <strong>{Math.abs(remaining).toLocaleString()} calories</strong>
         </p>
       )}

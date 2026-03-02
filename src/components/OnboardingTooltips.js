@@ -3,18 +3,12 @@
  * Guides new users through app features
  */
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronRight, Lightbulb } from "lucide-react";
-import { haptics } from "../utils/haptics";
-import "./OnboardingTooltips.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ChevronRight, Lightbulb } from 'lucide-react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+
+import { haptics } from '../utils/haptics';
+import './OnboardingTooltips.css';
 
 /**
  * Default tooltips for the app
@@ -22,62 +16,56 @@ import "./OnboardingTooltips.css";
 export const APP_TOOLTIPS = {
   // Home page
   CALORIE_RING: {
-    id: "calorie_ring",
-    title: "Daily Progress",
-    content:
-      "This ring shows your daily calorie progress. Tap it to see detailed macros.",
-    position: "bottom",
+    id: 'calorie_ring',
+    title: 'Daily Progress',
+    content: 'This ring shows your daily calorie progress. Tap it to see detailed macros.',
+    position: 'bottom',
   },
   ADD_FOOD_BUTTON: {
-    id: "add_food_button",
-    title: "Quick Add",
-    content:
-      "Tap here to quickly log food. You can also use Ctrl+N as a shortcut.",
-    position: "top",
+    id: 'add_food_button',
+    title: 'Quick Add',
+    content: 'Tap here to quickly log food. You can also use Ctrl+N as a shortcut.',
+    position: 'top',
   },
   STREAK_COUNTER: {
-    id: "streak_counter",
-    title: "Logging Streak",
-    content:
-      "Track how many consecutive days you've logged. Keep the streak alive!",
-    position: "bottom",
+    id: 'streak_counter',
+    title: 'Logging Streak',
+    content: "Track how many consecutive days you've logged. Keep the streak alive!",
+    position: 'bottom',
   },
   SWIPE_TO_DELETE: {
-    id: "swipe_to_delete",
-    title: "Swipe Actions",
-    content: "Swipe left on any food item to delete it, or right to edit.",
-    position: "top",
+    id: 'swipe_to_delete',
+    title: 'Swipe Actions',
+    content: 'Swipe left on any food item to delete it, or right to edit.',
+    position: 'top',
   },
 
   // Log page
   MEAL_SECTIONS: {
-    id: "meal_sections",
-    title: "Organized Meals",
-    content:
-      "Your foods are organized by meal. Tap a section to expand or collapse.",
-    position: "bottom",
+    id: 'meal_sections',
+    title: 'Organized Meals',
+    content: 'Your foods are organized by meal. Tap a section to expand or collapse.',
+    position: 'bottom',
   },
   COPY_MEALS: {
-    id: "copy_meals",
-    title: "Copy Previous Meals",
-    content:
-      "Had the same breakfast? Copy meals from previous days with one tap.",
-    position: "top",
+    id: 'copy_meals',
+    title: 'Copy Previous Meals',
+    content: 'Had the same breakfast? Copy meals from previous days with one tap.',
+    position: 'top',
   },
 
   // Search
   BARCODE_SCAN: {
-    id: "barcode_scan",
-    title: "Scan Barcodes",
-    content: "Quickly add packaged foods by scanning their barcode.",
-    position: "bottom",
+    id: 'barcode_scan',
+    title: 'Scan Barcodes',
+    content: 'Quickly add packaged foods by scanning their barcode.',
+    position: 'bottom',
   },
   AI_SEARCH: {
-    id: "ai_search",
-    title: "AI Food Search",
-    content:
-      "Can't find a food? Describe it in natural language and AI will estimate nutrition.",
-    position: "bottom",
+    id: 'ai_search',
+    title: 'AI Food Search',
+    content: "Can't find a food? Describe it in natural language and AI will estimate nutrition.",
+    position: 'bottom',
   },
 };
 
@@ -93,7 +81,7 @@ export const TooltipProvider = ({ children }) => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [completedTooltips, setCompletedTooltips] = useState(() => {
     try {
-      const stored = localStorage.getItem("nutrinoteplus_tooltips_completed");
+      const stored = localStorage.getItem('nutrinoteplus_tooltips_completed');
       return stored ? JSON.parse(stored) : [];
     } catch {
       return [];
@@ -104,10 +92,7 @@ export const TooltipProvider = ({ children }) => {
   // Save completed tooltips
   useEffect(() => {
     try {
-      localStorage.setItem(
-        "nutrinoteplus_tooltips_completed",
-        JSON.stringify(completedTooltips),
-      );
+      localStorage.setItem('nutrinoteplus_tooltips_completed', JSON.stringify(completedTooltips));
     } catch {
       // Storage error
     }
@@ -122,7 +107,7 @@ export const TooltipProvider = ({ children }) => {
       setActiveTooltip({ ...tooltip, targetRef });
       return true;
     },
-    [isEnabled, completedTooltips],
+    [isEnabled, completedTooltips]
   );
 
   // Dismiss tooltip
@@ -134,13 +119,13 @@ export const TooltipProvider = ({ children }) => {
       }
       setActiveTooltip(null);
     },
-    [activeTooltip],
+    [activeTooltip]
   );
 
   // Check if tooltip was completed
   const isCompleted = useCallback(
     (tooltipId) => completedTooltips.includes(tooltipId),
-    [completedTooltips],
+    [completedTooltips]
   );
 
   // Reset all tooltips (for testing or user request)
@@ -174,7 +159,7 @@ export const TooltipProvider = ({ children }) => {
 export const useTooltip = () => {
   const context = useContext(TooltipContext);
   if (!context) {
-    throw new Error("useTooltip must be used within TooltipProvider");
+    throw new Error('useTooltip must be used within TooltipProvider');
   }
   return context;
 };
@@ -209,7 +194,7 @@ export const useTooltipTrigger = (tooltip, delay = 500) => {
 const TooltipOverlay = () => {
   const { activeTooltip, dismissTooltip } = useTooltip();
   const [position, setPosition] = useState({ top: 0, left: 0, width: 280 });
-  const [arrowPosition, setArrowPosition] = useState({ left: "50%" });
+  const [arrowPosition, setArrowPosition] = useState({ left: '50%' });
 
   // Calculate position based on target element
   useEffect(() => {
@@ -224,15 +209,15 @@ const TooltipOverlay = () => {
       const padding = 16;
 
       let top, left;
-      const placement = activeTooltip.position || "bottom";
+      const placement = activeTooltip.position || 'bottom';
 
-      if (placement === "bottom") {
+      if (placement === 'bottom') {
         top = rect.bottom + 12;
         left = rect.left + rect.width / 2 - tooltipWidth / 2;
-      } else if (placement === "top") {
+      } else if (placement === 'top') {
         top = rect.top - tooltipHeight - 12;
         left = rect.left + rect.width / 2 - tooltipWidth / 2;
-      } else if (placement === "left") {
+      } else if (placement === 'left') {
         top = rect.top + rect.height / 2 - tooltipHeight / 2;
         left = rect.left - tooltipWidth - 12;
       } else {
@@ -241,33 +226,24 @@ const TooltipOverlay = () => {
       }
 
       // Clamp to viewport
-      left = Math.max(
-        padding,
-        Math.min(left, window.innerWidth - tooltipWidth - padding),
-      );
-      top = Math.max(
-        padding,
-        Math.min(top, window.innerHeight - tooltipHeight - padding),
-      );
+      left = Math.max(padding, Math.min(left, window.innerWidth - tooltipWidth - padding));
+      top = Math.max(padding, Math.min(top, window.innerHeight - tooltipHeight - padding));
 
       // Calculate arrow position
       const targetCenter = rect.left + rect.width / 2;
-      const arrowLeft = Math.max(
-        24,
-        Math.min(targetCenter - left, tooltipWidth - 24),
-      );
+      const arrowLeft = Math.max(24, Math.min(targetCenter - left, tooltipWidth - 24));
 
       setPosition({ top, left, width: tooltipWidth });
       setArrowPosition({ left: `${arrowLeft}px` });
     };
 
     updatePosition();
-    window.addEventListener("resize", updatePosition);
-    window.addEventListener("scroll", updatePosition);
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition);
 
     return () => {
-      window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("scroll", updatePosition);
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition);
     };
   }, [activeTooltip]);
 
@@ -291,21 +267,24 @@ const TooltipOverlay = () => {
 
           {/* Tooltip */}
           <motion.div
-            className={`tooltip-overlay__tooltip tooltip-overlay__tooltip--${activeTooltip.position || "bottom"}`}
-            style={{ top: position.top, left: position.left, width: position.width, maxWidth: "calc(100vw - 32px)" }}
+            className={`tooltip-overlay__tooltip tooltip-overlay__tooltip--${activeTooltip.position || 'bottom'}`}
+            style={{
+              top: position.top,
+              left: position.left,
+              width: position.width,
+              maxWidth: 'calc(100vw - 32px)',
+            }}
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            transition={{ type: "spring", damping: 25, stiffness: 400 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 400 }}
             role="tooltip"
           >
             <div className="tooltip-overlay__arrow" style={arrowPosition} />
 
             <div className="tooltip-overlay__header">
               <Lightbulb size={16} aria-hidden="true" />
-              <span className="tooltip-overlay__title">
-                {activeTooltip.title}
-              </span>
+              <span className="tooltip-overlay__title">{activeTooltip.title}</span>
               <button
                 className="tooltip-overlay__close"
                 onClick={() => dismissTooltip(true)}
@@ -317,10 +296,7 @@ const TooltipOverlay = () => {
 
             <p className="tooltip-overlay__content">{activeTooltip.content}</p>
 
-            <button
-              className="tooltip-overlay__action"
-              onClick={() => dismissTooltip(true)}
-            >
+            <button className="tooltip-overlay__action" onClick={() => dismissTooltip(true)}>
               Got it <ChevronRight size={16} />
             </button>
           </motion.div>
@@ -347,8 +323,8 @@ const TargetSpotlight = ({ target }) => {
       });
     };
     update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, [target]);
 
   if (!rect) return null;
@@ -368,12 +344,7 @@ const TargetSpotlight = ({ target }) => {
  * Feature Highlight Component
  * Inline component to mark new features
  */
-export const FeatureHighlight = ({
-  children,
-  tooltip,
-  badge = "New",
-  showBadge = true,
-}) => {
+export const FeatureHighlight = ({ children, tooltip, badge = 'New', showBadge = true }) => {
   const targetRef = useTooltipTrigger(tooltip, 1000);
   const { isCompleted } = useTooltip();
 
@@ -382,9 +353,7 @@ export const FeatureHighlight = ({
   return (
     <div ref={targetRef} className="feature-highlight">
       {children}
-      {showBadge && !completed && (
-        <span className="feature-highlight__badge">{badge}</span>
-      )}
+      {showBadge && !completed && <span className="feature-highlight__badge">{badge}</span>}
     </div>
   );
 };

@@ -3,10 +3,11 @@
  * Better UX for numeric and date inputs
  */
 
-import React, { useState, useEffect, useCallback } from "react";
-import { Minus, Plus, Calendar } from "lucide-react";
-import { haptics } from "../utils/haptics";
-import "./InputUtils.css";
+import { Minus, Plus, Calendar } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+
+import { haptics } from '../utils/haptics';
+import './InputUtils.css';
 
 /**
  * Numeric Stepper Input
@@ -20,7 +21,7 @@ export const NumericStepper = ({
   step = 1,
   label,
   unit,
-  size = "medium",
+  size = 'medium',
   disabled = false,
 }) => {
   const [internalValue, setInternalValue] = useState(value);
@@ -49,8 +50,8 @@ export const NumericStepper = ({
   const handleInputChange = useCallback(
     (e) => {
       const raw = e.target.value;
-      if (raw === "") {
-        setInternalValue("");
+      if (raw === '') {
+        setInternalValue('');
         return;
       }
 
@@ -61,20 +62,18 @@ export const NumericStepper = ({
         onChange?.(clamped);
       }
     },
-    [min, max, onChange],
+    [min, max, onChange]
   );
 
   const handleBlur = useCallback(() => {
-    if (internalValue === "" || isNaN(internalValue)) {
+    if (internalValue === '' || isNaN(internalValue)) {
       setInternalValue(min);
       onChange?.(min);
     }
   }, [internalValue, min, onChange]);
 
   return (
-    <div
-      className={`numeric-stepper numeric-stepper--${size} ${disabled ? "disabled" : ""}`}
-    >
+    <div className={`numeric-stepper numeric-stepper--${size} ${disabled ? 'disabled' : ''}`}>
       {label && <label className="numeric-stepper__label">{label}</label>}
       <div className="numeric-stepper__controls">
         <button
@@ -84,7 +83,7 @@ export const NumericStepper = ({
           disabled={disabled || internalValue <= min}
           aria-label="Decrease"
         >
-          <Minus size={size === "small" ? 14 : 18} />
+          <Minus size={size === 'small' ? 14 : 18} />
         </button>
 
         <div className="numeric-stepper__value">
@@ -109,7 +108,7 @@ export const NumericStepper = ({
           disabled={disabled || internalValue >= max}
           aria-label="Increase"
         >
-          <Plus size={size === "small" ? 14 : 18} />
+          <Plus size={size === 'small' ? 14 : 18} />
         </button>
       </div>
     </div>
@@ -124,20 +123,20 @@ export const QuickPortionSelector = ({
   value = 1,
   onChange,
   presets = [0.25, 0.5, 1, 1.5, 2],
-  unit = "serving",
+  unit = 'serving',
   showCustom = true,
 }) => {
-  const [customValue, setCustomValue] = useState("");
+  const [customValue, setCustomValue] = useState('');
   const [isCustom, setIsCustom] = useState(false);
 
   const handlePresetClick = useCallback(
     (preset) => {
       haptics.selection();
       setIsCustom(false);
-      setCustomValue("");
+      setCustomValue('');
       onChange?.(preset);
     },
-    [onChange],
+    [onChange]
   );
 
   const handleCustomChange = useCallback(
@@ -149,7 +148,7 @@ export const QuickPortionSelector = ({
         onChange?.(parsed);
       }
     },
-    [onChange],
+    [onChange]
   );
 
   const handleCustomFocus = useCallback(() => {
@@ -158,10 +157,10 @@ export const QuickPortionSelector = ({
   }, []);
 
   const formatPreset = (preset) => {
-    if (preset === 0.25) return "¼";
-    if (preset === 0.5) return "½";
-    if (preset === 0.75) return "¾";
-    if (preset === 1.5) return "1½";
+    if (preset === 0.25) return '¼';
+    if (preset === 0.5) return '½';
+    if (preset === 0.75) return '¾';
+    if (preset === 1.5) return '1½';
     return preset.toString();
   };
 
@@ -172,7 +171,7 @@ export const QuickPortionSelector = ({
           <button
             key={preset}
             type="button"
-            className={`quick-portion__preset ${value === preset && !isCustom ? "active" : ""}`}
+            className={`quick-portion__preset ${value === preset && !isCustom ? 'active' : ''}`}
             onClick={() => handlePresetClick(preset)}
           >
             {formatPreset(preset)}
@@ -180,7 +179,7 @@ export const QuickPortionSelector = ({
         ))}
 
         {showCustom && (
-          <div className={`quick-portion__custom ${isCustom ? "active" : ""}`}>
+          <div className={`quick-portion__custom ${isCustom ? 'active' : ''}`}>
             <input
               type="number"
               placeholder="..."
@@ -195,11 +194,7 @@ export const QuickPortionSelector = ({
         )}
       </div>
 
-      {unit && (
-        <span className="quick-portion__unit">
-          {value === 1 ? unit : `${unit}s`}
-        </span>
-      )}
+      {unit && <span className="quick-portion__unit">{value === 1 ? unit : `${unit}s`}</span>}
     </div>
   );
 };
@@ -214,11 +209,11 @@ export const DateQuickPicker = ({ value, onChange, showCalendar = true }) => {
   yesterday.setDate(yesterday.getDate() - 1);
 
   const dates = [
-    { label: "Today", value: today },
-    { label: "Yesterday", value: yesterday },
+    { label: 'Today', value: today },
+    { label: 'Yesterday', value: yesterday },
   ];
 
-  const formatDate = (date) => date.toISOString().split("T")[0];
+  const formatDate = (date) => date.toISOString().split('T')[0];
   const currentValue = value ? formatDate(new Date(value)) : formatDate(today);
 
   const handleSelect = useCallback(
@@ -226,7 +221,7 @@ export const DateQuickPicker = ({ value, onChange, showCalendar = true }) => {
       haptics.selection();
       onChange?.(formatDate(date));
     },
-    [onChange],
+    [onChange]
   );
 
   return (
@@ -236,7 +231,7 @@ export const DateQuickPicker = ({ value, onChange, showCalendar = true }) => {
           <button
             key={d.label}
             type="button"
-            className={`date-quick-picker__option ${currentValue === formatDate(d.value) ? "active" : ""}`}
+            className={`date-quick-picker__option ${currentValue === formatDate(d.value) ? 'active' : ''}`}
             onClick={() => handleSelect(d.value)}
           >
             {d.label}
@@ -265,15 +260,15 @@ export const DateQuickPicker = ({ value, onChange, showCalendar = true }) => {
  */
 export const ServingSizeHelper = ({ foodName, servingSize }) => {
   const commonReferences = {
-    cup: "about a baseball",
-    oz: "about a deck of cards",
-    tbsp: "about a thumb tip",
-    g: "weigh for accuracy",
-    ml: "use measuring cup",
+    cup: 'about a baseball',
+    oz: 'about a deck of cards',
+    tbsp: 'about a thumb tip',
+    g: 'weigh for accuracy',
+    ml: 'use measuring cup',
   };
 
   const getReference = () => {
-    const lower = servingSize?.toLowerCase() || "";
+    const lower = servingSize?.toLowerCase() || '';
     for (const [unit, ref] of Object.entries(commonReferences)) {
       if (lower.includes(unit)) {
         return ref;
@@ -297,30 +292,30 @@ export const ServingSizeHelper = ({ foodName, servingSize }) => {
  * Format number for display
  */
 export const formatNumber = (num, decimals = 1) => {
-  if (typeof num !== "number" || isNaN(num)) return "0";
+  if (typeof num !== 'number' || isNaN(num)) return '0';
   if (Number.isInteger(num)) return num.toString();
-  return num.toFixed(decimals).replace(/\.?0+$/, "");
+  return num.toFixed(decimals).replace(/\.?0+$/, '');
 };
 
 /**
  * Parse serving string to number
  */
 export const parseServing = (servingStr) => {
-  if (typeof servingStr === "number") return servingStr;
+  if (typeof servingStr === 'number') return servingStr;
   if (!servingStr) return 1;
 
   // Handle fractions
   const fractionMap = {
-    "¼": 0.25,
-    "½": 0.5,
-    "¾": 0.75,
-    "⅓": 0.333,
-    "⅔": 0.667,
+    '¼': 0.25,
+    '½': 0.5,
+    '¾': 0.75,
+    '⅓': 0.333,
+    '⅔': 0.667,
   };
 
   for (const [frac, val] of Object.entries(fractionMap)) {
     if (servingStr.includes(frac)) {
-      const prefix = servingStr.replace(frac, "").trim();
+      const prefix = servingStr.replace(frac, '').trim();
       const prefixNum = prefix ? parseFloat(prefix) : 0;
       return prefixNum + val;
     }

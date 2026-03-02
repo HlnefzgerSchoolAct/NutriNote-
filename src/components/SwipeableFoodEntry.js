@@ -3,16 +3,12 @@
  * Enables swipe-to-delete and swipe-to-edit on mobile
  */
 
-import React, { useState, useRef, useCallback } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
-import { Trash2, Edit3, Copy } from "lucide-react";
-import { haptics } from "../utils/haptics";
-import "./SwipeableFoodEntry.css";
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import { Trash2, Edit3, Copy } from 'lucide-react';
+import React, { useState, useRef, useCallback } from 'react';
+
+import { haptics } from '../utils/haptics';
+import './SwipeableFoodEntry.css';
 
 /**
  * Swipe action thresholds
@@ -30,8 +26,8 @@ export const SwipeableFoodEntry = ({
   onEdit,
   onDuplicate,
   disabled = false,
-  deleteLabel = "Delete",
-  editLabel = "Edit",
+  deleteLabel = 'Delete',
+  editLabel = 'Edit',
 }) => {
   const [isOpen, setIsOpen] = useState(null); // 'left' | 'right' | null
   const containerRef = useRef(null);
@@ -40,16 +36,8 @@ export const SwipeableFoodEntry = ({
   // Transform for action visibility
   const leftActionOpacity = useTransform(x, [-SWIPE_THRESHOLD, 0], [1, 0]);
   const rightActionOpacity = useTransform(x, [0, SWIPE_THRESHOLD], [0, 1]);
-  const leftActionScale = useTransform(
-    x,
-    [-SWIPE_THRESHOLD, -20, 0],
-    [1, 0.8, 0.5],
-  );
-  const rightActionScale = useTransform(
-    x,
-    [0, 20, SWIPE_THRESHOLD],
-    [0.5, 0.8, 1],
-  );
+  const leftActionScale = useTransform(x, [-SWIPE_THRESHOLD, -20, 0], [1, 0.8, 0.5]);
+  const rightActionScale = useTransform(x, [0, 20, SWIPE_THRESHOLD], [0.5, 0.8, 1]);
 
   // Handle drag end
   const handleDragEnd = useCallback(
@@ -75,16 +63,16 @@ export const SwipeableFoodEntry = ({
 
       // Check offset for slow swipes
       if (offset.x < -threshold) {
-        setIsOpen("left");
+        setIsOpen('left');
         haptics.selection();
       } else if (offset.x > threshold) {
-        setIsOpen("right");
+        setIsOpen('right');
         haptics.selection();
       } else {
         setIsOpen(null);
       }
     },
-    [onDelete, onEdit],
+    [onDelete, onEdit]
   );
 
   // Handle action click
@@ -94,20 +82,20 @@ export const SwipeableFoodEntry = ({
       haptics.medium();
 
       switch (action) {
-        case "delete":
+        case 'delete':
           onDelete?.();
           break;
-        case "edit":
+        case 'edit':
           onEdit?.();
           break;
-        case "duplicate":
+        case 'duplicate':
           onDuplicate?.();
           break;
         default:
           break;
       }
     },
-    [onDelete, onEdit, onDuplicate],
+    [onDelete, onEdit, onDuplicate]
   );
 
   // Close swipe
@@ -117,17 +105,13 @@ export const SwipeableFoodEntry = ({
 
   // Calculate open position
   const getOpenX = () => {
-    if (isOpen === "left") return -SWIPE_THRESHOLD;
-    if (isOpen === "right") return SWIPE_THRESHOLD;
+    if (isOpen === 'left') return -SWIPE_THRESHOLD;
+    if (isOpen === 'right') return SWIPE_THRESHOLD;
     return 0;
   };
 
   if (disabled) {
-    return (
-      <div className="swipeable-entry swipeable-entry--disabled">
-        {children}
-      </div>
-    );
+    return <div className="swipeable-entry swipeable-entry--disabled">{children}</div>;
   }
 
   return (
@@ -139,7 +123,7 @@ export const SwipeableFoodEntry = ({
       >
         <button
           className="swipeable-entry__action-btn swipeable-entry__action-btn--delete"
-          onClick={() => handleAction("delete")}
+          onClick={() => handleAction('delete')}
           aria-label={deleteLabel}
         >
           <Trash2 size={20} />
@@ -154,7 +138,7 @@ export const SwipeableFoodEntry = ({
       >
         <button
           className="swipeable-entry__action-btn swipeable-entry__action-btn--edit"
-          onClick={() => handleAction("edit")}
+          onClick={() => handleAction('edit')}
           aria-label={editLabel}
         >
           <Edit3 size={20} />
@@ -163,7 +147,7 @@ export const SwipeableFoodEntry = ({
         {onDuplicate && (
           <button
             className="swipeable-entry__action-btn swipeable-entry__action-btn--duplicate"
-            onClick={() => handleAction("duplicate")}
+            onClick={() => handleAction('duplicate')}
             aria-label="Duplicate"
           >
             <Copy size={20} />
@@ -183,7 +167,7 @@ export const SwipeableFoodEntry = ({
         style={{ x }}
         onDragEnd={handleDragEnd}
         animate={{ x: getOpenX() }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         onClick={isOpen ? handleClose : undefined}
       >
         {children}
@@ -210,30 +194,30 @@ export const SwipeableFoodEntry = ({
  * Swipe hint indicator
  * Shows on first few items to teach users about swipe
  */
-export const SwipeHint = ({ direction = "left", show = false }) => {
+export const SwipeHint = ({ direction = 'left', show = false }) => {
   return (
     <AnimatePresence>
       {show && (
         <motion.div
           className={`swipe-hint swipe-hint--${direction}`}
-          initial={{ opacity: 0, x: direction === "left" ? 20 : -20 }}
+          initial={{ opacity: 0, x: direction === 'left' ? 20 : -20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
             className="swipe-hint__arrow"
             animate={{
-              x: direction === "left" ? [-5, 5, -5] : [5, -5, 5],
+              x: direction === 'left' ? [-5, 5, -5] : [5, -5, 5],
             }}
             transition={{
               duration: 1,
               repeat: 3,
-              ease: "easeInOut",
+              ease: 'easeInOut',
             }}
           >
-            {direction === "left" ? "←" : "→"}
+            {direction === 'left' ? '←' : '→'}
           </motion.div>
-          <span>Swipe to {direction === "left" ? "delete" : "edit"}</span>
+          <span>Swipe to {direction === 'left' ? 'delete' : 'edit'}</span>
         </motion.div>
       )}
     </AnimatePresence>
@@ -250,7 +234,7 @@ export const useSwipeHint = () => {
 
   // Check if user has swiped before
   React.useEffect(() => {
-    const hasSwiped = localStorage.getItem("nutrinoteplus_has_swiped");
+    const hasSwiped = localStorage.getItem('nutrinoteplus_has_swiped');
     if (!hasSwiped) {
       setShowHint(true);
     }
@@ -260,7 +244,7 @@ export const useSwipeHint = () => {
   const markSwiped = useCallback(() => {
     if (!hasSwipedRef.current) {
       hasSwipedRef.current = true;
-      localStorage.setItem("nutrinoteplus_has_swiped", "true");
+      localStorage.setItem('nutrinoteplus_has_swiped', 'true');
       setShowHint(false);
     }
   }, []);

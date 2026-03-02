@@ -1,5 +1,4 @@
-import React, { memo } from "react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 import {
   Utensils,
   History,
@@ -10,16 +9,18 @@ import {
   Dumbbell,
   Search,
   Star,
-} from "lucide-react";
-import Button from "./Button";
-import "./EmptyState.css";
+} from 'lucide-react';
+import React, { memo } from 'react';
+
+import Button from './Button';
+import './EmptyState.css';
 
 /**
  * Empty State Component
  * Professional empty states with illustrations and CTAs
  */
 const EmptyState = memo(function EmptyState({
-  type = "default",
+  type = 'default',
   title,
   description,
   icon,
@@ -27,75 +28,70 @@ const EmptyState = memo(function EmptyState({
   onAction,
   secondaryActionLabel,
   onSecondaryAction,
-  className = "",
+  className = '',
 }) {
   // Preset configurations
   const presets = {
-    "food-log": {
+    'food-log': {
       icon: <Utensils />,
-      title: "No meals logged yet",
+      title: 'No meals logged yet',
       description:
-        "Start tracking your nutrition by adding your first meal. Use AI to describe what you ate or scan a barcode.",
-      actionLabel: "Log a Meal",
+        'Start tracking your nutrition by adding your first meal. Use AI to describe what you ate or scan a barcode.',
+      actionLabel: 'Log a Meal',
       actionIcon: <Plus size={18} />,
     },
     history: {
       icon: <History />,
-      title: "No history yet",
+      title: 'No history yet',
       description:
-        "Your nutrition history will appear here once you start logging meals. Check back tomorrow!",
-      actionLabel: "Start Logging",
+        'Your nutrition history will appear here once you start logging meals. Check back tomorrow!',
+      actionLabel: 'Start Logging',
       actionIcon: <Plus size={18} />,
     },
     search: {
       icon: <Search />,
-      title: "No results found",
-      description:
-        "Try adjusting your search terms or browse our food database.",
-      actionLabel: "Clear Search",
+      title: 'No results found',
+      description: 'Try adjusting your search terms or browse our food database.',
+      actionLabel: 'Clear Search',
     },
     favorites: {
       icon: <Star />,
-      title: "No favorites yet",
-      description:
-        "Foods you eat frequently will appear here for quick logging.",
-      actionLabel: "Browse Foods",
+      title: 'No favorites yet',
+      description: 'Foods you eat frequently will appear here for quick logging.',
+      actionLabel: 'Browse Foods',
     },
     exercises: {
       icon: <Dumbbell />,
-      title: "No exercises logged",
-      description:
-        "Track your workouts to see how many calories you've burned.",
-      actionLabel: "Log Exercise",
+      title: 'No exercises logged',
+      description: "Track your workouts to see how many calories you've burned.",
+      actionLabel: 'Log Exercise',
       actionIcon: <Plus size={18} />,
     },
     stats: {
       icon: <BarChart3 />,
-      title: "Not enough data",
-      description:
-        "Log a few more days to see your nutrition trends and insights.",
+      title: 'Not enough data',
+      description: 'Log a few more days to see your nutrition trends and insights.',
       actionLabel: "Log Today's Meals",
     },
     goals: {
       icon: <Target />,
-      title: "Set your goals",
-      description:
-        "Define your nutrition targets to track progress toward your health goals.",
-      actionLabel: "Set Goals",
+      title: 'Set your goals',
+      description: 'Define your nutrition targets to track progress toward your health goals.',
+      actionLabel: 'Set Goals',
     },
     scan: {
       icon: <Scan />,
-      title: "No barcode found",
-      description: "Make sure the barcode is clearly visible and try again.",
-      actionLabel: "Try Again",
+      title: 'No barcode found',
+      description: 'Make sure the barcode is clearly visible and try again.',
+      actionLabel: 'Try Again',
     },
   };
 
   const preset = presets[type] || {};
   const displayIcon = icon || preset.icon || <Utensils />;
-  const displayTitle = title || preset.title || "Nothing here yet";
+  const displayTitle = title || preset.title || 'Nothing here yet';
   const displayDescription =
-    description || preset.description || "Get started by taking an action.";
+    description || preset.description || 'Get started by taking an action.';
   const displayActionLabel = actionLabel || preset.actionLabel;
 
   return (
@@ -111,7 +107,7 @@ const EmptyState = memo(function EmptyState({
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         transition={{
-          type: "spring",
+          type: 'spring',
           stiffness: 200,
           damping: 15,
           delay: 0.1,
@@ -126,7 +122,7 @@ const EmptyState = memo(function EmptyState({
             transition={{
               duration: 3,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: 'easeInOut',
             }}
           >
             {displayIcon}
@@ -159,12 +155,7 @@ const EmptyState = memo(function EmptyState({
           transition={{ delay: 0.3 }}
         >
           {displayActionLabel && onAction && (
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={onAction}
-              leftIcon={preset.actionIcon}
-            >
+            <Button variant="primary" size="lg" onClick={onAction} leftIcon={preset.actionIcon}>
               {displayActionLabel}
             </Button>
           )}

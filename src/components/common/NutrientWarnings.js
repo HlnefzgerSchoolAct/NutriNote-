@@ -1,8 +1,9 @@
-import React, { useState, useEffect, memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, X, Info } from "lucide-react";
-import { getMicronutrientWarnings } from "../../utils/localStorage";
-import "./NutrientWarnings.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { AlertTriangle, X, Info } from 'lucide-react';
+import React, { useState, useEffect, memo } from 'react';
+
+import { getMicronutrientWarnings } from '../../utils/localStorage';
+import './NutrientWarnings.css';
 
 /**
  * Nutrient Warning Toast
@@ -12,7 +13,7 @@ const NutrientWarnings = memo(function NutrientWarnings({
   show = true,
   autoHide = true,
   autoHideDelay = 10000,
-  className = "",
+  className = '',
 }) {
   const [warnings, setWarnings] = useState([]);
   const [dismissed, setDismissed] = useState([]);
@@ -22,9 +23,7 @@ const NutrientWarnings = memo(function NutrientWarnings({
     if (show) {
       const currentWarnings = getMicronutrientWarnings();
       // Filter out dismissed warnings
-      const activeWarnings = currentWarnings.filter(
-        (w) => !dismissed.includes(w.nutrient)
-      );
+      const activeWarnings = currentWarnings.filter((w) => !dismissed.includes(w.nutrient));
       setWarnings(activeWarnings);
       setVisible(activeWarnings.length > 0);
 
@@ -83,11 +82,9 @@ const NutrientWarnings = memo(function NutrientWarnings({
             >
               <div className="ds-nutrient-warning__content">
                 <span className="ds-nutrient-warning__icon">
-                  {warning.level === "high" ? "⚠️" : warning.level === "low" ? "📉" : "ℹ️"}
+                  {warning.level === 'high' ? '⚠️' : warning.level === 'low' ? '📉' : 'ℹ️'}
                 </span>
-                <span className="ds-nutrient-warning__message">
-                  {warning.message}
-                </span>
+                <span className="ds-nutrient-warning__message">{warning.message}</span>
               </div>
               <button
                 className="ds-nutrient-warning__dismiss"
@@ -108,36 +105,31 @@ const NutrientWarnings = memo(function NutrientWarnings({
  * Inline Nutrient Tip
  * Shows helpful tips based on current nutrition status
  */
-export const NutrientTip = memo(function NutrientTip({
-  nutrient,
-  value,
-  goal,
-  className = "",
-}) {
+export const NutrientTip = memo(function NutrientTip({ nutrient, value, goal, className = '' }) {
   const tips = {
     fiber: {
-      low: "Try adding more vegetables, fruits, or whole grains to increase fiber intake.",
-      foods: ["🥦 Broccoli", "🍎 Apples", "🥬 Leafy greens", "🫘 Beans"],
+      low: 'Try adding more vegetables, fruits, or whole grains to increase fiber intake.',
+      foods: ['🥦 Broccoli', '🍎 Apples', '🥬 Leafy greens', '🫘 Beans'],
     },
     vitaminC: {
-      low: "Citrus fruits and bell peppers are excellent sources of Vitamin C.",
-      foods: ["🍊 Oranges", "🫑 Bell peppers", "🥝 Kiwi", "🍓 Strawberries"],
+      low: 'Citrus fruits and bell peppers are excellent sources of Vitamin C.',
+      foods: ['🍊 Oranges', '🫑 Bell peppers', '🥝 Kiwi', '🍓 Strawberries'],
     },
     calcium: {
-      low: "Consider dairy products or leafy greens to boost calcium.",
-      foods: ["🥛 Milk", "🧀 Cheese", "🥬 Kale", "🐟 Sardines"],
+      low: 'Consider dairy products or leafy greens to boost calcium.',
+      foods: ['🥛 Milk', '🧀 Cheese', '🥬 Kale', '🐟 Sardines'],
     },
     iron: {
-      low: "Red meat, spinach, and legumes are rich in iron.",
-      foods: ["🥩 Red meat", "🥬 Spinach", "🫘 Lentils", "🥜 Nuts"],
+      low: 'Red meat, spinach, and legumes are rich in iron.',
+      foods: ['🥩 Red meat', '🥬 Spinach', '🫘 Lentils', '🥜 Nuts'],
     },
     sodium: {
-      high: "Try to avoid processed foods and reduce salt in cooking.",
-      foods: ["🥗 Fresh vegetables", "🍗 Unprocessed meat", "🍌 Fruits"],
+      high: 'Try to avoid processed foods and reduce salt in cooking.',
+      foods: ['🥗 Fresh vegetables', '🍗 Unprocessed meat', '🍌 Fruits'],
     },
     sugar: {
-      high: "Opt for whole fruits instead of sugary snacks.",
-      foods: ["🍎 Apples", "🍇 Grapes", "🥜 Nuts", "🥕 Carrots"],
+      high: 'Opt for whole fruits instead of sugary snacks.',
+      foods: ['🍎 Apples', '🍇 Grapes', '🥜 Nuts', '🥕 Carrots'],
     },
   };
 
@@ -164,7 +156,9 @@ export const NutrientTip = memo(function NutrientTip({
         {tip.foods && (
           <div className="ds-nutrient-tip__foods">
             {tip.foods.slice(0, 4).map((food, i) => (
-              <span key={i} className="ds-nutrient-tip__food">{food}</span>
+              <span key={i} className="ds-nutrient-tip__food">
+                {food}
+              </span>
             ))}
           </div>
         )}

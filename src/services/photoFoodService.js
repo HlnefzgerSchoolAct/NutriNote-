@@ -6,9 +6,9 @@
  * ingredient decomposition, and realism validation error handling
  */
 
-import devLog from "../utils/devLog";
+import devLog from '../utils/devLog';
 
-const API_ENDPOINT = "/api/identify-food-photo";
+const API_ENDPOINT = '/api/identify-food-photo';
 const REQUEST_TIMEOUT = 60000; // 60 seconds (increased for multi-food + decomposition)
 
 /**
@@ -32,17 +32,17 @@ export function resizeImage(base64DataUrl, maxDimension = 1024, quality = 0.7) {
         }
       }
 
-      const canvas = document.createElement("canvas");
+      const canvas = document.createElement('canvas');
       canvas.width = width;
       canvas.height = height;
 
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, width, height);
 
-      const resizedDataUrl = canvas.toDataURL("image/jpeg", quality);
+      const resizedDataUrl = canvas.toDataURL('image/jpeg', quality);
       resolve(resizedDataUrl);
     };
-    img.onerror = () => reject(new Error("Failed to load image for resizing"));
+    img.onerror = () => reject(new Error('Failed to load image for resizing'));
     img.src = base64DataUrl;
   });
 }
@@ -51,14 +51,14 @@ export function resizeImage(base64DataUrl, maxDimension = 1024, quality = 0.7) {
  * Capture a still frame from a video element as base64 JPEG
  */
 export function captureVideoFrame(videoElement, quality = 0.7) {
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = videoElement.videoWidth;
   canvas.height = videoElement.videoHeight;
 
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
   ctx.drawImage(videoElement, 0, 0);
 
-  return canvas.toDataURL("image/jpeg", quality);
+  return canvas.toDataURL('image/jpeg', quality);
 }
 
 /**
@@ -68,7 +68,7 @@ export function readFileAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error("Failed to read image file"));
+    reader.onerror = () => reject(new Error('Failed to read image file'));
     reader.readAsDataURL(file);
   });
 }
@@ -78,16 +78,16 @@ export function readFileAsDataUrl(file) {
  */
 function formatErrorMessage(errorData, status) {
   const errorMessages = {
-    RATE_LIMITED: "Too many photo requests. Please wait a few minutes.",
-    API_RATE_LIMITED: "AI service is busy. Please try again in a moment.",
-    IMAGE_TOO_LARGE: "Image is too large. Try taking a lower resolution photo.",
-    MISSING_INPUT: "No image provided.",
-    VISION_ERROR: "Could not analyze the photo. Please try again.",
-    TIMEOUT: "Request timed out. Please try again with a clearer photo.",
-    SERVER_CONFIG_ERROR: "Service not configured. Please contact support.",
-    AUTH_ERROR: "Authentication error. Please try again later.",
+    RATE_LIMITED: 'Too many photo requests. Please wait a few minutes.',
+    API_RATE_LIMITED: 'AI service is busy. Please try again in a moment.',
+    IMAGE_TOO_LARGE: 'Image is too large. Try taking a lower resolution photo.',
+    MISSING_INPUT: 'No image provided.',
+    VISION_ERROR: 'Could not analyze the photo. Please try again.',
+    TIMEOUT: 'Request timed out. Please try again with a clearer photo.',
+    SERVER_CONFIG_ERROR: 'Service not configured. Please contact support.',
+    AUTH_ERROR: 'Authentication error. Please try again later.',
     REALISM_VALIDATION_FAILED:
-      "Nutrition values appear unrealistic for the detected foods. Please retake the photo with better lighting or angle.",
+      'Nutrition values appear unrealistic for the detected foods. Please retake the photo with better lighting or angle.',
   };
 
   if (errorData?.code && errorMessages[errorData.code]) {
@@ -96,9 +96,9 @@ function formatErrorMessage(errorData, status) {
 
   if (status === 429) return errorMessages.RATE_LIMITED;
   if (status === 422) return errorMessages.REALISM_VALIDATION_FAILED;
-  if (status >= 500) return "Server error. Please try again.";
+  if (status >= 500) return 'Server error. Please try again.';
 
-  return errorData?.error || "Failed to identify food. Please try again.";
+  return errorData?.error || 'Failed to identify food. Please try again.';
 }
 
 /**
@@ -116,27 +116,27 @@ function formatErrorMessage(errorData, status) {
  *   - realismValidation: { valid, issues }
  */
 export async function identifyFoodFromPhoto(base64Image) {
-  devLog.log("📸 Identifying food from photo...");
+  devLog.log('📸 Identifying food from photo...');
 
   // Resize before sending to reduce payload and improve speed
   let processedImage;
   try {
     processedImage = await resizeImage(base64Image, 1024, 0.7);
   } catch {
-    devLog.warn("Image resize failed, using original");
+    devLog.warn('Image resize failed, using original');
     processedImage = base64Image;
   }
 
   // Strip data URI prefix for transport
-  const imageData = processedImage.replace(/^data:image\/\w+;base64,/, "");
+  const imageData = processedImage.replace(/^data:image\/\w+;base64,/, '');
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
   try {
     const response = await fetch(API_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image: imageData }),
       signal: controller.signal,
     });
@@ -154,13 +154,13 @@ export async function identifyFoodFromPhoto(base64Image) {
       // Preserve the error code for the UI to distinguish realism failures
       const message = formatErrorMessage(errorData, response.status);
       const err = new Error(message);
-      err.code = errorData?.code || "UNKNOWN";
+      err.code = errorData?.code || 'UNKNOWN';
       err.foods = errorData?.foods || null; // Partial results on realism failure
       throw err;
     }
 
     const data = await response.json();
-    devLog.log("📸 Photo identification result:", {
+    devLog.log('📸 Photo identification result:', {
       foodCount: data.foods?.length,
       decomposed: data.foods?.filter((f) => f.ingredients)?.length,
       totalIdentified: data.totalIdentified,
@@ -171,19 +171,15 @@ export async function identifyFoodFromPhoto(base64Image) {
   } catch (error) {
     clearTimeout(timeout);
 
-    if (error.name === "AbortError") {
-      throw new Error(
-        "Photo analysis timed out. Please try again with a clearer photo.",
-      );
+    if (error.name === 'AbortError') {
+      throw new Error('Photo analysis timed out. Please try again with a clearer photo.');
     }
 
     // Re-throw formatted errors (including realism failures)
-    if (error.message && !error.message.includes("fetch")) {
+    if (error.message && !error.message.includes('fetch')) {
       throw error;
     }
 
-    throw new Error(
-      "Could not connect to the server. Check your internet connection.",
-    );
+    throw new Error('Could not connect to the server. Check your internet connection.');
   }
 }

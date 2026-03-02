@@ -24,11 +24,7 @@
 
 .coach-action-card--approved {
   border-color: var(--color-success, #22c55e);
-  background: color-mix(
-    in srgb,
-    var(--color-success, #22c55e) 6%,
-    var(--surface-secondary)
-  );
+  background: color-mix(in srgb, var(--color-success, #22c55e) 6%, var(--surface-secondary));
 }
 
 .coach-action-card--denied {
@@ -38,11 +34,7 @@
 
 .coach-action-card--error {
   border-color: var(--color-error, #ef4444);
-  background: color-mix(
-    in srgb,
-    var(--color-error, #ef4444) 6%,
-    var(--surface-secondary)
-  );
+  background: color-mix(in srgb, var(--color-error, #ef4444) 6%, var(--surface-secondary));
 }
 
 /* ===== Header ===== */
@@ -321,77 +313,57 @@
 }
 
 /* ===== Dark Mode ===== */
-[data-theme="dark"] .coach-action-card,
-:root:not([data-theme="light"]) .coach-action-card {
+[data-theme='dark'] .coach-action-card,
+:root:not([data-theme='light']) .coach-action-card {
   background: var(--surface-container);
   border-color: var(--m3-outline-variant, var(--border-default));
 }
 
-[data-theme="dark"] .coach-action-card--approved,
-:root:not([data-theme="light"]) .coach-action-card--approved {
-  border-color: color-mix(
-    in srgb,
-    var(--color-success, #22c55e) 50%,
-    transparent
-  );
-  background: color-mix(
-    in srgb,
-    var(--color-success, #22c55e) 8%,
-    var(--surface-container)
-  );
+[data-theme='dark'] .coach-action-card--approved,
+:root:not([data-theme='light']) .coach-action-card--approved {
+  border-color: color-mix(in srgb, var(--color-success, #22c55e) 50%, transparent);
+  background: color-mix(in srgb, var(--color-success, #22c55e) 8%, var(--surface-container));
 }
 
-[data-theme="dark"] .coach-action-card--error,
-:root:not([data-theme="light"]) .coach-action-card--error {
-  border-color: color-mix(
-    in srgb,
-    var(--color-error, #ef4444) 50%,
-    transparent
-  );
-  background: color-mix(
-    in srgb,
-    var(--color-error, #ef4444) 8%,
-    var(--surface-container)
-  );
+[data-theme='dark'] .coach-action-card--error,
+:root:not([data-theme='light']) .coach-action-card--error {
+  border-color: color-mix(in srgb, var(--color-error, #ef4444) 50%, transparent);
+  background: color-mix(in srgb, var(--color-error, #ef4444) 8%, var(--surface-container));
 }
 
-[data-theme="dark"] .coach-action__icon,
-:root:not([data-theme="light"]) .coach-action__icon {
+[data-theme='dark'] .coach-action__icon,
+:root:not([data-theme='light']) .coach-action__icon {
   background: color-mix(in srgb, var(--color-primary-500) 25%, transparent);
   color: var(--color-primary-300);
 }
 
-[data-theme="dark"] .coach-action__tag,
-:root:not([data-theme="light"]) .coach-action__tag {
+[data-theme='dark'] .coach-action__tag,
+:root:not([data-theme='light']) .coach-action__tag {
   background: color-mix(in srgb, var(--color-primary-500) 20%, transparent);
   color: var(--color-primary-300);
 }
 
-[data-theme="dark"] .coach-action__foods,
-[data-theme="dark"] .coach-action__settings,
-:root:not([data-theme="light"]) .coach-action__foods,
-:root:not([data-theme="light"]) .coach-action__settings {
-  background: color-mix(
-    in srgb,
-    var(--surface-base) 50%,
-    var(--surface-container)
-  );
+[data-theme='dark'] .coach-action__foods,
+[data-theme='dark'] .coach-action__settings,
+:root:not([data-theme='light']) .coach-action__foods,
+:root:not([data-theme='light']) .coach-action__settings {
+  background: color-mix(in srgb, var(--surface-base) 50%, var(--surface-container));
 }
 
-[data-theme="dark"] .coach-action__btn--approve,
-:root:not([data-theme="light"]) .coach-action__btn--approve {
+[data-theme='dark'] .coach-action__btn--approve,
+:root:not([data-theme='light']) .coach-action__btn--approve {
   background: var(--color-primary-500);
   color: #fff;
 }
 
-[data-theme="dark"] .coach-action__btn--deny,
-:root:not([data-theme="light"]) .coach-action__btn--deny {
+[data-theme='dark'] .coach-action__btn--deny,
+:root:not([data-theme='light']) .coach-action__btn--deny {
   border-color: var(--m3-outline-variant, var(--border-default));
   color: var(--text-secondary);
 }
 
-[data-theme="dark"] .coach-action__undo-btn,
-:root:not([data-theme="light"]) .coach-action__undo-btn {
+[data-theme='dark'] .coach-action__undo-btn,
+:root:not([data-theme='light']) .coach-action__undo-btn {
   background: var(--surface-container);
   border-color: var(--m3-outline-variant, var(--border-default));
 }

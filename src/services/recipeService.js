@@ -3,11 +3,11 @@
  * Supports CRUD operations for custom recipes with ingredients
  */
 
-import devLog from "../utils/devLog";
+import devLog from '../utils/devLog';
 
-const DB_NAME = "nutrinoteplus_recipes_db";
+const DB_NAME = 'nutrinoteplus_recipes_db';
 const DB_VERSION = 1;
-const STORE_NAME = "recipes";
+const STORE_NAME = 'recipes';
 
 let db = null;
 
@@ -24,13 +24,13 @@ export const initRecipeDB = () => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onerror = (event) => {
-      devLog.error("IndexedDB error:", event.target.error);
+      devLog.error('IndexedDB error:', event.target.error);
       reject(event.target.error);
     };
 
     request.onsuccess = (event) => {
       db = event.target.result;
-      devLog.log("Recipe database initialized");
+      devLog.log('Recipe database initialized');
       resolve(db);
     };
 
@@ -40,17 +40,17 @@ export const initRecipeDB = () => {
       // Create recipes object store
       if (!database.objectStoreNames.contains(STORE_NAME)) {
         const store = database.createObjectStore(STORE_NAME, {
-          keyPath: "id",
+          keyPath: 'id',
           autoIncrement: true,
         });
 
         // Create indexes for searching
-        store.createIndex("name", "name", { unique: false });
-        store.createIndex("category", "category", { unique: false });
-        store.createIndex("createdAt", "createdAt", { unique: false });
-        store.createIndex("updatedAt", "updatedAt", { unique: false });
+        store.createIndex('name', 'name', { unique: false });
+        store.createIndex('category', 'category', { unique: false });
+        store.createIndex('createdAt', 'createdAt', { unique: false });
+        store.createIndex('updatedAt', 'updatedAt', { unique: false });
 
-        devLog.log("Recipe store created with indexes");
+        devLog.log('Recipe store created with indexes');
       }
     };
   });
@@ -115,7 +115,7 @@ export const calculateRecipeNutrition = (ingredients, servings = 1) => {
       carbs: acc.carbs + (ingredient.carbs || 0),
       fat: acc.fat + (ingredient.fat || 0),
     }),
-    { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 }
   );
 
   const perServing = {
@@ -143,13 +143,13 @@ export const saveRecipe = async (recipe) => {
   const database = await getDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readwrite");
+    const transaction = database.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
 
     const now = new Date().toISOString();
     const { totalNutrition, nutritionPerServing } = calculateRecipeNutrition(
       recipe.ingredients,
-      recipe.servings,
+      recipe.servings
     );
 
     const recipeData = {
@@ -164,12 +164,12 @@ export const saveRecipe = async (recipe) => {
     const request = store.add(recipeData);
 
     request.onsuccess = () => {
-      devLog.log("Recipe saved:", recipeData.name);
+      devLog.log('Recipe saved:', recipeData.name);
       resolve({ ...recipeData, id: request.result });
     };
 
     request.onerror = (event) => {
-      devLog.error("Error saving recipe:", event.target.error);
+      devLog.error('Error saving recipe:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -184,11 +184,11 @@ export const updateRecipe = async (id, updates) => {
   // First get the existing recipe
   const existing = await getRecipeById(id);
   if (!existing) {
-    throw new Error("Recipe not found");
+    throw new Error('Recipe not found');
   }
 
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readwrite");
+    const transaction = database.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
 
     const updatedRecipe = {
@@ -202,7 +202,7 @@ export const updateRecipe = async (id, updates) => {
     if (updates.ingredients || updates.servings) {
       const { totalNutrition, nutritionPerServing } = calculateRecipeNutrition(
         updatedRecipe.ingredients,
-        updatedRecipe.servings,
+        updatedRecipe.servings
       );
       updatedRecipe.totalNutrition = totalNutrition;
       updatedRecipe.nutritionPerServing = nutritionPerServing;
@@ -211,12 +211,12 @@ export const updateRecipe = async (id, updates) => {
     const request = store.put(updatedRecipe);
 
     request.onsuccess = () => {
-      devLog.log("Recipe updated:", updatedRecipe.name);
+      devLog.log('Recipe updated:', updatedRecipe.name);
       resolve(updatedRecipe);
     };
 
     request.onerror = (event) => {
-      devLog.error("Error updating recipe:", event.target.error);
+      devLog.error('Error updating recipe:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -229,18 +229,18 @@ export const deleteRecipe = async (id) => {
   const database = await getDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readwrite");
+    const transaction = database.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
 
     const request = store.delete(id);
 
     request.onsuccess = () => {
-      devLog.log("Recipe deleted:", id);
+      devLog.log('Recipe deleted:', id);
       resolve(true);
     };
 
     request.onerror = (event) => {
-      devLog.error("Error deleting recipe:", event.target.error);
+      devLog.error('Error deleting recipe:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -253,7 +253,7 @@ export const getRecipeById = async (id) => {
   const database = await getDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readonly");
+    const transaction = database.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
 
     const request = store.get(id);
@@ -263,7 +263,7 @@ export const getRecipeById = async (id) => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Error getting recipe:", event.target.error);
+      devLog.error('Error getting recipe:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -276,7 +276,7 @@ export const getAllRecipes = async () => {
   const database = await getDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readonly");
+    const transaction = database.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
 
     const request = store.getAll();
@@ -289,7 +289,7 @@ export const getAllRecipes = async () => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Error getting recipes:", event.target.error);
+      devLog.error('Error getting recipes:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -302,9 +302,9 @@ export const getRecipesByCategory = async (category) => {
   const database = await getDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = database.transaction([STORE_NAME], "readonly");
+    const transaction = database.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
-    const index = store.index("category");
+    const index = store.index('category');
 
     const request = index.getAll(category);
 
@@ -313,7 +313,7 @@ export const getRecipesByCategory = async (category) => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Error getting recipes by category:", event.target.error);
+      devLog.error('Error getting recipes by category:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -329,9 +329,7 @@ export const searchRecipes = async (query) => {
   return allRecipes.filter(
     (recipe) =>
       recipe.name.toLowerCase().includes(lowerQuery) ||
-      recipe.ingredients.some((ing) =>
-        ing.name.toLowerCase().includes(lowerQuery),
-      ),
+      recipe.ingredients.some((ing) => ing.name.toLowerCase().includes(lowerQuery))
   );
 };
 
@@ -361,10 +359,9 @@ export const recipeToFoodEntry = (recipe, servings = 1) => {
 
   return {
     id: Date.now(),
-    name: `${recipe.name} (${servings} serving${servings !== 1 ? "s" : ""})`,
+    name: `${recipe.name} (${servings} serving${servings !== 1 ? 's' : ''})`,
     calories: Math.round(recipe.nutritionPerServing.calories * servings),
-    protein:
-      Math.round(recipe.nutritionPerServing.protein * servings * 10) / 10,
+    protein: Math.round(recipe.nutritionPerServing.protein * servings * 10) / 10,
     carbs: Math.round(recipe.nutritionPerServing.carbs * servings * 10) / 10,
     fat: Math.round(recipe.nutritionPerServing.fat * servings * 10) / 10,
     timestamp: new Date().toISOString(),
@@ -381,7 +378,7 @@ export const exportRecipe = (recipe) => {
   const exportData = {
     ...recipe,
     exportedAt: new Date().toISOString(),
-    version: "1.0",
+    version: '1.0',
   };
   delete exportData.id; // Remove ID for clean import
   return JSON.stringify(exportData, null, 2);
@@ -396,7 +393,7 @@ export const importRecipe = async (jsonString) => {
 
     // Validate required fields
     if (!recipeData.name || !recipeData.ingredients) {
-      throw new Error("Invalid recipe format");
+      throw new Error('Invalid recipe format');
     }
 
     // Clean up import data
@@ -406,7 +403,7 @@ export const importRecipe = async (jsonString) => {
 
     return saveRecipe(recipeData);
   } catch (error) {
-    devLog.error("Error importing recipe:", error);
+    devLog.error('Error importing recipe:', error);
     throw error;
   }
 };
@@ -421,11 +418,11 @@ export const getRecipeCount = async () => {
 
 // Category options
 export const RECIPE_CATEGORIES = [
-  { value: "breakfast", label: "🌅 Breakfast", icon: "🌅" },
-  { value: "lunch", label: "☀️ Lunch", icon: "☀️" },
-  { value: "dinner", label: "🌙 Dinner", icon: "🌙" },
-  { value: "snack", label: "🍿 Snack", icon: "🍿" },
-  { value: "other", label: "📦 Other", icon: "📦" },
+  { value: 'breakfast', label: '🌅 Breakfast', icon: '🌅' },
+  { value: 'lunch', label: '☀️ Lunch', icon: '☀️' },
+  { value: 'dinner', label: '🌙 Dinner', icon: '🌙' },
+  { value: 'snack', label: '🍿 Snack', icon: '🍿' },
+  { value: 'other', label: '📦 Other', icon: '📦' },
 ];
 
 export default {

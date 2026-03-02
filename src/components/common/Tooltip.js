@@ -1,13 +1,7 @@
-import React, {
-  forwardRef,
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { createPortal } from "react-dom";
-import "./Tooltip.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import React, { forwardRef, useState, useCallback, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import './Tooltip.css';
 
 /**
  * M3 Tooltip Component
@@ -30,19 +24,19 @@ const Tooltip = forwardRef(
   (
     {
       content,
-      placement = "top",
-      variant = "plain",
+      placement = 'top',
+      variant = 'plain',
       delay = 500,
       hideDelay = 0,
       showArrow = true,
       disabled = false,
       shortcut,
       multiline = false,
-      className = "",
+      className = '',
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isVisible, setIsVisible] = useState(false);
     const [position, setPosition] = useState({ top: 0, left: 0 });
@@ -63,19 +57,19 @@ const Tooltip = forwardRef(
       let left = 0;
 
       switch (placement) {
-        case "top":
+        case 'top':
           top = trigger.top + scrollY;
           left = trigger.left + scrollX + trigger.width / 2;
           break;
-        case "bottom":
+        case 'bottom':
           top = trigger.bottom + scrollY;
           left = trigger.left + scrollX + trigger.width / 2;
           break;
-        case "left":
+        case 'left':
           top = trigger.top + scrollY + trigger.height / 2;
           left = trigger.left + scrollX;
           break;
-        case "right":
+        case 'right':
           top = trigger.top + scrollY + trigger.height / 2;
           left = trigger.right + scrollX;
           break;
@@ -107,13 +101,13 @@ const Tooltip = forwardRef(
 
     // Keep tooltip visible when hovering rich tooltip
     const handleTooltipMouseEnter = useCallback(() => {
-      if (variant === "rich") {
+      if (variant === 'rich') {
         clearTimeout(hideTimeoutRef.current);
       }
     }, [variant]);
 
     const handleTooltipMouseLeave = useCallback(() => {
-      if (variant === "rich") {
+      if (variant === 'rich') {
         hide();
       }
     }, [variant, hide]);
@@ -134,8 +128,8 @@ const Tooltip = forwardRef(
         setIsVisible(false);
       };
 
-      window.addEventListener("scroll", handleScroll, true);
-      return () => window.removeEventListener("scroll", handleScroll, true);
+      window.addEventListener('scroll', handleScroll, true);
+      return () => window.removeEventListener('scroll', handleScroll, true);
     }, [isVisible]);
 
     // Hide on escape
@@ -143,25 +137,25 @@ const Tooltip = forwardRef(
       if (!isVisible) return;
 
       const handleKeyDown = (e) => {
-        if (e.key === "Escape") {
+        if (e.key === 'Escape') {
           setIsVisible(false);
         }
       };
 
-      document.addEventListener("keydown", handleKeyDown);
-      return () => document.removeEventListener("keydown", handleKeyDown);
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
     }, [isVisible]);
 
     // Build tooltip classes
     const tooltipClasses = [
-      "m3-tooltip__content",
+      'm3-tooltip__content',
       `m3-tooltip__content--${placement}`,
-      variant === "rich" && "m3-tooltip__content--rich",
-      multiline && "m3-tooltip__content--multiline",
+      variant === 'rich' && 'm3-tooltip__content--rich',
+      multiline && 'm3-tooltip__content--multiline',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     // Animation variants
     const tooltipVariants = {
@@ -174,7 +168,7 @@ const Tooltip = forwardRef(
         opacity: 1,
         scale: 1,
         transition: {
-          type: "spring",
+          type: 'spring',
           stiffness: 500,
           damping: 30,
         },
@@ -182,19 +176,17 @@ const Tooltip = forwardRef(
     };
 
     // Generate unique ID for accessibility
-    const tooltipId = useRef(
-      `tooltip-${Math.random().toString(36).substr(2, 9)}`,
-    );
+    const tooltipId = useRef(`tooltip-${Math.random().toString(36).substr(2, 9)}`);
 
     // Render content
     const renderContent = () => {
-      if (typeof content === "string") {
+      if (typeof content === 'string') {
         return (
           <>
             <span className="m3-tooltip__text">{content}</span>
             {shortcut && (
               <span className="m3-tooltip__shortcut">
-                {shortcut.split("+").map((key, i) => (
+                {shortcut.split('+').map((key, i) => (
                   <span key={i} className="m3-tooltip__key">
                     {key}
                   </span>
@@ -216,7 +208,7 @@ const Tooltip = forwardRef(
             role="tooltip"
             className={tooltipClasses}
             style={{
-              position: "fixed",
+              position: 'fixed',
               top: position.top,
               left: position.left,
               transform: getTransform(placement),
@@ -247,41 +239,34 @@ const Tooltip = forwardRef(
         {...props}
       >
         <span className="m3-tooltip__trigger">{children}</span>
-        {typeof document !== "undefined" &&
-          createPortal(tooltipElement, document.body)}
+        {typeof document !== 'undefined' && createPortal(tooltipElement, document.body)}
       </span>
     );
-  },
+  }
 );
 
-Tooltip.displayName = "Tooltip";
+Tooltip.displayName = 'Tooltip';
 
 // Helper to get transform based on placement
 function getTransform(placement) {
   switch (placement) {
-    case "top":
-      return "translate(-50%, -100%) translateY(-8px)";
-    case "bottom":
-      return "translate(-50%, 0) translateY(8px)";
-    case "left":
-      return "translate(-100%, -50%) translateX(-8px)";
-    case "right":
-      return "translate(0, -50%) translateX(8px)";
+    case 'top':
+      return 'translate(-50%, -100%) translateY(-8px)';
+    case 'bottom':
+      return 'translate(-50%, 0) translateY(8px)';
+    case 'left':
+      return 'translate(-100%, -50%) translateX(-8px)';
+    case 'right':
+      return 'translate(0, -50%) translateX(8px)';
     default:
-      return "translate(-50%, -100%)";
+      return 'translate(-50%, -100%)';
   }
 }
 
 /**
  * Rich Tooltip - Pre-configured rich tooltip with title and actions
  */
-export const RichTooltip = ({
-  title,
-  content,
-  actions,
-  children,
-  ...props
-}) => {
+export const RichTooltip = ({ title, content, actions, children, ...props }) => {
   return (
     <Tooltip
       variant="rich"
@@ -292,11 +277,7 @@ export const RichTooltip = ({
           {actions && (
             <div className="m3-tooltip__actions">
               {actions.map((action, i) => (
-                <button
-                  key={i}
-                  className="m3-tooltip__action"
-                  onClick={action.onClick}
-                >
+                <button key={i} className="m3-tooltip__action" onClick={action.onClick}>
                   {action.label}
                 </button>
               ))}
@@ -316,13 +297,7 @@ export const RichTooltip = ({
  */
 export const IconTooltip = ({ label, shortcut, children, ...props }) => {
   return (
-    <Tooltip
-      content={label}
-      shortcut={shortcut}
-      placement="bottom"
-      delay={300}
-      {...props}
-    >
+    <Tooltip content={label} shortcut={shortcut} placement="bottom" delay={300} {...props}>
       {children}
     </Tooltip>
   );

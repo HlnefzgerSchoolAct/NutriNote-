@@ -27,6 +27,18 @@
   max-width: 320px;
   width: 100%;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: celebration-card-in 400ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes celebration-card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* Icon container */
@@ -40,6 +52,19 @@
   margin: 0 auto 20px;
   color: white;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  animation: celebration-icon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes celebration-icon-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  }
 }
 
 /* Title */
@@ -62,17 +87,32 @@
 /* Dismiss button */
 .goal-celebration__dismiss {
   background: none;
-  border: none;
-  padding: 8px 16px;
+  border: 1px solid var(--md-sys-color-outline-variant, #cac4d0);
+  padding: 10px 24px;
   font-size: 14px;
-  color: var(--md-sys-color-outline, #79747e);
+  font-weight: 500;
+  color: var(--md-sys-color-on-surface-variant, #49454f);
   cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.2s;
+  border-radius: 100px;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
 }
 
 .goal-celebration__dismiss:hover {
   background: var(--md-sys-color-surface-variant, #e7e0ec);
+  border-color: var(--md-sys-color-outline, #79747e);
+  transform: translateY(-1px);
+}
+
+.goal-celebration__dismiss:active {
+  transform: scale(0.97);
+}
+
+.goal-celebration__dismiss:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary, #6750a4);
+  outline-offset: 2px;
 }
 
 /* ===== Streak Badge ===== */
@@ -180,9 +220,11 @@
 /* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   .streak-badge,
+  .goal-celebration__dismiss {
+    transition: none;
+  }
   .goal-celebration__card,
   .goal-celebration__icon {
-    transition: none;
     animation: none;
   }
 }

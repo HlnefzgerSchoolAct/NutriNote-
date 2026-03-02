@@ -1,40 +1,38 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+
 import {
   markOnboardingComplete,
   getMacroPresets,
   calculateMacroGrams,
   saveMacroGoals,
   savePreferences,
-} from "../utils/localStorage";
-import ThemedLogo from "./ThemedLogo";
-import "./WelcomeScreen.css";
+} from '../utils/localStorage';
+
+import ThemedLogo from './ThemedLogo';
+import './WelcomeScreen.css';
 
 function WelcomeScreen({ onComplete, dailyTarget }) {
   const [step, setStep] = useState(0);
-  const [selectedPreset, setSelectedPreset] = useState("balanced");
+  const [selectedPreset, setSelectedPreset] = useState('balanced');
   const presets = getMacroPresets();
 
   const steps = [
     {
-      title: "Welcome to NutriNote+",
+      title: 'Welcome to NutriNote+',
       content: (
         <div className="welcome-content">
           <div className="welcome-icon">
-            <ThemedLogo
-              className="welcome-brand-logo"
-              height={140}
-              ariaHidden
-            />
+            <ThemedLogo className="welcome-brand-logo" height={280} ariaHidden />
           </div>
           <p className="welcome-text">
-            Your personal nutrition tracker powered by AI. Track calories,
-            macros, and reach your fitness goals.
+            Your personal nutrition tracker powered by AI. Track calories, macros, and reach your
+            fitness goals.
           </p>
         </div>
       ),
     },
     {
-      title: "How It Works",
+      title: 'How It Works',
       content: (
         <div className="info-cards">
           <div className="info-card">
@@ -84,21 +82,17 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
               </svg>
             </div>
             <h4>Macros</h4>
-            <p>
-              Protein, carbs, and fat - the building blocks of your nutrition.
-            </p>
+            <p>Protein, carbs, and fat - the building blocks of your nutrition.</p>
           </div>
         </div>
       ),
     },
     {
-      title: "AI-Powered Tracking",
+      title: 'AI-Powered Tracking',
       content: (
         <div className="feature-showcase">
           <div className="ai-demo">
-            <div className="ai-input-demo">
-              "Grilled chicken breast with rice and broccoli"
-            </div>
+            <div className="ai-input-demo">"Grilled chicken breast with rice and broccoli"</div>
             <div className="ai-arrow">↓</div>
             <div className="ai-result-demo">
               <div className="result-row">
@@ -120,27 +114,26 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
             </div>
           </div>
           <p className="feature-text">
-            Just describe what you ate in natural language - our AI estimates
-            the nutrition instantly.
+            Just describe what you ate in natural language - our AI estimates the nutrition
+            instantly.
           </p>
         </div>
       ),
     },
     {
-      title: "Choose Your Macro Split",
+      title: 'Choose Your Macro Split',
       content: (
         <div className="macro-selection">
           <p className="macro-intro">
-            Based on your {dailyTarget} calorie target, how do you want to split
-            your macros?
+            Based on your {dailyTarget} calorie target, how do you want to split your macros?
           </p>
           <div className="preset-options">
             {Object.entries(presets)
-              .filter(([key]) => key !== "custom")
+              .filter(([key]) => key !== 'custom')
               .map(([key, preset]) => (
                 <button
                   key={key}
-                  className={`preset-option ${selectedPreset === key ? "selected" : ""}`}
+                  className={`preset-option ${selectedPreset === key ? 'selected' : ''}`}
                   onClick={() => setSelectedPreset(key)}
                 >
                   <div className="preset-header">
@@ -173,20 +166,14 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
                     <div className="preset-bar">
                       <span>C</span>
                       <div className="bar-track">
-                        <div
-                          className="bar-fill carbs"
-                          style={{ width: `${preset.carbs}%` }}
-                        ></div>
+                        <div className="bar-fill carbs" style={{ width: `${preset.carbs}%` }}></div>
                       </div>
                       <span>{preset.carbs}%</span>
                     </div>
                     <div className="preset-bar">
                       <span>F</span>
                       <div className="bar-track">
-                        <div
-                          className="bar-fill fat"
-                          style={{ width: `${preset.fat}%` }}
-                        ></div>
+                        <div className="bar-fill fat" style={{ width: `${preset.fat}%` }}></div>
                       </div>
                       <span>{preset.fat}%</span>
                     </div>
@@ -198,7 +185,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
       ),
     },
     {
-      title: "Your Data is Private",
+      title: 'Your Data is Private',
       content: (
         <div className="privacy-info">
           <div className="privacy-icon">
@@ -296,7 +283,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
     // Save initial preferences
     savePreferences({
       databaseEnabled: false,
-      macroInputMode: "both",
+      macroInputMode: 'both',
     });
 
     // Mark onboarding as complete
@@ -315,7 +302,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
 
     savePreferences({
       databaseEnabled: false,
-      macroInputMode: "both",
+      macroInputMode: 'both',
     });
 
     markOnboardingComplete();
@@ -332,7 +319,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
           {steps.map((_, index) => (
             <div
               key={index}
-              className={`progress-dot ${index === step ? "active" : ""} ${index < step ? "completed" : ""}`}
+              className={`progress-dot ${index === step ? 'active' : ''} ${index < step ? 'completed' : ''}`}
             />
           ))}
         </div>
@@ -350,7 +337,7 @@ function WelcomeScreen({ onComplete, dailyTarget }) {
           )}
 
           <button className="next-btn" onClick={handleNext}>
-            {step === steps.length - 1 ? "Let's Go!" : "Continue"}
+            {step === steps.length - 1 ? "Let's Go!" : 'Continue'}
           </button>
         </div>
 

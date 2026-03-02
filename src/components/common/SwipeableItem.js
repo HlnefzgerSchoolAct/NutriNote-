@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import { Trash2, Edit2, Star, MoreHorizontal } from "lucide-react";
-import "./SwipeableItem.css";
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { Trash2, Edit2, Star, MoreHorizontal } from 'lucide-react';
+import React, { useState } from 'react';
+import './SwipeableItem.css';
 
 /**
  * Swipeable List Item Component
@@ -14,10 +14,10 @@ const SwipeableItem = ({
   onFavorite,
   leftActions,
   rightActions,
-  deleteLabel = "Delete",
-  editLabel = "Edit",
+  deleteLabel = 'Delete',
+  editLabel = 'Edit',
   threshold = 80,
-  className = "",
+  className = '',
   disabled = false,
 }) => {
   const [isOpen, setIsOpen] = useState(null); // 'left' | 'right' | null
@@ -35,9 +35,9 @@ const SwipeableItem = ({
 
     // Determine if we should open actions
     if (offset > threshold || velocity > 500) {
-      setIsOpen("left");
+      setIsOpen('left');
     } else if (offset < -threshold || velocity < -500) {
-      setIsOpen("right");
+      setIsOpen('right');
     } else {
       setIsOpen(null);
     }
@@ -66,7 +66,7 @@ const SwipeableItem = ({
       icon: <Edit2 size={20} />,
       label: editLabel,
       onClick: () => handleAction(onEdit),
-      variant: "edit",
+      variant: 'edit',
     });
   }
   if (onDelete) {
@@ -74,7 +74,7 @@ const SwipeableItem = ({
       icon: <Trash2 size={20} />,
       label: deleteLabel,
       onClick: () => handleAction(onDelete),
-      variant: "delete",
+      variant: 'delete',
     });
   }
 
@@ -82,9 +82,9 @@ const SwipeableItem = ({
   if (onFavorite) {
     defaultLeftActions.push({
       icon: <Star size={20} />,
-      label: "Favorite",
+      label: 'Favorite',
       onClick: () => handleAction(onFavorite),
-      variant: "favorite",
+      variant: 'favorite',
     });
   }
 
@@ -108,14 +108,14 @@ const SwipeableItem = ({
       {hasLeftActions && (
         <motion.div
           className="ds-swipeable__actions ds-swipeable__actions--left"
-          style={{ opacity: isOpen === "left" ? 1 : leftOpacity }}
+          style={{ opacity: isOpen === 'left' ? 1 : leftOpacity }}
         >
           {leftActionItems.map((action, index) => (
             <motion.button
               key={index}
-              className={`ds-swipeable__action ds-swipeable__action--${action.variant || "default"}`}
+              className={`ds-swipeable__action ds-swipeable__action--${action.variant || 'default'}`}
               onClick={action.onClick}
-              style={{ scale: isOpen === "left" ? 1 : leftScale }}
+              style={{ scale: isOpen === 'left' ? 1 : leftScale }}
               whileTap={{ scale: 0.9 }}
               aria-label={action.label}
             >
@@ -130,14 +130,14 @@ const SwipeableItem = ({
       {hasRightActions && (
         <motion.div
           className="ds-swipeable__actions ds-swipeable__actions--right"
-          style={{ opacity: isOpen === "right" ? 1 : rightOpacity }}
+          style={{ opacity: isOpen === 'right' ? 1 : rightOpacity }}
         >
           {rightActionItems.map((action, index) => (
             <motion.button
               key={index}
-              className={`ds-swipeable__action ds-swipeable__action--${action.variant || "default"}`}
+              className={`ds-swipeable__action ds-swipeable__action--${action.variant || 'default'}`}
               onClick={action.onClick}
-              style={{ scale: isOpen === "right" ? 1 : rightScale }}
+              style={{ scale: isOpen === 'right' ? 1 : rightScale }}
               whileTap={{ scale: 0.9 }}
               aria-label={action.label}
             >
@@ -159,9 +159,9 @@ const SwipeableItem = ({
         dragElastic={0.1}
         onDragEnd={handleDragEnd}
         animate={{
-          x: isOpen === "left" ? 80 : isOpen === "right" ? -80 : 0,
+          x: isOpen === 'left' ? 80 : isOpen === 'right' ? -80 : 0,
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
         style={{ x }}
         onClick={isOpen ? closeActions : undefined}
       >

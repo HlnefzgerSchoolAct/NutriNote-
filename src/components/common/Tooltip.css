@@ -237,7 +237,7 @@
    ============================================ */
 
 /* Hide tooltip content from screen readers - use aria-describedby instead */
-.m3-tooltip__content[aria-hidden="true"] {
+.m3-tooltip__content[aria-hidden='true'] {
   display: none;
 }
 

@@ -1,7 +1,7 @@
-import React, { forwardRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Check } from "lucide-react";
-import "./SegmentedButton.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check } from 'lucide-react';
+import React, { forwardRef, useCallback } from 'react';
+import './SegmentedButton.css';
 
 /**
  * M3 Segmented Button Group
@@ -27,14 +27,14 @@ const SegmentedButtonGroup = forwardRef(
       value,
       onChange,
       multiSelect = false,
-      size = "md",
+      size = 'md',
       fullWidth = false,
       compact = false,
       disabled = false,
-      className = "",
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     // Normalize value to array for consistent handling
     const selectedValues = multiSelect
@@ -60,35 +60,26 @@ const SegmentedButtonGroup = forwardRef(
           }
         }
       },
-      [disabled, multiSelect, selectedValues, value, onChange],
+      [disabled, multiSelect, selectedValues, value, onChange]
     );
 
     const groupClasses = [
-      "m3-segmented-button-group",
-      size !== "md" && `m3-segmented-button-group--${size}`,
-      fullWidth && "m3-segmented-button-group--full-width",
-      compact && "m3-segmented-button-group--compact",
+      'm3-segmented-button-group',
+      size !== 'md' && `m3-segmented-button-group--${size}`,
+      fullWidth && 'm3-segmented-button-group--full-width',
+      compact && 'm3-segmented-button-group--compact',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     return (
-      <div
-        ref={ref}
-        className={groupClasses}
-        role="group"
-        aria-label="Segmented Button"
-        {...props}
-      >
+      <div ref={ref} className={groupClasses} role="group" aria-label="Segmented Button" {...props}>
         {segments.map((segment, index) => {
-          const segmentValue =
-            typeof segment === "string" ? segment : segment.value;
-          const segmentLabel =
-            typeof segment === "string" ? segment : segment.label;
-          const segmentIcon = typeof segment === "object" ? segment.icon : null;
-          const segmentDisabled =
-            typeof segment === "object" ? segment.disabled : false;
+          const segmentValue = typeof segment === 'string' ? segment : segment.value;
+          const segmentLabel = typeof segment === 'string' ? segment : segment.label;
+          const segmentIcon = typeof segment === 'object' ? segment.icon : null;
+          const segmentDisabled = typeof segment === 'object' ? segment.disabled : false;
           const isSelected = selectedValues.includes(segmentValue);
           const hasIcon = !!segmentIcon;
           const iconOnly = hasIcon && !segmentLabel;
@@ -110,10 +101,10 @@ const SegmentedButtonGroup = forwardRef(
         })}
       </div>
     );
-  },
+  }
 );
 
-SegmentedButtonGroup.displayName = "SegmentedButtonGroup";
+SegmentedButtonGroup.displayName = 'SegmentedButtonGroup';
 
 /**
  * Individual Segmented Button
@@ -130,21 +121,21 @@ const SegmentedButton = forwardRef(
       iconOnly = false,
       showCheck = false,
       onClick,
-      className = "",
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     const buttonClasses = [
-      "m3-segmented-button",
-      selected && "m3-segmented-button--selected",
-      disabled && "m3-segmented-button--disabled",
-      hasIcon && "m3-segmented-button--has-icon",
-      iconOnly && "m3-segmented-button--icon-only",
+      'm3-segmented-button',
+      selected && 'm3-segmented-button--selected',
+      disabled && 'm3-segmented-button--disabled',
+      hasIcon && 'm3-segmented-button--has-icon',
+      iconOnly && 'm3-segmented-button--icon-only',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     return (
       <motion.button
@@ -153,7 +144,7 @@ const SegmentedButton = forwardRef(
         className={buttonClasses}
         onClick={onClick}
         disabled={disabled}
-        role={iconOnly ? "button" : "radio"}
+        role={iconOnly ? 'button' : 'radio'}
         aria-checked={selected}
         aria-pressed={selected}
         whileTap={{ scale: disabled ? 1 : 0.98 }}
@@ -181,27 +172,20 @@ const SegmentedButton = forwardRef(
         {label && <span className="m3-segmented-button__label">{label}</span>}
       </motion.button>
     );
-  },
+  }
 );
 
-SegmentedButton.displayName = "SegmentedButton";
+SegmentedButton.displayName = 'SegmentedButton';
 
 /**
  * Convenience wrapper for common use cases
  */
 export const ToggleButtonGroup = ({ options, value, onChange, ...props }) => {
   const segments = options.map((opt) =>
-    typeof opt === "string" ? { value: opt, label: opt } : opt,
+    typeof opt === 'string' ? { value: opt, label: opt } : opt
   );
 
-  return (
-    <SegmentedButtonGroup
-      segments={segments}
-      value={value}
-      onChange={onChange}
-      {...props}
-    />
-  );
+  return <SegmentedButtonGroup segments={segments} value={value} onChange={onChange} {...props} />;
 };
 
 export default SegmentedButtonGroup;

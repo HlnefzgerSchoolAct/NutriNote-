@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import "./ActivityTracker.css";
+import React, { useState } from 'react';
+import './ActivityTracker.css';
 
 const ACTIVITIES = [
-  { id: "walking", name: "Walking", met: 3.5 },
-  { id: "running", name: "Running", met: 10.0 },
-  { id: "lifting", name: "Weight Lifting", met: 5.0 },
-  { id: "wrestling", name: "Wrestling", met: 6.0 },
-  { id: "football", name: "Football Practice", met: 8.0 },
-  { id: "cycling", name: "Cycling", met: 7.5 },
+  { id: 'walking', name: 'Walking', met: 3.5 },
+  { id: 'running', name: 'Running', met: 10.0 },
+  { id: 'lifting', name: 'Weight Lifting', met: 5.0 },
+  { id: 'wrestling', name: 'Wrestling', met: 6.0 },
+  { id: 'football', name: 'Football Practice', met: 8.0 },
+  { id: 'cycling', name: 'Cycling', met: 7.5 },
 ];
 
 function ActivityTracker({ userProfile, onSubmit, onBack }) {
@@ -30,15 +30,15 @@ function ActivityTracker({ userProfile, onSubmit, onBack }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const activeActivities = ACTIVITIES.filter(
-      (activity) => activities[activity.id] > 0
-    ).map((activity) => ({
-      ...activity,
-      minutes: activities[activity.id],
-    }));
+    const activeActivities = ACTIVITIES.filter((activity) => activities[activity.id] > 0).map(
+      (activity) => ({
+        ...activity,
+        minutes: activities[activity.id],
+      })
+    );
 
     if (activeActivities.length === 0) {
-      alert("Please enter minutes for at least one activity");
+      alert('Please enter minutes for at least one activity');
       return;
     }
 
@@ -48,9 +48,7 @@ function ActivityTracker({ userProfile, onSubmit, onBack }) {
   return (
     <div className="activity-tracker">
       <h2>Track Your Activities</h2>
-      <p className="subtitle">
-        Enter the minutes you spent on each activity today
-      </p>
+      <p className="subtitle">Enter the minutes you spent on each activity today</p>
 
       <form onSubmit={handleSubmit}>
         <div className="activity-grid">
@@ -68,9 +66,7 @@ function ActivityTracker({ userProfile, onSubmit, onBack }) {
                   type="number"
                   id={`activity-${activity.id}`}
                   value={activities[activity.id]}
-                  onChange={(e) =>
-                    handleActivityChange(activity.id, e.target.value)
-                  }
+                  onChange={(e) => handleActivityChange(activity.id, e.target.value)}
                   min="0"
                   max="1440"
                   placeholder="0"
@@ -95,4 +91,3 @@ function ActivityTracker({ userProfile, onSubmit, onBack }) {
 }
 
 export default ActivityTracker;
-

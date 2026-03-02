@@ -119,11 +119,7 @@
   --info-light: var(--color-info-light);
 
   /* Additional Semantic Aliases (Missing Variables Fix) */
-  --gradient-blue: linear-gradient(
-    135deg,
-    var(--color-primary-500),
-    var(--color-primary-600)
-  );
+  --gradient-blue: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
   --gradient-primary: var(--gradient-blue);
   --shadow-glow-blue: 0 4px 20px rgba(26, 115, 232, 0.3);
   --primary-blue-glow: rgba(26, 115, 232, 0.15);
@@ -176,23 +172,50 @@
   --border-error-subtle: rgba(239, 68, 68, 0.2);
   --border-warning-subtle: rgba(251, 191, 36, 0.4);
   --bg-accent-subtle: rgba(255, 107, 53, 0.08);
-  
+
   /* Gradient Backgrounds */
-  --gradient-primary-subtle: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%);
-  --gradient-primary-muted: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
-  --gradient-warning-subtle: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
-  --gradient-success-to-surface: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, var(--surface-elevated) 100%);
-  --gradient-error-to-surface: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, var(--surface-elevated) 100%);
-  --gradient-warning-to-surface: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, var(--surface-elevated) 100%);
-  --gradient-info-to-surface: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, var(--surface-elevated) 100%);
+  --gradient-primary-subtle: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.15) 0%,
+    rgba(59, 130, 246, 0.08) 100%
+  );
+  --gradient-primary-muted: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
+  --gradient-warning-subtle: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.1) 0%,
+    rgba(245, 158, 11, 0.05) 100%
+  );
+  --gradient-success-to-surface: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+  --gradient-error-to-surface: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+  --gradient-warning-to-surface: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
+  --gradient-info-to-surface: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    var(--surface-elevated) 100%
+  );
 
   /* ========================================
      TYPOGRAPHY SYSTEM
      ======================================== */
 
-  --font-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Font Sizes */
   --text-xs: 0.75rem;
@@ -495,7 +518,7 @@
 
 /* System preference dark mode */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme='light']) {
     /* Primary Colors (Lighter for dark backgrounds) */
     --color-primary-50: #1e3a5f;
     --color-primary-100: #1e4976;
@@ -647,7 +670,7 @@
 }
 
 /* Explicit dark mode class (overrides system preference) */
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Primary Colors (Lighter for dark backgrounds) */
   --color-primary-50: #1e3a5f;
   --color-primary-100: #1e4976;
@@ -846,12 +869,12 @@
    ============================================ */
 
 /* Dark mode color scheme for native elements */
-[data-theme="dark"],
-:root:not([data-theme="light"]) {
+[data-theme='dark'],
+:root:not([data-theme='light']) {
   color-scheme: dark;
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   color-scheme: light;
 }
 

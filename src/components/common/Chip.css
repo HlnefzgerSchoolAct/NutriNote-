@@ -34,7 +34,7 @@
 
 /* State layer for ripple effect */
 .m3-chip::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-color: currentColor;
@@ -104,11 +104,13 @@
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   border-color: transparent;
+  font-weight: 600;
 }
 
 .m3-chip--filter.m3-chip--selected:hover {
   background-color: var(--md-sys-color-secondary-container);
   box-shadow: var(--m3-shadow-1);
+  filter: brightness(0.97);
 }
 
 /* Input Chip */
@@ -145,6 +147,7 @@
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   border-color: transparent;
+  font-weight: 600;
 }
 
 /* ============================================

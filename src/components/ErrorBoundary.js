@@ -1,6 +1,7 @@
-import React from "react";
-import * as Sentry from "@sentry/react";
-import ThemedLogo from "./ThemedLogo";
+import * as Sentry from '@sentry/react';
+import React from 'react';
+
+import ThemedLogo from './ThemedLogo';
 
 /**
  * Error Boundary Component
@@ -19,18 +20,18 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     try {
-      if (typeof Sentry !== "undefined" && Sentry.captureException) {
+      if (typeof Sentry !== 'undefined' && Sentry.captureException) {
         Sentry.captureException(error, { extra: errorInfo });
       }
     } catch (_) {}
     if (import.meta.env.DEV) {
-      console.error("ErrorBoundary caught an error:", error, errorInfo);
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
   }
 
   handleReset = () => {
     this.setState({ hasError: false, error: null });
-    window.location.href = "/";
+    window.location.href = '/';
   };
 
   render() {
@@ -39,12 +40,11 @@ class ErrorBoundary extends React.Component {
         <div className="error-boundary">
           <div className="error-boundary__content">
             <div className="error-boundary__icon">
-              <ThemedLogo className="error-boundary__logo" height={120} />
+              <ThemedLogo className="error-boundary__logo" height={240} />
             </div>
             <h1 className="error-boundary__title">Something went wrong</h1>
             <p className="error-boundary__message">
-              We're sorry, but something unexpected happened. Please try
-              refreshing the page.
+              We're sorry, but something unexpected happened. Please try refreshing the page.
             </p>
             <div className="error-boundary__actions">
               <button

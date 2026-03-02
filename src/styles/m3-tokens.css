@@ -213,43 +213,13 @@
   --m3-state-pressed-opacity: var(--md-sys-state-pressed-opacity);
 
   /* Pre-computed State Layer Colors */
-  --m3-state-layer-primary: rgba(
-    26,
-    115,
-    232,
-    var(--md-sys-state-hover-opacity)
-  );
-  --m3-state-layer-primary-focus: rgba(
-    26,
-    115,
-    232,
-    var(--md-sys-state-focus-opacity)
-  );
-  --m3-state-layer-primary-pressed: rgba(
-    26,
-    115,
-    232,
-    var(--md-sys-state-pressed-opacity)
-  );
+  --m3-state-layer-primary: rgba(26, 115, 232, var(--md-sys-state-hover-opacity));
+  --m3-state-layer-primary-focus: rgba(26, 115, 232, var(--md-sys-state-focus-opacity));
+  --m3-state-layer-primary-pressed: rgba(26, 115, 232, var(--md-sys-state-pressed-opacity));
 
-  --m3-state-layer-on-surface: rgba(
-    28,
-    27,
-    31,
-    var(--md-sys-state-hover-opacity)
-  );
-  --m3-state-layer-on-surface-focus: rgba(
-    28,
-    27,
-    31,
-    var(--md-sys-state-focus-opacity)
-  );
-  --m3-state-layer-on-surface-pressed: rgba(
-    28,
-    27,
-    31,
-    var(--md-sys-state-pressed-opacity)
-  );
+  --m3-state-layer-on-surface: rgba(28, 27, 31, var(--md-sys-state-hover-opacity));
+  --m3-state-layer-on-surface-focus: rgba(28, 27, 31, var(--md-sys-state-focus-opacity));
+  --m3-state-layer-on-surface-pressed: rgba(28, 27, 31, var(--md-sys-state-pressed-opacity));
 
   /* ========================================
      M3 EXTENDED COLOR ROLES
@@ -290,16 +260,8 @@
   --m3-surface-alpha-95: rgba(254, 251, 255, 0.95);
 
   /* Gradient Presets */
-  --m3-gradient-primary: linear-gradient(
-    135deg,
-    var(--md-sys-color-primary) 0%,
-    #4285f4 100%
-  );
-  --m3-gradient-secondary: linear-gradient(
-    135deg,
-    var(--md-sys-color-secondary) 0%,
-    #26a69a 100%
-  );
+  --m3-gradient-primary: linear-gradient(135deg, var(--md-sys-color-primary) 0%, #4285f4 100%);
+  --m3-gradient-secondary: linear-gradient(135deg, var(--md-sys-color-secondary) 0%, #26a69a 100%);
   --m3-gradient-surface: linear-gradient(
     180deg,
     var(--md-sys-color-surface-container-low) 0%,
@@ -325,7 +287,7 @@
    ============================================ */
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme='light']) {
     /* Primary Tonal Palette - Dark */
     --md-sys-color-primary: #a8c7fa;
     --md-sys-color-on-primary: #062e6f;
@@ -437,7 +399,7 @@
 }
 
 /* Explicit dark theme class override */
-[data-theme="dark"] {
+[data-theme='dark'] {
   --md-sys-color-primary: #a8c7fa;
   --md-sys-color-on-primary: #062e6f;
   --md-sys-color-primary-container: #1b4fb8;

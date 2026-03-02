@@ -5,14 +5,14 @@
  */
 
 // Storage key for unit preference
-const UNIT_PREFERENCE_KEY = "nutriNote_unitSystem";
+const UNIT_PREFERENCE_KEY = 'nutriNote_unitSystem';
 
 /**
  * Unit systems
  */
 export const UNIT_SYSTEMS = {
-  IMPERIAL: "imperial",
-  METRIC: "metric",
+  IMPERIAL: 'imperial',
+  METRIC: 'metric',
 };
 
 /**
@@ -30,23 +30,23 @@ export const getUnitSystem = () => {
       return stored;
     }
     // Auto-detect based on locale
-    const locale = navigator.language || "en-US";
+    const locale = navigator.language || 'en-US';
     const metricCountries = [
-      "en-GB",
-      "en-AU",
-      "en-NZ",
-      "en-CA",
-      "de",
-      "fr",
-      "es",
-      "it",
-      "pt",
-      "nl",
-      "pl",
-      "ru",
-      "ja",
-      "ko",
-      "zh",
+      'en-GB',
+      'en-AU',
+      'en-NZ',
+      'en-CA',
+      'de',
+      'fr',
+      'es',
+      'it',
+      'pt',
+      'nl',
+      'pl',
+      'ru',
+      'ja',
+      'ko',
+      'zh',
     ];
     const isMetric = metricCountries.some((c) => locale.startsWith(c));
     return isMetric ? UNIT_SYSTEMS.METRIC : UNIT_SYSTEMS.IMPERIAL;
@@ -80,7 +80,7 @@ const KG_PER_LBS = 0.453592;
  * Convert kilograms to pounds
  */
 export const kgToLbs = (kg) => {
-  if (typeof kg !== "number" || isNaN(kg)) return 0;
+  if (typeof kg !== 'number' || isNaN(kg)) return 0;
   return Math.round(kg * LBS_PER_KG * 10) / 10;
 };
 
@@ -88,7 +88,7 @@ export const kgToLbs = (kg) => {
  * Convert pounds to kilograms
  */
 export const lbsToKg = (lbs) => {
-  if (typeof lbs !== "number" || isNaN(lbs)) return 0;
+  if (typeof lbs !== 'number' || isNaN(lbs)) return 0;
   return Math.round(lbs * KG_PER_LBS * 10) / 10;
 };
 
@@ -113,12 +113,12 @@ export const toStorageWeight = (weight) => {
 /**
  * Get weight unit label
  */
-export const getWeightUnit = () => (isMetric() ? "kg" : "lbs");
+export const getWeightUnit = () => (isMetric() ? 'kg' : 'lbs');
 
 /**
  * Get weight unit label (short)
  */
-export const getWeightUnitShort = () => (isMetric() ? "kg" : "lb");
+export const getWeightUnitShort = () => (isMetric() ? 'kg' : 'lb');
 
 /**
  * Format weight with unit
@@ -138,7 +138,7 @@ const INCHES_PER_FOOT = 12;
  * @returns {{ feet: number, inches: number }}
  */
 export const cmToFeetInches = (cm) => {
-  if (typeof cm !== "number" || isNaN(cm)) return { feet: 0, inches: 0 };
+  if (typeof cm !== 'number' || isNaN(cm)) return { feet: 0, inches: 0 };
   const totalInches = cm / CM_PER_INCH;
   const feet = Math.floor(totalInches / INCHES_PER_FOOT);
   const inches = Math.round(totalInches % INCHES_PER_FOOT);
@@ -149,8 +149,8 @@ export const cmToFeetInches = (cm) => {
  * Convert feet and inches to centimeters
  */
 export const feetInchesToCm = (feet, inches = 0) => {
-  if (typeof feet !== "number" || isNaN(feet)) return 0;
-  if (typeof inches !== "number" || isNaN(inches)) inches = 0;
+  if (typeof feet !== 'number' || isNaN(feet)) return 0;
+  if (typeof inches !== 'number' || isNaN(inches)) inches = 0;
   const totalInches = feet * INCHES_PER_FOOT + inches;
   return Math.round(totalInches * CM_PER_INCH);
 };
@@ -169,7 +169,7 @@ export const getDisplayHeight = (heightCm) => {
  */
 export const toStorageHeight = (height, inches = 0) => {
   if (isMetric()) {
-    return typeof height === "number" ? height : 0;
+    return typeof height === 'number' ? height : 0;
   }
   return feetInchesToCm(height, inches);
 };
@@ -177,7 +177,7 @@ export const toStorageHeight = (height, inches = 0) => {
 /**
  * Get height unit label
  */
-export const getHeightUnit = () => (isMetric() ? "cm" : "ft/in");
+export const getHeightUnit = () => (isMetric() ? 'cm' : 'ft/in');
 
 /**
  * Format height with unit
@@ -199,7 +199,7 @@ const ML_PER_CUP = 236.588;
  * Convert milliliters to fluid ounces
  */
 export const mlToFlOz = (ml) => {
-  if (typeof ml !== "number" || isNaN(ml)) return 0;
+  if (typeof ml !== 'number' || isNaN(ml)) return 0;
   return Math.round((ml / ML_PER_FL_OZ) * 10) / 10;
 };
 
@@ -207,14 +207,14 @@ export const mlToFlOz = (ml) => {
  * Convert fluid ounces to milliliters
  */
 export const flOzToMl = (flOz) => {
-  if (typeof flOz !== "number" || isNaN(flOz)) return 0;
+  if (typeof flOz !== 'number' || isNaN(flOz)) return 0;
   return Math.round(flOz * ML_PER_FL_OZ);
 };
 
 /**
  * Get volume unit label
  */
-export const getVolumeUnit = () => (isMetric() ? "ml" : "fl oz");
+export const getVolumeUnit = () => (isMetric() ? 'ml' : 'fl oz');
 
 /**
  * Get cup size in ml based on unit system
@@ -240,7 +240,7 @@ export const fahrenheitToCelsius = (f) => {
 /**
  * Get temperature unit
  */
-export const getTempUnit = () => (isMetric() ? "°C" : "°F");
+export const getTempUnit = () => (isMetric() ? '°C' : '°F');
 
 // ===== DISTANCE CONVERSIONS =====
 
@@ -250,7 +250,7 @@ const KM_PER_MILE = 1.60934;
  * Convert kilometers to miles
  */
 export const kmToMiles = (km) => {
-  if (typeof km !== "number" || isNaN(km)) return 0;
+  if (typeof km !== 'number' || isNaN(km)) return 0;
   return Math.round((km / KM_PER_MILE) * 100) / 100;
 };
 
@@ -258,14 +258,14 @@ export const kmToMiles = (km) => {
  * Convert miles to kilometers
  */
 export const milesToKm = (miles) => {
-  if (typeof miles !== "number" || isNaN(miles)) return 0;
+  if (typeof miles !== 'number' || isNaN(miles)) return 0;
   return Math.round(miles * KM_PER_MILE * 100) / 100;
 };
 
 /**
  * Get distance unit
  */
-export const getDistanceUnit = () => (isMetric() ? "km" : "mi");
+export const getDistanceUnit = () => (isMetric() ? 'km' : 'mi');
 
 // ===== VALIDATION RANGES =====
 
@@ -300,24 +300,24 @@ export const getHeightRange = () => {
  * Extended unit options for food portions
  */
 export const FOOD_UNITS = [
-  { value: "serving", label: "serving", labelPlural: "servings" },
-  { value: "cup", label: "cup", labelPlural: "cups" },
-  { value: "bowl", label: "bowl", labelPlural: "bowls" },
-  { value: "plate", label: "plate", labelPlural: "plates" },
-  { value: "piece", label: "piece", labelPlural: "pieces" },
-  { value: "slice", label: "slice", labelPlural: "slices" },
-  { value: "handful", label: "handful", labelPlural: "handfuls" },
-  { value: "tablespoon", label: "tbsp", labelPlural: "tbsp" },
-  { value: "teaspoon", label: "tsp", labelPlural: "tsp" },
-  { value: "g", label: "g", labelPlural: "g" },
-  { value: "oz", label: "oz", labelPlural: "oz" },
-  { value: "ml", label: "ml", labelPlural: "ml" },
-  { value: "fl oz", label: "fl oz", labelPlural: "fl oz" },
-  { value: "can", label: "can", labelPlural: "cans" },
-  { value: "bottle", label: "bottle", labelPlural: "bottles" },
-  { value: "packet", label: "packet", labelPlural: "packets" },
-  { value: "bar", label: "bar", labelPlural: "bars" },
-  { value: "scoop", label: "scoop", labelPlural: "scoops" },
+  { value: 'serving', label: 'serving', labelPlural: 'servings' },
+  { value: 'cup', label: 'cup', labelPlural: 'cups' },
+  { value: 'bowl', label: 'bowl', labelPlural: 'bowls' },
+  { value: 'plate', label: 'plate', labelPlural: 'plates' },
+  { value: 'piece', label: 'piece', labelPlural: 'pieces' },
+  { value: 'slice', label: 'slice', labelPlural: 'slices' },
+  { value: 'handful', label: 'handful', labelPlural: 'handfuls' },
+  { value: 'tablespoon', label: 'tbsp', labelPlural: 'tbsp' },
+  { value: 'teaspoon', label: 'tsp', labelPlural: 'tsp' },
+  { value: 'g', label: 'g', labelPlural: 'g' },
+  { value: 'oz', label: 'oz', labelPlural: 'oz' },
+  { value: 'ml', label: 'ml', labelPlural: 'ml' },
+  { value: 'fl oz', label: 'fl oz', labelPlural: 'fl oz' },
+  { value: 'can', label: 'can', labelPlural: 'cans' },
+  { value: 'bottle', label: 'bottle', labelPlural: 'bottles' },
+  { value: 'packet', label: 'packet', labelPlural: 'packets' },
+  { value: 'bar', label: 'bar', labelPlural: 'bars' },
+  { value: 'scoop', label: 'scoop', labelPlural: 'scoops' },
 ];
 
 /**
@@ -346,10 +346,10 @@ export const calculateBMI = (weightKg, heightCm) => {
  * Get BMI category
  */
 export const getBMICategory = (bmi) => {
-  if (bmi < 18.5) return { label: "Underweight", color: "warning" };
-  if (bmi < 25) return { label: "Normal", color: "success" };
-  if (bmi < 30) return { label: "Overweight", color: "warning" };
-  return { label: "Obese", color: "error" };
+  if (bmi < 18.5) return { label: 'Underweight', color: 'warning' };
+  if (bmi < 25) return { label: 'Normal', color: 'success' };
+  if (bmi < 30) return { label: 'Overweight', color: 'warning' };
+  return { label: 'Obese', color: 'error' };
 };
 
 // ===== UTILITY HOOKS =====
@@ -371,8 +371,8 @@ export const createUnitSystemHook = (useState, useEffect) => {
           setSystem(getUnitSystem());
         }
       };
-      window.addEventListener("storage", handleStorage);
-      return () => window.removeEventListener("storage", handleStorage);
+      window.addEventListener('storage', handleStorage);
+      return () => window.removeEventListener('storage', handleStorage);
     }, []);
 
     const updateSystem = (newSystem) => {
@@ -380,9 +380,9 @@ export const createUnitSystemHook = (useState, useEffect) => {
         setSystem(newSystem);
         // Dispatch custom event for other components
         window.dispatchEvent(
-          new CustomEvent("unitSystemChange", {
+          new CustomEvent('unitSystemChange', {
             detail: { system: newSystem },
-          }),
+          })
         );
       }
     };

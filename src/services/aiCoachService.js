@@ -21,9 +21,9 @@ import {
   loadWeeklyHistory,
   loadFavoriteFoods,
   loadMicronutrientGoals,
-} from "../utils/localStorage";
+} from '../utils/localStorage';
 
-const API_ENDPOINT = "/api/ai-coach";
+const API_ENDPOINT = '/api/ai-coach';
 const REQUEST_TIMEOUT = 35000;
 
 /**
@@ -55,35 +55,29 @@ export function buildUserContext() {
   }));
 
   const todayExercise = exerciseLog.map((e) => ({
-    name: e.name || "Exercise",
+    name: e.name || 'Exercise',
     calories: e.calories || 0,
   }));
 
   const recentFoodNames = recentFoods.slice(0, 10).map((f) => f.name);
 
-  const latestWeight = weightLog?.length
-    ? weightLog[weightLog.length - 1]
-    : null;
+  const latestWeight = weightLog?.length ? weightLog[weightLog.length - 1] : null;
 
   const weeklyHistory = loadWeeklyHistory();
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split('T')[0];
   const last7Days = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    last7Days.push(d.toISOString().split("T")[0]);
+    last7Days.push(d.toISOString().split('T')[0]);
   }
   const weeklySummary = last7Days.map((date) => {
     const day = weeklyHistory[date];
-    return day
-      ? { date, eaten: day.eaten, target: day.target }
-      : { date, eaten: 0, target: 0 };
+    return day ? { date, eaten: day.eaten, target: day.target } : { date, eaten: 0, target: 0 };
   });
 
   const weightTrend = weightLog?.length
-    ? weightLog
-        .slice(-5)
-        .map((e) => ({ date: e.date, weight: e.weight, unit: e.unit }))
+    ? weightLog.slice(-5).map((e) => ({ date: e.date, weight: e.weight, unit: e.unit }))
     : null;
 
   const favorites = loadFavoriteFoods();
@@ -134,7 +128,7 @@ export function buildUserContext() {
     recentFoodNames,
     streak: streakData?.currentStreak ?? 0,
     longestStreak: streakData?.longestStreak ?? 0,
-    waterOz: typeof waterOz === "number" ? waterOz : 0,
+    waterOz: typeof waterOz === 'number' ? waterOz : 0,
     latestWeight: latestWeight
       ? {
           date: latestWeight.date,
@@ -150,13 +144,13 @@ export function buildUserContext() {
 }
 
 const ERROR_MESSAGES = {
-  RATE_LIMITED: "Too many requests. Please wait a few minutes and try again.",
-  API_RATE_LIMITED: "AI service is busy. Please wait a moment.",
-  AUTH_ERROR: "Authentication error. Please contact support.",
-  TIMEOUT: "Request timed out. Please try again.",
+  RATE_LIMITED: 'Too many requests. Please wait a few minutes and try again.',
+  API_RATE_LIMITED: 'AI service is busy. Please wait a moment.',
+  AUTH_ERROR: 'Authentication error. Please contact support.',
+  TIMEOUT: 'Request timed out. Please try again.',
   EMPTY_RESPONSE: "The coach couldn't generate a response. Please try again.",
-  SERVER_CONFIG_ERROR: "Server configuration error. Please contact support.",
-  NETWORK_ERROR: "Network error. Check your connection and try again.",
+  SERVER_CONFIG_ERROR: 'Server configuration error. Please contact support.',
+  NETWORK_ERROR: 'Network error. Check your connection and try again.',
   INVALID_RESPONSE:
     "The coach service couldn't respond properly. Please try again. If this persists, restart the dev server (npm run dev).",
 };
@@ -168,14 +162,10 @@ const ERROR_MESSAGES = {
  * @param {Array<{role: string, content: string}>} [conversationHistory] - Prior messages for context
  * @returns {Promise<{reply: string, actions: Array|null}>} Coach reply and optional actions
  */
-export async function sendCoachMessage(
-  message,
-  userContext,
-  conversationHistory,
-) {
-  const trimmed = (message || "").trim();
+export async function sendCoachMessage(message, userContext, conversationHistory) {
+  const trimmed = (message || '').trim();
   if (!trimmed) {
-    throw new Error("Please enter a message.");
+    throw new Error('Please enter a message.');
   }
 
   const context = userContext ?? buildUserContext();
@@ -186,8 +176,8 @@ export async function sendCoachMessage(
 
   try {
     const response = await fetch(API_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: trimmed,
         userContext: context,
@@ -210,7 +200,7 @@ export async function sendCoachMessage(
       const msg =
         data?.code && ERROR_MESSAGES[data.code]
           ? ERROR_MESSAGES[data.code]
-          : data?.error || "Something went wrong. Please try again.";
+          : data?.error || 'Something went wrong. Please try again.';
       throw new Error(msg);
     }
 
@@ -223,10 +213,10 @@ export async function sendCoachMessage(
   } catch (error) {
     clearTimeout(timeout);
 
-    if (error.name === "AbortError") {
+    if (error.name === 'AbortError') {
       throw new Error(ERROR_MESSAGES.TIMEOUT);
     }
-    if (error.message === "Failed to fetch" || error.name === "TypeError") {
+    if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
       throw new Error(ERROR_MESSAGES.NETWORK_ERROR);
     }
 

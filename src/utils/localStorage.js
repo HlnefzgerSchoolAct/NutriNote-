@@ -1,24 +1,24 @@
-import devLog from "./devLog";
+import devLog from './devLog';
 
 const STORAGE_KEYS = {
-  USER_PROFILE: "nutrinoteplus_user_profile",
-  DAILY_TARGET: "nutrinoteplus_daily_target",
-  FOOD_LOG: "nutrinoteplus_food_log",
-  EXERCISE_LOG: "nutrinoteplus_exercise_log",
-  CURRENT_DATE: "nutrinoteplus_current_date",
-  WEEKLY_HISTORY: "nutrinoteplus_weekly_history",
-  FOOD_HISTORY: "nutrinoteplus_food_history",
-  WATER_LOG: "nutrinoteplus_water_log",
-  PREFERENCES: "nutrinoteplus_preferences",
-  ONBOARDING: "nutrinoteplus_onboarding",
-  INSTALL_PROMPT_DISMISSED: "nutrinoteplus_install_prompt_dismissed",
-  RECENT_FOODS: "nutrinoteplus_recent_foods",
-  FAVORITE_FOODS: "nutrinoteplus_favorite_foods",
-  WEIGHT_LOG: "nutrinoteplus_weight_log",
-  STREAK_DATA: "nutrinoteplus_streak_data",
-  MACRO_GOALS: "nutrinoteplus_macro_goals",
-  MICRONUTRIENT_GOALS: "nutrinoteplus_micronutrient_goals",
-  LAST_SYNC_TIME: "nutrinoteplus_last_sync_time",
+  USER_PROFILE: 'nutrinoteplus_user_profile',
+  DAILY_TARGET: 'nutrinoteplus_daily_target',
+  FOOD_LOG: 'nutrinoteplus_food_log',
+  EXERCISE_LOG: 'nutrinoteplus_exercise_log',
+  CURRENT_DATE: 'nutrinoteplus_current_date',
+  WEEKLY_HISTORY: 'nutrinoteplus_weekly_history',
+  FOOD_HISTORY: 'nutrinoteplus_food_history',
+  WATER_LOG: 'nutrinoteplus_water_log',
+  PREFERENCES: 'nutrinoteplus_preferences',
+  ONBOARDING: 'nutrinoteplus_onboarding',
+  INSTALL_PROMPT_DISMISSED: 'nutrinoteplus_install_prompt_dismissed',
+  RECENT_FOODS: 'nutrinoteplus_recent_foods',
+  FAVORITE_FOODS: 'nutrinoteplus_favorite_foods',
+  WEIGHT_LOG: 'nutrinoteplus_weight_log',
+  STREAK_DATA: 'nutrinoteplus_streak_data',
+  MACRO_GOALS: 'nutrinoteplus_macro_goals',
+  MICRONUTRIENT_GOALS: 'nutrinoteplus_micronutrient_goals',
+  LAST_SYNC_TIME: 'nutrinoteplus_last_sync_time',
 };
 
 // ============================================
@@ -93,145 +93,145 @@ const AGE_ADJUSTMENTS = {
 // Micronutrient metadata for UI display
 export const MICRONUTRIENT_INFO = {
   fiber: {
-    label: "Fiber",
-    unit: "g",
-    category: "general",
+    label: 'Fiber',
+    unit: 'g',
+    category: 'general',
     warnHigh: false,
     warnLow: true,
   },
   sodium: {
-    label: "Sodium",
-    unit: "mg",
-    category: "general",
+    label: 'Sodium',
+    unit: 'mg',
+    category: 'general',
     warnHigh: true,
     warnLow: false,
     threshold: 2300,
   },
   sugar: {
-    label: "Sugar",
-    unit: "g",
-    category: "general",
+    label: 'Sugar',
+    unit: 'g',
+    category: 'general',
     warnHigh: true,
     warnLow: false,
     threshold: 50,
   },
   cholesterol: {
-    label: "Cholesterol",
-    unit: "mg",
-    category: "general",
+    label: 'Cholesterol',
+    unit: 'mg',
+    category: 'general',
     warnHigh: true,
     warnLow: false,
     threshold: 300,
   },
   vitaminA: {
-    label: "Vitamin A",
-    unit: "mcg",
-    category: "vitamins",
+    label: 'Vitamin A',
+    unit: 'mcg',
+    category: 'vitamins',
     warnHigh: true,
     warnLow: true,
   },
   vitaminC: {
-    label: "Vitamin C",
-    unit: "mg",
-    category: "vitamins",
+    label: 'Vitamin C',
+    unit: 'mg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   vitaminD: {
-    label: "Vitamin D",
-    unit: "mcg",
-    category: "vitamins",
+    label: 'Vitamin D',
+    unit: 'mcg',
+    category: 'vitamins',
     warnHigh: true,
     warnLow: true,
   },
   vitaminE: {
-    label: "Vitamin E",
-    unit: "mg",
-    category: "vitamins",
+    label: 'Vitamin E',
+    unit: 'mg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   vitaminK: {
-    label: "Vitamin K",
-    unit: "mcg",
-    category: "vitamins",
+    label: 'Vitamin K',
+    unit: 'mcg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   vitaminB1: {
-    label: "Thiamin (B1)",
-    unit: "mg",
-    category: "vitamins",
+    label: 'Thiamin (B1)',
+    unit: 'mg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   vitaminB2: {
-    label: "Riboflavin (B2)",
-    unit: "mg",
-    category: "vitamins",
+    label: 'Riboflavin (B2)',
+    unit: 'mg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   vitaminB3: {
-    label: "Niacin (B3)",
-    unit: "mg",
-    category: "vitamins",
+    label: 'Niacin (B3)',
+    unit: 'mg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   vitaminB6: {
-    label: "Vitamin B6",
-    unit: "mg",
-    category: "vitamins",
+    label: 'Vitamin B6',
+    unit: 'mg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   vitaminB12: {
-    label: "Vitamin B12",
-    unit: "mcg",
-    category: "vitamins",
+    label: 'Vitamin B12',
+    unit: 'mcg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   folate: {
-    label: "Folate",
-    unit: "mcg",
-    category: "vitamins",
+    label: 'Folate',
+    unit: 'mcg',
+    category: 'vitamins',
     warnHigh: false,
     warnLow: true,
   },
   calcium: {
-    label: "Calcium",
-    unit: "mg",
-    category: "minerals",
+    label: 'Calcium',
+    unit: 'mg',
+    category: 'minerals',
     warnHigh: false,
     warnLow: true,
   },
   iron: {
-    label: "Iron",
-    unit: "mg",
-    category: "minerals",
+    label: 'Iron',
+    unit: 'mg',
+    category: 'minerals',
     warnHigh: true,
     warnLow: true,
   },
   magnesium: {
-    label: "Magnesium",
-    unit: "mg",
-    category: "minerals",
+    label: 'Magnesium',
+    unit: 'mg',
+    category: 'minerals',
     warnHigh: false,
     warnLow: true,
   },
   zinc: {
-    label: "Zinc",
-    unit: "mg",
-    category: "minerals",
+    label: 'Zinc',
+    unit: 'mg',
+    category: 'minerals',
     warnHigh: true,
     warnLow: true,
   },
   potassium: {
-    label: "Potassium",
-    unit: "mg",
-    category: "minerals",
+    label: 'Potassium',
+    unit: 'mg',
+    category: 'minerals',
     warnHigh: false,
     warnLow: true,
   },
@@ -267,37 +267,33 @@ const saveToLocalStorage = (key, data) => {
     return true;
   } catch (error) {
     // Handle quota exceeded error
-    if (error.name === "QuotaExceededError" || error.code === 22) {
-      devLog.warn("localStorage quota exceeded, attempting cleanup...");
+    if (error.name === 'QuotaExceededError' || error.code === 22) {
+      devLog.warn('localStorage quota exceeded, attempting cleanup...');
 
       // Try to clear old cached data to make room
       try {
         // Remove old AI nutrition cache entries (oldest first)
-        const aiCacheKey = "nutrinoteplus_ai_nutrition_cache";
+        const aiCacheKey = 'nutrinoteplus_ai_nutrition_cache';
         const aiCache = localStorage.getItem(aiCacheKey);
         if (aiCache) {
           const parsed = JSON.parse(aiCache);
           const entries = Object.entries(parsed);
           // Keep only the 50 most recent entries
           if (entries.length > 50) {
-            const sorted = entries.sort(
-              (a, b) => b[1].timestamp - a[1].timestamp,
-            );
+            const sorted = entries.sort((a, b) => b[1].timestamp - a[1].timestamp);
             const trimmed = Object.fromEntries(sorted.slice(0, 50));
             localStorage.setItem(aiCacheKey, JSON.stringify(trimmed));
           }
         }
 
         // Remove barcode cache if still too full
-        const barcodeCacheKey = "nutrinoteplus_barcode_cache";
+        const barcodeCacheKey = 'nutrinoteplus_barcode_cache';
         const barcodeCache = localStorage.getItem(barcodeCacheKey);
         if (barcodeCache) {
           const parsed = JSON.parse(barcodeCache);
           const entries = Object.entries(parsed);
           if (entries.length > 50) {
-            const sorted = entries.sort(
-              (a, b) => b[1].timestamp - a[1].timestamp,
-            );
+            const sorted = entries.sort((a, b) => b[1].timestamp - a[1].timestamp);
             const trimmed = Object.fromEntries(sorted.slice(0, 50));
             localStorage.setItem(barcodeCacheKey, JSON.stringify(trimmed));
           }
@@ -305,18 +301,15 @@ const saveToLocalStorage = (key, data) => {
 
         // Retry the save
         localStorage.setItem(key, JSON.stringify(data));
-        devLog.log("localStorage save succeeded after cleanup");
+        devLog.log('localStorage save succeeded after cleanup');
         return true;
       } catch (retryError) {
-        devLog.error(
-          "localStorage save failed even after cleanup:",
-          retryError,
-        );
+        devLog.error('localStorage save failed even after cleanup:', retryError);
         return false;
       }
     }
 
-    devLog.error("Error saving to localStorage:", error);
+    devLog.error('Error saving to localStorage:', error);
     return false;
   }
 };
@@ -329,7 +322,7 @@ const loadFromLocalStorage = (key, defaultValue = null) => {
     }
     return JSON.parse(jsonString);
   } catch (error) {
-    devLog.error("Error loading from localStorage:", error);
+    devLog.error('Error loading from localStorage:', error);
     return defaultValue;
   }
 };
@@ -338,7 +331,7 @@ const clearLocalStorage = (key) => {
   try {
     localStorage.removeItem(key);
   } catch (error) {
-    devLog.error("Error clearing localStorage:", error);
+    devLog.error('Error clearing localStorage:', error);
   }
 };
 
@@ -353,7 +346,7 @@ const notifySync = (type, payload) => {
 
 const getTodaysDate = () => {
   const today = new Date();
-  return today.toISOString().split("T")[0];
+  return today.toISOString().split('T')[0];
 };
 
 const checkAndResetDaily = () => {
@@ -390,7 +383,7 @@ const checkAndResetDaily = () => {
 
 export const saveUserProfile = (profile) => {
   saveToLocalStorage(STORAGE_KEYS.USER_PROFILE, profile);
-  notifySync("profile", {
+  notifySync('profile', {
     userProfile: profile,
     dailyTarget: loadFromLocalStorage(STORAGE_KEYS.DAILY_TARGET, 2000),
     macroGoals: loadFromLocalStorage(STORAGE_KEYS.MACRO_GOALS, null),
@@ -406,7 +399,7 @@ export const loadUserProfile = () => {
 
 export const saveDailyTarget = (target) => {
   saveToLocalStorage(STORAGE_KEYS.DAILY_TARGET, target);
-  notifySync("profile", {
+  notifySync('profile', {
     userProfile: loadFromLocalStorage(STORAGE_KEYS.USER_PROFILE, null),
     dailyTarget: target,
     macroGoals: loadFromLocalStorage(STORAGE_KEYS.MACRO_GOALS, null),
@@ -422,7 +415,7 @@ export const loadDailyTarget = () => {
 
 export const saveFoodLog = (foodLog) => {
   saveToLocalStorage(STORAGE_KEYS.FOOD_LOG, foodLog);
-  notifySync("foodLog", {
+  notifySync('foodLog', {
     entries: foodLog,
     exercise: loadFromLocalStorage(STORAGE_KEYS.EXERCISE_LOG, []),
     water: loadFromLocalStorage(STORAGE_KEYS.WATER_LOG, 0),
@@ -454,7 +447,7 @@ export const deleteFoodEntry = (entryId) => {
 
 export const saveExerciseLog = (exerciseLog) => {
   saveToLocalStorage(STORAGE_KEYS.EXERCISE_LOG, exerciseLog);
-  notifySync("foodLog", {
+  notifySync('foodLog', {
     entries: loadFromLocalStorage(STORAGE_KEYS.FOOD_LOG, []),
     exercise: exerciseLog,
     water: loadFromLocalStorage(STORAGE_KEYS.WATER_LOG, 0),
@@ -506,7 +499,7 @@ export const getRemainingCalories = () => {
 
 export const saveWeeklyHistory = (history) => {
   saveToLocalStorage(STORAGE_KEYS.WEEKLY_HISTORY, history);
-  notifySync("history", history);
+  notifySync('history', history);
 };
 
 export const loadWeeklyHistory = () => {
@@ -550,12 +543,12 @@ export const getWeeklyGraphData = () => {
   for (let i = 6; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
-    last7Days.push(date.toISOString().split("T")[0]);
+    last7Days.push(date.toISOString().split('T')[0]);
   }
 
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const labels = last7Days.map((dateStr) => {
-    const date = new Date(dateStr + "T12:00:00");
+    const date = new Date(dateStr + 'T12:00:00');
     return dayNames[date.getDay()];
   });
 
@@ -580,24 +573,24 @@ export const getWeeklyGraphData = () => {
     labels: labels,
     datasets: [
       {
-        label: "Calories Eaten",
+        label: 'Calories Eaten',
         data: eatenData,
-        borderColor: "rgb(231, 76, 60)",
-        backgroundColor: "rgba(231, 76, 60, 0.1)",
+        borderColor: 'rgb(231, 76, 60)',
+        backgroundColor: 'rgba(231, 76, 60, 0.1)',
         tension: 0.3,
       },
       {
-        label: "Calories Burned",
+        label: 'Calories Burned',
         data: burnedData,
-        borderColor: "rgb(243, 156, 18)",
-        backgroundColor: "rgba(243, 156, 18, 0.1)",
+        borderColor: 'rgb(243, 156, 18)',
+        backgroundColor: 'rgba(243, 156, 18, 0.1)',
         tension: 0.3,
       },
       {
-        label: "Target Calories",
+        label: 'Target Calories',
         data: targetData,
-        borderColor: "rgb(52, 152, 219)",
-        backgroundColor: "rgba(52, 152, 219, 0.1)",
+        borderColor: 'rgb(52, 152, 219)',
+        backgroundColor: 'rgba(52, 152, 219, 0.1)',
         tension: 0.3,
         borderDash: [5, 5],
       },
@@ -612,7 +605,7 @@ export const loadWaterLog = () => {
 
 export const saveWaterLog = (ounces) => {
   saveToLocalStorage(STORAGE_KEYS.WATER_LOG, ounces);
-  notifySync("foodLog", {
+  notifySync('foodLog', {
     entries: loadFromLocalStorage(STORAGE_KEYS.FOOD_LOG, []),
     exercise: loadFromLocalStorage(STORAGE_KEYS.EXERCISE_LOG, []),
     water: ounces,
@@ -645,7 +638,7 @@ export const getTotalMacros = () => {
       carbs: totals.carbs + (entry.carbs || 0),
       fat: totals.fat + (entry.fat || 0),
     }),
-    { protein: 0, carbs: 0, fat: 0 },
+    { protein: 0, carbs: 0, fat: 0 }
   );
 };
 
@@ -699,7 +692,7 @@ export const getTotalMicronutrients = () => {
       magnesium: 0,
       zinc: 0,
       potassium: 0,
-    },
+    }
   );
 };
 
@@ -721,13 +714,13 @@ export const getTotalNutrition = () => {
 
 const DEFAULT_PREFERENCES = {
   databaseEnabled: false,
-  theme: "system", // 'system', 'light', 'dark'
-  macroInputMode: "both", // 'manual', 'auto', 'both'
+  theme: 'system', // 'system', 'light', 'dark'
+  macroInputMode: 'both', // 'manual', 'auto', 'both'
   tutorialComplete: false,
   notificationsEnabled: false,
-  reminderBreakfast: "08:00",
-  reminderLunch: "12:30",
-  reminderDinner: "18:30",
+  reminderBreakfast: '08:00',
+  reminderLunch: '12:30',
+  reminderDinner: '18:30',
   confirmAIFoods: true, // Show confirmation sheet for AI-detected foods
 };
 
@@ -738,7 +731,7 @@ export const loadPreferences = () => {
 export const savePreferences = (preferences) => {
   const merged = { ...DEFAULT_PREFERENCES, ...preferences };
   saveToLocalStorage(STORAGE_KEYS.PREFERENCES, merged);
-  notifySync("profile", {
+  notifySync('profile', {
     userProfile: loadFromLocalStorage(STORAGE_KEYS.USER_PROFILE, null),
     dailyTarget: loadFromLocalStorage(STORAGE_KEYS.DAILY_TARGET, 2000),
     macroGoals: loadFromLocalStorage(STORAGE_KEYS.MACRO_GOALS, null),
@@ -765,7 +758,7 @@ export const hasCompletedOnboarding = () => {
 
 export const markOnboardingComplete = () => {
   saveToLocalStorage(STORAGE_KEYS.ONBOARDING, true);
-  notifySync("profile", {
+  notifySync('profile', {
     userProfile: loadFromLocalStorage(STORAGE_KEYS.USER_PROFILE, null),
     dailyTarget: loadFromLocalStorage(STORAGE_KEYS.DAILY_TARGET, 2000),
     macroGoals: loadFromLocalStorage(STORAGE_KEYS.MACRO_GOALS, null),
@@ -805,7 +798,7 @@ export const saveLastSyncTime = (date) => {
 // ONBOARDING PROGRESS (draft persistence)
 // ============================================
 
-const ONBOARDING_DRAFT_KEY = "nutrinoteplus_onboarding_draft";
+const ONBOARDING_DRAFT_KEY = 'nutrinoteplus_onboarding_draft';
 
 export const loadOnboardingDraft = () => {
   return loadFromLocalStorage(ONBOARDING_DRAFT_KEY, null);
@@ -824,11 +817,11 @@ export const clearOnboardingDraft = () => {
 // ============================================
 
 const MACRO_PRESETS = {
-  balanced: { protein: 30, carbs: 40, fat: 30, name: "Balanced" },
-  highProtein: { protein: 40, carbs: 30, fat: 30, name: "High Protein" },
-  lowCarb: { protein: 40, carbs: 25, fat: 35, name: "Low Carb" },
-  athletic: { protein: 30, carbs: 50, fat: 20, name: "Athletic" },
-  custom: { protein: 30, carbs: 40, fat: 30, name: "Custom" },
+  balanced: { protein: 30, carbs: 40, fat: 30, name: 'Balanced' },
+  highProtein: { protein: 40, carbs: 30, fat: 30, name: 'High Protein' },
+  lowCarb: { protein: 40, carbs: 25, fat: 35, name: 'Low Carb' },
+  athletic: { protein: 30, carbs: 50, fat: 20, name: 'Athletic' },
+  custom: { protein: 30, carbs: 40, fat: 30, name: 'Custom' },
 };
 
 export const getMacroPresets = () => MACRO_PRESETS;
@@ -844,7 +837,7 @@ export const loadMacroGoals = () => {
 
 export const saveMacroGoals = (goals) => {
   saveToLocalStorage(STORAGE_KEYS.MACRO_GOALS, goals);
-  notifySync("profile", {
+  notifySync('profile', {
     userProfile: loadFromLocalStorage(STORAGE_KEYS.USER_PROFILE, null),
     dailyTarget: loadFromLocalStorage(STORAGE_KEYS.DAILY_TARGET, 2000),
     macroGoals: goals,
@@ -859,7 +852,7 @@ export const calculateMacroGrams = (calories, percentages) => {
     protein: Math.round((calories * (percentages.protein / 100)) / 4),
     carbs: Math.round((calories * (percentages.carbs / 100)) / 4),
     fat: Math.round((calories * (percentages.fat / 100)) / 9),
-    preset: percentages.name || "Custom",
+    preset: percentages.name || 'Custom',
     percentages: {
       protein: percentages.protein,
       carbs: percentages.carbs,
@@ -896,9 +889,9 @@ export const calculatePersonalizedMicronutrientGoals = (profile = null) => {
   // Apply age adjustments
   if (profile?.age) {
     const age = parseInt(profile.age, 10);
-    let ageCategory = "adult";
-    if (age < 19) ageCategory = "teen";
-    else if (age >= 50) ageCategory = "senior";
+    let ageCategory = 'adult';
+    if (age < 19) ageCategory = 'teen';
+    else if (age >= 50) ageCategory = 'senior';
 
     if (AGE_ADJUSTMENTS[ageCategory]) {
       goals = { ...goals, ...AGE_ADJUSTMENTS[ageCategory] };
@@ -908,7 +901,12 @@ export const calculatePersonalizedMicronutrientGoals = (profile = null) => {
   // Activity level adjustments (higher activity = higher needs for some nutrients)
   if (profile?.activityLevel) {
     const level = profile.activityLevel.toLowerCase();
-    if (level === "very_active" || level === "extra_active" || level === "active" || level === "veryactive") {
+    if (
+      level === 'very_active' ||
+      level === 'extra_active' ||
+      level === 'active' ||
+      level === 'veryactive'
+    ) {
       goals.potassium = Math.round(goals.potassium * 1.1);
       goals.magnesium = Math.round(goals.magnesium * 1.1);
       goals.iron = Math.round(goals.iron * 1.1);
@@ -929,7 +927,7 @@ export const loadMicronutrientGoals = () => {
 
 export const saveMicronutrientGoals = (goals) => {
   saveToLocalStorage(STORAGE_KEYS.MICRONUTRIENT_GOALS, goals);
-  notifySync("profile", {
+  notifySync('profile', {
     userProfile: loadFromLocalStorage(STORAGE_KEYS.USER_PROFILE, null),
     dailyTarget: loadFromLocalStorage(STORAGE_KEYS.DAILY_TARGET, 2000),
     macroGoals: loadFromLocalStorage(STORAGE_KEYS.MACRO_GOALS, null),
@@ -949,22 +947,20 @@ export const getMicronutrientWarnings = () => {
   const warnings = [];
 
   // Don't show warnings if no food has been logged yet
-  const hasAnyData = Object.values(totals).some(
-    (v) => v !== null && v !== undefined && v > 0,
-  );
+  const hasAnyData = Object.values(totals).some((v) => v !== null && v !== undefined && v > 0);
   if (!hasAnyData) return warnings;
 
   // High sodium warning
   if (totals.sodium > goals.sodium) {
     warnings.push({
-      nutrient: "sodium",
-      level: "high",
+      nutrient: 'sodium',
+      level: 'high',
       message: `Sodium intake (${Math.round(totals.sodium)}mg) exceeds daily limit of ${goals.sodium}mg`,
     });
   } else if (totals.sodium > goals.sodium * 0.8) {
     warnings.push({
-      nutrient: "sodium",
-      level: "warning",
+      nutrient: 'sodium',
+      level: 'warning',
       message: `Approaching sodium limit (${Math.round(totals.sodium)}/${goals.sodium}mg)`,
     });
   }
@@ -972,8 +968,8 @@ export const getMicronutrientWarnings = () => {
   // High sugar warning
   if (totals.sugar > goals.sugar) {
     warnings.push({
-      nutrient: "sugar",
-      level: "high",
+      nutrient: 'sugar',
+      level: 'high',
       message: `Sugar intake (${Math.round(totals.sugar)}g) exceeds daily limit of ${goals.sugar}g`,
     });
   }
@@ -981,8 +977,8 @@ export const getMicronutrientWarnings = () => {
   // High cholesterol warning
   if (totals.cholesterol > goals.cholesterol) {
     warnings.push({
-      nutrient: "cholesterol",
-      level: "high",
+      nutrient: 'cholesterol',
+      level: 'high',
       message: `Cholesterol (${Math.round(totals.cholesterol)}mg) exceeds daily limit of ${goals.cholesterol}mg`,
     });
   }
@@ -990,8 +986,8 @@ export const getMicronutrientWarnings = () => {
   // Low fiber warning
   if (totals.fiber < goals.fiber * 0.5) {
     warnings.push({
-      nutrient: "fiber",
-      level: "low",
+      nutrient: 'fiber',
+      level: 'low',
       message: `Fiber intake is low (${Math.round(totals.fiber)}/${goals.fiber}g)`,
     });
   }
@@ -1013,9 +1009,7 @@ export const addRecentFood = (food) => {
   const recent = loadRecentFoods();
 
   // Remove if already exists (will add to top)
-  const filtered = recent.filter(
-    (f) => f.name.toLowerCase() !== food.name.toLowerCase(),
-  );
+  const filtered = recent.filter((f) => f.name.toLowerCase() !== food.name.toLowerCase());
 
   // Add to beginning with all nutrition data
   filtered.unshift({
@@ -1052,13 +1046,13 @@ export const addRecentFood = (food) => {
   // Keep only max items
   const trimmed = filtered.slice(0, MAX_RECENT_FOODS);
   saveToLocalStorage(STORAGE_KEYS.RECENT_FOODS, trimmed);
-  notifySync("recentFoods", trimmed);
+  notifySync('recentFoods', trimmed);
   return trimmed;
 };
 
 export const clearRecentFoods = () => {
   saveToLocalStorage(STORAGE_KEYS.RECENT_FOODS, []);
-  notifySync("recentFoods", []);
+  notifySync('recentFoods', []);
 };
 
 // ============================================
@@ -1109,7 +1103,7 @@ export const addFavoriteFood = (food) => {
   });
 
   saveToLocalStorage(STORAGE_KEYS.FAVORITE_FOODS, favorites);
-  notifySync("favorites", favorites);
+  notifySync('favorites', favorites);
   return favorites;
 };
 
@@ -1117,7 +1111,7 @@ export const removeFavoriteFood = (foodId) => {
   const favorites = loadFavoriteFoods();
   const updated = favorites.filter((f) => f.id !== foodId);
   saveToLocalStorage(STORAGE_KEYS.FAVORITE_FOODS, updated);
-  notifySync("favorites", updated);
+  notifySync('favorites', updated);
   return updated;
 };
 
@@ -1129,9 +1123,7 @@ export const isFavoriteFood = (foodName) => {
 export const toggleFavoriteFood = (food) => {
   if (isFavoriteFood(food.name)) {
     const favorites = loadFavoriteFoods();
-    const toRemove = favorites.find(
-      (f) => f.name.toLowerCase() === food.name.toLowerCase(),
-    );
+    const toRemove = favorites.find((f) => f.name.toLowerCase() === food.name.toLowerCase());
     if (toRemove) {
       return { favorites: removeFavoriteFood(toRemove.id), isFavorite: false };
     }
@@ -1147,7 +1139,7 @@ export const loadWeightLog = () => {
   return loadFromLocalStorage(STORAGE_KEYS.WEIGHT_LOG, []);
 };
 
-export const addWeightEntry = (weight, unit = "lbs") => {
+export const addWeightEntry = (weight, unit = 'lbs') => {
   const log = loadWeightLog();
   const today = getTodaysDate();
 
@@ -1166,7 +1158,7 @@ export const addWeightEntry = (weight, unit = "lbs") => {
   const trimmed = filtered.slice(-90);
 
   saveToLocalStorage(STORAGE_KEYS.WEIGHT_LOG, trimmed);
-  notifySync("weightLog", trimmed);
+  notifySync('weightLog', trimmed);
   return trimmed;
 };
 
@@ -1181,7 +1173,7 @@ export const getWeightTrend = () => {
 
   return {
     change: Math.round(change * 10) / 10,
-    direction: change > 0 ? "up" : change < 0 ? "down" : "stable",
+    direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable',
     entries: log,
   };
 };
@@ -1203,7 +1195,7 @@ export const updateStreak = () => {
   const today = getTodaysDate();
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split("T")[0];
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
 
   if (data.lastLogDate === today) {
     // Already logged today
@@ -1222,7 +1214,7 @@ export const updateStreak = () => {
   data.lastLogDate = today;
 
   saveToLocalStorage(STORAGE_KEYS.STREAK_DATA, data);
-  notifySync("streakData", data);
+  notifySync('streakData', data);
   return data;
 };
 
@@ -1234,10 +1226,10 @@ export const addFoodEntryWithMeal = (foodEntry, mealType = null) => {
   // Auto-detect meal type based on time if not provided
   if (!mealType) {
     const hour = new Date().getHours();
-    if (hour < 11) mealType = "breakfast";
-    else if (hour < 16) mealType = "lunch";
-    else if (hour < 21) mealType = "dinner";
-    else mealType = "snack";
+    if (hour < 11) mealType = 'breakfast';
+    else if (hour < 16) mealType = 'lunch';
+    else if (hour < 21) mealType = 'dinner';
+    else mealType = 'snack';
   }
 
   const currentLog = loadFoodLog();
@@ -1271,10 +1263,10 @@ export const updateFoodEntry = (entryId, updates) => {
 export const getFoodLogByMeal = () => {
   const log = loadFoodLog();
   return {
-    breakfast: log.filter((e) => e.mealType === "breakfast"),
-    lunch: log.filter((e) => e.mealType === "lunch"),
-    dinner: log.filter((e) => e.mealType === "dinner"),
-    snack: log.filter((e) => e.mealType === "snack"),
+    breakfast: log.filter((e) => e.mealType === 'breakfast'),
+    lunch: log.filter((e) => e.mealType === 'lunch'),
+    dinner: log.filter((e) => e.mealType === 'dinner'),
+    snack: log.filter((e) => e.mealType === 'snack'),
   };
 };
 
@@ -1285,7 +1277,7 @@ export const getFoodLogByMeal = () => {
 export const exportAllData = () => {
   const data = {
     exportDate: new Date().toISOString(),
-    version: "3.0.0", // Updated for micronutrient support
+    version: '3.0.0', // Updated for micronutrient support
     userProfile: loadUserProfile(),
     dailyTarget: loadDailyTarget(),
     macroGoals: loadMacroGoals(),
@@ -1313,65 +1305,55 @@ export const validateImportData = (data) => {
   const errors = [];
 
   // Check if data is an object
-  if (!data || typeof data !== "object") {
+  if (!data || typeof data !== 'object') {
     return {
       valid: false,
-      message: "Invalid data format",
-      errors: ["Data must be a valid JSON object"],
+      message: 'Invalid data format',
+      errors: ['Data must be a valid JSON object'],
     };
   }
 
   // Check version compatibility
   if (data.version) {
-    const [major] = data.version.split(".").map(Number);
+    const [major] = data.version.split('.').map(Number);
     if (major < 1) {
-      errors.push("Data version may be incompatible");
+      errors.push('Data version may be incompatible');
     }
   }
 
   // Check for expected fields (at least some should exist)
-  const expectedFields = [
-    "userProfile",
-    "dailyTarget",
-    "foodLog",
-    "preferences",
-  ];
-  const hasValidFields = expectedFields.some(
-    (field) => data[field] !== undefined
-  );
+  const expectedFields = ['userProfile', 'dailyTarget', 'foodLog', 'preferences'];
+  const hasValidFields = expectedFields.some((field) => data[field] !== undefined);
 
   if (!hasValidFields) {
     return {
       valid: false,
       message: "This doesn't appear to be a NutriNote backup file",
-      errors: ["Missing expected data fields"],
+      errors: ['Missing expected data fields'],
     };
   }
 
   // Validate userProfile structure if present
-  if (data.userProfile && typeof data.userProfile !== "object") {
-    errors.push("Invalid userProfile format");
+  if (data.userProfile && typeof data.userProfile !== 'object') {
+    errors.push('Invalid userProfile format');
   }
 
   // Validate foodLog structure if present
-  if (data.foodLog && typeof data.foodLog !== "object") {
-    errors.push("Invalid foodLog format");
+  if (data.foodLog && typeof data.foodLog !== 'object') {
+    errors.push('Invalid foodLog format');
   }
 
   // Validate dailyTarget
   if (data.dailyTarget !== undefined) {
     const target = Number(data.dailyTarget);
     if (isNaN(target) || target < 100 || target > 10000) {
-      errors.push("Invalid calorie target value");
+      errors.push('Invalid calorie target value');
     }
   }
 
   return {
     valid: errors.length === 0,
-    message:
-      errors.length === 0
-        ? "Data validation passed"
-        : "Data has validation warnings",
+    message: errors.length === 0 ? 'Data validation passed' : 'Data has validation warnings',
     errors,
   };
 };
@@ -1388,79 +1370,79 @@ export const importAllData = (data) => {
     // Import user profile
     if (data.userProfile) {
       saveToLocalStorage(STORAGE_KEYS.USER_PROFILE, data.userProfile);
-      imported.push("User Profile");
+      imported.push('User Profile');
     }
 
     // Import daily target
     if (data.dailyTarget) {
       saveDailyTarget(data.dailyTarget);
-      imported.push("Daily Target");
+      imported.push('Daily Target');
     }
 
     // Import macro goals
     if (data.macroGoals) {
       saveMacroGoals(data.macroGoals);
-      imported.push("Macro Goals");
+      imported.push('Macro Goals');
     }
 
     // Import micronutrient goals
     if (data.micronutrientGoals) {
       saveMicronutrientGoals(data.micronutrientGoals);
-      imported.push("Micronutrient Goals");
+      imported.push('Micronutrient Goals');
     }
 
     // Import preferences
     if (data.preferences) {
       saveToLocalStorage(STORAGE_KEYS.PREFERENCES, data.preferences);
-      imported.push("Preferences");
+      imported.push('Preferences');
     }
 
     // Import food log
     if (data.foodLog) {
       saveToLocalStorage(STORAGE_KEYS.FOOD_LOG, data.foodLog);
-      imported.push("Food Log");
+      imported.push('Food Log');
     }
 
     // Import exercise log
     if (data.exerciseLog) {
       saveToLocalStorage(STORAGE_KEYS.EXERCISE_LOG, data.exerciseLog);
-      imported.push("Exercise Log");
+      imported.push('Exercise Log');
     }
 
     // Import weekly history
     if (data.weeklyHistory) {
       saveToLocalStorage(STORAGE_KEYS.WEEKLY_HISTORY, data.weeklyHistory);
-      imported.push("Weekly History");
+      imported.push('Weekly History');
     }
 
     // Import water log
     if (data.waterLog) {
       saveWaterLog(data.waterLog);
-      imported.push("Water Log");
+      imported.push('Water Log');
     }
 
     // Import recent foods
     if (data.recentFoods) {
       saveToLocalStorage(STORAGE_KEYS.RECENT_FOODS, data.recentFoods);
-      imported.push("Recent Foods");
+      imported.push('Recent Foods');
     }
 
     // Import favorite foods
     if (data.favoriteFoods) {
       saveToLocalStorage(STORAGE_KEYS.FAVORITE_FOODS, data.favoriteFoods);
-      imported.push("Favorite Foods");
+      imported.push('Favorite Foods');
     }
 
     // Import weight log
     if (data.weightLog) {
       saveToLocalStorage(STORAGE_KEYS.WEIGHT_LOG, data.weightLog);
-      imported.push("Weight Log");
+      imported.push('Weight Log');
     }
 
     // Import streak data
     if (data.streakData) {
       saveToLocalStorage(STORAGE_KEYS.STREAK_DATA, data.streakData);
-      imported.push("Streak Data");
+      imported.push('Streak Data');
     }
 
     return {
@@ -1469,10 +1451,10 @@ export const importAllData = (data) => {
       imported,
     };
   } catch (error) {
-    console.error("Import error:", error);
+    console.error('Import error:', error);
     return {
       success: false,
-      message: "Failed to import data: " + error.message,
+      message: 'Failed to import data: ' + error.message,
       imported,
     };
   }
@@ -1481,11 +1463,11 @@ export const importAllData = (data) => {
 // Get meal type based on current time
 export const getMealTypeByTime = () => {
   const hour = new Date().getHours();
-  if (hour >= 5 && hour < 11) return "breakfast";
-  if (hour >= 11 && hour < 14) return "lunch";
-  if (hour >= 14 && hour < 17) return "snack";
-  if (hour >= 17 && hour < 21) return "dinner";
-  return "snack"; // Late night snack
+  if (hour >= 5 && hour < 11) return 'breakfast';
+  if (hour >= 11 && hour < 14) return 'lunch';
+  if (hour >= 14 && hour < 17) return 'snack';
+  if (hour >= 17 && hour < 21) return 'dinner';
+  return 'snack'; // Late night snack
 };
 
 // Save today's food log to history (called at end of day or before reset)
@@ -1509,14 +1491,14 @@ export const saveFoodLogToHistory = () => {
     });
   }
   saveToLocalStorage(STORAGE_KEYS.FOOD_HISTORY, toSave);
-  notifySync("foodHistory", toSave);
+  notifySync('foodHistory', toSave);
 };
 
 // Get yesterday's food log
 export const getYesterdaysFoodLog = () => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split("T")[0];
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
 
   const history = loadFromLocalStorage(STORAGE_KEYS.FOOD_HISTORY, {});
   return history[yesterdayStr] || [];

@@ -35,18 +35,13 @@
    ============================================ */
 
 .ds-skeleton--animated::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--overlay-light-10) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, var(--overlay-light-10) 50%, transparent 100%);
   animation: skeleton-shimmer 1.5s infinite;
 }
 

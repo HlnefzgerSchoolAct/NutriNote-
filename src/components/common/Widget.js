@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  createContext,
-  useContext,
-} from "react";
-import { motion, Reorder } from "framer-motion";
+import { motion, Reorder } from 'framer-motion';
 import {
   GripVertical,
   X,
@@ -17,8 +12,9 @@ import {
   Activity,
   Scale,
   Utensils,
-} from "lucide-react";
-import "./Widget.css";
+} from 'lucide-react';
+import React, { forwardRef, createContext, useContext } from 'react';
+import './Widget.css';
 
 /**
  * Widget Grid Context for edit mode
@@ -46,16 +42,12 @@ export const WidgetGrid = ({
   onOrderChange,
   onRemove,
   onAdd,
-  className = "",
+  className = '',
   ...props
 }) => {
-  const gridClasses = [
-    "m3-widget-grid",
-    editing && "m3-widget-grid--editing",
-    className,
-  ]
+  const gridClasses = ['m3-widget-grid', editing && 'm3-widget-grid--editing', className]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <WidgetGridContext.Provider value={{ editing, onRemove, onAdd }}>
@@ -76,16 +68,12 @@ export const ReorderableWidgetGrid = ({
   onRemove,
   onAdd,
   renderWidget,
-  className = "",
+  className = '',
   ...props
 }) => {
-  const gridClasses = [
-    "m3-widget-grid",
-    editing && "m3-widget-grid--editing",
-    className,
-  ]
+  const gridClasses = ['m3-widget-grid', editing && 'm3-widget-grid--editing', className]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <WidgetGridContext.Provider value={{ editing, onRemove, onAdd }}>
@@ -120,18 +108,18 @@ const Widget = forwardRef(
   (
     {
       children,
-      size = "medium",
+      size = 'medium',
       color,
       interactive = false,
       loading = false,
       id,
       span,
-      className = "",
+      className = '',
       onClick,
       onRemove: widgetOnRemove,
       ...props
     },
-    ref,
+    ref
   ) => {
     const { editing, onRemove: gridOnRemove } = useContext(WidgetGridContext);
 
@@ -142,23 +130,23 @@ const Widget = forwardRef(
     };
 
     const widgetClasses = [
-      "m3-widget",
+      'm3-widget',
       `m3-widget--${size}`,
       color && `m3-widget--${color}`,
-      interactive && "m3-widget--interactive",
-      loading && "m3-widget--loading",
+      interactive && 'm3-widget--interactive',
+      loading && 'm3-widget--loading',
       span && `m3-widget--span-${span}`,
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const widgetProps = {
       ref,
       className: widgetClasses,
       onClick: interactive ? onClick : undefined,
       tabIndex: interactive ? 0 : undefined,
-      role: interactive ? "button" : undefined,
+      role: interactive ? 'button' : undefined,
       ...props,
     };
 
@@ -186,21 +174,15 @@ const Widget = forwardRef(
         {children}
       </motion.div>
     );
-  },
+  }
 );
 
-Widget.displayName = "Widget";
+Widget.displayName = 'Widget';
 
 /**
  * Widget Header
  */
-export const WidgetHeader = ({
-  title,
-  icon,
-  action,
-  className = "",
-  ...props
-}) => (
+export const WidgetHeader = ({ title, icon, action, className = '', ...props }) => (
   <div className={`m3-widget__header ${className}`} {...props}>
     <h3 className="m3-widget__title">{title}</h3>
     {icon && <span className="m3-widget__icon">{icon}</span>}
@@ -211,7 +193,7 @@ export const WidgetHeader = ({
 /**
  * Widget Content
  */
-export const WidgetContent = ({ children, className = "", ...props }) => (
+export const WidgetContent = ({ children, className = '', ...props }) => (
   <div className={`m3-widget__content ${className}`} {...props}>
     {children}
   </div>
@@ -225,14 +207,14 @@ export const WidgetValue = ({
   unit,
   small = false,
   loading = false,
-  className = "",
+  className = '',
   ...props
 }) => (
   <p
-    className={`m3-widget__value ${small ? "m3-widget__value--small" : ""} ${className}`}
+    className={`m3-widget__value ${small ? 'm3-widget__value--small' : ''} ${className}`}
     {...props}
   >
-    {loading ? "—" : value}
+    {loading ? '—' : value}
     {unit && <span className="m3-widget__unit">{unit}</span>}
   </p>
 );
@@ -240,7 +222,7 @@ export const WidgetValue = ({
 /**
  * Widget Subtitle
  */
-export const WidgetSubtitle = ({ children, className = "", ...props }) => (
+export const WidgetSubtitle = ({ children, className = '', ...props }) => (
   <p className={`m3-widget__subtitle ${className}`} {...props}>
     {children}
   </p>
@@ -249,7 +231,7 @@ export const WidgetSubtitle = ({ children, className = "", ...props }) => (
 /**
  * Widget Footer
  */
-export const WidgetFooter = ({ children, className = "", ...props }) => (
+export const WidgetFooter = ({ children, className = '', ...props }) => (
   <div className={`m3-widget__footer ${className}`} {...props}>
     {children}
   </div>
@@ -258,12 +240,7 @@ export const WidgetFooter = ({ children, className = "", ...props }) => (
 /**
  * Widget Progress Bar
  */
-export const WidgetProgress = ({
-  value,
-  max = 100,
-  className = "",
-  ...props
-}) => {
+export const WidgetProgress = ({ value, max = 100, className = '', ...props }) => {
   const percentage = Math.min((value / max) * 100, 100);
 
   return (
@@ -290,7 +267,7 @@ export const WidgetCircularProgress = ({
   strokeWidth = 6,
   label,
   sublabel,
-  className = "",
+  className = '',
   ...props
 }) => {
   const radius = (size - strokeWidth) / 2;
@@ -320,11 +297,7 @@ export const WidgetCircularProgress = ({
       </svg>
       {(label || sublabel) && (
         <div className="m3-widget__circular-label">
-          {label && (
-            <span className="m3-widget__value m3-widget__value--small">
-              {label}
-            </span>
-          )}
+          {label && <span className="m3-widget__value m3-widget__value--small">{label}</span>}
           {sublabel && <span className="m3-widget__subtitle">{sublabel}</span>}
         </div>
       )}
@@ -335,17 +308,12 @@ export const WidgetCircularProgress = ({
 /**
  * Trend Indicator
  */
-export const WidgetTrend = ({ direction, value, className = "", ...props }) => {
-  const Icon =
-    direction === "up"
-      ? TrendingUp
-      : direction === "down"
-        ? TrendingDown
-        : Minus;
+export const WidgetTrend = ({ direction, value, className = '', ...props }) => {
+  const Icon = direction === 'up' ? TrendingUp : direction === 'down' ? TrendingDown : Minus;
 
   return (
     <span
-      className={`m3-widget__trend m3-widget__trend--${direction || "neutral"} ${className}`}
+      className={`m3-widget__trend m3-widget__trend--${direction || 'neutral'} ${className}`}
       {...props}
     >
       <Icon size={12} />
@@ -357,7 +325,7 @@ export const WidgetTrend = ({ direction, value, className = "", ...props }) => {
 /**
  * Add Widget Button
  */
-export const AddWidget = ({ onClick, className = "", ...props }) => {
+export const AddWidget = ({ onClick, className = '', ...props }) => {
   const { onAdd } = useContext(WidgetGridContext);
 
   return (
@@ -404,9 +372,7 @@ export const CalorieWidget = ({
       <WidgetContent>
         <WidgetValue value={consumed.toLocaleString()} loading={loading} />
         <WidgetSubtitle>
-          {actualRemaining > 0
-            ? `${actualRemaining.toLocaleString()} remaining`
-            : "Goal reached!"}
+          {actualRemaining > 0 ? `${actualRemaining.toLocaleString()} remaining` : 'Goal reached!'}
         </WidgetSubtitle>
       </WidgetContent>
       <WidgetProgress value={consumed} max={goal} />
@@ -421,8 +387,8 @@ export const MacroWidget = ({
   label,
   value = 0,
   goal = 100,
-  unit = "g",
-  color = "protein",
+  unit = 'g',
+  color = 'protein',
   loading = false,
   onClick,
   ...props
@@ -438,12 +404,7 @@ export const MacroWidget = ({
     >
       <WidgetHeader title={label} />
       <WidgetContent>
-        <WidgetValue
-          value={Math.round(value)}
-          unit={unit}
-          small
-          loading={loading}
-        />
+        <WidgetValue value={Math.round(value)} unit={unit} small loading={loading} />
         <WidgetProgress value={value} max={goal} />
       </WidgetContent>
     </Widget>
@@ -453,13 +414,7 @@ export const MacroWidget = ({
 /**
  * Streak Widget
  */
-export const StreakWidget = ({
-  days = 0,
-  bestStreak = 0,
-  loading = false,
-  onClick,
-  ...props
-}) => (
+export const StreakWidget = ({ days = 0, bestStreak = 0, loading = false, onClick, ...props }) => (
   <Widget
     size="medium"
     color="tertiary"
@@ -484,7 +439,7 @@ export const StreakWidget = ({
 export const HydrationWidget = ({
   consumed = 0,
   goal = 8,
-  unit = "glasses",
+  unit = 'glasses',
   loading = false,
   onClick,
   ...props
@@ -511,12 +466,12 @@ export const HydrationWidget = ({
 export const WeightWidget = ({
   current = 0,
   change = 0,
-  unit = "kg",
+  unit = 'kg',
   loading = false,
   onClick,
   ...props
 }) => {
-  const trend = change < 0 ? "down" : change > 0 ? "up" : "neutral";
+  const trend = change < 0 ? 'down' : change > 0 ? 'up' : 'neutral';
 
   return (
     <Widget
@@ -530,12 +485,7 @@ export const WeightWidget = ({
       <WidgetHeader title="Weight" icon={<Scale size={20} />} />
       <WidgetContent>
         <WidgetValue value={current} unit={unit} small loading={loading} />
-        {change !== 0 && (
-          <WidgetTrend
-            direction={trend}
-            value={`${Math.abs(change)} ${unit}`}
-          />
-        )}
+        {change !== 0 && <WidgetTrend direction={trend} value={`${Math.abs(change)} ${unit}`} />}
       </WidgetContent>
     </Widget>
   );
@@ -570,28 +520,11 @@ export const ActivityWidget = ({
 /**
  * Meals Widget
  */
-export const MealsWidget = ({
-  logged = 0,
-  planned = 3,
-  loading = false,
-  onClick,
-  ...props
-}) => (
-  <Widget
-    size="small"
-    interactive={!!onClick}
-    onClick={onClick}
-    loading={loading}
-    {...props}
-  >
+export const MealsWidget = ({ logged = 0, planned = 3, loading = false, onClick, ...props }) => (
+  <Widget size="small" interactive={!!onClick} onClick={onClick} loading={loading} {...props}>
     <WidgetHeader title="Meals" icon={<Utensils size={20} />} />
     <WidgetContent>
-      <WidgetValue
-        value={logged}
-        unit={`/ ${planned}`}
-        small
-        loading={loading}
-      />
+      <WidgetValue value={logged} unit={`/ ${planned}`} small loading={loading} />
       <WidgetProgress value={logged} max={planned} />
     </WidgetContent>
   </Widget>

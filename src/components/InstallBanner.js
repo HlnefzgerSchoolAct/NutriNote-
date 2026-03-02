@@ -4,14 +4,12 @@
  * Uses native beforeinstallprompt when available (Android Chrome).
  */
 
-import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Download, X } from "lucide-react";
-import {
-  getInstallPromptDismissed,
-  setInstallPromptDismissed,
-} from "../utils/localStorage";
-import "./InstallBanner.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, X } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+
+import { getInstallPromptDismissed, setInstallPromptDismissed } from '../utils/localStorage';
+import './InstallBanner.css';
 
 function InstallBanner({ isMobile, isStandalone }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -24,7 +22,7 @@ function InstallBanner({ isMobile, isStandalone }) {
 
     const isIOSDevice =
       /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     setIsIOS(isIOSDevice);
 
     const handleBeforeInstallPrompt = (e) => {
@@ -32,13 +30,13 @@ function InstallBanner({ isMobile, isStandalone }) {
       setDeferredPrompt(e);
     };
 
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     // Show banner after a short delay (e.g. after user has seen main content)
     const timer = setTimeout(() => setIsVisible(true), 1500);
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       clearTimeout(timer);
     };
   }, [isMobile, isStandalone]);
@@ -47,7 +45,7 @@ function InstallBanner({ isMobile, isStandalone }) {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === "accepted") {
+      if (outcome === 'accepted') {
         setDeferredPrompt(null);
         setIsVisible(false);
       }
@@ -71,9 +69,9 @@ function InstallBanner({ isMobile, isStandalone }) {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         style={{
-          paddingBottom: "max(12px, env(safe-area-inset-bottom))",
+          paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
         }}
       >
         <div className="install-banner__content">
@@ -81,8 +79,8 @@ function InstallBanner({ isMobile, isStandalone }) {
             <strong>Add to Home Screen</strong>
             <span>
               {isIOS
-                ? "Tap Share, then Add to Home Screen for the best experience"
-                : "Install for offline access and faster performance"}
+                ? 'Tap Share, then Add to Home Screen for the best experience'
+                : 'Install for offline access and faster performance'}
             </span>
           </div>
           <div className="install-banner__actions">

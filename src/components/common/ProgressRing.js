@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { motion, useSpring, useTransform } from "framer-motion";
-import "./ProgressRing.css";
+import { motion, useSpring, useTransform } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import './ProgressRing.css';
 
 /**
  * Animated Progress Ring Component
@@ -11,13 +11,13 @@ const ProgressRing = ({
   max = 100,
   size = 120,
   strokeWidth = 10,
-  color = "primary",
+  color = 'primary',
   showValue = true,
   showLabel = true,
-  label = "",
+  label = '',
   valueFormatter,
   animated = true,
-  className = "",
+  className = '',
   children,
 }) => {
   const [mounted, setMounted] = useState(false);
@@ -37,34 +37,28 @@ const ProgressRing = ({
     restDelta: 0.01,
   });
 
-  const strokeDashoffset = useTransform(
-    springValue,
-    [0, 100],
-    [circumference, 0],
-  );
+  const strokeDashoffset = useTransform(springValue, [0, 100], [circumference, 0]);
 
   // Color mapping
   const colorClasses = {
-    primary: "ds-progress-ring--primary",
-    success: "ds-progress-ring--success",
-    warning: "ds-progress-ring--warning",
-    danger: "ds-progress-ring--danger",
-    info: "ds-progress-ring--info",
+    primary: 'ds-progress-ring--primary',
+    success: 'ds-progress-ring--success',
+    warning: 'ds-progress-ring--warning',
+    danger: 'ds-progress-ring--danger',
+    info: 'ds-progress-ring--info',
   };
 
-  const displayValue = valueFormatter
-    ? valueFormatter(value, max)
-    : Math.round(value);
+  const displayValue = valueFormatter ? valueFormatter(value, max) : Math.round(value);
 
   return (
     <div
-      className={`ds-progress-ring ${colorClasses[color] || ""} ${className}`}
+      className={`ds-progress-ring ${colorClasses[color] || ''} ${className}`}
       style={{ width: size, height: size }}
       role="progressbar"
       aria-valuenow={value}
       aria-valuemin={0}
       aria-valuemax={max}
-      aria-label={label || "Progress"}
+      aria-label={label || 'Progress'}
     >
       <svg
         className="ds-progress-ring__svg"
@@ -130,14 +124,12 @@ const ProgressRing = ({
                 className="ds-progress-ring__value"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
+                transition={{ delay: 0.2, type: 'spring' }}
               >
                 {displayValue}
               </motion.span>
             )}
-            {showLabel && label && (
-              <span className="ds-progress-ring__label">{label}</span>
-            )}
+            {showLabel && label && <span className="ds-progress-ring__label">{label}</span>}
           </>
         )}
       </div>
@@ -154,8 +146,8 @@ export const MiniProgressRing = ({
   max = 100,
   size = 32,
   strokeWidth = 3,
-  color = "primary",
-  className = "",
+  color = 'primary',
+  className = '',
 }) => (
   <ProgressRing
     value={value}

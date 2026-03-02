@@ -16,7 +16,7 @@
 }
 
 .input-label.required::after {
-  content: "*";
+  content: '*';
   color: var(--danger);
   margin-left: 2px;
 }
@@ -175,7 +175,7 @@ select.input {
 }
 
 .checkbox:checked::after {
-  content: "✓";
+  content: '✓';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -186,7 +186,7 @@ select.input {
 }
 
 .radio:checked::after {
-  content: "";
+  content: '';
   display: block;
   width: 8px;
   height: 8px;
@@ -227,7 +227,7 @@ select.input {
 }
 
 .toggle::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 18px;
   height: 18px;

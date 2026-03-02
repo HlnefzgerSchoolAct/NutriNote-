@@ -16,6 +16,22 @@
   flex-direction: column;
   z-index: var(--z-dropdown);
   transition: width var(--duration-medium) var(--ease-emphasized);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.desktop-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.desktop-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 4px;
+}
+
+.desktop-sidebar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 /* ===== Header ===== */
@@ -30,7 +46,7 @@
 
 .sidebar-brand-logo {
   display: block;
-  height: 64px;
+  height: 180px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -58,13 +74,15 @@
   border: none;
   width: 100%;
   text-align: left;
-  transition: var(--transition-fast);
+  transition: all var(--duration-short, 100ms) var(--ease-emphasized, ease);
   min-height: var(--touch-target-min);
+  position: relative;
 }
 
 .sidebar-nav-item:hover {
   color: var(--text-primary);
   background: var(--surface-container);
+  transform: translateX(2px);
 }
 
 .sidebar-nav-item:focus-visible {
@@ -76,6 +94,7 @@
   color: var(--primary);
   background: var(--color-primary-100);
   font-weight: var(--font-semibold);
+  box-shadow: inset 3px 0 0 var(--primary);
 }
 
 .sidebar-nav-icon {
@@ -172,6 +191,7 @@
   padding: var(--space-4);
   background: var(--surface-container);
   border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
 }
 
 .sidebar-stat {

@@ -4,10 +4,14 @@
 */
 
 /* ===== Tabular numbers for cal counts ===== */
-.tabular-nums { font-variant-numeric: tabular-nums; }
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
 
 /* ===== Transition for tab switch (framer-motion handles most) ===== */
-.log-page { --page-transition: 200ms var(--m3-ease-standard); }
+.log-page {
+  --page-transition: 200ms var(--m3-ease-standard);
+}
 
 /* ===== Desktop: two-column layout at md+ ===== */
 @media (min-width: 840px) {
@@ -28,6 +32,11 @@
 
 /* ===== Print ===== */
 @media print {
-  .log-page { padding: 0; max-width: 100%; }
-  .log-page button:not([type="submit"]) { display: none; }
+  .log-page {
+    padding: 0;
+    max-width: 100%;
+  }
+  .log-page button:not([type='submit']) {
+    display: none;
+  }
 }

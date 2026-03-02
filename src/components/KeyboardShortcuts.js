@@ -3,67 +3,52 @@
  * Global hotkeys for power users and accessibility
  */
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useCallback,
-  useState,
-  useRef,
-} from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Keyboard,
-  Home,
-  ClipboardList,
-  History,
-  Settings,
-  Search,
-  Plus,
-  X,
-} from "lucide-react";
-import { haptics } from "../utils/haptics";
-import "./KeyboardShortcuts.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Keyboard, Home, ClipboardList, History, Settings, Search, Plus, X } from 'lucide-react';
+import React, { createContext, useContext, useEffect, useCallback, useState, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+import { haptics } from '../utils/haptics';
+import './KeyboardShortcuts.css';
 
 /**
  * Default keyboard shortcuts
  */
 export const DEFAULT_SHORTCUTS = {
   // Navigation
-  GO_HOME: { key: "h", ctrl: true, description: "Go to Home", icon: Home },
+  GO_HOME: { key: 'h', ctrl: true, description: 'Go to Home', icon: Home },
   GO_LOG: {
-    key: "l",
+    key: 'l',
     ctrl: true,
-    description: "Go to Food Log",
+    description: 'Go to Food Log',
     icon: ClipboardList,
   },
   GO_HISTORY: {
-    key: "y",
+    key: 'y',
     ctrl: true,
-    description: "Go to History",
+    description: 'Go to History',
     icon: History,
   },
   GO_SETTINGS: {
-    key: ",",
+    key: ',',
     ctrl: true,
-    description: "Go to Settings",
+    description: 'Go to Settings',
     icon: Settings,
   },
 
   // Actions
   QUICK_ADD: {
-    key: "n",
+    key: 'n',
     ctrl: true,
-    description: "Quick Add Food",
+    description: 'Quick Add Food',
     icon: Plus,
   },
-  SEARCH: { key: "k", ctrl: true, description: "Open Search", icon: Search },
-  HELP: { key: "?", ctrl: false, shift: true, description: "Show Shortcuts" },
+  SEARCH: { key: 'k', ctrl: true, description: 'Open Search', icon: Search },
+  HELP: { key: '?', ctrl: false, shift: true, description: 'Show Shortcuts' },
 
   // General
-  ESCAPE: { key: "Escape", description: "Close/Cancel" },
-  CONFIRM: { key: "Enter", ctrl: true, description: "Confirm/Save" },
+  ESCAPE: { key: 'Escape', description: 'Close/Cancel' },
+  CONFIRM: { key: 'Enter', ctrl: true, description: 'Confirm/Save' },
 };
 
 /**
@@ -89,7 +74,7 @@ export const KeyboardShortcutsProvider = ({ children }) => {
   }, []);
 
   // Register a shortcut with a key combo (e.g., "ctrl+k")
-  const registerShortcut = useCallback((keyCombo, handler, description = "") => {
+  const registerShortcut = useCallback((keyCombo, handler, description = '') => {
     customShortcutsRef.current.set(keyCombo, { handler, description });
   }, []);
 
@@ -104,9 +89,8 @@ export const KeyboardShortcutsProvider = ({ children }) => {
     if (!activeElement) return false;
 
     const tagName = activeElement.tagName.toLowerCase();
-    const isContentEditable =
-      activeElement.getAttribute("contenteditable") === "true";
-    const isInput = ["input", "textarea", "select"].includes(tagName);
+    const isContentEditable = activeElement.getAttribute('contenteditable') === 'true';
+    const isInput = ['input', 'textarea', 'select'].includes(tagName);
 
     return isInput || isContentEditable;
   }, []);
@@ -120,7 +104,7 @@ export const KeyboardShortcutsProvider = ({ children }) => {
       const ctrl = ctrlKey || metaKey;
 
       // Allow shortcuts in inputs for specific keys
-      const inputAllowed = ["Escape", "Enter"].includes(key);
+      const inputAllowed = ['Escape', 'Enter'].includes(key);
       if (isInputFocused() && !inputAllowed) return;
 
       // Check custom shortcuts first (registered via registerShortcut)
@@ -130,7 +114,7 @@ export const KeyboardShortcutsProvider = ({ children }) => {
         const needsCtrl = parts.includes('ctrl');
         const needsShift = parts.includes('shift');
         const needsAlt = parts.includes('alt');
-        
+
         if (
           key.toLowerCase() === shortcutKey &&
           ctrl === needsCtrl &&
@@ -156,37 +140,37 @@ export const KeyboardShortcutsProvider = ({ children }) => {
       // Navigation shortcuts
       if (ctrl && !shiftKey && !altKey) {
         switch (key.toLowerCase()) {
-          case "h":
+          case 'h':
             event.preventDefault();
             haptics.light();
-            navigate("/");
+            navigate('/');
             break;
-          case "l":
+          case 'l':
             event.preventDefault();
             haptics.light();
-            navigate("/log");
+            navigate('/log');
             break;
-          case "y":
+          case 'y':
             event.preventDefault();
             haptics.light();
-            navigate("/history");
+            navigate('/history');
             break;
-          case ",":
+          case ',':
             event.preventDefault();
             haptics.light();
-            navigate("/settings");
+            navigate('/settings');
             break;
-          case "n":
+          case 'n':
             event.preventDefault();
             haptics.light();
             // Trigger quick add - will be handled by page
-            document.dispatchEvent(new CustomEvent("shortcut:quickAdd"));
+            document.dispatchEvent(new CustomEvent('shortcut:quickAdd'));
             break;
-          case "k":
+          case 'k':
             event.preventDefault();
             haptics.light();
             // Trigger search - will be handled by page
-            document.dispatchEvent(new CustomEvent("shortcut:search"));
+            document.dispatchEvent(new CustomEvent('shortcut:search'));
             break;
           default:
             break;
@@ -194,28 +178,28 @@ export const KeyboardShortcutsProvider = ({ children }) => {
       }
 
       // Help shortcut (Shift + ?)
-      if (shiftKey && key === "?") {
+      if (shiftKey && key === '?') {
         event.preventDefault();
         setShowHelp((prev) => !prev);
       }
 
       // Escape to close modals/help
-      if (key === "Escape") {
+      if (key === 'Escape') {
         if (showHelp) {
           event.preventDefault();
           setShowHelp(false);
         }
         // Dispatch escape event for other components
-        document.dispatchEvent(new CustomEvent("shortcut:escape"));
+        document.dispatchEvent(new CustomEvent('shortcut:escape'));
       }
     },
-    [isEnabled, isInputFocused, navigate, showHelp],
+    [isEnabled, isInputFocused, navigate, showHelp]
   );
 
   // Set up global listener
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
   // Close help on navigation
@@ -248,9 +232,7 @@ export const KeyboardShortcutsProvider = ({ children }) => {
 export const useKeyboardShortcuts = () => {
   const context = useContext(KeyboardShortcutsContext);
   if (!context) {
-    throw new Error(
-      "useKeyboardShortcuts must be used within KeyboardShortcutsProvider",
-    );
+    throw new Error('useKeyboardShortcuts must be used within KeyboardShortcutsProvider');
   }
   return context;
 };
@@ -287,7 +269,7 @@ export const useShortcutListener = (eventName, callback, deps = []) => {
 const ShortcutsHelpModal = ({ show, onClose }) => {
   const shortcutGroups = [
     {
-      title: "Navigation",
+      title: 'Navigation',
       shortcuts: [
         DEFAULT_SHORTCUTS.GO_HOME,
         DEFAULT_SHORTCUTS.GO_LOG,
@@ -296,15 +278,11 @@ const ShortcutsHelpModal = ({ show, onClose }) => {
       ],
     },
     {
-      title: "Actions",
-      shortcuts: [
-        DEFAULT_SHORTCUTS.QUICK_ADD,
-        DEFAULT_SHORTCUTS.SEARCH,
-        DEFAULT_SHORTCUTS.HELP,
-      ],
+      title: 'Actions',
+      shortcuts: [DEFAULT_SHORTCUTS.QUICK_ADD, DEFAULT_SHORTCUTS.SEARCH, DEFAULT_SHORTCUTS.HELP],
     },
     {
-      title: "General",
+      title: 'General',
       shortcuts: [DEFAULT_SHORTCUTS.ESCAPE, DEFAULT_SHORTCUTS.CONFIRM],
     },
   ];
@@ -349,14 +327,10 @@ const ShortcutsHelpModal = ({ show, onClose }) => {
                     {group.shortcuts.map((shortcut, idx) => (
                       <li key={idx} className="shortcut-item">
                         <span className="shortcut-item__description">
-                          {shortcut.icon && (
-                            <shortcut.icon size={16} aria-hidden="true" />
-                          )}
+                          {shortcut.icon && <shortcut.icon size={16} aria-hidden="true" />}
                           {shortcut.description}
                         </span>
-                        <kbd className="shortcut-item__key">
-                          {formatShortcut(shortcut)}
-                        </kbd>
+                        <kbd className="shortcut-item__key">{formatShortcut(shortcut)}</kbd>
                       </li>
                     ))}
                   </ul>
@@ -379,49 +353,45 @@ const ShortcutsHelpModal = ({ show, onClose }) => {
  */
 const formatShortcut = (shortcut) => {
   const parts = [];
-  const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 
   if (shortcut.ctrl) {
-    parts.push(isMac ? "⌘" : "Ctrl");
+    parts.push(isMac ? '⌘' : 'Ctrl');
   }
   if (shortcut.shift) {
-    parts.push(isMac ? "⇧" : "Shift");
+    parts.push(isMac ? '⇧' : 'Shift');
   }
   if (shortcut.alt) {
-    parts.push(isMac ? "⌥" : "Alt");
+    parts.push(isMac ? '⌥' : 'Alt');
   }
 
   // Format key
   let key = shortcut.key;
-  if (key === "Escape") key = "Esc";
-  if (key === "Enter") key = "↵";
-  if (key === ",") key = ",";
-  if (key === "?") key = "?";
+  if (key === 'Escape') key = 'Esc';
+  if (key === 'Enter') key = '↵';
+  if (key === ',') key = ',';
+  if (key === '?') key = '?';
 
   parts.push(key.toUpperCase());
 
-  return parts.join(" + ");
+  return parts.join(' + ');
 };
 
 /**
  * Shortcut Hint Component
  * Shows inline hint for a shortcut
  */
-export const ShortcutHint = ({ shortcut, className = "" }) => {
+export const ShortcutHint = ({ shortcut, className = '' }) => {
   // Don't show on touch devices
   const [isTouchDevice, setIsTouchDevice] = useState(true);
 
   useEffect(() => {
-    setIsTouchDevice("ontouchstart" in window);
+    setIsTouchDevice('ontouchstart' in window);
   }, []);
 
   if (isTouchDevice) return null;
 
-  return (
-    <kbd className={`shortcut-hint ${className}`}>
-      {formatShortcut(shortcut)}
-    </kbd>
-  );
+  return <kbd className={`shortcut-hint ${className}`}>{formatShortcut(shortcut)}</kbd>;
 };
 
 export default KeyboardShortcutsProvider;

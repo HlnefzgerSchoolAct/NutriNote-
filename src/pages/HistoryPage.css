@@ -4,7 +4,9 @@
   Layout / spacing / typography handled by Tailwind.
 */
 
-.tabular-nums { font-variant-numeric: tabular-nums; }
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
 
 /* ============================================
    CALENDAR DAY CELLS
@@ -23,9 +25,18 @@
   cursor: default;
   position: relative;
   padding: 0.25rem;
-  transition: background 150ms, border-color 150ms;
+  transition:
+    background 200ms var(--ease-standard, ease),
+    border-color 200ms var(--ease-standard, ease),
+    transform 200ms var(--ease-standard, ease),
+    box-shadow 200ms var(--ease-standard, ease);
   font-family: inherit;
   color: inherit;
+}
+
+.calendar-day:focus-visible {
+  outline: 3px solid var(--m3-primary, #6750a4);
+  outline-offset: 2px;
 }
 
 .calendar-day.has-date {
@@ -35,12 +46,20 @@
 .calendar-day.has-date:hover:not(:disabled) {
   background: var(--m3-surface-container-high, #ece6f0);
   border-color: var(--m3-outline-variant, #cac4d0);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
-.calendar-day:disabled { cursor: default; opacity: 0.4; }
+.calendar-day:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
 
 .calendar-day.today {
   border-color: var(--m3-primary, #6750a4);
   background: var(--m3-primary-container, #eaddff);
+  box-shadow:
+    0 0 0 1px var(--m3-primary, #6750a4),
+    0 2px 8px rgba(103, 80, 164, 0.15);
 }
 .calendar-day.today .day-number {
   color: var(--m3-primary, #6750a4);
@@ -50,9 +69,12 @@
 .calendar-day.selected {
   background: var(--m3-primary, #6750a4);
   border-color: var(--m3-primary, #6750a4);
+  box-shadow: 0 4px 12px rgba(103, 80, 164, 0.3);
+  transform: scale(1.05);
 }
 .calendar-day.selected .day-number {
   color: var(--m3-on-primary, #fff);
+  font-weight: 700;
 }
 
 .day-number {
@@ -71,20 +93,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 150ms;
+  transition:
+    background 200ms,
+    transform 200ms;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
-.calendar-day.selected .day-indicator { background: var(--m3-surface, #fff); }
+.calendar-day.has-date:hover .day-indicator {
+  transform: scale(1.15);
+}
+.calendar-day.selected .day-indicator {
+  background: var(--m3-surface, #fff);
+}
 
-.calendar-day.under .day-indicator  { background: var(--m3-success, #4caf50); color: #fff; }
-.calendar-day.perfect .day-indicator { background: var(--m3-primary, #6750a4); color: #fff; }
-.calendar-day.over .day-indicator    { background: var(--m3-error, #b3261e); color: #fff; }
+.calendar-day.under .day-indicator {
+  background: var(--m3-success, #4caf50);
+  color: #fff;
+}
+.calendar-day.perfect .day-indicator {
+  background: var(--m3-primary, #6750a4);
+  color: #fff;
+}
+.calendar-day.over .day-indicator {
+  background: var(--m3-error, #b3261e);
+  color: #fff;
+}
 
 /* ============================================
    RESPONSIVE — Larger calendar on desktop
    ============================================ */
 @media (min-width: 1024px) {
-  .calendar-day { padding: 0.5rem; }
-  .day-number { font-size: 1rem; }
+  .calendar-day {
+    padding: 0.5rem;
+  }
+  .day-number {
+    font-size: 1rem;
+  }
   .calendar-day.has-date:hover:not(:disabled) {
     transform: scale(1.1);
     z-index: 10;
@@ -95,9 +138,13 @@
    Reduced motion / Print
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  .calendar-day { transition-duration: 0.01ms !important; }
+  .calendar-day {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @media print {
-  button { display: none; }
+  button {
+    display: none;
+  }
 }

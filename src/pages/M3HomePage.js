@@ -3,8 +3,7 @@
  * Refactored dashboard using Material Design 3 components
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Flame,
   Utensils,
@@ -14,9 +13,10 @@ import {
   Scale,
   Activity,
   Plus,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import "./HomePage.css";
+} from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './HomePage.css';
 
 // M3 Design System Components
 import {
@@ -51,8 +51,8 @@ import {
   useAnnounce,
   // Misc
   SkeletonPage,
-} from "../components/common";
-
+} from '../components/common';
+import { haptics } from '../utils/haptics';
 import {
   loadFoodLog,
   loadExerciseLog,
@@ -61,9 +61,7 @@ import {
   loadStreakData,
   loadWaterLog,
   loadWeightLog,
-} from "../utils/localStorage";
-
-import { haptics } from "../utils/haptics";
+} from '../utils/localStorage';
 
 /**
  * M3 Home Page Component
@@ -85,12 +83,12 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
   });
   const [hydrationData, setHydrationData] = useState({ current: 0, goal: 8 });
   const [weightData, setWeightData] = useState({ current: null, trend: [] });
-  const [selectedTimeframe, setSelectedTimeframe] = useState("today");
+  const [selectedTimeframe, setSelectedTimeframe] = useState('today');
 
   // Computed values
   const remainingCalories = useMemo(
     () => dailyTarget - (caloriesEaten - caloriesBurned),
-    [dailyTarget, caloriesEaten, caloriesBurned],
+    [dailyTarget, caloriesEaten, caloriesBurned]
   );
 
   const isOverTarget = remainingCalories < 0;
@@ -120,7 +118,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
           carbs: acc.carbs + (entry.carbs || 0),
           fat: acc.fat + (entry.fat || 0),
         }),
-        { protein: 0, carbs: 0, fat: 0 },
+        { protein: 0, carbs: 0, fat: 0 }
       );
       setCurrentMacros(macros);
 
@@ -140,7 +138,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
         });
       }
     } catch (error) {
-      console.error("Failed to load data:", error);
+      console.error('Failed to load data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -157,9 +155,8 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
         loadData();
       }
     };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () =>
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [loadData]);
 
   // Announce calorie status to screen readers
@@ -168,14 +165,14 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
       const status = isOverTarget
         ? `You are ${Math.abs(remainingCalories)} calories over your goal`
         : `${remainingCalories} calories remaining`;
-      announce(status, "polite");
+      announce(status, 'polite');
     }
   }, [isLoading, isOverTarget, remainingCalories, announce]);
 
   // Handle FAB click
   const handleAddFood = () => {
     haptics.medium();
-    navigate("/log");
+    navigate('/log');
   };
 
   // Loading state
@@ -200,7 +197,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate("/history")}
+                onClick={() => navigate('/history')}
                 role="button"
                 tabIndex={0}
                 aria-label={`${streakData.currentStreak} day streak. Tap to view history.`}
@@ -214,11 +211,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                   </span>
                   <span className="m3-streak-banner__label">day streak!</span>
                 </div>
-                <Sparkles
-                  size={16}
-                  className="m3-streak-banner__sparkle"
-                  aria-hidden="true"
-                />
+                <Sparkles size={16} className="m3-streak-banner__sparkle" aria-hidden="true" />
               </motion.div>
             </StaggerItem>
           )}
@@ -234,25 +227,22 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                   max={dailyTarget}
                   size={200}
                   strokeWidth={16}
-                  color={isOverTarget ? "error" : "primary"}
+                  color={isOverTarget ? 'error' : 'primary'}
                   showText={false}
                   animated
                   aria-label={`${calorieProgress.toFixed(0)}% of daily calorie goal`}
                 >
                   <div className="m3-progress-hero__center">
                     <motion.span
-                      className={`m3-progress-hero__value ${isOverTarget ? "m3-progress-hero__value--over" : ""}`}
+                      className={`m3-progress-hero__value ${isOverTarget ? 'm3-progress-hero__value--over' : ''}`}
                       key={remainingCalories}
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                     >
-                      <AnimatedCounter
-                        value={Math.abs(remainingCalories)}
-                        duration={800}
-                      />
+                      <AnimatedCounter value={Math.abs(remainingCalories)} duration={800} />
                     </motion.span>
                     <span className="m3-progress-hero__label">
-                      {isOverTarget ? "over" : "remaining"}
+                      {isOverTarget ? 'over' : 'remaining'}
                     </span>
                   </div>
                 </M3ProgressRing>
@@ -267,9 +257,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                   </div>
                   <div className="m3-quick-stat__divider" aria-hidden="true" />
                   <div className="m3-quick-stat" role="listitem">
-                    <span className="m3-quick-stat__value">
-                      {dailyTarget.toLocaleString()}
-                    </span>
+                    <span className="m3-quick-stat__value">{dailyTarget.toLocaleString()}</span>
                     <span className="m3-quick-stat__label">goal</span>
                   </div>
                   <div className="m3-quick-stat__divider" aria-hidden="true" />
@@ -316,7 +304,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                 <M3Button
                   variant="text"
                   size="small"
-                  onClick={() => navigate("/log")}
+                  onClick={() => navigate('/log')}
                   aria-label="View macro details"
                 >
                   Details <ChevronRight size={16} />
@@ -363,7 +351,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                 <WeightWidget
                   current={weightData.current}
                   trend={weightData.trend}
-                  unit={userProfile?.weightUnit || "kg"}
+                  unit={userProfile?.weightUnit || 'kg'}
                   size="small"
                 />
               )}
@@ -385,11 +373,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
             <Section
               title="Recent Foods"
               action={
-                <M3Button
-                  variant="text"
-                  size="small"
-                  onClick={() => navigate("/log")}
-                >
+                <M3Button variant="text" size="small" onClick={() => navigate('/log')}>
                   See All <ChevronRight size={16} />
                 </M3Button>
               }
@@ -403,7 +387,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate("/log")}
+                    onClick={() => navigate('/log')}
                     role="button"
                     tabIndex={0}
                   >
@@ -413,14 +397,10 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
                     <div className="m3-recent-food__info">
                       <span className="m3-recent-food__name">{food.name}</span>
                       <span className="m3-recent-food__details">
-                        {food.calories} cal • {food.portion || "1 serving"}
+                        {food.calories} cal • {food.portion || '1 serving'}
                       </span>
                     </div>
-                    <ChevronRight
-                      size={18}
-                      className="m3-recent-food__arrow"
-                      aria-hidden="true"
-                    />
+                    <ChevronRight size={18} className="m3-recent-food__arrow" aria-hidden="true" />
                   </motion.div>
                 ))}
               </div>
@@ -435,7 +415,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
               <M3Button
                 variant="tonal"
                 icon={<Plus size={20} />}
-                onClick={() => navigate("/log")}
+                onClick={() => navigate('/log')}
                 fullWidth
               >
                 Log Food
@@ -443,7 +423,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
               <M3Button
                 variant="tonal"
                 icon={<Activity size={20} />}
-                onClick={() => navigate("/log", { state: { tab: "exercise" } })}
+                onClick={() => navigate('/log', { state: { tab: 'exercise' } })}
                 fullWidth
               >
                 Log Exercise
@@ -451,9 +431,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
               <M3Button
                 variant="outlined"
                 icon={<Droplets size={20} />}
-                onClick={() =>
-                  navigate("/log", { state: { tab: "hydration" } })
-                }
+                onClick={() => navigate('/log', { state: { tab: 'hydration' } })}
                 fullWidth
               >
                 Log Water
@@ -461,7 +439,7 @@ function M3HomePage({ userProfile, dailyTarget, macroGoals }) {
               <M3Button
                 variant="outlined"
                 icon={<Scale size={20} />}
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate('/profile')}
                 fullWidth
               >
                 Log Weight

@@ -28,11 +28,7 @@
   justify-content: center;
   width: 96px;
   height: 96px;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-500) 0%,
-    var(--color-primary-600) 100%
-  );
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
   border-radius: var(--radius-3xl);
   box-shadow:
     var(--shadow-glow-md),

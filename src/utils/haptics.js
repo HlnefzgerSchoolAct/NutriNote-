@@ -8,15 +8,15 @@
  * Check if haptic feedback is available
  */
 export const isHapticsAvailable = () => {
-  return typeof window !== "undefined" && "vibrate" in navigator;
+  return typeof window !== 'undefined' && 'vibrate' in navigator;
 };
 
 /**
  * Check if user prefers reduced motion
  */
 export const prefersReducedMotion = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
 /**
@@ -24,9 +24,7 @@ export const prefersReducedMotion = () => {
  */
 const getHapticsEnabled = () => {
   try {
-    const settings = JSON.parse(
-      localStorage.getItem("nutriNote_settings") || "{}",
-    );
+    const settings = JSON.parse(localStorage.getItem('nutriNote_settings') || '{}');
     return settings.hapticsEnabled !== false; // Default to true
   } catch {
     return true;
@@ -79,7 +77,7 @@ export const HAPTIC_PATTERNS = {
  * Trigger haptic feedback
  * @param {keyof HAPTIC_PATTERNS | number[] | number} pattern - Pattern name, array of durations, or single duration
  */
-export const haptic = (pattern = "light") => {
+export const haptic = (pattern = 'light') => {
   // Check if haptics are available and enabled
   if (!isHapticsAvailable() || !getHapticsEnabled()) {
     return false;
@@ -93,11 +91,11 @@ export const haptic = (pattern = "light") => {
   try {
     let vibrationPattern;
 
-    if (typeof pattern === "string") {
+    if (typeof pattern === 'string') {
       vibrationPattern = HAPTIC_PATTERNS[pattern] || HAPTIC_PATTERNS.light;
     } else if (Array.isArray(pattern)) {
       vibrationPattern = pattern;
-    } else if (typeof pattern === "number") {
+    } else if (typeof pattern === 'number') {
       vibrationPattern = [pattern];
     } else {
       vibrationPattern = HAPTIC_PATTERNS.light;
@@ -106,7 +104,7 @@ export const haptic = (pattern = "light") => {
     navigator.vibrate(vibrationPattern);
     return true;
   } catch (error) {
-    console.warn("Haptic feedback failed:", error);
+    console.warn('Haptic feedback failed:', error);
     return false;
   }
 };
@@ -125,24 +123,24 @@ export const cancelHaptic = () => {
  */
 export const haptics = {
   // Basic interactions
-  light: () => haptic("light"),
-  medium: () => haptic("medium"),
-  heavy: () => haptic("heavy"),
+  light: () => haptic('light'),
+  medium: () => haptic('medium'),
+  heavy: () => haptic('heavy'),
 
   // Feedback types
-  success: () => haptic("success"),
-  error: () => haptic("error"),
-  warning: () => haptic("warning"),
+  success: () => haptic('success'),
+  error: () => haptic('error'),
+  warning: () => haptic('warning'),
 
   // UI interactions
-  selection: () => haptic("selection"),
-  tick: () => haptic("tick"),
-  longPress: () => haptic("longPress"),
-  doubleTap: () => haptic("doubleTap"),
+  selection: () => haptic('selection'),
+  tick: () => haptic('tick'),
+  longPress: () => haptic('longPress'),
+  doubleTap: () => haptic('doubleTap'),
 
   // Notifications
-  notification: () => haptic("notification"),
-  achievement: () => haptic("achievement"),
+  notification: () => haptic('notification'),
+  achievement: () => haptic('achievement'),
 
   // Custom pattern
   custom: (pattern) => haptic(pattern),
@@ -156,7 +154,7 @@ export const haptics = {
  * Provides subtle audio cues for interactions
  */
 const audioContext =
-  typeof AudioContext !== "undefined"
+  typeof AudioContext !== 'undefined'
     ? new (window.AudioContext || window.webkitAudioContext)()
     : null;
 
@@ -177,18 +175,15 @@ export const playTone = (frequency = 440, duration = 50, volume = 0.1) => {
     gainNode.connect(audioContext.destination);
 
     oscillator.frequency.value = frequency;
-    oscillator.type = "sine";
+    oscillator.type = 'sine';
 
     gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(
-      0.001,
-      audioContext.currentTime + duration / 1000,
-    );
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration / 1000);
 
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + duration / 1000);
   } catch (error) {
-    console.warn("Audio feedback failed:", error);
+    console.warn('Audio feedback failed:', error);
   }
 };
 

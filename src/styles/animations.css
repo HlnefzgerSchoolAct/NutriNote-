@@ -1,0 +1,434 @@
+/* ============================================
+   NUTRINOTE+ UNIFIED ANIMATION SYSTEM
+   Consistent motion tokens & utilities
+   ============================================ */
+
+/* ========================================
+   ANIMATION KEYFRAMES
+   Reusable across all components
+   ======================================== */
+
+/* Fade animations */
+@keyframes nn-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nn-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nn-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes nn-fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale animations */
+@keyframes nn-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes nn-scale-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+/* Slide animations */
+@keyframes nn-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes nn-slide-down {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes nn-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Pulse / Glow */
+@keyframes nn-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes nn-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(26, 115, 232, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(26, 115, 232, 0.4);
+  }
+}
+
+/* Shimmer for loading states */
+@keyframes nn-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Ripple effect */
+@keyframes nn-ripple {
+  from {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Shake for error */
+@keyframes nn-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+/* Bounce subtle */
+@keyframes nn-bounce-subtle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Spin (for loading) */
+@keyframes nn-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Float animation for empty states */
+@keyframes nn-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(-1deg);
+  }
+}
+
+/* Confetti-like sparkle */
+@keyframes nn-sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+/* ========================================
+   ANIMATION UTILITY CLASSES
+   ======================================== */
+
+.nn-animate-fade-in {
+  animation: nn-fade-in var(--duration-medium) var(--ease-emphasized) both;
+}
+
+.nn-animate-fade-in-up {
+  animation: nn-fade-in-up var(--duration-long) var(--ease-emphasized-decelerate) both;
+}
+
+.nn-animate-fade-in-down {
+  animation: nn-fade-in-down var(--duration-long) var(--ease-emphasized-decelerate) both;
+}
+
+.nn-animate-scale-in {
+  animation: nn-scale-in var(--duration-entering) var(--ease-emphasized-decelerate) both;
+}
+
+.nn-animate-slide-up {
+  animation: nn-slide-up var(--duration-entering) var(--ease-emphasized-decelerate) both;
+}
+
+.nn-animate-float {
+  animation: nn-float 4s var(--ease-in-out) infinite;
+}
+
+.nn-animate-pulse {
+  animation: nn-pulse 2s var(--ease-in-out) infinite;
+}
+
+.nn-animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: nn-shimmer 2s linear infinite;
+}
+
+.nn-animate-spin {
+  animation: nn-spin 0.8s linear infinite;
+}
+
+.nn-animate-shake {
+  animation: nn-shake 0.4s var(--ease-emphasized) both;
+}
+
+.nn-animate-bounce {
+  animation: nn-bounce-subtle 0.6s var(--ease-spring) both;
+}
+
+/* ========================================
+   STAGGER DELAY UTILITIES
+   For lists and grids
+   ======================================== */
+
+.nn-stagger-1 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 1);
+}
+.nn-stagger-2 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 2);
+}
+.nn-stagger-3 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 3);
+}
+.nn-stagger-4 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 4);
+}
+.nn-stagger-5 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 5);
+}
+.nn-stagger-6 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 6);
+}
+.nn-stagger-7 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 7);
+}
+.nn-stagger-8 {
+  animation-delay: calc(var(--stagger-delay, 50ms) * 8);
+}
+
+/* ========================================
+   INTERACTIVE HOVER & PRESS UTILITIES
+   Consistent button/card interactions
+   ======================================== */
+
+/* Standard interactive element: subtle lift on hover, press on active */
+.nn-interactive {
+  transition:
+    transform var(--duration-short) var(--ease-emphasized),
+    box-shadow var(--duration-short) var(--ease-emphasized),
+    background-color var(--duration-short) var(--ease-emphasized);
+}
+
+.nn-interactive:hover {
+  transform: translateY(-1px);
+}
+
+.nn-interactive:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Button-specific: scale up on hover, down on press */
+.nn-interactive-button {
+  transition:
+    transform var(--duration-short) var(--ease-emphasized),
+    box-shadow var(--duration-short) var(--ease-emphasized),
+    background-color var(--duration-short) var(--ease-emphasized);
+}
+
+.nn-interactive-button:hover {
+  transform: scale(1.02);
+}
+
+.nn-interactive-button:active {
+  transform: scale(0.97);
+}
+
+/* Card interactive: lift with shadow */
+.nn-interactive-card {
+  transition:
+    transform var(--duration-medium) var(--ease-emphasized),
+    box-shadow var(--duration-medium) var(--ease-emphasized);
+}
+
+.nn-interactive-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.nn-interactive-card:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* FAB specific: slightly bigger grow */
+.nn-interactive-fab {
+  transition:
+    transform var(--duration-long) var(--ease-spring),
+    box-shadow var(--duration-long) var(--ease-spring);
+}
+
+.nn-interactive-fab:hover {
+  transform: scale(1.05);
+}
+
+.nn-interactive-fab:active {
+  transform: scale(0.95);
+}
+
+/* ========================================
+   REDUCED MOTION: GLOBAL OVERRIDE
+   Respects user preference
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all custom animations */
+  .nn-animate-fade-in,
+  .nn-animate-fade-in-up,
+  .nn-animate-fade-in-down,
+  .nn-animate-scale-in,
+  .nn-animate-slide-up,
+  .nn-animate-float,
+  .nn-animate-pulse,
+  .nn-animate-shimmer,
+  .nn-animate-spin,
+  .nn-animate-shake,
+  .nn-animate-bounce {
+    animation: none !important;
+  }
+
+  /* Disable interactive transforms */
+  .nn-interactive:hover,
+  .nn-interactive:active,
+  .nn-interactive-button:hover,
+  .nn-interactive-button:active,
+  .nn-interactive-card:hover,
+  .nn-interactive-card:active,
+  .nn-interactive-fab:hover,
+  .nn-interactive-fab:active {
+    transform: none !important;
+  }
+
+  /* Force instant transitions everywhere */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   TRANSITION PRESETS
+   For component-level CSS usage
+   ======================================== */
+
+.nn-transition-colors {
+  transition:
+    color var(--duration-short) var(--ease-emphasized),
+    background-color var(--duration-short) var(--ease-emphasized),
+    border-color var(--duration-short) var(--ease-emphasized);
+}
+
+.nn-transition-opacity {
+  transition: opacity var(--duration-medium) var(--ease-emphasized);
+}
+
+.nn-transition-transform {
+  transition: transform var(--duration-medium) var(--ease-emphasized);
+}
+
+.nn-transition-shadow {
+  transition: box-shadow var(--duration-medium) var(--ease-emphasized);
+}
+
+.nn-transition-all {
+  transition: all var(--duration-medium) var(--ease-emphasized);
+}

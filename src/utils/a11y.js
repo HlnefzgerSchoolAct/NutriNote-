@@ -25,39 +25,35 @@ export class FocusTrap {
 
   getFocusableElements() {
     const selector = [
-      "a[href]",
-      "area[href]",
+      'a[href]',
+      'area[href]',
       'input:not([disabled]):not([type="hidden"])',
-      "select:not([disabled])",
-      "textarea:not([disabled])",
-      "button:not([disabled])",
-      "iframe",
-      "object",
-      "embed",
-      "[contenteditable]",
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      'button:not([disabled])',
+      'iframe',
+      'object',
+      'embed',
+      '[contenteditable]',
       '[tabindex]:not([tabindex="-1"])',
-    ].join(", ");
+    ].join(', ');
 
-    return Array.from(this.container.querySelectorAll(selector)).filter(
-      (el) => {
-        return (
-          el.offsetWidth > 0 &&
-          el.offsetHeight > 0 &&
-          getComputedStyle(el).visibility !== "hidden"
-        );
-      },
-    );
+    return Array.from(this.container.querySelectorAll(selector)).filter((el) => {
+      return (
+        el.offsetWidth > 0 && el.offsetHeight > 0 && getComputedStyle(el).visibility !== 'hidden'
+      );
+    });
   }
 
   handleKeyDown(event) {
-    if (event.key === "Escape" && this.options.escapeDeactivates) {
+    if (event.key === 'Escape' && this.options.escapeDeactivates) {
       event.preventDefault();
       this.deactivate();
       this.options.onDeactivate();
       return;
     }
 
-    if (event.key !== "Tab") return;
+    if (event.key !== 'Tab') return;
 
     const focusableElements = this.getFocusableElements();
     if (focusableElements.length === 0) return;
@@ -80,10 +76,7 @@ export class FocusTrap {
   }
 
   handleClickOutside(event) {
-    if (
-      this.options.clickOutsideDeactivates &&
-      !this.container.contains(event.target)
-    ) {
+    if (this.options.clickOutsideDeactivates && !this.container.contains(event.target)) {
       this.deactivate();
       this.options.onDeactivate();
     }
@@ -92,8 +85,8 @@ export class FocusTrap {
   activate() {
     this.previousActiveElement = document.activeElement;
 
-    document.addEventListener("keydown", this.handleKeyDown);
-    document.addEventListener("mousedown", this.handleClickOutside);
+    document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('mousedown', this.handleClickOutside);
 
     // Set initial focus
     const focusTarget = this.options.initialFocus
@@ -111,8 +104,8 @@ export class FocusTrap {
   }
 
   deactivate() {
-    document.removeEventListener("keydown", this.handleKeyDown);
-    document.removeEventListener("mousedown", this.handleClickOutside);
+    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('mousedown', this.handleClickOutside);
 
     if (this.options.returnFocus && this.previousActiveElement) {
       this.previousActiveElement.focus();
@@ -134,9 +127,9 @@ export const createFocusTrap = (container, options) => {
  * Generates skip link configuration for main content areas
  */
 export const SKIP_LINKS = [
-  { id: "main-content", label: "Skip to main content" },
-  { id: "main-navigation", label: "Skip to navigation" },
-  { id: "search", label: "Skip to search" },
+  { id: 'main-content', label: 'Skip to main content' },
+  { id: 'main-navigation', label: 'Skip to navigation' },
+  { id: 'search', label: 'Skip to search' },
 ];
 
 /**
@@ -152,10 +145,10 @@ class LiveAnnouncer {
   }
 
   init() {
-    if (this.initialized || typeof document === "undefined") return;
+    if (this.initialized || typeof document === 'undefined') return;
 
-    this.container = document.createElement("div");
-    this.container.setAttribute("aria-live-region-container", "");
+    this.container = document.createElement('div');
+    this.container.setAttribute('aria-live-region-container', '');
     this.container.style.cssText = `
       position: absolute;
       width: 1px;
@@ -168,13 +161,13 @@ class LiveAnnouncer {
       border: 0;
     `;
 
-    this.politeRegion = document.createElement("div");
-    this.politeRegion.setAttribute("aria-live", "polite");
-    this.politeRegion.setAttribute("aria-atomic", "true");
+    this.politeRegion = document.createElement('div');
+    this.politeRegion.setAttribute('aria-live', 'polite');
+    this.politeRegion.setAttribute('aria-atomic', 'true');
 
-    this.assertiveRegion = document.createElement("div");
-    this.assertiveRegion.setAttribute("aria-live", "assertive");
-    this.assertiveRegion.setAttribute("aria-atomic", "true");
+    this.assertiveRegion = document.createElement('div');
+    this.assertiveRegion.setAttribute('aria-live', 'assertive');
+    this.assertiveRegion.setAttribute('aria-atomic', 'true');
 
     this.container.appendChild(this.politeRegion);
     this.container.appendChild(this.assertiveRegion);
@@ -183,22 +176,21 @@ class LiveAnnouncer {
     this.initialized = true;
   }
 
-  announce(message, priority = "polite") {
+  announce(message, priority = 'polite') {
     this.init();
 
-    const region =
-      priority === "assertive" ? this.assertiveRegion : this.politeRegion;
+    const region = priority === 'assertive' ? this.assertiveRegion : this.politeRegion;
 
     // Clear and set with delay to ensure announcement
-    region.textContent = "";
+    region.textContent = '';
     setTimeout(() => {
       region.textContent = message;
     }, 100);
   }
 
   clear() {
-    if (this.politeRegion) this.politeRegion.textContent = "";
-    if (this.assertiveRegion) this.assertiveRegion.textContent = "";
+    if (this.politeRegion) this.politeRegion.textContent = '';
+    if (this.assertiveRegion) this.assertiveRegion.textContent = '';
   }
 }
 
@@ -207,7 +199,7 @@ export const liveAnnouncer = new LiveAnnouncer();
 /**
  * Announce to screen readers
  */
-export const announce = (message, priority = "polite") => {
+export const announce = (message, priority = 'polite') => {
   liveAnnouncer.announce(message, priority);
 };
 
@@ -220,7 +212,7 @@ export class RovingTabIndex {
     this.container = container;
     this.options = {
       selector: options.selector || '[role="tab"], [role="menuitem"], button',
-      orientation: options.orientation || "horizontal",
+      orientation: options.orientation || 'horizontal',
       loop: options.loop !== false,
       onSelect: options.onSelect || (() => {}),
     };
@@ -237,9 +229,9 @@ export class RovingTabIndex {
     const items = this.getItems();
     if (items.length === 0) return;
 
-    const isHorizontal = this.options.orientation === "horizontal";
-    const prevKey = isHorizontal ? "ArrowLeft" : "ArrowUp";
-    const nextKey = isHorizontal ? "ArrowRight" : "ArrowDown";
+    const isHorizontal = this.options.orientation === 'horizontal';
+    const prevKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
+    const nextKey = isHorizontal ? 'ArrowRight' : 'ArrowDown';
 
     let newIndex = this.currentIndex;
 
@@ -258,12 +250,12 @@ export class RovingTabIndex {
           : Math.min(items.length - 1, this.currentIndex + 1);
         break;
 
-      case "Home":
+      case 'Home':
         event.preventDefault();
         newIndex = 0;
         break;
 
-      case "End":
+      case 'End':
         event.preventDefault();
         newIndex = items.length - 1;
         break;
@@ -279,7 +271,7 @@ export class RovingTabIndex {
     const items = this.getItems();
 
     items.forEach((item, i) => {
-      item.setAttribute("tabindex", i === index ? "0" : "-1");
+      item.setAttribute('tabindex', i === index ? '0' : '-1');
     });
 
     this.currentIndex = index;
@@ -288,13 +280,13 @@ export class RovingTabIndex {
   }
 
   activate() {
-    this.container.addEventListener("keydown", this.handleKeyDown);
+    this.container.addEventListener('keydown', this.handleKeyDown);
     this.setIndex(0);
     return this;
   }
 
   deactivate() {
-    this.container.removeEventListener("keydown", this.handleKeyDown);
+    this.container.removeEventListener('keydown', this.handleKeyDown);
     return this;
   }
 }
@@ -304,32 +296,32 @@ export class RovingTabIndex {
  */
 export const getAccessibleName = (element) => {
   // Check aria-labelledby
-  const labelledBy = element.getAttribute("aria-labelledby");
+  const labelledBy = element.getAttribute('aria-labelledby');
   if (labelledBy) {
-    const labels = labelledBy.split(" ").map((id) => {
+    const labels = labelledBy.split(' ').map((id) => {
       const el = document.getElementById(id);
-      return el ? el.textContent : "";
+      return el ? el.textContent : '';
     });
-    return labels.join(" ").trim();
+    return labels.join(' ').trim();
   }
 
   // Check aria-label
-  const ariaLabel = element.getAttribute("aria-label");
+  const ariaLabel = element.getAttribute('aria-label');
   if (ariaLabel) return ariaLabel;
 
   // Check associated label
-  const id = element.getAttribute("id");
+  const id = element.getAttribute('id');
   if (id) {
     const label = document.querySelector(`label[for="${id}"]`);
     if (label) return label.textContent?.trim();
   }
 
   // Check nested label
-  const nestedLabel = element.closest("label");
+  const nestedLabel = element.closest('label');
   if (nestedLabel) return nestedLabel.textContent?.trim();
 
   // Fall back to content
-  return element.textContent?.trim() || "";
+  return element.textContent?.trim() || '';
 };
 
 /**
@@ -340,9 +332,9 @@ export const getAccessibleName = (element) => {
  * Parse any color format to RGB
  */
 export const parseColor = (color) => {
-  const canvas = document.createElement("canvas");
+  const canvas = document.createElement('canvas');
   canvas.width = canvas.height = 1;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
   ctx.fillStyle = color;
   ctx.fillRect(0, 0, 1, 1);
   const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
@@ -374,43 +366,38 @@ export const getContrastRatio = (color1, color2) => {
 /**
  * Check if colors meet WCAG contrast requirements
  */
-export const meetsContrastRequirement = (
-  fg,
-  bg,
-  level = "AA",
-  size = "normal",
-) => {
+export const meetsContrastRequirement = (fg, bg, level = 'AA', size = 'normal') => {
   const ratio = getContrastRatio(fg, bg);
 
-  if (level === "AAA") {
-    return size === "large" ? ratio >= 4.5 : ratio >= 7;
+  if (level === 'AAA') {
+    return size === 'large' ? ratio >= 4.5 : ratio >= 7;
   }
 
   // AA level
-  return size === "large" ? ratio >= 3 : ratio >= 4.5;
+  return size === 'large' ? ratio >= 3 : ratio >= 4.5;
 };
 
 /**
  * Format number for screen readers
  */
-export const formatForScreenReader = (value, unit = "") => {
-  const formatted = typeof value === "number" ? value.toLocaleString() : value;
+export const formatForScreenReader = (value, unit = '') => {
+  const formatted = typeof value === 'number' ? value.toLocaleString() : value;
   return unit ? `${formatted} ${unit}` : formatted;
 };
 
 /**
  * Create accessible description for progress
  */
-export const describeProgress = (current, max, label = "") => {
+export const describeProgress = (current, max, label = '') => {
   const percentage = Math.round((current / max) * 100);
-  return `${label ? label + ": " : ""}${current} of ${max}, ${percentage} percent`;
+  return `${label ? label + ': ' : ''}${current} of ${max}, ${percentage} percent`;
 };
 
 /**
  * Keyboard navigation helpers
  */
 export const isActivationKey = (event) => {
-  return event.key === "Enter" || event.key === " ";
+  return event.key === 'Enter' || event.key === ' ';
 };
 
 export const handleActivation = (callback) => (event) => {
@@ -424,14 +411,14 @@ export const handleActivation = (callback) => (event) => {
  * Accessible hide/show utilities
  */
 export const visuallyHiddenStyles = {
-  position: "absolute",
-  width: "1px",
-  height: "1px",
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
   padding: 0,
-  margin: "-1px",
-  overflow: "hidden",
-  clip: "rect(0, 0, 0, 0)",
-  whiteSpace: "nowrap",
+  margin: '-1px',
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
   border: 0,
 };
 
@@ -439,7 +426,7 @@ export const visuallyHiddenStyles = {
  * ID generator for ARIA relationships
  */
 let idCounter = 0;
-export const generateId = (prefix = "a11y") => {
+export const generateId = (prefix = 'a11y') => {
   return `${prefix}-${++idCounter}`;
 };
 
@@ -447,24 +434,24 @@ export const generateId = (prefix = "a11y") => {
  * Reduced motion detection
  */
 export const prefersReducedMotion = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
 /**
  * High contrast detection
  */
 export const prefersHighContrast = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-contrast: more)").matches;
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-contrast: more)').matches;
 };
 
 /**
  * Dark mode detection
  */
 export const prefersDarkMode = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
 const a11yUtils = {

@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { showToast } from "./common";
-import "./UserProfile.css";
+import React, { useState } from 'react';
+
+import { showToast } from './common';
+import './UserProfile.css';
 
 function UserProfile({ onSubmit }) {
   const [formData, setFormData] = useState({
-    age: "",
-    gender: "male",
-    heightFeet: "",
-    heightInches: "",
-    weight: "",
-    activityLevel: "moderately_active",
-    goal: "maintain",
+    age: '',
+    gender: 'male',
+    heightFeet: '',
+    heightInches: '',
+    weight: '',
+    activityLevel: 'moderately_active',
+    goal: 'maintain',
     customAdjustment: 0,
   });
 
@@ -27,7 +28,7 @@ function UserProfile({ onSubmit }) {
     e.preventDefault();
 
     if (!formData.age || !formData.heightFeet || !formData.weight) {
-      showToast.error("Please fill in all required fields");
+      showToast.error('Please fill in all required fields');
       return;
     }
 
@@ -126,39 +127,26 @@ function UserProfile({ onSubmit }) {
             required
           >
             <option value="sedentary">Sedentary (little/no exercise)</option>
-            <option value="lightly_active">
-              Lightly Active (1-3 days/week)
-            </option>
-            <option value="moderately_active">
-              Moderately Active (3-5 days/week)
-            </option>
+            <option value="lightly_active">Lightly Active (1-3 days/week)</option>
+            <option value="moderately_active">Moderately Active (3-5 days/week)</option>
             <option value="very_active">Very Active (6-7 days/week)</option>
-            <option value="extra_active">
-              Extra Active (athlete/physical job)
-            </option>
+            <option value="extra_active">Extra Active (athlete/physical job)</option>
           </select>
         </div>
 
         <div className="form-group">
           <label htmlFor="goal">Goal *</label>
-          <select
-            id="goal"
-            name="goal"
-            value={formData.goal}
-            onChange={handleChange}
-            required
-          >
+          <select id="goal" name="goal" value={formData.goal} onChange={handleChange} required>
             <option value="maintain">Maintain Weight</option>
             <option value="lose">Lose Weight</option>
             <option value="gain">Gain Weight</option>
           </select>
         </div>
 
-        {formData.goal !== "maintain" && (
+        {formData.goal !== 'maintain' && (
           <div className="form-group">
             <label htmlFor="customAdjustment">
-              Calorie Adjustment (
-              {formData.goal === "lose" ? "Deficit" : "Surplus"})
+              Calorie Adjustment ({formData.goal === 'lose' ? 'Deficit' : 'Surplus'})
             </label>
             <select
               id="customAdjustment"
@@ -167,9 +155,7 @@ function UserProfile({ onSubmit }) {
               onChange={handleChange}
             >
               <option value="250">250 calories/day (~0.5 lbs/week)</option>
-              <option value="500">
-                500 calories/day (~1 lb/week) - Recommended
-              </option>
+              <option value="500">500 calories/day (~1 lb/week) - Recommended</option>
               <option value="750">750 calories/day (~1.5 lbs/week)</option>
             </select>
           </div>

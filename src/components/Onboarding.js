@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
   Check,
@@ -12,14 +11,18 @@ import {
   Flame,
   User,
   Activity,
-} from "lucide-react";
-import ThemedLogo from "./ThemedLogo";
+} from 'lucide-react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+
+import { calculateBMR } from '../utils/calculations';
 import {
   loadOnboardingDraft,
   saveOnboardingDraft,
   clearOnboardingDraft,
-} from "../utils/localStorage";
-import "./Onboarding.css";
+} from '../utils/localStorage';
+
+import ThemedLogo from './ThemedLogo';
+import './Onboarding.css';
 
 /**
  * Enhanced Onboarding Flow Component
@@ -35,27 +38,27 @@ import "./Onboarding.css";
 // Goal options
 const GOALS = [
   {
-    id: "lose",
-    title: "Lose Weight",
-    description: "Create a calorie deficit to lose weight safely",
+    id: 'lose',
+    title: 'Lose Weight',
+    description: 'Create a calorie deficit to lose weight safely',
     icon: TrendingDown,
   },
   {
-    id: "maintain",
-    title: "Maintain Weight",
-    description: "Keep your current weight and stay healthy",
+    id: 'maintain',
+    title: 'Maintain Weight',
+    description: 'Keep your current weight and stay healthy',
     icon: Scale,
   },
   {
-    id: "gain",
-    title: "Build Muscle",
-    description: "Gain lean muscle with a calorie surplus",
+    id: 'gain',
+    title: 'Build Muscle',
+    description: 'Gain lean muscle with a calorie surplus',
     icon: Dumbbell,
   },
   {
-    id: "health",
-    title: "Improve Health",
-    description: "Focus on nutrition quality and balance",
+    id: 'health',
+    title: 'Improve Health',
+    description: 'Focus on nutrition quality and balance',
     icon: Heart,
   },
 ];
@@ -63,30 +66,30 @@ const GOALS = [
 // Activity level options
 const ACTIVITY_LEVELS = [
   {
-    id: "sedentary",
-    label: "Sedentary",
-    description: "Little or no exercise",
+    id: 'sedentary',
+    label: 'Sedentary',
+    description: 'Little or no exercise',
     icon: User,
     multiplier: 1.2,
   },
   {
-    id: "light",
-    label: "Light",
-    description: "Exercise 1-3 days/week",
+    id: 'light',
+    label: 'Light',
+    description: 'Exercise 1-3 days/week',
     icon: Activity,
     multiplier: 1.375,
   },
   {
-    id: "moderate",
-    label: "Moderate",
-    description: "Exercise 3-5 days/week",
+    id: 'moderate',
+    label: 'Moderate',
+    description: 'Exercise 3-5 days/week',
     icon: Zap,
     multiplier: 1.55,
   },
   {
-    id: "active",
-    label: "Active",
-    description: "Exercise 6-7 days/week",
+    id: 'active',
+    label: 'Active',
+    description: 'Exercise 6-7 days/week',
     icon: Flame,
     multiplier: 1.725,
   },
@@ -95,10 +98,10 @@ const ACTIVITY_LEVELS = [
 // Convert form values to metric for BMR (Mifflin-St Jeor uses kg, cm)
 const toMetricForBMR = (formData) => {
   const age = parseInt(formData.age, 10) || 30;
-  const sex = formData.sex || "male";
+  const sex = formData.sex || 'male';
   let weightKg, heightCm;
 
-  if (formData.units === "imperial") {
+  if (formData.units === 'imperial') {
     const feet = parseInt(formData.heightFeet, 10) || 5;
     const inches = parseInt(formData.heightInches, 10) || 10;
     heightCm = (feet * 12 + inches) * 2.54;
@@ -111,23 +114,16 @@ const toMetricForBMR = (formData) => {
   return { weightKg, heightCm, age, sex };
 };
 
-// Calculate BMR using Mifflin-St Jeor (inputs in kg, cm)
-const calculateBMR = (weightKg, heightCm, age, sex) => {
-  if (sex === "female") {
-    return 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
-  }
-  return 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
-};
-
 // Calculate daily calories based on goal
+// Uses the centralized calculateBMR from utils/calculations
 const calculateCalories = (bmr, activityLevel, goal) => {
   const activity = ACTIVITY_LEVELS.find((a) => a.id === activityLevel);
   const tdee = bmr * (activity?.multiplier || 1.2);
 
   switch (goal) {
-    case "lose":
+    case 'lose':
       return Math.round(tdee - 500); // 0.5kg/week deficit
-    case "gain":
+    case 'gain':
       return Math.round(tdee + 300); // Lean bulk surplus
     default:
       return Math.round(tdee);
@@ -139,12 +135,12 @@ const calculateMacros = (calories, goal) => {
   let proteinRatio, carbRatio, fatRatio;
 
   switch (goal) {
-    case "lose":
+    case 'lose':
       proteinRatio = 0.35; // Higher protein for satiety
       fatRatio = 0.3;
       carbRatio = 0.35;
       break;
-    case "gain":
+    case 'gain':
       proteinRatio = 0.3;
       fatRatio = 0.25;
       carbRatio = 0.45; // More carbs for muscle
@@ -169,32 +165,25 @@ const Onboarding = ({ onComplete, onSkip, initialStep = 0 }) => {
   const defaultFormData = {
     goal: null,
     sex: null,
-    age: "",
-    height: "",
-    heightFeet: "",
-    heightInches: "",
-    weight: "",
-    targetWeight: "",
+    age: '',
+    height: '',
+    heightFeet: '',
+    heightInches: '',
+    weight: '',
+    targetWeight: '',
     activityLevel: null,
-    name: "",
-    units: "metric",
+    name: '',
+    units: 'metric',
   };
 
   const draft = loadOnboardingDraft();
-  const [currentStep, setCurrentStep] = useState(
-    draft?.currentStep ?? initialStep,
-  );
+  const [currentStep, setCurrentStep] = useState(draft?.currentStep ?? initialStep);
   const [exitingStep, setExitingStep] = useState(null);
   const [formData, setFormData] = useState(
-    draft?.formData
-      ? { ...defaultFormData, ...draft.formData }
-      : defaultFormData,
+    draft?.formData ? { ...defaultFormData, ...draft.formData } : defaultFormData
   );
 
-  const steps = useMemo(
-    () => ["welcome", "goal", "info", "activity", "summary"],
-    [],
-  );
+  const steps = useMemo(() => ['welcome', 'goal', 'info', 'activity', 'summary'], []);
 
   useEffect(() => {
     saveOnboardingDraft({ currentStep, formData });
@@ -236,11 +225,7 @@ const Onboarding = ({ onComplete, onSkip, initialStep = 0 }) => {
     const { weightKg, heightCm, age, sex } = toMetricForBMR(formData);
     const bmr = calculateBMR(weightKg, heightCm, age, sex);
 
-    const calories = calculateCalories(
-      bmr,
-      formData.activityLevel,
-      formData.goal,
-    );
+    const calories = calculateCalories(bmr, formData.activityLevel, formData.goal);
     const macros = calculateMacros(calories, formData.goal);
 
     onComplete?.({
@@ -255,11 +240,7 @@ const Onboarding = ({ onComplete, onSkip, initialStep = 0 }) => {
     const { weightKg, heightCm, age, sex } = toMetricForBMR(formData);
     const bmr = calculateBMR(weightKg, heightCm, age, sex);
 
-    const calories = calculateCalories(
-      bmr,
-      formData.activityLevel,
-      formData.goal,
-    );
+    const calories = calculateCalories(bmr, formData.activityLevel, formData.goal);
     const macros = calculateMacros(calories, formData.goal);
 
     return { calories, macros };
@@ -268,23 +249,17 @@ const Onboarding = ({ onComplete, onSkip, initialStep = 0 }) => {
   // Step validation
   const canProceed = useMemo(() => {
     switch (steps[currentStep]) {
-      case "goal":
+      case 'goal':
         return !!formData.goal;
-      case "info":
+      case 'info':
         if (!formData.sex || !formData.age) return false;
-        if (formData.units === "imperial") {
-          const hasFeet =
-            formData.heightFeet !== undefined && formData.heightFeet !== "";
+        if (formData.units === 'imperial') {
+          const hasFeet = formData.heightFeet !== undefined && formData.heightFeet !== '';
           const hasInches = formData.heightInches !== undefined; // '' means 0
-          return (
-            hasFeet &&
-            hasInches &&
-            formData.weight !== "" &&
-            formData.weight !== undefined
-          );
+          return hasFeet && hasInches && formData.weight !== '' && formData.weight !== undefined;
         }
         return formData.height && formData.weight;
-      case "activity":
+      case 'activity':
         return !!formData.activityLevel;
       default:
         return true;
@@ -296,47 +271,35 @@ const Onboarding = ({ onComplete, onSkip, initialStep = 0 }) => {
     const isExiting = exitingStep === currentStep;
 
     switch (step) {
-      case "welcome":
+      case 'welcome':
         return (
           <WelcomeStep
             isExiting={isExiting}
             name={formData.name}
-            onNameChange={(name) => updateFormData("name", name)}
+            onNameChange={(name) => updateFormData('name', name)}
             onSkipSetup={handleSkip}
           />
         );
-      case "goal":
+      case 'goal':
         return (
           <GoalStep
             isExiting={isExiting}
             selected={formData.goal}
-            onSelect={(goal) => updateFormData("goal", goal)}
+            onSelect={(goal) => updateFormData('goal', goal)}
           />
         );
-      case "info":
-        return (
-          <InfoStep
-            isExiting={isExiting}
-            data={formData}
-            onChange={updateFormData}
-          />
-        );
-      case "activity":
+      case 'info':
+        return <InfoStep isExiting={isExiting} data={formData} onChange={updateFormData} />;
+      case 'activity':
         return (
           <ActivityStep
             isExiting={isExiting}
             selected={formData.activityLevel}
-            onSelect={(level) => updateFormData("activityLevel", level)}
+            onSelect={(level) => updateFormData('activityLevel', level)}
           />
         );
-      case "summary":
-        return (
-          <SummaryStep
-            isExiting={isExiting}
-            data={formData}
-            calculated={calculatedValues}
-          />
-        );
+      case 'summary':
+        return <SummaryStep isExiting={isExiting} data={formData} calculated={calculatedValues} />;
       default:
         return null;
     }
@@ -366,18 +329,15 @@ const Onboarding = ({ onComplete, onSkip, initialStep = 0 }) => {
         {/* Progress */}
         <div className="m3-onboarding__progress">
           <div className="m3-onboarding__progress-bar">
-            <div
-              className="m3-onboarding__progress-fill"
-              style={{ width: `${progress}%` }}
-            />
+            <div className="m3-onboarding__progress-fill" style={{ width: `${progress}%` }} />
           </div>
           <div className="m3-onboarding__step-dots">
             {steps.map((_, index) => (
               <div
                 key={index}
                 className={`m3-onboarding__step-dot ${
-                  index === currentStep ? "m3-onboarding__step-dot--active" : ""
-                } ${index < currentStep ? "m3-onboarding__step-dot--completed" : ""}`}
+                  index === currentStep ? 'm3-onboarding__step-dot--active' : ''
+                } ${index < currentStep ? 'm3-onboarding__step-dot--completed' : ''}`}
               />
             ))}
           </div>
@@ -427,24 +387,20 @@ const Onboarding = ({ onComplete, onSkip, initialStep = 0 }) => {
 // ===== Step Components =====
 
 const WelcomeStep = ({ isExiting, name, onNameChange, onSkipSetup }) => (
-  <div
-    className={`m3-onboarding__step ${isExiting ? "m3-onboarding__step--exiting" : ""}`}
-  >
+  <div className={`m3-onboarding__step ${isExiting ? 'm3-onboarding__step--exiting' : ''}`}>
     <div className="m3-onboarding__illustration">
-      <ThemedLogo className="m3-onboarding__brand-logo" height={140} />
+      <ThemedLogo className="m3-onboarding__brand-logo" height={280} />
     </div>
 
     <h1 className="m3-onboarding__title">Welcome to NutriNote+</h1>
     <p className="m3-onboarding__description">
-      Track your nutrition, reach your goals, and build healthy habits.
-      Let&apos;s personalize your experience.
+      Track your nutrition, reach your goals, and build healthy habits. Let&apos;s personalize your
+      experience.
     </p>
 
     <div className="m3-onboarding__form">
       <div className="m3-onboarding__form-group">
-        <label className="m3-onboarding__form-label">
-          What should we call you?
-        </label>
+        <label className="m3-onboarding__form-label">What should we call you?</label>
         <input
           type="text"
           className="m3-text-field__input"
@@ -452,19 +408,15 @@ const WelcomeStep = ({ isExiting, name, onNameChange, onSkipSetup }) => (
           value={name}
           onChange={(e) => onNameChange(e.target.value)}
           style={{
-            padding: "16px",
-            borderRadius: "12px",
-            border: "1px solid var(--m3-outline-variant)",
-            background: "var(--m3-surface-container)",
-            fontSize: "16px",
+            padding: '16px',
+            borderRadius: '12px',
+            border: '1px solid var(--m3-outline-variant)',
+            background: 'var(--m3-surface-container)',
+            fontSize: '16px',
           }}
         />
       </div>
-      <button
-        type="button"
-        className="m3-onboarding__skip-setup"
-        onClick={onSkipSetup}
-      >
+      <button type="button" className="m3-onboarding__skip-setup" onClick={onSkipSetup}>
         Skip setup — use defaults
       </button>
     </div>
@@ -472,9 +424,7 @@ const WelcomeStep = ({ isExiting, name, onNameChange, onSkipSetup }) => (
 );
 
 const GoalStep = ({ isExiting, selected, onSelect }) => (
-  <div
-    className={`m3-onboarding__step ${isExiting ? "m3-onboarding__step--exiting" : ""}`}
-  >
+  <div className={`m3-onboarding__step ${isExiting ? 'm3-onboarding__step--exiting' : ''}`}>
     <h1 className="m3-onboarding__title">What&apos;s your goal?</h1>
     <p className="m3-onboarding__description">
       We&apos;ll customize your daily targets based on your goal.
@@ -488,7 +438,7 @@ const GoalStep = ({ isExiting, selected, onSelect }) => (
         return (
           <button
             key={goal.id}
-            className={`m3-onboarding__goal ${isSelected ? "m3-onboarding__goal--selected" : ""}`}
+            className={`m3-onboarding__goal ${isSelected ? 'm3-onboarding__goal--selected' : ''}`}
             onClick={() => onSelect(goal.id)}
           >
             <div className="m3-onboarding__goal-icon">
@@ -496,13 +446,9 @@ const GoalStep = ({ isExiting, selected, onSelect }) => (
             </div>
             <div className="m3-onboarding__goal-content">
               <h3 className="m3-onboarding__goal-title">{goal.title}</h3>
-              <p className="m3-onboarding__goal-description">
-                {goal.description}
-              </p>
+              <p className="m3-onboarding__goal-description">{goal.description}</p>
             </div>
-            <div className="m3-onboarding__goal-check">
-              {isSelected && <Check size={16} />}
-            </div>
+            <div className="m3-onboarding__goal-check">{isSelected && <Check size={16} />}</div>
           </button>
         );
       })}
@@ -511,21 +457,19 @@ const GoalStep = ({ isExiting, selected, onSelect }) => (
 );
 
 const inputStyle = {
-  width: "100%",
-  padding: "16px",
-  borderRadius: "12px",
-  border: "1px solid var(--m3-outline-variant)",
-  background: "var(--m3-surface-container)",
-  fontSize: "16px",
+  width: '100%',
+  padding: '16px',
+  borderRadius: '12px',
+  border: '1px solid var(--m3-outline-variant)',
+  background: 'var(--m3-surface-container)',
+  fontSize: '16px',
 };
 
 const InfoStep = ({ isExiting, data, onChange }) => {
-  const isImperial = data.units === "imperial";
+  const isImperial = data.units === 'imperial';
 
   return (
-    <div
-      className={`m3-onboarding__step ${isExiting ? "m3-onboarding__step--exiting" : ""}`}
-    >
+    <div className={`m3-onboarding__step ${isExiting ? 'm3-onboarding__step--exiting' : ''}`}>
       <h1 className="m3-onboarding__title">Tell us about yourself</h1>
       <p className="m3-onboarding__description">
         This helps us calculate your daily calorie needs.
@@ -537,17 +481,17 @@ const InfoStep = ({ isExiting, data, onChange }) => {
           <label className="m3-onboarding__form-label">Units</label>
           <div
             className="m3-onboarding__selections"
-            style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+            style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}
           >
             {[
-              { id: "metric", label: "Metric (cm, kg)" },
-              { id: "imperial", label: "Imperial (ft, lb)" },
+              { id: 'metric', label: 'Metric (cm, kg)' },
+              { id: 'imperial', label: 'Imperial (ft, lb)' },
             ].map(({ id, label }) => (
               <button
                 key={id}
                 type="button"
-                className={`m3-onboarding__selection ${data.units === id ? "m3-onboarding__selection--selected" : ""}`}
-                onClick={() => onChange("units", id)}
+                className={`m3-onboarding__selection ${data.units === id ? 'm3-onboarding__selection--selected' : ''}`}
+                onClick={() => onChange('units', id)}
               >
                 <span className="m3-onboarding__selection-label">{label}</span>
               </button>
@@ -560,18 +504,18 @@ const InfoStep = ({ isExiting, data, onChange }) => {
           <label className="m3-onboarding__form-label">Sex</label>
           <div
             className="m3-onboarding__selections"
-            style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+            style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}
           >
-            {["male", "female"].map((sex) => (
+            {['male', 'female'].map((sex) => (
               <button
                 key={sex}
                 type="button"
-                className={`m3-onboarding__selection ${data.sex === sex ? "m3-onboarding__selection--selected" : ""}`}
-                onClick={() => onChange("sex", sex)}
+                className={`m3-onboarding__selection ${data.sex === sex ? 'm3-onboarding__selection--selected' : ''}`}
+                onClick={() => onChange('sex', sex)}
               >
                 <span
                   className="m3-onboarding__selection-label"
-                  style={{ textTransform: "capitalize" }}
+                  style={{ textTransform: 'capitalize' }}
                 >
                   {sex}
                 </span>
@@ -588,7 +532,7 @@ const InfoStep = ({ isExiting, data, onChange }) => {
             inputMode="numeric"
             placeholder="Years"
             value={data.age}
-            onChange={(e) => onChange("age", e.target.value)}
+            onChange={(e) => onChange('age', e.target.value)}
             min={13}
             max={120}
             style={inputStyle}
@@ -606,7 +550,7 @@ const InfoStep = ({ isExiting, data, onChange }) => {
                   inputMode="numeric"
                   placeholder="5"
                   value={data.heightFeet}
-                  onChange={(e) => onChange("heightFeet", e.target.value)}
+                  onChange={(e) => onChange('heightFeet', e.target.value)}
                   min={3}
                   max={8}
                   style={inputStyle}
@@ -619,7 +563,7 @@ const InfoStep = ({ isExiting, data, onChange }) => {
                   inputMode="numeric"
                   placeholder="10"
                   value={data.heightInches}
-                  onChange={(e) => onChange("heightInches", e.target.value)}
+                  onChange={(e) => onChange('heightInches', e.target.value)}
                   min={0}
                   max={11}
                   style={inputStyle}
@@ -627,34 +571,29 @@ const InfoStep = ({ isExiting, data, onChange }) => {
               </div>
             </>
           ) : (
-            <div
-              className="m3-onboarding__form-group"
-              style={{ gridColumn: "1 / -1" }}
-            >
+            <div className="m3-onboarding__form-group" style={{ gridColumn: '1 / -1' }}>
               <label className="m3-onboarding__form-label">Height (cm)</label>
               <input
                 type="number"
                 inputMode="decimal"
                 placeholder="170"
                 value={data.height}
-                onChange={(e) => onChange("height", e.target.value)}
+                onChange={(e) => onChange('height', e.target.value)}
                 style={inputStyle}
               />
             </div>
           )}
           <div
-            className={`m3-onboarding__form-group ${!isImperial ? "" : ""}`}
-            style={isImperial ? {} : { gridColumn: "1 / -1" }}
+            className={`m3-onboarding__form-group ${!isImperial ? '' : ''}`}
+            style={isImperial ? {} : { gridColumn: '1 / -1' }}
           >
-            <label className="m3-onboarding__form-label">
-              Weight ({isImperial ? "lb" : "kg"})
-            </label>
+            <label className="m3-onboarding__form-label">Weight ({isImperial ? 'lb' : 'kg'})</label>
             <input
               type="number"
               inputMode="decimal"
-              placeholder={isImperial ? "160" : "70"}
+              placeholder={isImperial ? '160' : '70'}
               value={data.weight}
-              onChange={(e) => onChange("weight", e.target.value)}
+              onChange={(e) => onChange('weight', e.target.value)}
               style={inputStyle}
             />
           </div>
@@ -665,13 +604,9 @@ const InfoStep = ({ isExiting, data, onChange }) => {
 };
 
 const ActivityStep = ({ isExiting, selected, onSelect }) => (
-  <div
-    className={`m3-onboarding__step ${isExiting ? "m3-onboarding__step--exiting" : ""}`}
-  >
+  <div className={`m3-onboarding__step ${isExiting ? 'm3-onboarding__step--exiting' : ''}`}>
     <h1 className="m3-onboarding__title">Activity Level</h1>
-    <p className="m3-onboarding__description">
-      How active are you on a typical week?
-    </p>
+    <p className="m3-onboarding__description">How active are you on a typical week?</p>
 
     <div className="m3-onboarding__selections">
       {ACTIVITY_LEVELS.map((level) => {
@@ -681,18 +616,14 @@ const ActivityStep = ({ isExiting, selected, onSelect }) => (
         return (
           <button
             key={level.id}
-            className={`m3-onboarding__selection ${isSelected ? "m3-onboarding__selection--selected" : ""}`}
+            className={`m3-onboarding__selection ${isSelected ? 'm3-onboarding__selection--selected' : ''}`}
             onClick={() => onSelect(level.id)}
           >
             <div className="m3-onboarding__selection-icon">
               <Icon size={24} />
             </div>
-            <span className="m3-onboarding__selection-label">
-              {level.label}
-            </span>
-            <span className="m3-onboarding__selection-description">
-              {level.description}
-            </span>
+            <span className="m3-onboarding__selection-label">{level.label}</span>
+            <span className="m3-onboarding__selection-description">{level.description}</span>
           </button>
         );
       })}
@@ -701,13 +632,10 @@ const ActivityStep = ({ isExiting, selected, onSelect }) => (
 );
 
 const SummaryStep = ({ isExiting, data, calculated }) => {
-  const goalLabel =
-    GOALS.find((g) => g.id === data.goal)?.title || "Stay Healthy";
+  const goalLabel = GOALS.find((g) => g.id === data.goal)?.title || 'Stay Healthy';
 
   return (
-    <div
-      className={`m3-onboarding__step ${isExiting ? "m3-onboarding__step--exiting" : ""}`}
-    >
+    <div className={`m3-onboarding__step ${isExiting ? 'm3-onboarding__step--exiting' : ''}`}>
       <div className="m3-onboarding__illustration">
         <div className="m3-onboarding__illustration-container">
           <div className="m3-onboarding__illustration-bg" />
@@ -731,28 +659,19 @@ const SummaryStep = ({ isExiting, data, calculated }) => {
         <div className="m3-onboarding__summary-grid">
           <div className="m3-onboarding__summary-item">
             <div className="m3-onboarding__summary-label">Protein</div>
-            <div
-              className="m3-onboarding__summary-value"
-              style={{ fontSize: "18px" }}
-            >
+            <div className="m3-onboarding__summary-value" style={{ fontSize: '18px' }}>
               {calculated.macros.protein}g
             </div>
           </div>
           <div className="m3-onboarding__summary-item">
             <div className="m3-onboarding__summary-label">Carbs</div>
-            <div
-              className="m3-onboarding__summary-value"
-              style={{ fontSize: "18px" }}
-            >
+            <div className="m3-onboarding__summary-value" style={{ fontSize: '18px' }}>
               {calculated.macros.carbs}g
             </div>
           </div>
           <div className="m3-onboarding__summary-item">
             <div className="m3-onboarding__summary-label">Fat</div>
-            <div
-              className="m3-onboarding__summary-value"
-              style={{ fontSize: "18px" }}
-            >
+            <div className="m3-onboarding__summary-value" style={{ fontSize: '18px' }}>
               {calculated.macros.fat}g
             </div>
           </div>

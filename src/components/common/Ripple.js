@@ -3,17 +3,18 @@
  * Material Design 3 ripple effect and celebration animations
  */
 
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { haptics } from "../../utils/haptics";
-import "./Ripple.css";
+import { motion, useAnimation } from 'framer-motion';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+
+import { haptics } from '../../utils/haptics';
+import './Ripple.css';
 
 /**
  * Check if reduced motion is preferred
  */
 const prefersReducedMotion = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
 /**
@@ -22,7 +23,7 @@ const prefersReducedMotion = () => {
 export const useRipple = (options = {}) => {
   const {
     disabled = false,
-    color = "currentColor",
+    color = 'currentColor',
     duration = 550,
     unbounded = false,
     haptic = true,
@@ -70,23 +71,23 @@ export const useRipple = (options = {}) => {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
       }, duration);
     },
-    [disabled, duration, haptic],
+    [disabled, duration, haptic]
   );
 
   const handleMouseDown = useCallback(
     (e) => {
       addRipple(e);
     },
-    [addRipple],
+    [addRipple]
   );
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (e.key === "Enter" || e.key === " ") {
+      if (e.key === 'Enter' || e.key === ' ') {
         addRipple(e);
       }
     },
-    [addRipple],
+    [addRipple]
   );
 
   return {
@@ -102,7 +103,7 @@ export const useRipple = (options = {}) => {
         {ripples.map((ripple) => (
           <span
             key={ripple.id}
-            className={`m3-ripple ${unbounded ? "m3-ripple--unbounded" : ""}`}
+            className={`m3-ripple ${unbounded ? 'm3-ripple--unbounded' : ''}`}
             style={{
               left: ripple.x,
               top: ripple.y,
@@ -123,12 +124,12 @@ export const useRipple = (options = {}) => {
  */
 export const RippleContainer = ({
   children,
-  component: Component = "div",
+  component: Component = 'div',
   disabled = false,
-  color = "currentColor",
+  color = 'currentColor',
   unbounded = false,
   haptic = true,
-  className = "",
+  className = '',
   ...props
 }) => {
   const {
@@ -162,7 +163,7 @@ export const RippleContainer = ({
 export const Celebration = ({
   active = false,
   particleCount = 30,
-  colors = ["#6750A4", "#E8DEF8", "#7D5260", "#FFD8E4", "#625B71"],
+  colors = ['#6750A4', '#E8DEF8', '#7D5260', '#FFD8E4', '#625B71'],
   origin = { x: 0.5, y: 0.5 },
   spread = 360,
   duration = 1000,
@@ -207,8 +208,8 @@ export const Celebration = ({
     <div
       className="m3-celebration"
       style={{
-        "--origin-x": `${origin.x * 100}%`,
-        "--origin-y": `${origin.y * 100}%`,
+        '--origin-x': `${origin.x * 100}%`,
+        '--origin-y': `${origin.y * 100}%`,
       }}
     >
       {particles.map((particle) => (
@@ -218,11 +219,11 @@ export const Celebration = ({
           style={{
             left: `${origin.x * 100}%`,
             top: `${origin.y * 100}%`,
-            "--x": particle.x,
-            "--y": particle.y,
-            "--color": particle.color,
-            "--size": particle.size,
-            "--rotation": particle.rotation,
+            '--x': particle.x,
+            '--y': particle.y,
+            '--color': particle.color,
+            '--size': particle.size,
+            '--rotation': particle.rotation,
             animationDelay: `${particle.delay}s`,
           }}
         />
@@ -238,7 +239,7 @@ export const Celebration = ({
 export const Confetti = ({
   active = false,
   pieceCount = 50,
-  colors = ["#6750A4", "#E8DEF8", "#7D5260", "#FFD8E4", "#625B71", "#FFB4AB"],
+  colors = ['#6750A4', '#E8DEF8', '#7D5260', '#FFD8E4', '#625B71', '#FFB4AB'],
   duration = 3000,
   onComplete,
 }) => {
@@ -253,7 +254,7 @@ export const Confetti = ({
       color: colors[Math.floor(Math.random() * colors.length)],
       size: `${6 + Math.random() * 10}px`,
       delay: Math.random() * 0.5,
-      shape: Math.random() > 0.5 ? "50%" : "0",
+      shape: Math.random() > 0.5 ? '50%' : '0',
     }));
 
     setPieces(newPieces);
@@ -277,10 +278,10 @@ export const Confetti = ({
           className="m3-particle m3-confetti"
           style={{
             left: piece.left,
-            top: "-20px",
-            "--color": piece.color,
-            "--size": piece.size,
-            "--radius": piece.shape,
+            top: '-20px',
+            '--color': piece.color,
+            '--size': piece.size,
+            '--radius': piece.shape,
             animationDelay: `${piece.delay}s`,
             animationDuration: `${1.5 + Math.random()}s`,
           }}
@@ -298,9 +299,9 @@ export const AnimatedCounter = ({
   value,
   duration = 1000,
   decimals = 0,
-  prefix = "",
-  suffix = "",
-  className = "",
+  prefix = '',
+  suffix = '',
+  className = '',
 }) => {
   const [displayValue, setDisplayValue] = useState(0);
   const previousValue = useRef(0);
@@ -349,7 +350,7 @@ export const AnimatedCounter = ({
 /**
  * Pulse Animation Component
  */
-export const Pulse = ({ children, active = false, className = "" }) => {
+export const Pulse = ({ children, active = false, className = '' }) => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -372,7 +373,7 @@ export const Pulse = ({ children, active = false, className = "" }) => {
 /**
  * Shake Animation Component
  */
-export const Shake = ({ children, active = false, className = "" }) => {
+export const Shake = ({ children, active = false, className = '' }) => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -395,7 +396,7 @@ export const Shake = ({ children, active = false, className = "" }) => {
 /**
  * Bounce Animation Component
  */
-export const Bounce = ({ children, active = false, className = "" }) => {
+export const Bounce = ({ children, active = false, className = '' }) => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -403,7 +404,7 @@ export const Bounce = ({ children, active = false, className = "" }) => {
       controls.start({
         scale: [1, 1.1, 1],
         transition: {
-          type: "spring",
+          type: 'spring',
           stiffness: 500,
           damping: 15,
         },

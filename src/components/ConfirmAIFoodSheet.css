@@ -75,13 +75,11 @@
   color: var(--text-primary);
 }
 
-.confirm-ai-food-sheet__outlier-card--corrected
-  .confirm-ai-food-sheet__outlier-header {
+.confirm-ai-food-sheet__outlier-card--corrected .confirm-ai-food-sheet__outlier-header {
   color: var(--color-success-700, #15803d);
 }
 
-.confirm-ai-food-sheet__outlier-card--warning
-  .confirm-ai-food-sheet__outlier-header {
+.confirm-ai-food-sheet__outlier-card--warning .confirm-ai-food-sheet__outlier-header {
   color: var(--color-warning-700, #a16207);
 }
 
@@ -144,23 +142,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border-default);
   background: var(--surface-container);
   color: var(--text-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--duration-short, 100ms) var(--ease-emphasized, ease);
 }
 
 .confirm-ai-food-sheet__qty-btn:hover:not(:disabled) {
   background: var(--surface-container-high);
   border-color: var(--primary);
+  transform: scale(1.05);
 }
 
 .confirm-ai-food-sheet__qty-btn:active:not(:disabled) {
-  transform: scale(0.95);
+  transform: scale(0.93);
+}
+
+.confirm-ai-food-sheet__qty-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 .confirm-ai-food-sheet__qty-btn:disabled {
@@ -212,12 +216,18 @@
   color: var(--text-secondary);
   border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all var(--duration-short, 100ms) var(--ease-emphasized, ease);
 }
 
 .confirm-ai-food-sheet__meal:hover {
   border-color: var(--primary);
   background: var(--surface-container-high);
+  transform: translateY(-1px);
+}
+
+.confirm-ai-food-sheet__meal:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 .confirm-ai-food-sheet__meal--active {
@@ -289,5 +299,19 @@
 @media (max-width: 360px) {
   .confirm-ai-food-sheet__actions {
     flex-direction: column;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .confirm-ai-food-sheet__qty-btn,
+  .confirm-ai-food-sheet__meal,
+  .confirm-ai-food-sheet__qty-input {
+    transition: none;
+  }
+
+  .confirm-ai-food-sheet__qty-btn:hover:not(:disabled),
+  .confirm-ai-food-sheet__meal:hover {
+    transform: none;
   }
 }

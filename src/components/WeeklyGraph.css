@@ -137,8 +137,12 @@
   color: var(--text-primary);
 }
 
-.weekly-stat-value.positive { color: var(--success); }
-.weekly-stat-value.negative { color: var(--danger); }
+.weekly-stat-value.positive {
+  color: var(--success);
+}
+.weekly-stat-value.negative {
+  color: var(--danger);
+}
 
 .weekly-stat-label {
   font-size: var(--text-xs);

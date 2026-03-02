@@ -3,11 +3,12 @@
  * Standard mobile pattern for refreshing content
  */
 
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import { motion, useAnimation } from "framer-motion";
-import { RefreshCw, ArrowDown } from "lucide-react";
-import { haptics } from "../utils/haptics";
-import "./PullToRefresh.css";
+import { motion, useAnimation } from 'framer-motion';
+import { RefreshCw, ArrowDown } from 'lucide-react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+
+import { haptics } from '../utils/haptics';
+import './PullToRefresh.css';
 
 /**
  * Configuration
@@ -27,7 +28,7 @@ export const PullToRefresh = ({
   onRefresh,
   disabled = false,
   refreshDuration = CONFIG.refreshDuration,
-  className = "",
+  className = '',
   ...props
 }) => {
   const [pullDistance, setPullDistance] = useState(0);
@@ -64,7 +65,7 @@ export const PullToRefresh = ({
       currentYRef.current = startYRef.current;
       setCanPull(true);
     },
-    [disabled, isRefreshing, checkScrollPosition],
+    [disabled, isRefreshing, checkScrollPosition]
   );
 
   // Handle touch move
@@ -96,14 +97,11 @@ export const PullToRefresh = ({
       setPullDistance(distance);
 
       // Haptic feedback at threshold
-      if (
-        distance >= CONFIG.pullThreshold &&
-        pullDistance < CONFIG.pullThreshold
-      ) {
+      if (distance >= CONFIG.pullThreshold && pullDistance < CONFIG.pullThreshold) {
         haptics.medium();
       }
     },
-    [disabled, isRefreshing, canPull, pullDistance, checkScrollPosition],
+    [disabled, isRefreshing, canPull, pullDistance, checkScrollPosition]
   );
 
   // Handle touch end
@@ -120,7 +118,7 @@ export const PullToRefresh = ({
       // Animate to refresh position
       await controls.start({
         y: CONFIG.pullThreshold * 0.6,
-        transition: { type: "spring", stiffness: 300, damping: 25 },
+        transition: { type: 'spring', stiffness: 300, damping: 25 },
       });
 
       // Call refresh handler
@@ -131,7 +129,7 @@ export const PullToRefresh = ({
             new Promise((resolve) => setTimeout(resolve, refreshDuration)),
           ]);
         } catch (error) {
-          console.error("Refresh failed:", error);
+          console.error('Refresh failed:', error);
         }
       }
 
@@ -143,37 +141,29 @@ export const PullToRefresh = ({
     setPullDistance(0);
     await controls.start({
       y: 0,
-      transition: { type: "spring", stiffness: 400, damping: 30 },
+      transition: { type: 'spring', stiffness: 400, damping: 30 },
     });
-  }, [
-    disabled,
-    isRefreshing,
-    isPulling,
-    pullDistance,
-    onRefresh,
-    refreshDuration,
-    controls,
-  ]);
+  }, [disabled, isRefreshing, isPulling, pullDistance, onRefresh, refreshDuration, controls]);
 
   // Set up event listeners
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener("touchstart", handleTouchStart, {
+    container.addEventListener('touchstart', handleTouchStart, {
       passive: true,
     });
-    container.addEventListener("touchmove", handleTouchMove, { passive: true });
-    container.addEventListener("touchend", handleTouchEnd);
-    container.addEventListener("scroll", checkScrollPosition, {
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd);
+    container.addEventListener('scroll', checkScrollPosition, {
       passive: true,
     });
 
     return () => {
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
-      container.removeEventListener("touchend", handleTouchEnd);
-      container.removeEventListener("scroll", checkScrollPosition);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener('scroll', checkScrollPosition);
     };
   }, [handleTouchStart, handleTouchMove, handleTouchEnd, checkScrollPosition]);
 
@@ -182,28 +172,20 @@ export const PullToRefresh = ({
   const isThresholdReached = pullDistance >= CONFIG.pullThreshold;
 
   return (
-    <div
-      ref={containerRef}
-      className={`pull-to-refresh ${className}`}
-      {...props}
-    >
+    <div ref={containerRef} className={`pull-to-refresh ${className}`} {...props}>
       {/* Pull indicator */}
       <div
         className={`pull-to-refresh__indicator ${
-          isPulling || isRefreshing ? "pull-to-refresh__indicator--visible" : ""
+          isPulling || isRefreshing ? 'pull-to-refresh__indicator--visible' : ''
         }`}
         style={{
-          height: isPulling
-            ? pullDistance
-            : isRefreshing
-              ? CONFIG.pullThreshold * 0.6
-              : 0,
+          height: isPulling ? pullDistance : isRefreshing ? CONFIG.pullThreshold * 0.6 : 0,
         }}
       >
         <motion.div
           className={`pull-to-refresh__icon ${
-            isRefreshing ? "pull-to-refresh__icon--refreshing" : ""
-          } ${isThresholdReached ? "pull-to-refresh__icon--ready" : ""}`}
+            isRefreshing ? 'pull-to-refresh__icon--refreshing' : ''
+          } ${isThresholdReached ? 'pull-to-refresh__icon--ready' : ''}`}
           style={{
             opacity: progress,
             scale: 0.5 + progress * 0.5,
@@ -213,8 +195,8 @@ export const PullToRefresh = ({
           }}
           transition={{
             rotate: isRefreshing
-              ? { repeat: Infinity, duration: 1, ease: "linear" }
-              : { type: "spring", stiffness: 200 },
+              ? { repeat: Infinity, duration: 1, ease: 'linear' }
+              : { type: 'spring', stiffness: 200 },
           }}
         >
           {isRefreshing ? (
@@ -226,10 +208,10 @@ export const PullToRefresh = ({
 
         <span className="pull-to-refresh__text">
           {isRefreshing
-            ? "Refreshing..."
+            ? 'Refreshing...'
             : isThresholdReached
-              ? "Release to refresh"
-              : "Pull to refresh"}
+              ? 'Release to refresh'
+              : 'Pull to refresh'}
         </span>
       </div>
 
@@ -252,11 +234,7 @@ export const PullToRefresh = ({
  * For custom implementations
  */
 export const usePullToRefresh = (options = {}) => {
-  const {
-    onRefresh,
-    threshold = CONFIG.pullThreshold,
-    disabled = false,
-  } = options;
+  const { onRefresh, threshold = CONFIG.pullThreshold, disabled = false } = options;
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [pullProgress, setPullProgress] = useState(0);
@@ -270,7 +248,7 @@ export const usePullToRefresh = (options = {}) => {
     try {
       await onRefresh?.();
     } catch (error) {
-      console.error("Refresh failed:", error);
+      console.error('Refresh failed:', error);
     } finally {
       setIsRefreshing(false);
     }

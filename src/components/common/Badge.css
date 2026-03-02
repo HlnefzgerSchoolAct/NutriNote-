@@ -169,7 +169,7 @@
    ============================================ */
 
 .m3-badge--pulse::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -228,8 +228,7 @@
     transform: translate(var(--badge-tx, 50%), var(--badge-ty, -50%)) scale(1);
   }
   50% {
-    transform: translate(var(--badge-tx, 50%), var(--badge-ty, -50%))
-      scale(1.15);
+    transform: translate(var(--badge-tx, 50%), var(--badge-ty, -50%)) scale(1.15);
   }
 }
 

@@ -1,7 +1,7 @@
-import React, { forwardRef, useState, useId } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, AlertCircle, Check } from "lucide-react";
-import "./Input.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Eye, EyeOff, AlertCircle, Check } from 'lucide-react';
+import React, { forwardRef, useState, useId } from 'react';
+import './Input.css';
 
 /**
  * Professional Input Component
@@ -11,8 +11,8 @@ import "./Input.css";
 const Input = forwardRef(
   (
     {
-      type = "text",
-      size = "md",
+      type = 'text',
+      size = 'md',
       label,
       placeholder,
       value,
@@ -30,8 +30,8 @@ const Input = forwardRef(
       rightIcon,
       prefix,
       suffix,
-      className = "",
-      inputClassName = "",
+      className = '',
+      inputClassName = '',
       name,
       id,
       autoComplete,
@@ -45,30 +45,30 @@ const Input = forwardRef(
       rows = 3,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [showPassword, setShowPassword] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const generatedId = useId();
     const inputId = id || generatedId;
 
-    const isTextarea = type === "textarea";
-    const inputType = type === "password" && showPassword ? "text" : type;
+    const isTextarea = type === 'textarea';
+    const inputType = type === 'password' && showPassword ? 'text' : type;
 
-    const hasValue = value !== undefined ? value !== "" : false;
+    const hasValue = value !== undefined ? value !== '' : false;
 
     const containerClasses = [
-      "ds-input-container",
+      'ds-input-container',
       `ds-input-container--${size}`,
-      isFocused && "ds-input-container--focused",
-      error && "ds-input-container--error",
-      success && "ds-input-container--success",
-      disabled && "ds-input-container--disabled",
-      hasValue && "ds-input-container--has-value",
+      isFocused && 'ds-input-container--focused',
+      error && 'ds-input-container--error',
+      success && 'ds-input-container--success',
+      disabled && 'ds-input-container--disabled',
+      hasValue && 'ds-input-container--has-value',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const handleFocus = (e) => {
       setIsFocused(true);
@@ -80,7 +80,7 @@ const Input = forwardRef(
       onBlur?.(e);
     };
 
-    const InputComponent = isTextarea ? "textarea" : "input";
+    const InputComponent = isTextarea ? 'textarea' : 'input';
 
     const inputProps = {
       ref,
@@ -106,8 +106,8 @@ const Input = forwardRef(
       pattern,
       rows: isTextarea ? rows : undefined,
       className: `ds-input ${inputClassName}`,
-      "aria-invalid": error ? "true" : undefined,
-      "aria-describedby": error || helperText ? `${inputId}-helper` : undefined,
+      'aria-invalid': error ? 'true' : undefined,
+      'aria-describedby': error || helperText ? `${inputId}-helper` : undefined,
       ...props,
     };
 
@@ -128,33 +128,27 @@ const Input = forwardRef(
           {prefix && <span className="ds-input__prefix">{prefix}</span>}
 
           {leftIcon && (
-            <span
-              className="ds-input__icon ds-input__icon--left"
-              aria-hidden="true"
-            >
+            <span className="ds-input__icon ds-input__icon--left" aria-hidden="true">
               {leftIcon}
             </span>
           )}
 
           <InputComponent {...inputProps} />
 
-          {type === "password" && (
+          {type === 'password' && (
             <button
               type="button"
               className="ds-input__password-toggle"
               onClick={() => setShowPassword(!showPassword)}
               tabIndex={-1}
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           )}
 
-          {rightIcon && type !== "password" && (
-            <span
-              className="ds-input__icon ds-input__icon--right"
-              aria-hidden="true"
-            >
+          {rightIcon && type !== 'password' && (
+            <span className="ds-input__icon ds-input__icon--right" aria-hidden="true">
               {rightIcon}
             </span>
           )}
@@ -193,7 +187,7 @@ const Input = forwardRef(
           {(error || helperText) && (
             <motion.span
               id={`${inputId}-helper`}
-              className={`ds-input__helper ${error ? "ds-input__helper--error" : ""}`}
+              className={`ds-input__helper ${error ? 'ds-input__helper--error' : ''}`}
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
@@ -205,9 +199,9 @@ const Input = forwardRef(
         </AnimatePresence>
       </div>
     );
-  },
+  }
 );
 
-Input.displayName = "Input";
+Input.displayName = 'Input';
 
 export default Input;

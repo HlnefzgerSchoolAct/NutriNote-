@@ -77,6 +77,14 @@
     opacity 200ms var(--m3-motion-easing-standard, ease);
 }
 
+/* Interactive hover for all widgets */
+@media (hover: hover) and (pointer: fine) {
+  .m3-widget:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+}
+
 /* Widget sizes */
 .m3-widget--small {
   min-height: 100px;
@@ -305,7 +313,7 @@
 }
 
 .m3-widget--interactive::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -522,24 +530,24 @@
 }
 
 /* ===== Dark Mode ===== */
-[data-theme="dark"] .m3-widget {
+[data-theme='dark'] .m3-widget {
   background-color: var(--m3-surface-container, #211f26);
 }
 
-[data-theme="dark"] .m3-widget--primary {
+[data-theme='dark'] .m3-widget--primary {
   background-color: var(--m3-primary-container, #004a12);
 }
 
-[data-theme="dark"] .m3-widget--secondary {
+[data-theme='dark'] .m3-widget--secondary {
   background-color: var(--m3-secondary-container, #3f4740);
 }
 
-[data-theme="dark"] .m3-widget--tertiary {
+[data-theme='dark'] .m3-widget--tertiary {
   background-color: var(--m3-tertiary-container, #1a4e4e);
 }
 
-[data-theme="dark"] .m3-widget--loading .m3-widget__value,
-[data-theme="dark"] .m3-widget--loading .m3-widget__subtitle {
+[data-theme='dark'] .m3-widget--loading .m3-widget__value,
+[data-theme='dark'] .m3-widget--loading .m3-widget__subtitle {
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.08) 25%,

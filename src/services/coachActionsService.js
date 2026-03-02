@@ -4,6 +4,7 @@
  * Each executor validates input, performs the action, and returns rollback info.
  */
 
+import devLog from '../utils/devLog';
 import {
   addFoodEntry,
   deleteFoodEntry,
@@ -15,30 +16,29 @@ import {
   saveMacroGoals,
   addWeightEntry,
   loadWeightLog,
-} from "../utils/localStorage";
-import { saveRecipe, deleteRecipe } from "./recipeDatabase";
-import devLog from "../utils/devLog";
+} from '../utils/localStorage';
+
+import { saveRecipe, deleteRecipe } from './recipeDatabase';
 
 // ============================================
 // VALIDATORS
 // ============================================
 
-const VALID_MEAL_TYPES = ["breakfast", "lunch", "dinner", "snack"];
-const VALID_CATEGORIES = ["breakfast", "lunch", "dinner", "snack"];
-const VALID_GOALS = ["weight_loss", "maintain", "muscle_gain"];
+const VALID_MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack'];
+const VALID_CATEGORIES = ['breakfast', 'lunch', 'dinner', 'snack'];
+const VALID_GOALS = ['weight_loss', 'maintain', 'muscle_gain'];
 const VALID_ACTIVITY_LEVELS = [
-  "sedentary",
-  "lightly_active",
-  "active",
-  "very_active",
-  "extra_active",
+  'sedentary',
+  'lightly_active',
+  'active',
+  'very_active',
+  'extra_active',
 ];
 
 function validateFood(food) {
-  if (!food || typeof food !== "object") return "Invalid food object";
-  if (!food.name || typeof food.name !== "string")
-    return "Food must have a name";
-  if (typeof food.calories !== "number" || food.calories < 0)
+  if (!food || typeof food !== 'object') return 'Invalid food object';
+  if (!food.name || typeof food.name !== 'string') return 'Food must have a name';
+  if (typeof food.calories !== 'number' || food.calories < 0)
     return `Invalid calories for "${food.name}"`;
   if (food.mealType && !VALID_MEAL_TYPES.includes(food.mealType)) {
     return `Invalid meal type "${food.mealType}" for "${food.name}"`;
@@ -47,18 +47,17 @@ function validateFood(food) {
 }
 
 function validateRecipe(recipe) {
-  if (!recipe || typeof recipe !== "object") return "Invalid recipe object";
-  if (!recipe.name || typeof recipe.name !== "string")
-    return "Recipe must have a name";
+  if (!recipe || typeof recipe !== 'object') return 'Invalid recipe object';
+  if (!recipe.name || typeof recipe.name !== 'string') return 'Recipe must have a name';
   if (!Array.isArray(recipe.ingredients) || recipe.ingredients.length === 0) {
-    return "Recipe must have at least one ingredient";
+    return 'Recipe must have at least one ingredient';
   }
   if (recipe.category && !VALID_CATEGORIES.includes(recipe.category)) {
     return `Invalid category "${recipe.category}"`;
   }
   for (const ing of recipe.ingredients) {
-    if (!ing.name) return "Each ingredient must have a name";
-    if (typeof ing.calories !== "number" || ing.calories < 0) {
+    if (!ing.name) return 'Each ingredient must have a name';
+    if (typeof ing.calories !== 'number' || ing.calories < 0) {
       return `Invalid calories for ingredient "${ing.name}"`;
     }
   }
@@ -66,21 +65,20 @@ function validateRecipe(recipe) {
 }
 
 function validateSettings(settings) {
-  if (!settings || typeof settings !== "object")
-    return "Invalid settings object";
+  if (!settings || typeof settings !== 'object') return 'Invalid settings object';
   if (
     settings.weight !== undefined &&
-    (typeof settings.weight !== "number" || settings.weight <= 0)
+    (typeof settings.weight !== 'number' || settings.weight <= 0)
   ) {
-    return "Invalid weight value";
+    return 'Invalid weight value';
   }
   if (
     settings.dailyTarget !== undefined &&
-    (typeof settings.dailyTarget !== "number" ||
+    (typeof settings.dailyTarget !== 'number' ||
       settings.dailyTarget < 500 ||
       settings.dailyTarget > 10000)
   ) {
-    return "Daily target must be between 500 and 10000 calories";
+    return 'Daily target must be between 500 and 10000 calories';
   }
   if (settings.goal !== undefined && !VALID_GOALS.includes(settings.goal)) {
     return `Invalid goal "${settings.goal}"`;
@@ -93,12 +91,11 @@ function validateSettings(settings) {
   }
   if (settings.macroGoals) {
     const { protein, carbs, fat } = settings.macroGoals;
-    if (protein !== undefined && (typeof protein !== "number" || protein < 0))
-      return "Invalid protein goal";
-    if (carbs !== undefined && (typeof carbs !== "number" || carbs < 0))
-      return "Invalid carbs goal";
-    if (fat !== undefined && (typeof fat !== "number" || fat < 0))
-      return "Invalid fat goal";
+    if (protein !== undefined && (typeof protein !== 'number' || protein < 0))
+      return 'Invalid protein goal';
+    if (carbs !== undefined && (typeof carbs !== 'number' || carbs < 0))
+      return 'Invalid carbs goal';
+    if (fat !== undefined && (typeof fat !== 'number' || fat < 0)) return 'Invalid fat goal';
   }
   return null;
 }
@@ -115,7 +112,7 @@ function validateSettings(settings) {
 export async function executeLogFood(action) {
   const foods = action?.foods;
   if (!Array.isArray(foods) || foods.length === 0) {
-    return { success: false, message: "No foods provided to log" };
+    return { success: false, message: 'No foods provided to log' };
   }
 
   // Validate all foods first
@@ -137,29 +134,28 @@ export async function executeLogFood(action) {
         fiber: food.fiber != null ? Math.round(food.fiber * 10) / 10 : null,
         sodium: food.sodium != null ? Math.round(food.sodium) : null,
         sugar: food.sugar != null ? Math.round(food.sugar * 10) / 10 : null,
-        cholesterol:
-          food.cholesterol != null ? Math.round(food.cholesterol) : null,
+        cholesterol: food.cholesterol != null ? Math.round(food.cholesterol) : null,
         mealType: food.mealType || null,
-        source: "ai-coach",
+        source: 'ai-coach',
       });
       loggedEntries.push(entry);
     }
 
     const totalCal = foods.reduce((sum, f) => sum + (f.calories || 0), 0);
-    const names = foods.map((f) => f.name).join(", ");
+    const names = foods.map((f) => f.name).join(', ');
 
     devLog.log(`[Coach] Logged ${foods.length} food(s): ${names}`);
 
     return {
       success: true,
-      message: `Logged ${foods.length} food${foods.length > 1 ? "s" : ""} (${Math.round(totalCal)} cal): ${names}`,
+      message: `Logged ${foods.length} food${foods.length > 1 ? 's' : ''} (${Math.round(totalCal)} cal): ${names}`,
       rollback: {
-        type: "log_food",
+        type: 'log_food',
         entryIds: loggedEntries.map((e) => e.id),
       },
     };
   } catch (error) {
-    devLog.error("[Coach] Failed to log food:", error);
+    devLog.error('[Coach] Failed to log food:', error);
     // Rollback any entries we already logged
     for (const entry of loggedEntries) {
       try {
@@ -170,7 +166,7 @@ export async function executeLogFood(action) {
     }
     return {
       success: false,
-      message: "Failed to save food entries: " + error.message,
+      message: 'Failed to save food entries: ' + error.message,
     };
   }
 }
@@ -191,7 +187,7 @@ export async function executeCreateRecipe(action) {
       id: idx + 1,
       name: ing.name,
       quantity: ing.quantity || 1,
-      unit: ing.unit || "serving",
+      unit: ing.unit || 'serving',
       calories: Math.round(ing.calories || 0),
       protein: Math.round((ing.protein || 0) * 10) / 10,
       carbs: Math.round((ing.carbs || 0) * 10) / 10,
@@ -204,29 +200,27 @@ export async function executeCreateRecipe(action) {
 
     const savedRecipe = await saveRecipe({
       name: recipe.name,
-      category: recipe.category || "snack",
+      category: recipe.category || 'snack',
       servings: recipe.servings || 1,
       ingredients,
-      notes: recipe.notes || "",
+      notes: recipe.notes || '',
     });
 
-    devLog.log(
-      `[Coach] Created recipe: ${recipe.name} (${ingredients.length} ingredients)`,
-    );
+    devLog.log(`[Coach] Created recipe: ${recipe.name} (${ingredients.length} ingredients)`);
 
     return {
       success: true,
-      message: `Created recipe "${recipe.name}" with ${ingredients.length} ingredient${ingredients.length > 1 ? "s" : ""} (${savedRecipe.nutritionPerServing?.calories || 0} cal/serving)`,
+      message: `Created recipe "${recipe.name}" with ${ingredients.length} ingredient${ingredients.length > 1 ? 's' : ''} (${savedRecipe.nutritionPerServing?.calories || 0} cal/serving)`,
       rollback: {
-        type: "create_recipe",
+        type: 'create_recipe',
         recipeId: savedRecipe.id,
       },
     };
   } catch (error) {
-    devLog.error("[Coach] Failed to create recipe:", error);
+    devLog.error('[Coach] Failed to create recipe:', error);
     return {
       success: false,
-      message: "Failed to save recipe: " + error.message,
+      message: 'Failed to save recipe: ' + error.message,
     };
   }
 }
@@ -249,14 +243,10 @@ export async function executeUpdateSettings(action) {
     // Update weight
     if (settings.weight !== undefined) {
       const currentLog = loadWeightLog();
-      const currentWeight = currentLog.length
-        ? currentLog[currentLog.length - 1].weight
-        : null;
+      const currentWeight = currentLog.length ? currentLog[currentLog.length - 1].weight : null;
       previousState.weight = currentWeight;
-      addWeightEntry(settings.weight, settings.weightUnit || "lbs");
-      changes.push(
-        `Weight → ${settings.weight} ${settings.weightUnit || "lbs"}`,
-      );
+      addWeightEntry(settings.weight, settings.weightUnit || 'lbs');
+      changes.push(`Weight → ${settings.weight} ${settings.weightUnit || 'lbs'}`);
 
       // Also update weight in profile
       const profile = loadUserProfile() || {};
@@ -279,9 +269,9 @@ export async function executeUpdateSettings(action) {
       profile.goal = settings.goal;
       saveUserProfile(profile);
       const goalLabels = {
-        weight_loss: "Weight Loss",
-        maintain: "Maintain",
-        muscle_gain: "Muscle Gain",
+        weight_loss: 'Weight Loss',
+        maintain: 'Maintain',
+        muscle_gain: 'Muscle Gain',
       };
       changes.push(`Goal → ${goalLabels[settings.goal] || settings.goal}`);
     }
@@ -293,15 +283,13 @@ export async function executeUpdateSettings(action) {
       profile.activityLevel = settings.activityLevel;
       saveUserProfile(profile);
       const levelLabels = {
-        sedentary: "Sedentary",
-        lightly_active: "Lightly Active",
-        active: "Active",
-        very_active: "Very Active",
-        extra_active: "Extra Active",
+        sedentary: 'Sedentary',
+        lightly_active: 'Lightly Active',
+        active: 'Active',
+        very_active: 'Very Active',
+        extra_active: 'Extra Active',
       };
-      changes.push(
-        `Activity → ${levelLabels[settings.activityLevel] || settings.activityLevel}`,
-      );
+      changes.push(`Activity → ${levelLabels[settings.activityLevel] || settings.activityLevel}`);
     }
 
     // Update macro goals
@@ -313,33 +301,31 @@ export async function executeUpdateSettings(action) {
         protein: settings.macroGoals.protein ?? current.protein,
         carbs: settings.macroGoals.carbs ?? current.carbs,
         fat: settings.macroGoals.fat ?? current.fat,
-        preset: "Custom",
+        preset: 'Custom',
       };
       saveMacroGoals(updated);
-      changes.push(
-        `Macros → P:${updated.protein}g C:${updated.carbs}g F:${updated.fat}g`,
-      );
+      changes.push(`Macros → P:${updated.protein}g C:${updated.carbs}g F:${updated.fat}g`);
     }
 
     if (changes.length === 0) {
-      return { success: false, message: "No valid settings to update" };
+      return { success: false, message: 'No valid settings to update' };
     }
 
-    devLog.log(`[Coach] Updated settings: ${changes.join(", ")}`);
+    devLog.log(`[Coach] Updated settings: ${changes.join(', ')}`);
 
     return {
       success: true,
-      message: `Updated: ${changes.join(", ")}`,
+      message: `Updated: ${changes.join(', ')}`,
       rollback: {
-        type: "update_settings",
+        type: 'update_settings',
         previousState,
       },
     };
   } catch (error) {
-    devLog.error("[Coach] Failed to update settings:", error);
+    devLog.error('[Coach] Failed to update settings:', error);
     return {
       success: false,
-      message: "Failed to update settings: " + error.message,
+      message: 'Failed to update settings: ' + error.message,
     };
   }
 }
@@ -355,12 +341,12 @@ export async function executeUpdateSettings(action) {
  */
 export async function undoAction(rollback) {
   if (!rollback || !rollback.type) {
-    return { success: false, message: "No rollback data" };
+    return { success: false, message: 'No rollback data' };
   }
 
   try {
     switch (rollback.type) {
-      case "log_food": {
+      case 'log_food': {
         for (const id of rollback.entryIds || []) {
           deleteFoodEntry(id);
         }
@@ -370,14 +356,14 @@ export async function undoAction(rollback) {
         };
       }
 
-      case "create_recipe": {
+      case 'create_recipe': {
         if (rollback.recipeId) {
           await deleteRecipe(rollback.recipeId);
         }
-        return { success: true, message: "Deleted created recipe" };
+        return { success: true, message: 'Deleted created recipe' };
       }
 
-      case "update_settings": {
+      case 'update_settings': {
         const prev = rollback.previousState || {};
 
         if (prev.dailyTarget !== undefined) {
@@ -409,7 +395,7 @@ export async function undoAction(rollback) {
 
         return {
           success: true,
-          message: "Settings restored to previous values",
+          message: 'Settings restored to previous values',
         };
       }
 
@@ -420,8 +406,8 @@ export async function undoAction(rollback) {
         };
     }
   } catch (error) {
-    devLog.error("[Coach] Rollback failed:", error);
-    return { success: false, message: "Rollback failed: " + error.message };
+    devLog.error('[Coach] Rollback failed:', error);
+    return { success: false, message: 'Rollback failed: ' + error.message };
   }
 }
 
@@ -436,15 +422,15 @@ export async function undoAction(rollback) {
  */
 export async function executeAction(action) {
   if (!action || !action.action) {
-    return { success: false, message: "Invalid action" };
+    return { success: false, message: 'Invalid action' };
   }
 
   switch (action.action) {
-    case "log_food":
+    case 'log_food':
       return executeLogFood(action);
-    case "create_recipe":
+    case 'create_recipe':
       return executeCreateRecipe(action);
-    case "update_settings":
+    case 'update_settings':
       return executeUpdateSettings(action);
     default:
       return {
@@ -460,41 +446,37 @@ export async function executeAction(action) {
  * @returns {string}
  */
 export function describeAction(action) {
-  if (!action) return "Unknown action";
+  if (!action) return 'Unknown action';
 
   switch (action.action) {
-    case "log_food": {
+    case 'log_food': {
       const foods = action.foods || [];
-      if (foods.length === 0) return "Log foods (empty)";
+      if (foods.length === 0) return 'Log foods (empty)';
       const totalCal = foods.reduce((s, f) => s + (f.calories || 0), 0);
-      const names = foods.map((f) => f.name).join(", ");
-      return `Log ${foods.length} food${foods.length > 1 ? "s" : ""}: ${names} (${Math.round(totalCal)} cal)`;
+      const names = foods.map((f) => f.name).join(', ');
+      return `Log ${foods.length} food${foods.length > 1 ? 's' : ''}: ${names} (${Math.round(totalCal)} cal)`;
     }
 
-    case "create_recipe": {
+    case 'create_recipe': {
       const r = action.recipe;
-      if (!r) return "Create recipe (invalid)";
+      if (!r) return 'Create recipe (invalid)';
       const ingCount = r.ingredients?.length || 0;
-      return `Create recipe "${r.name}" with ${ingCount} ingredient${ingCount !== 1 ? "s" : ""}`;
+      return `Create recipe "${r.name}" with ${ingCount} ingredient${ingCount !== 1 ? 's' : ''}`;
     }
 
-    case "update_settings": {
+    case 'update_settings': {
       const s = action.settings || {};
       const parts = [];
-      if (s.weight !== undefined)
-        parts.push(`Weight: ${s.weight} ${s.weightUnit || "lbs"}`);
+      if (s.weight !== undefined) parts.push(`Weight: ${s.weight} ${s.weightUnit || 'lbs'}`);
       if (s.dailyTarget !== undefined) parts.push(`Calories: ${s.dailyTarget}`);
-      if (s.goal !== undefined)
-        parts.push(`Goal: ${s.goal.replace(/_/g, " ")}`);
+      if (s.goal !== undefined) parts.push(`Goal: ${s.goal.replace(/_/g, ' ')}`);
       if (s.activityLevel !== undefined)
-        parts.push(`Activity: ${s.activityLevel.replace(/_/g, " ")}`);
+        parts.push(`Activity: ${s.activityLevel.replace(/_/g, ' ')}`);
       if (s.macroGoals) {
         const m = s.macroGoals;
-        parts.push(
-          `Macros: P${m.protein || "?"}g C${m.carbs || "?"}g F${m.fat || "?"}g`,
-        );
+        parts.push(`Macros: P${m.protein || '?'}g C${m.carbs || '?'}g F${m.fat || '?'}g`);
       }
-      return parts.length ? `Update: ${parts.join(", ")}` : "Update settings";
+      return parts.length ? `Update: ${parts.join(', ')}` : 'Update settings';
     }
 
     default:

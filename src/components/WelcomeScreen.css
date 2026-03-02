@@ -71,9 +71,9 @@
 }
 
 .welcome-brand-logo {
-  height: 140px;
+  height: 280px;
   width: auto;
-  max-width: 420px;
+  max-width: 840px;
   object-fit: contain;
 }
 
@@ -300,11 +300,7 @@
 }
 
 .bar-fill.protein {
-  background: linear-gradient(
-    90deg,
-    var(--color-error),
-    var(--color-error-dark)
-  );
+  background: linear-gradient(90deg, var(--color-error), var(--color-error-dark));
 }
 
 .bar-fill.carbs {
@@ -312,11 +308,7 @@
 }
 
 .bar-fill.fat {
-  background: linear-gradient(
-    90deg,
-    var(--color-warning),
-    var(--color-warning-dark)
-  );
+  background: linear-gradient(90deg, var(--color-warning), var(--color-warning-dark));
 }
 
 /* Privacy Info (Step 5) */

@@ -132,7 +132,7 @@
 }
 
 .m3-bar__fill::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-color: currentColor;
@@ -265,8 +265,7 @@
 .m3-line-chart__line--animated {
   stroke-dasharray: var(--line-length, 1000);
   stroke-dashoffset: var(--line-length, 1000);
-  animation: m3-line-draw 1000ms var(--m3-motion-easing-emphasized, ease)
-    forwards;
+  animation: m3-line-draw 1000ms var(--m3-motion-easing-emphasized, ease) forwards;
 }
 
 @keyframes m3-line-draw {
@@ -417,7 +416,7 @@
 }
 
 .m3-chart__tooltip::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 100%;
   left: 50%;
@@ -456,7 +455,7 @@
 }
 
 .m3-chart--loading::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -478,27 +477,27 @@
 }
 
 /* ===== Dark Mode ===== */
-[data-theme="dark"] .m3-chart {
+[data-theme='dark'] .m3-chart {
   --chart-bg: var(--m3-surface-container, #211f26);
   --chart-grid-color: var(--m3-outline-variant, #49454f);
   --chart-text-color: var(--m3-on-surface-variant, #cac4d0);
 }
 
-[data-theme="dark"] .m3-chart--bordered {
+[data-theme='dark'] .m3-chart--bordered {
   background-color: var(--m3-surface, #141218);
 }
 
-[data-theme="dark"] .m3-donut-chart__track,
-[data-theme="dark"] .m3-progress-ring__track {
+[data-theme='dark'] .m3-donut-chart__track,
+[data-theme='dark'] .m3-progress-ring__track {
   stroke: var(--m3-surface-container-highest, #36343a);
 }
 
-[data-theme="dark"] .m3-chart__tooltip {
+[data-theme='dark'] .m3-chart__tooltip {
   background-color: var(--m3-inverse-surface, #e6e0e6);
   color: var(--m3-inverse-on-surface, #313033);
 }
 
-[data-theme="dark"] .m3-chart__tooltip::after {
+[data-theme='dark'] .m3-chart__tooltip::after {
   border-top-color: var(--m3-inverse-surface, #e6e0e6);
 }
 

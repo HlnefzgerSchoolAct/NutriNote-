@@ -7,10 +7,10 @@
  * stays server-side and is never exposed to the browser.
  */
 
-import devLog from "../utils/devLog";
+import devLog from '../utils/devLog';
 
-const USDA_PROXY_URL = "/api/usda-search";
-const USDA_CACHE_KEY = "nutrinoteplus_usda_cache";
+const USDA_PROXY_URL = '/api/usda-search';
+const USDA_CACHE_KEY = 'nutrinoteplus_usda_cache';
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
 
 /**
@@ -18,30 +18,30 @@ const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
  * Values in USDA search results are always per 100g.
  */
 const NUTRIENT_ID_MAP = {
-  1008: "calories", // Energy (kcal)
-  1003: "protein", // Protein (g)
-  1005: "carbs", // Carbohydrate, by difference (g)
-  1004: "fat", // Total lipid (fat) (g)
-  1079: "fiber", // Fiber, total dietary (g)
-  1093: "sodium", // Sodium (mg)
-  2000: "sugar", // Sugars, total including NLEA (g)
-  1253: "cholesterol", // Cholesterol (mg)
-  1104: "vitaminA", // Vitamin A, RAE (mcg)
-  1162: "vitaminC", // Vitamin C (mg)
-  1114: "vitaminD", // Vitamin D (D2 + D3) (mcg)
-  1109: "vitaminE", // Vitamin E (alpha-tocopherol) (mg)
-  1185: "vitaminK", // Vitamin K (phylloquinone) (mcg)
-  1165: "vitaminB1", // Thiamin (mg)
-  1166: "vitaminB2", // Riboflavin (mg)
-  1167: "vitaminB3", // Niacin (mg)
-  1175: "vitaminB6", // Vitamin B-6 (mg)
-  1178: "vitaminB12", // Vitamin B-12 (mcg)
-  1177: "folate", // Folate, DFE (mcg)
-  1087: "calcium", // Calcium (mg)
-  1089: "iron", // Iron (mg)
-  1090: "magnesium", // Magnesium (mg)
-  1095: "zinc", // Zinc (mg)
-  1092: "potassium", // Potassium (mg)
+  1008: 'calories', // Energy (kcal)
+  1003: 'protein', // Protein (g)
+  1005: 'carbs', // Carbohydrate, by difference (g)
+  1004: 'fat', // Total lipid (fat) (g)
+  1079: 'fiber', // Fiber, total dietary (g)
+  1093: 'sodium', // Sodium (mg)
+  2000: 'sugar', // Sugars, total including NLEA (g)
+  1253: 'cholesterol', // Cholesterol (mg)
+  1104: 'vitaminA', // Vitamin A, RAE (mcg)
+  1162: 'vitaminC', // Vitamin C (mg)
+  1114: 'vitaminD', // Vitamin D (D2 + D3) (mcg)
+  1109: 'vitaminE', // Vitamin E (alpha-tocopherol) (mg)
+  1185: 'vitaminK', // Vitamin K (phylloquinone) (mcg)
+  1165: 'vitaminB1', // Thiamin (mg)
+  1166: 'vitaminB2', // Riboflavin (mg)
+  1167: 'vitaminB3', // Niacin (mg)
+  1175: 'vitaminB6', // Vitamin B-6 (mg)
+  1178: 'vitaminB12', // Vitamin B-12 (mcg)
+  1177: 'folate', // Folate, DFE (mcg)
+  1087: 'calcium', // Calcium (mg)
+  1089: 'iron', // Iron (mg)
+  1090: 'magnesium', // Magnesium (mg)
+  1095: 'zinc', // Zinc (mg)
+  1092: 'potassium', // Potassium (mg)
 };
 
 /**
@@ -50,8 +50,8 @@ const NUTRIENT_ID_MAP = {
  */
 const DATA_TYPE_PRIORITY = {
   Foundation: 1,
-  "SR Legacy": 2,
-  "Survey (FNDDS)": 3,
+  'SR Legacy': 2,
+  'Survey (FNDDS)': 3,
   Branded: 4,
 };
 
@@ -70,7 +70,7 @@ function saveUSDACache(cache) {
   try {
     localStorage.setItem(USDA_CACHE_KEY, JSON.stringify(cache));
   } catch (e) {
-    devLog.warn("Failed to save USDA cache:", e);
+    devLog.warn('Failed to save USDA cache:', e);
   }
 }
 
@@ -103,25 +103,25 @@ export async function searchUSDAFood(query, preferBranded = false) {
   const cacheKey = `search:${query.toLowerCase().trim()}`;
   const cached = getCachedUSDA(cacheKey);
   if (cached) {
-    devLog.log("📦 USDA cache hit:", query);
+    devLog.log('📦 USDA cache hit:', query);
     return cached;
   }
 
   // Preferred ordering: non-branded first unless it's clearly a branded product
   const dataTypes = preferBranded
-    ? ["Branded", "Foundation", "SR Legacy", "Survey (FNDDS)"]
-    : ["Foundation", "SR Legacy", "Survey (FNDDS)", "Branded"];
+    ? ['Branded', 'Foundation', 'SR Legacy', 'Survey (FNDDS)']
+    : ['Foundation', 'SR Legacy', 'Survey (FNDDS)', 'Branded'];
 
   try {
-    devLog.log("🔍 Searching USDA for:", query);
+    devLog.log('🔍 Searching USDA for:', query);
     const response = await fetch(USDA_PROXY_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: query.trim(), dataTypes, pageSize: 10 }),
     });
 
     if (!response.ok) {
-      devLog.error("USDA proxy error:", response.status);
+      devLog.error('USDA proxy error:', response.status);
       return null;
     }
 
@@ -136,7 +136,7 @@ export async function searchUSDAFood(query, preferBranded = false) {
     setCachedUSDA(cacheKey, foods);
     return foods;
   } catch (error) {
-    devLog.error("USDA search error:", error);
+    devLog.error('USDA search error:', error);
     return null;
   }
 }
@@ -183,7 +183,7 @@ export function mapUSDANutrients(usdaFood, servingSizeGrams) {
     fdcId: usdaFood.fdcId,
     usdaDescription: usdaFood.description,
     dataType: usdaFood.dataType,
-    source: "usda",
+    source: 'usda',
   };
 
   // Works for both search results ({ nutrientId, value }) and
@@ -199,17 +199,17 @@ export function mapUSDANutrients(usdaFood, servingSizeGrams) {
 
     // Round integers or mg-scale nutrients without decimal precision
     const integerFields = new Set([
-      "calories",
-      "sodium",
-      "cholesterol",
-      "vitaminA",
-      "calcium",
-      "magnesium",
-      "potassium",
-      "folate",
+      'calories',
+      'sodium',
+      'cholesterol',
+      'vitaminA',
+      'calcium',
+      'magnesium',
+      'potassium',
+      'folate',
     ]);
 
-    if (field === "calories") {
+    if (field === 'calories') {
       nutrition[field] = Math.round(scaled);
     } else if (integerFields.has(field)) {
       nutrition[field] = Math.round(scaled);
@@ -227,8 +227,8 @@ export function mapUSDANutrients(usdaFood, servingSizeGrams) {
 export function clearUSDACache() {
   try {
     localStorage.removeItem(USDA_CACHE_KEY);
-    devLog.log("🗑️ USDA cache cleared");
+    devLog.log('🗑️ USDA cache cleared');
   } catch (e) {
-    devLog.warn("Failed to clear USDA cache:", e);
+    devLog.warn('Failed to clear USDA cache:', e);
   }
 }

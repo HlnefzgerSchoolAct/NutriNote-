@@ -3,9 +3,9 @@
  * Provides placeholder content while loading
  */
 
-import React from "react";
-import { motion } from "framer-motion";
-import "./Skeleton.css";
+import { motion } from 'framer-motion';
+import React from 'react';
+import './Skeleton.css';
 
 /**
  * Base skeleton component
@@ -13,18 +13,18 @@ import "./Skeleton.css";
 export const Skeleton = ({
   width,
   height,
-  variant = "rectangle",
-  className = "",
+  variant = 'rectangle',
+  className = '',
   animate = true,
 }) => {
   const style = {
-    width: width || "100%",
-    height: height || (variant === "text" ? "1em" : "auto"),
+    width: width || '100%',
+    height: height || (variant === 'text' ? '1em' : 'auto'),
   };
 
   return (
     <span
-      className={`skeleton skeleton--${variant} ${animate ? "skeleton--animate" : ""} ${className}`}
+      className={`skeleton skeleton--${variant} ${animate ? 'skeleton--animate' : ''} ${className}`}
       style={style}
       aria-hidden="true"
     />
@@ -34,12 +34,7 @@ export const Skeleton = ({
 /**
  * Text skeleton - mimics text content
  */
-export const SkeletonText = ({
-  lines = 1,
-  width = "100%",
-  lastLineWidth = "60%",
-  spacing = 8,
-}) => {
+export const SkeletonText = ({ lines = 1, width = '100%', lastLineWidth = '60%', spacing = 8 }) => {
   return (
     <div className="skeleton-text" style={{ gap: spacing }}>
       {Array.from({ length: lines }).map((_, i) => (
@@ -179,11 +174,7 @@ export const WeeklyGraphSkeleton = () => {
     <div className="skeleton-weekly-graph">
       {Array.from({ length: 7 }).map((_, i) => (
         <div key={i} className="skeleton-weekly-graph__bar">
-          <Skeleton
-            variant="rectangle"
-            width="100%"
-            height={`${30 + Math.random() * 70}%`}
-          />
+          <Skeleton variant="rectangle" width="100%" height={`${30 + Math.random() * 70}%`} />
           <Skeleton variant="text" width="24px" height="12px" />
         </div>
       ))}
@@ -213,9 +204,9 @@ export const RecipeCardSkeleton = () => {
 /**
  * Page skeleton - full page loading state
  */
-export const PageSkeleton = ({ type = "default" }) => {
+export const PageSkeleton = ({ type = 'default' }) => {
   switch (type) {
-    case "dashboard":
+    case 'dashboard':
       return (
         <div className="skeleton-page skeleton-page--dashboard">
           <DashboardCardSkeleton />
@@ -224,7 +215,7 @@ export const PageSkeleton = ({ type = "default" }) => {
         </div>
       );
 
-    case "log":
+    case 'log':
       return (
         <div className="skeleton-page skeleton-page--log">
           <FoodLogSkeleton count={3} />
@@ -232,7 +223,7 @@ export const PageSkeleton = ({ type = "default" }) => {
         </div>
       );
 
-    case "history":
+    case 'history':
       return (
         <div className="skeleton-page skeleton-page--history">
           <WeeklyGraphSkeleton />
@@ -259,12 +250,12 @@ export const ShimmerOverlay = () => {
   return (
     <motion.div
       className="shimmer-overlay"
-      initial={{ x: "-100%" }}
-      animate={{ x: "100%" }}
+      initial={{ x: '-100%' }}
+      animate={{ x: '100%' }}
       transition={{
         duration: 1.5,
         repeat: Infinity,
-        ease: "linear",
+        ease: 'linear',
       }}
     />
   );

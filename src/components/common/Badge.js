@@ -1,6 +1,6 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import "./Badge.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import './Badge.css';
 
 /**
  * M3 Badge Component
@@ -23,9 +23,9 @@ const Badge = forwardRef(
   (
     {
       content,
-      variant = "standard",
-      position = "top-right",
-      color = "error",
+      variant = 'standard',
+      position = 'top-right',
+      color = 'error',
       max = 99,
       showZero = false,
       pulse = false,
@@ -34,21 +34,17 @@ const Badge = forwardRef(
       standalone = false,
       animate = true,
       children,
-      className = "",
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     const [shouldBump, setShouldBump] = useState(false);
     const prevContent = useRef(content);
 
     // Trigger bump animation when content changes
     useEffect(() => {
-      if (
-        animate &&
-        typeof content === "number" &&
-        typeof prevContent.current === "number"
-      ) {
+      if (animate && typeof content === 'number' && typeof prevContent.current === 'number') {
         if (content > prevContent.current) {
           setShouldBump(true);
           const timer = setTimeout(() => setShouldBump(false), 200);
@@ -68,12 +64,12 @@ const Badge = forwardRef(
     })();
 
     // Determine badge variant based on content
-    const actualVariant = content === true ? "dot" : variant;
+    const actualVariant = content === true ? 'dot' : variant;
 
     // Format content
     const formattedContent = (() => {
       if (content === true) return null; // Dot badge
-      if (typeof content === "number") {
+      if (typeof content === 'number') {
         return content > max ? `${max}+` : content.toString();
       }
       return content;
@@ -81,19 +77,19 @@ const Badge = forwardRef(
 
     // Badge classes
     const badgeClasses = [
-      "m3-badge",
+      'm3-badge',
       `m3-badge--${actualVariant}`,
       `m3-badge--${position}`,
       `m3-badge--${color}`,
-      pulse && "m3-badge--pulse",
-      bordered && "m3-badge--bordered",
-      shouldBump && "m3-badge--bump",
-      invisible && "m3-badge--invisible",
-      standalone && "m3-badge--standalone",
+      pulse && 'm3-badge--pulse',
+      bordered && 'm3-badge--bordered',
+      shouldBump && 'm3-badge--bump',
+      invisible && 'm3-badge--invisible',
+      standalone && 'm3-badge--standalone',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     // Animation variants
     const badgeVariants = {
@@ -105,7 +101,7 @@ const Badge = forwardRef(
         opacity: 1,
         scale: 1,
         transition: {
-          type: "spring",
+          type: 'spring',
           stiffness: 500,
           damping: 25,
         },
@@ -135,14 +131,10 @@ const Badge = forwardRef(
             <motion.span
               className={badgeClasses}
               variants={animate ? badgeVariants : undefined}
-              initial={animate ? "hidden" : false}
-              animate={animate ? "visible" : false}
-              exit={animate ? "exit" : undefined}
-              aria-label={
-                typeof content === "number"
-                  ? `${content} notifications`
-                  : undefined
-              }
+              initial={animate ? 'hidden' : false}
+              animate={animate ? 'visible' : false}
+              exit={animate ? 'exit' : undefined}
+              aria-label={typeof content === 'number' ? `${content} notifications` : undefined}
             >
               {formattedContent}
             </motion.span>
@@ -150,33 +142,28 @@ const Badge = forwardRef(
         </AnimatePresence>
       </span>
     );
-  },
+  }
 );
 
-Badge.displayName = "Badge";
+Badge.displayName = 'Badge';
 
 /**
  * Status Badge - Simple status indicator with label
  */
-export const StatusBadge = ({
-  status = "default",
-  label,
-  className = "",
-  ...props
-}) => {
+export const StatusBadge = ({ status = 'default', label, className = '', ...props }) => {
   const colorMap = {
-    default: "surface",
-    success: "success",
-    warning: "warning",
-    error: "error",
-    info: "primary",
+    default: 'surface',
+    success: 'success',
+    warning: 'warning',
+    error: 'error',
+    info: 'primary',
   };
 
   return (
     <Badge
       content={label || status}
       variant="large"
-      color={colorMap[status] || "surface"}
+      color={colorMap[status] || 'surface'}
       standalone
       className={className}
       {...props}
@@ -195,14 +182,7 @@ export const NotificationBadge = ({
   ...props
 }) => {
   return (
-    <Badge
-      content={count}
-      max={max}
-      showZero={showZero}
-      color="error"
-      bordered
-      {...props}
-    >
+    <Badge content={count} max={max} showZero={showZero} color="error" bordered {...props}>
       {children}
     </Badge>
   );
@@ -211,12 +191,12 @@ export const NotificationBadge = ({
 /**
  * Presence Badge - Shows online/offline/away status
  */
-export const PresenceBadge = ({ status = "offline", children, ...props }) => {
+export const PresenceBadge = ({ status = 'offline', children, ...props }) => {
   const colorMap = {
-    online: "success",
-    offline: "surface",
-    away: "warning",
-    busy: "error",
+    online: 'success',
+    offline: 'surface',
+    away: 'warning',
+    busy: 'error',
   };
 
   return (
@@ -224,7 +204,7 @@ export const PresenceBadge = ({ status = "offline", children, ...props }) => {
       content={true}
       variant="dot"
       position="bottom-right"
-      color={colorMap[status] || "surface"}
+      color={colorMap[status] || 'surface'}
       bordered
       {...props}
     >

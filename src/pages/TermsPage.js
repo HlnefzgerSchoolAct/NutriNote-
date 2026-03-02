@@ -2,11 +2,12 @@
  * TermsPage - Terms of Service for NutriNote+
  */
 
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import { Main } from "../components/common";
-import "./LegalPage.css";
+import { ArrowLeft } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { Main } from '../components/common';
+import './LegalPage.css';
 
 export default function TermsPage() {
   const navigate = useNavigate();
@@ -30,18 +31,18 @@ export default function TermsPage() {
         <section>
           <h2>1. Acceptance</h2>
           <p>
-            By using NutriNote+ (&quot;the app&quot;), you agree to these Terms of Service. If you do not agree,
-            do not use the app.
+            By using NutriNote+ (&quot;the app&quot;), you agree to these Terms of Service. If you
+            do not agree, do not use the app.
           </p>
         </section>
 
         <section>
           <h2>2. Description of Service</h2>
           <p>
-            NutriNote+ is a nutrition and calorie tracking application. It helps you log food, calculate
-            BMR/TDEE, track macros and micronutrients, and sync data across devices when you sign in.
-            Nutrition estimates (from AI or databases) are approximations and should not replace
-            professional medical or dietary advice.
+            NutriNote+ is a nutrition and calorie tracking application. It helps you log food,
+            calculate BMR/TDEE, track macros and micronutrients, and sync data across devices when
+            you sign in. Nutrition estimates (from AI or databases) are approximations and should
+            not replace professional medical or dietary advice.
           </p>
         </section>
 
@@ -59,37 +60,41 @@ export default function TermsPage() {
         <section>
           <h2>4. Disclaimer</h2>
           <p>
-            <strong>Not Medical Advice.</strong> NutriNote+ provides general nutrition information and tracking.
-            It is not a substitute for professional medical, nutritional, or health advice. Always consult
-            a qualified healthcare provider for diet, weight, or health-related decisions.
+            <strong>Not Medical Advice.</strong> NutriNote+ provides general nutrition information
+            and tracking. It is not a substitute for professional medical, nutritional, or health
+            advice. Always consult a qualified healthcare provider for diet, weight, or
+            health-related decisions.
           </p>
           <p>
-            Nutrition data (calories, macros, micronutrients) may come from databases or AI estimation and
-            may not be accurate for every food or portion. Use at your own discretion.
+            Nutrition data (calories, macros, micronutrients) may come from databases or AI
+            estimation and may not be accurate for every food or portion. Use at your own
+            discretion.
           </p>
         </section>
 
         <section>
           <h2>5. Account and Data</h2>
           <p>
-            You are responsible for maintaining the security of your account. If you use cloud sync, your
-            data is stored on our infrastructure (Firebase). We process data as described in our
-            <button type="button" className="legal-page__link" onClick={() => navigate("/privacy")}>
+            You are responsible for maintaining the security of your account. If you use cloud sync,
+            your data is stored on our infrastructure (Firebase). We process data as described in
+            our
+            <button type="button" className="legal-page__link" onClick={() => navigate('/privacy')}>
               Privacy Policy
-            </button>.
+            </button>
+            .
           </p>
           <p>
-            You may delete your account at any time from Settings. This removes your cloud data. Local
-            data on your device can be cleared separately.
+            You may delete your account at any time from Settings. This removes your cloud data.
+            Local data on your device can be cleared separately.
           </p>
         </section>
 
         <section>
           <h2>6. Availability</h2>
           <p>
-            We strive for high availability but do not guarantee uninterrupted service. The app may be
-            modified, suspended, or discontinued at any time. Offline mode allows continued use without
-            internet for core tracking features.
+            We strive for high availability but do not guarantee uninterrupted service. The app may
+            be modified, suspended, or discontinued at any time. Offline mode allows continued use
+            without internet for core tracking features.
           </p>
         </section>
 
@@ -104,17 +109,18 @@ export default function TermsPage() {
         <section>
           <h2>8. Limitation of Liability</h2>
           <p>
-            To the maximum extent permitted by law, the app is provided &quot;as is&quot; without warranties of
-            any kind. We are not liable for any indirect, incidental, special, or consequential damages
-            arising from your use of the app.
+            To the maximum extent permitted by law, the app is provided &quot;as is&quot; without
+            warranties of any kind. We are not liable for any indirect, incidental, special, or
+            consequential damages arising from your use of the app.
           </p>
         </section>
 
         <section>
           <h2>9. Changes</h2>
           <p>
-            We may update these Terms. The &quot;Last updated&quot; date will change. Continued use after changes
-            constitutes acceptance. Material changes may be communicated via the app or email.
+            We may update these Terms. The &quot;Last updated&quot; date will change. Continued use
+            after changes constitutes acceptance. Material changes may be communicated via the app
+            or email.
           </p>
         </section>
 

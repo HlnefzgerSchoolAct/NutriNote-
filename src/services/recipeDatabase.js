@@ -38,11 +38,11 @@
  * }
  */
 
-import devLog from "../utils/devLog";
+import devLog from '../utils/devLog';
 
-const DB_NAME = "nutrinoteplus_recipes_db";
+const DB_NAME = 'nutrinoteplus_recipes_db';
 const DB_VERSION = 2; // Bumped for micronutrient support
-const STORE_NAME = "recipes";
+const STORE_NAME = 'recipes';
 
 let db = null;
 
@@ -53,7 +53,9 @@ export const setRecipeSyncCallback = (cb) => {
 
 const triggerRecipeSync = () => {
   if (syncCallback) {
-    getAllRecipes().then(syncCallback).catch(() => {});
+    getAllRecipes()
+      .then(syncCallback)
+      .catch(() => {});
   }
 };
 
@@ -70,13 +72,13 @@ export const initRecipeDB = () => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onerror = (event) => {
-      devLog.error("Failed to open recipe database:", event.target.error);
+      devLog.error('Failed to open recipe database:', event.target.error);
       reject(event.target.error);
     };
 
     request.onsuccess = (event) => {
       db = event.target.result;
-      devLog.log("Recipe database initialized successfully");
+      devLog.log('Recipe database initialized successfully');
       resolve(db);
     };
 
@@ -85,14 +87,14 @@ export const initRecipeDB = () => {
 
       // Create recipes object store
       if (!database.objectStoreNames.contains(STORE_NAME)) {
-        const store = database.createObjectStore(STORE_NAME, { keyPath: "id" });
+        const store = database.createObjectStore(STORE_NAME, { keyPath: 'id' });
 
         // Create indexes for searching
-        store.createIndex("name", "name", { unique: false });
-        store.createIndex("category", "category", { unique: false });
-        store.createIndex("createdAt", "createdAt", { unique: false });
+        store.createIndex('name', 'name', { unique: false });
+        store.createIndex('category', 'category', { unique: false });
+        store.createIndex('createdAt', 'createdAt', { unique: false });
 
-        devLog.log("Recipe store created with indexes");
+        devLog.log('Recipe store created with indexes');
       }
     };
   });
@@ -156,7 +158,7 @@ const calculateNutrition = (ingredients, servings) => {
       magnesium: 0,
       zinc: 0,
       potassium: 0,
-    },
+    }
   );
 
   const servingCount = servings || 1;
@@ -176,15 +178,11 @@ const calculateNutrition = (ingredients, servings) => {
     vitaminD: Math.round((totalNutrition.vitaminD / servingCount) * 10) / 10,
     vitaminE: Math.round((totalNutrition.vitaminE / servingCount) * 100) / 100,
     vitaminK: Math.round((totalNutrition.vitaminK / servingCount) * 10) / 10,
-    vitaminB1:
-      Math.round((totalNutrition.vitaminB1 / servingCount) * 100) / 100,
-    vitaminB2:
-      Math.round((totalNutrition.vitaminB2 / servingCount) * 100) / 100,
+    vitaminB1: Math.round((totalNutrition.vitaminB1 / servingCount) * 100) / 100,
+    vitaminB2: Math.round((totalNutrition.vitaminB2 / servingCount) * 100) / 100,
     vitaminB3: Math.round((totalNutrition.vitaminB3 / servingCount) * 10) / 10,
-    vitaminB6:
-      Math.round((totalNutrition.vitaminB6 / servingCount) * 100) / 100,
-    vitaminB12:
-      Math.round((totalNutrition.vitaminB12 / servingCount) * 100) / 100,
+    vitaminB6: Math.round((totalNutrition.vitaminB6 / servingCount) * 100) / 100,
+    vitaminB12: Math.round((totalNutrition.vitaminB12 / servingCount) * 100) / 100,
     folate: Math.round(totalNutrition.folate / servingCount),
     calcium: Math.round(totalNutrition.calcium / servingCount),
     iron: Math.round((totalNutrition.iron / servingCount) * 100) / 100,
@@ -203,23 +201,23 @@ export const saveRecipe = async (recipeData) => {
   await initRecipeDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readwrite");
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
 
     const { totalNutrition, nutritionPerServing } = calculateNutrition(
       recipeData.ingredients,
-      recipeData.servings,
+      recipeData.servings
     );
 
     const recipe = {
       id: recipeData.id || Date.now(),
       name: recipeData.name,
-      category: recipeData.category || "snack",
+      category: recipeData.category || 'snack',
       servings: recipeData.servings || 1,
       ingredients: recipeData.ingredients || [],
       totalNutrition,
       nutritionPerServing,
-      notes: recipeData.notes || "",
+      notes: recipeData.notes || '',
       createdAt: recipeData.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -227,13 +225,13 @@ export const saveRecipe = async (recipeData) => {
     const request = store.put(recipe);
 
     request.onsuccess = () => {
-      devLog.log("Recipe saved:", recipe.name);
+      devLog.log('Recipe saved:', recipe.name);
       triggerRecipeSync();
       resolve(recipe);
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to save recipe:", event.target.error);
+      devLog.error('Failed to save recipe:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -246,19 +244,17 @@ export const getAllRecipes = async () => {
   await initRecipeDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
     const request = store.getAll();
 
     request.onsuccess = () => {
-      const recipes = request.result.sort(
-        (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
-      );
+      const recipes = request.result.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
       resolve(recipes);
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get recipes:", event.target.error);
+      devLog.error('Failed to get recipes:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -271,7 +267,7 @@ export const getRecipeById = async (id) => {
   await initRecipeDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
     const request = store.get(id);
 
@@ -280,7 +276,7 @@ export const getRecipeById = async (id) => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get recipe:", event.target.error);
+      devLog.error('Failed to get recipe:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -293,9 +289,9 @@ export const getRecipesByCategory = async (category) => {
   await initRecipeDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
-    const index = store.index("category");
+    const index = store.index('category');
     const request = index.getAll(category);
 
     request.onsuccess = () => {
@@ -303,7 +299,7 @@ export const getRecipesByCategory = async (category) => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get recipes by category:", event.target.error);
+      devLog.error('Failed to get recipes by category:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -319,7 +315,7 @@ export const searchRecipes = async (searchTerm) => {
   return allRecipes.filter(
     (recipe) =>
       recipe.name.toLowerCase().includes(term) ||
-      recipe.ingredients.some((ing) => ing.name.toLowerCase().includes(term)),
+      recipe.ingredients.some((ing) => ing.name.toLowerCase().includes(term))
   );
 };
 
@@ -330,18 +326,18 @@ export const deleteRecipe = async (id) => {
   await initRecipeDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readwrite");
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
     const request = store.delete(id);
 
     request.onsuccess = () => {
-      devLog.log("Recipe deleted:", id);
+      devLog.log('Recipe deleted:', id);
       triggerRecipeSync();
       resolve(true);
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to delete recipe:", event.target.error);
+      devLog.error('Failed to delete recipe:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -354,7 +350,7 @@ export const updateRecipe = async (id, updates) => {
   const existingRecipe = await getRecipeById(id);
 
   if (!existingRecipe) {
-    throw new Error("Recipe not found");
+    throw new Error('Recipe not found');
   }
 
   const updatedRecipe = {
@@ -368,7 +364,7 @@ export const updateRecipe = async (id, updates) => {
   if (updates.ingredients || updates.servings) {
     const { totalNutrition, nutritionPerServing } = calculateNutrition(
       updatedRecipe.ingredients,
-      updatedRecipe.servings,
+      updatedRecipe.servings
     );
     updatedRecipe.totalNutrition = totalNutrition;
     updatedRecipe.nutritionPerServing = nutritionPerServing;

@@ -3,12 +3,13 @@
  * Only visible when user is signed in
  */
 
-import React, { useEffect, useState } from "react";
-import { Cloud, CloudOff, Check, Loader2, RefreshCw } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
-import { useSyncStatus } from "../contexts/SyncStatusContext";
-import { uploadLocalToCloud } from "../services/syncService";
-import "./SyncStatusIndicator.css";
+import { Cloud, CloudOff, Check, Loader2, RefreshCw } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+
+import { useAuth } from '../contexts/AuthContext';
+import { useSyncStatus } from '../contexts/SyncStatusContext';
+import { uploadLocalToCloud } from '../services/syncService';
+import './SyncStatusIndicator.css';
 
 function formatLastSync(date) {
   if (!date) return null;
@@ -16,7 +17,7 @@ function formatLastSync(date) {
   const diffMs = now - date;
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMins / 60);
-  if (diffMins < 1) return "Just now";
+  if (diffMins < 1) return 'Just now';
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
   return `${Math.floor(diffHours / 24)}d ago`;
@@ -29,21 +30,21 @@ export default function SyncStatusIndicator() {
 
   // Reset success to idle after a few seconds
   useEffect(() => {
-    if (status !== "success") return;
-    const t = setTimeout(() => setStatus("idle"), 3000);
+    if (status !== 'success') return;
+    const t = setTimeout(() => setStatus('idle'), 3000);
     return () => clearTimeout(t);
   }, [status, setStatus]);
 
   const handleRetry = async () => {
     if (!user || retrying) return;
     setRetrying(true);
-    setStatus("syncing");
+    setStatus('syncing');
     try {
       await uploadLocalToCloud(user.uid);
-      setStatus("success");
+      setStatus('success');
       setLastSyncTime(new Date());
     } catch {
-      setStatus("error");
+      setStatus('error');
     } finally {
       setRetrying(false);
     }
@@ -53,19 +54,19 @@ export default function SyncStatusIndicator() {
 
   return (
     <div className="sync-status" role="status" aria-live="polite">
-      {status === "syncing" && (
+      {status === 'syncing' && (
         <span className="sync-status__item sync-status__syncing">
           <Loader2 size={14} className="sync-status__spin" aria-hidden />
           <span>Syncing…</span>
         </span>
       )}
-      {status === "success" && (
+      {status === 'success' && (
         <span className="sync-status__item sync-status__success">
           <Check size={14} aria-hidden />
           <span>Synced</span>
         </span>
       )}
-      {status === "error" && (
+      {status === 'error' && (
         <span className="sync-status__item sync-status__error">
           <CloudOff size={14} aria-hidden />
           <span>Sync failed</span>
@@ -81,7 +82,7 @@ export default function SyncStatusIndicator() {
           </button>
         </span>
       )}
-      {status === "idle" && lastSyncTime && (
+      {status === 'idle' && lastSyncTime && (
         <span className="sync-status__item sync-status__idle">
           <Cloud size={14} aria-hidden />
           <span>Last synced {formatLastSync(lastSyncTime)}</span>

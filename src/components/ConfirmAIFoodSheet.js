@@ -3,15 +3,12 @@
  * Allows users to review and adjust AI-detected foods before logging
  */
 
-import React, { useState, useEffect } from "react";
-import {
-  Minus,
-  Plus,
-  Sparkles,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-} from "lucide-react";
+import { Minus, Plus, Sparkles, AlertTriangle, CheckCircle, Info } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { haptics } from '../utils/haptics';
+import { FOOD_UNITS } from '../utils/units';
+
 import {
   BottomSheet,
   M3Button,
@@ -21,19 +18,18 @@ import {
   Chip,
   ChipGroup,
   useAnnounce,
-} from "./common";
-import { FOOD_UNITS } from "../utils/units";
-import { haptics } from "../utils/haptics";
-import "./ConfirmAIFoodSheet.css";
+} from './common';
+
+import './ConfirmAIFoodSheet.css';
 
 /**
  * Meal type options
  */
 const MEAL_TYPES = [
-  { value: "breakfast", label: "Breakfast", emoji: "🌅" },
-  { value: "lunch", label: "Lunch", emoji: "☀️" },
-  { value: "dinner", label: "Dinner", emoji: "🌙" },
-  { value: "snack", label: "Snack", emoji: "🍪" },
+  { value: 'breakfast', label: 'Breakfast', emoji: '🌅' },
+  { value: 'lunch', label: 'Lunch', emoji: '☀️' },
+  { value: 'dinner', label: 'Dinner', emoji: '🌙' },
+  { value: 'snack', label: 'Snack', emoji: '🍪' },
 ];
 
 /**
@@ -41,10 +37,10 @@ const MEAL_TYPES = [
  */
 const getMealTypeByTime = () => {
   const hour = new Date().getHours();
-  if (hour >= 5 && hour < 11) return "breakfast";
-  if (hour >= 11 && hour < 16) return "lunch";
-  if (hour >= 16 && hour < 22) return "dinner";
-  return "snack";
+  if (hour >= 5 && hour < 11) return 'breakfast';
+  if (hour >= 11 && hour < 16) return 'lunch';
+  if (hour >= 16 && hour < 22) return 'dinner';
+  return 'snack';
 };
 
 /**
@@ -55,16 +51,16 @@ export const ConfirmAIFoodSheet = ({
   onClose,
   onConfirm,
   nutritionData,
-  initialDescription = "",
+  initialDescription = '',
   initialQuantity = 1,
-  initialUnit = "serving",
+  initialUnit = 'serving',
 }) => {
   const announce = useAnnounce();
 
   // Form state
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [unit, setUnit] = useState("serving");
+  const [unit, setUnit] = useState('serving');
   const [mealType, setMealType] = useState(getMealTypeByTime());
 
   // Base nutrition (for 1 unit as provided)
@@ -81,7 +77,7 @@ export const ConfirmAIFoodSheet = ({
 
       setName(initialName);
       setQuantity(initialQuantity || 1);
-      setUnit(initialUnit || "serving");
+      setUnit(initialUnit || 'serving');
       setMealType(getMealTypeByTime());
 
       // Store base nutrition values (already scaled to initialQuantity)
@@ -101,22 +97,14 @@ export const ConfirmAIFoodSheet = ({
       protein: Math.round(baseNutrition.protein * scale * 10) / 10,
       carbs: Math.round(baseNutrition.carbs * scale * 10) / 10,
       fat: Math.round(baseNutrition.fat * scale * 10) / 10,
-      fiber: baseNutrition.fiber
-        ? Math.round(baseNutrition.fiber * scale * 10) / 10
-        : undefined,
-      sodium: baseNutrition.sodium
-        ? Math.round(baseNutrition.sodium * scale)
-        : undefined,
-      sugar: baseNutrition.sugar
-        ? Math.round(baseNutrition.sugar * scale * 10) / 10
-        : undefined,
+      fiber: baseNutrition.fiber ? Math.round(baseNutrition.fiber * scale * 10) / 10 : undefined,
+      sodium: baseNutrition.sodium ? Math.round(baseNutrition.sodium * scale) : undefined,
+      sugar: baseNutrition.sugar ? Math.round(baseNutrition.sugar * scale * 10) / 10 : undefined,
       cholesterol: baseNutrition.cholesterol
         ? Math.round(baseNutrition.cholesterol * scale)
         : undefined,
       // Micronutrients
-      vitaminA: baseNutrition.vitaminA
-        ? Math.round(baseNutrition.vitaminA * scale)
-        : undefined,
+      vitaminA: baseNutrition.vitaminA ? Math.round(baseNutrition.vitaminA * scale) : undefined,
       vitaminC: baseNutrition.vitaminC
         ? Math.round(baseNutrition.vitaminC * scale * 10) / 10
         : undefined,
@@ -144,24 +132,12 @@ export const ConfirmAIFoodSheet = ({
       vitaminB12: baseNutrition.vitaminB12
         ? Math.round(baseNutrition.vitaminB12 * scale * 100) / 100
         : undefined,
-      folate: baseNutrition.folate
-        ? Math.round(baseNutrition.folate * scale)
-        : undefined,
-      calcium: baseNutrition.calcium
-        ? Math.round(baseNutrition.calcium * scale)
-        : undefined,
-      iron: baseNutrition.iron
-        ? Math.round(baseNutrition.iron * scale * 10) / 10
-        : undefined,
-      magnesium: baseNutrition.magnesium
-        ? Math.round(baseNutrition.magnesium * scale)
-        : undefined,
-      zinc: baseNutrition.zinc
-        ? Math.round(baseNutrition.zinc * scale * 10) / 10
-        : undefined,
-      potassium: baseNutrition.potassium
-        ? Math.round(baseNutrition.potassium * scale)
-        : undefined,
+      folate: baseNutrition.folate ? Math.round(baseNutrition.folate * scale) : undefined,
+      calcium: baseNutrition.calcium ? Math.round(baseNutrition.calcium * scale) : undefined,
+      iron: baseNutrition.iron ? Math.round(baseNutrition.iron * scale * 10) / 10 : undefined,
+      magnesium: baseNutrition.magnesium ? Math.round(baseNutrition.magnesium * scale) : undefined,
+      zinc: baseNutrition.zinc ? Math.round(baseNutrition.zinc * scale * 10) / 10 : undefined,
+      potassium: baseNutrition.potassium ? Math.round(baseNutrition.potassium * scale) : undefined,
     };
   };
 
@@ -178,11 +154,11 @@ export const ConfirmAIFoodSheet = ({
   const handleConfirm = () => {
     if (!scaledNutrition || !name.trim() || quantity <= 0) {
       haptics.error();
-      announce("Please enter a valid food name and quantity", "assertive");
+      announce('Please enter a valid food name and quantity', 'assertive');
       return;
     }
 
-    const isUSDA = baseNutrition?.source === "usda";
+    const isUSDA = baseNutrition?.source === 'usda';
     const foodEntry = {
       id: Date.now(),
       name: name.trim(),
@@ -224,13 +200,13 @@ export const ConfirmAIFoodSheet = ({
 
     onConfirm?.(foodEntry);
     haptics.success();
-    announce("Food added to log", "polite");
+    announce('Food added to log', 'polite');
     onClose?.();
   };
 
   if (!nutritionData) return null;
 
-  const isUSDA = baseNutrition?.source === "usda";
+  const isUSDA = baseNutrition?.source === 'usda';
 
   return (
     <BottomSheet open={open} onClose={onClose} title="Confirm Food" fullHeight>
@@ -239,7 +215,7 @@ export const ConfirmAIFoodSheet = ({
         <div className="confirm-ai-food-sheet__badge-row">
           <div className="confirm-ai-food-sheet__badge">
             <Sparkles size={14} />
-            <span>{isUSDA ? "USDA Data" : "AI Estimated"}</span>
+            <span>{isUSDA ? 'USDA Data' : 'AI Estimated'}</span>
           </div>
 
           {/* Multi-Model Confidence Badge */}
@@ -247,17 +223,14 @@ export const ConfirmAIFoodSheet = ({
             <div
               className={`confirm-ai-food-sheet__badge ${
                 nutritionData.multiModelConfidence >= 0.8
-                  ? "confirm-ai-food-sheet__badge--high"
+                  ? 'confirm-ai-food-sheet__badge--high'
                   : nutritionData.multiModelConfidence >= 0.6
-                    ? "confirm-ai-food-sheet__badge--medium"
-                    : "confirm-ai-food-sheet__badge--low"
+                    ? 'confirm-ai-food-sheet__badge--medium'
+                    : 'confirm-ai-food-sheet__badge--low'
               }`}
             >
               <CheckCircle size={14} />
-              <span>
-                {Math.round(nutritionData.multiModelConfidence * 100)}%
-                confidence
-              </span>
+              <span>{Math.round(nutritionData.multiModelConfidence * 100)}% confidence</span>
             </div>
           )}
         </div>
@@ -266,36 +239,30 @@ export const ConfirmAIFoodSheet = ({
         {nutritionData?.outlierDetection?.detected && (
           <div className="confirm-ai-food-sheet__outlier-section">
             {/* Auto-corrections */}
-            {Object.keys(nutritionData.outlierDetection.autoCorrections || {})
-              .length > 0 && (
+            {Object.keys(nutritionData.outlierDetection.autoCorrections || {}).length > 0 && (
               <div className="confirm-ai-food-sheet__outlier-card confirm-ai-food-sheet__outlier-card--corrected">
                 <div className="confirm-ai-food-sheet__outlier-header">
                   <CheckCircle size={14} />
                   <span>Auto-corrected values</span>
                 </div>
                 <div className="confirm-ai-food-sheet__outlier-items">
-                  {Object.entries(
-                    nutritionData.outlierDetection.autoCorrections,
-                  ).map(([nutrient, correction]) => (
-                    <div
-                      key={nutrient}
-                      className="confirm-ai-food-sheet__outlier-item"
-                    >
-                      <span className="confirm-ai-food-sheet__outlier-nutrient">
-                        {nutrient}
-                      </span>
-                      <span className="confirm-ai-food-sheet__outlier-detail">
-                        <s>{correction.original}</s> → {correction.correctedTo}
-                      </span>
-                    </div>
-                  ))}
+                  {Object.entries(nutritionData.outlierDetection.autoCorrections).map(
+                    ([nutrient, correction]) => (
+                      <div key={nutrient} className="confirm-ai-food-sheet__outlier-item">
+                        <span className="confirm-ai-food-sheet__outlier-nutrient">{nutrient}</span>
+                        <span className="confirm-ai-food-sheet__outlier-detail">
+                          <s>{correction.original}</s> → {correction.correctedTo}
+                        </span>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             )}
 
             {/* Warnings (non-auto-corrected) */}
             {(nutritionData.outlierDetection.flaggedNutrients || []).filter(
-              (f) => f.severity === "warning",
+              (f) => f.severity === 'warning'
             ).length > 0 && (
               <div className="confirm-ai-food-sheet__outlier-card confirm-ai-food-sheet__outlier-card--warning">
                 <div className="confirm-ai-food-sheet__outlier-header">
@@ -304,12 +271,9 @@ export const ConfirmAIFoodSheet = ({
                 </div>
                 <div className="confirm-ai-food-sheet__outlier-items">
                   {(nutritionData.outlierDetection.flaggedNutrients || [])
-                    .filter((f) => f.severity === "warning")
+                    .filter((f) => f.severity === 'warning')
                     .map((flag, idx) => (
-                      <div
-                        key={idx}
-                        className="confirm-ai-food-sheet__outlier-item"
-                      >
+                      <div key={idx} className="confirm-ai-food-sheet__outlier-item">
                         <span className="confirm-ai-food-sheet__outlier-nutrient">
                           {flag.nutrient}
                         </span>
@@ -401,19 +365,15 @@ export const ConfirmAIFoodSheet = ({
             {MEAL_TYPES.map((meal) => (
               <button
                 key={meal.value}
-                className={`confirm-ai-food-sheet__meal ${mealType === meal.value ? "confirm-ai-food-sheet__meal--active" : ""}`}
+                className={`confirm-ai-food-sheet__meal ${mealType === meal.value ? 'confirm-ai-food-sheet__meal--active' : ''}`}
                 onClick={() => {
                   setMealType(meal.value);
                   haptics.selection();
                 }}
                 aria-pressed={mealType === meal.value}
               >
-                <span className="confirm-ai-food-sheet__meal-emoji">
-                  {meal.emoji}
-                </span>
-                <span className="confirm-ai-food-sheet__meal-label">
-                  {meal.label}
-                </span>
+                <span className="confirm-ai-food-sheet__meal-emoji">{meal.emoji}</span>
+                <span className="confirm-ai-food-sheet__meal-label">{meal.label}</span>
               </button>
             ))}
           </div>
@@ -428,33 +388,25 @@ export const ConfirmAIFoodSheet = ({
                   <span className="confirm-ai-food-sheet__nutrition-value">
                     {scaledNutrition.calories}
                   </span>
-                  <span className="confirm-ai-food-sheet__nutrition-label">
-                    Calories
-                  </span>
+                  <span className="confirm-ai-food-sheet__nutrition-label">Calories</span>
                 </div>
                 <div className="confirm-ai-food-sheet__nutrition-item">
                   <span className="confirm-ai-food-sheet__nutrition-value">
                     {scaledNutrition.protein}g
                   </span>
-                  <span className="confirm-ai-food-sheet__nutrition-label">
-                    Protein
-                  </span>
+                  <span className="confirm-ai-food-sheet__nutrition-label">Protein</span>
                 </div>
                 <div className="confirm-ai-food-sheet__nutrition-item">
                   <span className="confirm-ai-food-sheet__nutrition-value">
                     {scaledNutrition.carbs}g
                   </span>
-                  <span className="confirm-ai-food-sheet__nutrition-label">
-                    Carbs
-                  </span>
+                  <span className="confirm-ai-food-sheet__nutrition-label">Carbs</span>
                 </div>
                 <div className="confirm-ai-food-sheet__nutrition-item">
                   <span className="confirm-ai-food-sheet__nutrition-value">
                     {scaledNutrition.fat}g
                   </span>
-                  <span className="confirm-ai-food-sheet__nutrition-label">
-                    Fat
-                  </span>
+                  <span className="confirm-ai-food-sheet__nutrition-label">Fat</span>
                 </div>
               </div>
             </M3CardContent>

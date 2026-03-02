@@ -3,8 +3,7 @@
  * Import/Export, backup, and data migration utilities
  */
 
-import React, { useState, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Download,
   Upload,
@@ -15,20 +14,18 @@ import {
   FileJson,
   Clock,
   Database,
-} from "lucide-react";
-import { haptics } from "../utils/haptics";
-import {
-  exportAllData,
-  importAllData,
-  validateImportData,
-} from "../utils/localStorage";
-import "./DataManagement.css";
+} from 'lucide-react';
+import React, { useState, useCallback, useRef } from 'react';
+
+import { haptics } from '../utils/haptics';
+import { exportAllData, importAllData, validateImportData } from '../utils/localStorage';
+import './DataManagement.css';
 
 /**
  * Data Management Sheet Component
  */
 export const DataManagementSheet = ({ isOpen, onClose }) => {
-  const [mode, setMode] = useState("menu"); // menu, import, export, importing
+  const [mode, setMode] = useState('menu'); // menu, import, export, importing
   const [importResult, setImportResult] = useState(null);
   const [exportData, setExportData] = useState(null);
   const fileInputRef = useRef(null);
@@ -40,12 +37,12 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
       const data = exportAllData();
       const dataObj = JSON.parse(data);
       setExportData(dataObj);
-      setMode("export");
+      setMode('export');
     } catch (error) {
-      console.error("Export failed:", error);
+      console.error('Export failed:', error);
       setImportResult({
         success: false,
-        message: "Failed to export data. Please try again.",
+        message: 'Failed to export data. Please try again.',
       });
     }
   }, []);
@@ -55,11 +52,11 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
     haptics.success();
     try {
       const data = JSON.stringify(exportData, null, 2);
-      const blob = new Blob([data], { type: "application/json" });
+      const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
-      a.download = `nutrinote-backup-${new Date().toISOString().split("T")[0]}.json`;
+      a.download = `nutrinote-backup-${new Date().toISOString().split('T')[0]}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -67,13 +64,13 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
 
       setImportResult({
         success: true,
-        message: "Backup file downloaded successfully!",
+        message: 'Backup file downloaded successfully!',
       });
     } catch (error) {
-      console.error("Download failed:", error);
+      console.error('Download failed:', error);
       setImportResult({
         success: false,
-        message: "Failed to download file.",
+        message: 'Failed to download file.',
       });
     }
   }, [exportData]);
@@ -84,7 +81,7 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
     if (!file) return;
 
     haptics.light();
-    setMode("importing");
+    setMode('importing');
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -100,7 +97,7 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
             message: validation.message,
             details: validation.errors,
           });
-          setMode("menu");
+          setMode('menu');
           return;
         }
 
@@ -111,37 +108,36 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
           message: result.message,
           details: result.imported,
         });
-        setMode("menu");
+        setMode('menu');
         haptics.success();
       } catch (error) {
-        console.error("Import failed:", error);
+        console.error('Import failed:', error);
         setImportResult({
           success: false,
-          message:
-            "Invalid file format. Please select a valid NutriNote backup file.",
+          message: 'Invalid file format. Please select a valid NutriNote backup file.',
         });
-        setMode("menu");
+        setMode('menu');
         haptics.error();
       }
     };
     reader.onerror = () => {
       setImportResult({
         success: false,
-        message: "Failed to read file. Please try again.",
+        message: 'Failed to read file. Please try again.',
       });
-      setMode("menu");
+      setMode('menu');
     };
     reader.readAsText(file);
 
     // Reset input
-    event.target.value = "";
+    event.target.value = '';
   }, []);
 
   // Reset on close
   React.useEffect(() => {
     if (!isOpen) {
       setTimeout(() => {
-        setMode("menu");
+        setMode('menu');
         setImportResult(null);
         setExportData(null);
       }, 300);
@@ -164,10 +160,10 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
           {/* Sheet */}
           <motion.div
             className="data-mgmt-sheet"
-            initial={{ y: "100%" }}
+            initial={{ y: '100%' }}
             animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             role="dialog"
             aria-modal="true"
             aria-labelledby="data-mgmt-title"
@@ -178,11 +174,7 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
             <header className="data-mgmt-sheet__header">
               <Database size={20} aria-hidden="true" />
               <h2 id="data-mgmt-title">Data Management</h2>
-              <button
-                className="data-mgmt-sheet__close"
-                onClick={onClose}
-                aria-label="Close"
-              >
+              <button className="data-mgmt-sheet__close" onClick={onClose} aria-label="Close">
                 <X size={20} />
               </button>
             </header>
@@ -192,39 +184,27 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
               {/* Result Banner */}
               {importResult && (
                 <motion.div
-                  className={`data-mgmt-sheet__result ${importResult.success ? "success" : "error"}`}
+                  className={`data-mgmt-sheet__result ${importResult.success ? 'success' : 'error'}`}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
-                  {importResult.success ? (
-                    <CheckCircle size={20} />
-                  ) : (
-                    <AlertTriangle size={20} />
-                  )}
+                  {importResult.success ? <CheckCircle size={20} /> : <AlertTriangle size={20} />}
                   <span>{importResult.message}</span>
-                  <button
-                    onClick={() => setImportResult(null)}
-                    aria-label="Dismiss"
-                  >
+                  <button onClick={() => setImportResult(null)} aria-label="Dismiss">
                     <X size={16} />
                   </button>
                 </motion.div>
               )}
 
-              {mode === "menu" && (
+              {mode === 'menu' && (
                 <>
                   {/* Export Option */}
-                  <button
-                    className="data-mgmt-sheet__option"
-                    onClick={handleExport}
-                  >
+                  <button className="data-mgmt-sheet__option" onClick={handleExport}>
                     <div className="data-mgmt-sheet__option-icon">
                       <Download size={24} />
                     </div>
                     <div className="data-mgmt-sheet__option-info">
-                      <span className="data-mgmt-sheet__option-title">
-                        Export Backup
-                      </span>
+                      <span className="data-mgmt-sheet__option-title">Export Backup</span>
                       <span className="data-mgmt-sheet__option-desc">
                         Download all your data as a JSON file
                       </span>
@@ -240,9 +220,7 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
                       <Upload size={24} />
                     </div>
                     <div className="data-mgmt-sheet__option-info">
-                      <span className="data-mgmt-sheet__option-title">
-                        Import Backup
-                      </span>
+                      <span className="data-mgmt-sheet__option-title">Import Backup</span>
                       <span className="data-mgmt-sheet__option-desc">
                         Restore data from a backup file
                       </span>
@@ -253,7 +231,7 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
                     type="file"
                     accept=".json,application/json"
                     onChange={handleFileSelect}
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     aria-label="Select backup file"
                   />
 
@@ -261,14 +239,14 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
                   <div className="data-mgmt-sheet__info">
                     <Shield size={16} />
                     <span>
-                      Your data is stored locally on this device. Create regular
-                      backups to protect your progress.
+                      Your data is stored locally on this device. Create regular backups to protect
+                      your progress.
                     </span>
                   </div>
                 </>
               )}
 
-              {mode === "export" && exportData && (
+              {mode === 'export' && exportData && (
                 <div className="data-mgmt-sheet__export-preview">
                   <div className="data-mgmt-sheet__export-header">
                     <FileJson size={40} />
@@ -281,40 +259,31 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
                       <span className="data-mgmt-sheet__stat-value">
                         {Object.keys(exportData.foodLog || {}).length}
                       </span>
-                      <span className="data-mgmt-sheet__stat-label">
-                        Days logged
-                      </span>
+                      <span className="data-mgmt-sheet__stat-label">Days logged</span>
                     </div>
                     <div className="data-mgmt-sheet__stat">
                       <span className="data-mgmt-sheet__stat-value">
                         {(exportData.recentFoods || []).length}
                       </span>
-                      <span className="data-mgmt-sheet__stat-label">
-                        Recent foods
-                      </span>
+                      <span className="data-mgmt-sheet__stat-label">Recent foods</span>
                     </div>
                     <div className="data-mgmt-sheet__stat">
                       <span className="data-mgmt-sheet__stat-value">
                         {(exportData.weightLog || []).length}
                       </span>
-                      <span className="data-mgmt-sheet__stat-label">
-                        Weight entries
-                      </span>
+                      <span className="data-mgmt-sheet__stat-label">Weight entries</span>
                     </div>
                   </div>
 
                   <div className="data-mgmt-sheet__export-meta">
                     <Clock size={14} />
-                    <span>
-                      Created:{" "}
-                      {new Date(exportData.exportDate).toLocaleString()}
-                    </span>
+                    <span>Created: {new Date(exportData.exportDate).toLocaleString()}</span>
                   </div>
 
                   <div className="data-mgmt-sheet__actions">
                     <button
                       className="data-mgmt-sheet__btn data-mgmt-sheet__btn--secondary"
-                      onClick={() => setMode("menu")}
+                      onClick={() => setMode('menu')}
                     >
                       Back
                     </button>
@@ -329,7 +298,7 @@ export const DataManagementSheet = ({ isOpen, onClose }) => {
                 </div>
               )}
 
-              {mode === "importing" && (
+              {mode === 'importing' && (
                 <div className="data-mgmt-sheet__loading">
                   <div className="data-mgmt-sheet__spinner" />
                   <p>Importing your data...</p>

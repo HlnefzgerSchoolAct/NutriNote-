@@ -1,7 +1,7 @@
-import React, { forwardRef } from "react";
-import { motion } from "framer-motion";
-import { NavLink, useLocation } from "react-router-dom";
-import "./NavigationRail.css";
+import { motion } from 'framer-motion';
+import React, { forwardRef } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import './NavigationRail.css';
 
 /**
  * M3 Navigation Rail Component
@@ -28,46 +28,36 @@ const NavigationRail = forwardRef(
       bordered = false,
       expanded = false,
       autoExpand = false,
-      alignment = "top",
-      className = "",
+      alignment = 'top',
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     const location = useLocation();
 
     const railClasses = [
-      "m3-nav-rail",
-      fab && "m3-nav-rail--with-fab",
-      bordered && "m3-nav-rail--bordered",
-      expanded && "m3-nav-rail--expanded",
-      autoExpand && "m3-nav-rail--auto-expand",
+      'm3-nav-rail',
+      fab && 'm3-nav-rail--with-fab',
+      bordered && 'm3-nav-rail--bordered',
+      expanded && 'm3-nav-rail--expanded',
+      autoExpand && 'm3-nav-rail--auto-expand',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
-    const itemsClasses = [
-      "m3-nav-rail__items",
-      `m3-nav-rail__items--${alignment}`,
-    ]
+    const itemsClasses = ['m3-nav-rail__items', `m3-nav-rail__items--${alignment}`]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     return (
-      <nav
-        ref={ref}
-        className={railClasses}
-        aria-label="Main navigation"
-        {...props}
-      >
+      <nav ref={ref} className={railClasses} aria-label="Main navigation" {...props}>
         {/* FAB slot */}
         {fab && <div className="m3-nav-rail__fab">{fab}</div>}
 
         {/* Menu button (optional hamburger) */}
-        {menuButton && (
-          <div className="m3-nav-rail__menu-btn">{menuButton}</div>
-        )}
+        {menuButton && <div className="m3-nav-rail__menu-btn">{menuButton}</div>}
 
         {/* Navigation items */}
         <div className={itemsClasses}>
@@ -85,36 +75,22 @@ const NavigationRail = forwardRef(
         </div>
       </nav>
     );
-  },
+  }
 );
 
-NavigationRail.displayName = "NavigationRail";
+NavigationRail.displayName = 'NavigationRail';
 
 /**
  * Navigation Rail Item
  */
 export const NavigationRailItem = forwardRef(
   (
-    {
-      path,
-      label,
-      icon,
-      activeIcon,
-      badge,
-      isActive = false,
-      onClick,
-      className = "",
-      ...props
-    },
-    ref,
+    { path, label, icon, activeIcon, badge, isActive = false, onClick, className = '', ...props },
+    ref
   ) => {
-    const itemClasses = [
-      "m3-nav-rail-item",
-      isActive && "m3-nav-rail-item--active",
-      className,
-    ]
+    const itemClasses = ['m3-nav-rail-item', isActive && 'm3-nav-rail-item--active', className]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const content = (
       <>
@@ -122,16 +98,12 @@ export const NavigationRailItem = forwardRef(
           className="m3-nav-rail-item__icon-container"
           initial={false}
           animate={{
-            backgroundColor: isActive
-              ? "var(--md-sys-color-secondary-container)"
-              : "transparent",
+            backgroundColor: isActive ? 'var(--md-sys-color-secondary-container)' : 'transparent',
           }}
           transition={{ duration: 0.2 }}
         >
           {/* Default icon */}
-          <span className="m3-nav-rail-item__icon m3-nav-rail-item__icon--default">
-            {icon}
-          </span>
+          <span className="m3-nav-rail-item__icon m3-nav-rail-item__icon--default">{icon}</span>
 
           {/* Active icon (if provided) */}
           {activeIcon && (
@@ -144,14 +116,14 @@ export const NavigationRailItem = forwardRef(
           {badge !== undefined && badge !== null && (
             <span
               className={`m3-nav-rail-item__badge ${
-                typeof badge === "number"
+                typeof badge === 'number'
                   ? badge > 99
-                    ? "m3-nav-rail-item__badge--large"
-                    : "m3-nav-rail-item__badge--number"
-                  : ""
+                    ? 'm3-nav-rail-item__badge--large'
+                    : 'm3-nav-rail-item__badge--number'
+                  : ''
               }`}
             >
-              {typeof badge === "number" ? (badge > 99 ? "99+" : badge) : null}
+              {typeof badge === 'number' ? (badge > 99 ? '99+' : badge) : null}
             </span>
           )}
         </motion.div>
@@ -167,7 +139,7 @@ export const NavigationRailItem = forwardRef(
           ref={ref}
           to={path}
           className={itemClasses}
-          aria-current={isActive ? "page" : undefined}
+          aria-current={isActive ? 'page' : undefined}
           {...props}
         >
           {content}
@@ -177,20 +149,14 @@ export const NavigationRailItem = forwardRef(
 
     // Use button for actions
     return (
-      <button
-        ref={ref}
-        type="button"
-        className={itemClasses}
-        onClick={onClick}
-        {...props}
-      >
+      <button ref={ref} type="button" className={itemClasses} onClick={onClick} {...props}>
         {content}
       </button>
     );
-  },
+  }
 );
 
-NavigationRailItem.displayName = "NavigationRailItem";
+NavigationRailItem.displayName = 'NavigationRailItem';
 
 /**
  * Navigation Rail Divider

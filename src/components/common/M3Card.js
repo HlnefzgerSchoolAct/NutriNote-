@@ -1,7 +1,7 @@
-import React, { forwardRef } from "react";
-import { motion } from "framer-motion";
-import { Check } from "lucide-react";
-import "./M3Card.css";
+import { motion } from 'framer-motion';
+import { Check } from 'lucide-react';
+import React, { forwardRef } from 'react';
+import './M3Card.css';
 
 /**
  * Material Design 3 Card Component
@@ -25,8 +25,8 @@ const M3Card = forwardRef(
   (
     {
       children,
-      variant = "elevated",
-      size = "normal",
+      variant = 'elevated',
+      size = 'normal',
       color,
       interactive = false,
       selected = false,
@@ -34,42 +34,42 @@ const M3Card = forwardRef(
       horizontal = false,
       loading = false,
       dragged = false,
-      className = "",
+      className = '',
       onClick,
       onKeyDown,
-      as = "div",
+      as = 'div',
       href,
       tabIndex,
       role,
       ariaLabel,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const Component = interactive ? motion.div : "div";
+    const Component = interactive ? motion.div : 'div';
 
     // Determine if card should be a link
-    const isLink = as === "a" && href;
+    const isLink = as === 'a' && href;
 
     // Build class list
     const cardClasses = [
-      "m3-card",
+      'm3-card',
       `m3-card--${variant}`,
-      size !== "normal" && `m3-card--${size}`,
+      size !== 'normal' && `m3-card--${size}`,
       color && `m3-card--${color}`,
-      interactive && "m3-card--interactive",
-      selected && "m3-card--selected",
-      horizontal && "m3-card--horizontal",
-      loading && "m3-card--loading",
-      dragged && "m3-card--dragged",
+      interactive && 'm3-card--interactive',
+      selected && 'm3-card--selected',
+      horizontal && 'm3-card--horizontal',
+      loading && 'm3-card--loading',
+      dragged && 'm3-card--dragged',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     // Handle keyboard navigation for interactive cards
     const handleKeyDown = (e) => {
-      if (interactive && (e.key === "Enter" || e.key === " ")) {
+      if (interactive && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault();
         onClick?.(e);
       }
@@ -81,7 +81,7 @@ const M3Card = forwardRef(
       ? {
           whileHover: { y: -2 },
           whileTap: { scale: 0.99 },
-          transition: { type: "spring", stiffness: 400, damping: 30 },
+          transition: { type: 'spring', stiffness: 400, damping: 30 },
         }
       : {};
 
@@ -92,9 +92,9 @@ const M3Card = forwardRef(
       onClick: interactive ? onClick : undefined,
       onKeyDown: interactive ? handleKeyDown : undefined,
       tabIndex: interactive ? (tabIndex ?? 0) : tabIndex,
-      role: interactive ? (role ?? "button") : role,
-      "aria-label": ariaLabel,
-      "aria-pressed": selected ? "true" : undefined,
+      role: interactive ? (role ?? 'button') : role,
+      'aria-label': ariaLabel,
+      'aria-pressed': selected ? 'true' : undefined,
       ...motionProps,
       ...props,
     };
@@ -123,27 +123,20 @@ const M3Card = forwardRef(
         {children}
       </Component>
     );
-  },
+  }
 );
 
-M3Card.displayName = "M3Card";
+M3Card.displayName = 'M3Card';
 
 /**
  * Card Header Component
  */
-export const M3CardHeader = ({
-  avatar,
-  title,
-  subtitle,
-  action,
-  className = "",
-  ...props
-}) => {
+export const M3CardHeader = ({ avatar, title, subtitle, action, className = '', ...props }) => {
   return (
     <div className={`m3-card__header ${className}`} {...props}>
       {avatar && (
         <div className="m3-card__header-avatar">
-          {typeof avatar === "string" ? <img src={avatar} alt="" /> : avatar}
+          {typeof avatar === 'string' ? <img src={avatar} alt="" /> : avatar}
         </div>
       )}
 
@@ -162,24 +155,24 @@ export const M3CardHeader = ({
  */
 export const M3CardMedia = ({
   src,
-  alt = "",
-  aspectRatio = "auto",
+  alt = '',
+  aspectRatio = 'auto',
   overlay,
-  position = "top",
+  position = 'top',
   children,
-  className = "",
+  className = '',
   ...props
 }) => {
   const mediaClasses = [
-    "m3-card__media",
-    position === "top" && "m3-card__media--top",
-    aspectRatio === "16:9" && "m3-card__media--16-9",
-    aspectRatio === "4:3" && "m3-card__media--4-3",
-    aspectRatio === "1:1" && "m3-card__media--square",
+    'm3-card__media',
+    position === 'top' && 'm3-card__media--top',
+    aspectRatio === '16:9' && 'm3-card__media--16-9',
+    aspectRatio === '4:3' && 'm3-card__media--4-3',
+    aspectRatio === '1:1' && 'm3-card__media--square',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={mediaClasses} {...props}>
@@ -193,17 +186,10 @@ export const M3CardMedia = ({
 /**
  * Card Content Component
  */
-export const M3CardContent = ({
-  children,
-  supportingText,
-  className = "",
-  ...props
-}) => {
+export const M3CardContent = ({ children, supportingText, className = '', ...props }) => {
   return (
     <div className={`m3-card__content ${className}`} {...props}>
-      {supportingText && (
-        <p className="m3-card__supporting-text">{supportingText}</p>
-      )}
+      {supportingText && <p className="m3-card__supporting-text">{supportingText}</p>}
       {children}
     </div>
   );
@@ -214,20 +200,20 @@ export const M3CardContent = ({
  */
 export const M3CardActions = ({
   children,
-  position = "start",
+  position = 'start',
   vertical = false,
-  className = "",
+  className = '',
   ...props
 }) => {
   const actionsClasses = [
-    "m3-card__actions",
-    position === "end" && "m3-card__actions--end",
-    position === "space-between" && "m3-card__actions--space-between",
-    vertical && "m3-card__actions--vertical",
+    'm3-card__actions',
+    position === 'end' && 'm3-card__actions--end',
+    position === 'space-between' && 'm3-card__actions--space-between',
+    vertical && 'm3-card__actions--vertical',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={actionsClasses} {...props}>
@@ -239,7 +225,7 @@ export const M3CardActions = ({
 /**
  * Card Icon Actions Component
  */
-export const M3CardIconActions = ({ children, className = "", ...props }) => {
+export const M3CardIconActions = ({ children, className = '', ...props }) => {
   return (
     <div className={`m3-card__icon-actions ${className}`} {...props}>
       {children}
@@ -250,26 +236,17 @@ export const M3CardIconActions = ({ children, className = "", ...props }) => {
 /**
  * Card Divider Component
  */
-export const M3CardDivider = ({ className = "", ...props }) => {
+export const M3CardDivider = ({ className = '', ...props }) => {
   return <hr className={`m3-card__divider ${className}`} {...props} />;
 };
 
 /**
  * Card Stack Component - Vertical list of cards
  */
-export const M3CardStack = ({
-  children,
-  noGap = false,
-  className = "",
-  ...props
-}) => {
-  const stackClasses = [
-    "m3-card-stack",
-    noGap && "m3-card-stack--no-gap",
-    className,
-  ]
+export const M3CardStack = ({ children, noGap = false, className = '', ...props }) => {
+  const stackClasses = ['m3-card-stack', noGap && 'm3-card-stack--no-gap', className]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={stackClasses} {...props}>
@@ -281,19 +258,10 @@ export const M3CardStack = ({
 /**
  * Card Grid Component - Responsive card grid
  */
-export const M3CardGrid = ({
-  children,
-  compact = false,
-  className = "",
-  ...props
-}) => {
-  const gridClasses = [
-    "m3-card-grid",
-    compact && "m3-card-grid--compact",
-    className,
-  ]
+export const M3CardGrid = ({ children, compact = false, className = '', ...props }) => {
+  const gridClasses = ['m3-card-grid', compact && 'm3-card-grid--compact', className]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={gridClasses} {...props}>

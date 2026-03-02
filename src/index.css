@@ -4,7 +4,8 @@
 ======================================== */
 
 /* Import Design System Tokens */
-@import "./styles/tokens.css";
+@import './styles/tokens.css';
+@import './styles/animations.css';
 
 /* ===== Legacy CSS Variables (Mapped to Design Tokens) ===== */
 :root {
@@ -47,6 +48,16 @@ html {
   /* Prevent horizontal overflow */
   overflow-x: hidden;
   max-width: 100vw;
+}
+
+/* Modern text selection color */
+::selection {
+  background: color-mix(in srgb, var(--primary, #1a73e8) 25%, transparent);
+  color: inherit;
+}
+::-moz-selection {
+  background: color-mix(in srgb, var(--primary, #1a73e8) 25%, transparent);
+  color: inherit;
 }
 
 body {
@@ -138,23 +149,23 @@ a:hover {
 }
 
 .app-header h1::before {
-  content: "";
+  content: '';
   display: inline-block;
-  width: 220px;
-  height: 56px;
-  background: url("/IconTBB.png") left center/contain no-repeat;
+  width: 440px;
+  height: 112px;
+  background: url('/IconTBB.png') left center/contain no-repeat;
   border-radius: 0;
   box-shadow: none;
   vertical-align: middle;
 }
 
-[data-theme="dark"] .app-header h1::before {
-  background-image: url("/IconTBW.png");
+[data-theme='dark'] .app-header h1::before {
+  background-image: url('/IconTBW.png');
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .app-header h1::before {
-    background-image: url("/IconTBW.png");
+  :root:not([data-theme='light']) .app-header h1::before {
+    background-image: url('/IconTBW.png');
   }
 }
 
@@ -826,7 +837,7 @@ a:hover {
 }
 
 .install-benefits li::before {
-  content: "✓";
+  content: '✓';
   position: absolute;
   left: 0;
   color: var(--success);

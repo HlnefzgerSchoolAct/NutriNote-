@@ -20,12 +20,12 @@ export const M3_EASING = {
 
   // Legacy CSS easing strings
   legacy: {
-    standard: "cubic-bezier(0.2, 0, 0, 1)",
-    standardAccelerate: "cubic-bezier(0.3, 0, 1, 1)",
-    standardDecelerate: "cubic-bezier(0, 0, 0, 1)",
-    emphasized: "cubic-bezier(0.2, 0, 0, 1)",
-    emphasizedAccelerate: "cubic-bezier(0.3, 0, 0.8, 0.15)",
-    emphasizedDecelerate: "cubic-bezier(0.05, 0.7, 0.1, 1)",
+    standard: 'cubic-bezier(0.2, 0, 0, 1)',
+    standardAccelerate: 'cubic-bezier(0.3, 0, 1, 1)',
+    standardDecelerate: 'cubic-bezier(0, 0, 0, 1)',
+    emphasized: 'cubic-bezier(0.2, 0, 0, 1)',
+    emphasizedAccelerate: 'cubic-bezier(0.3, 0, 0.8, 0.15)',
+    emphasizedDecelerate: 'cubic-bezier(0.05, 0.7, 0.1, 1)',
   },
 };
 
@@ -94,19 +94,19 @@ export const M3_TRANSITIONS = {
 
   // Spring-based physics
   spring: {
-    type: "spring",
+    type: 'spring',
     stiffness: 400,
     damping: 30,
   },
 
   springBouncy: {
-    type: "spring",
+    type: 'spring',
     stiffness: 300,
     damping: 20,
   },
 
   springStiff: {
-    type: "spring",
+    type: 'spring',
     stiffness: 500,
     damping: 35,
   },
@@ -178,22 +178,22 @@ export const M3_VARIANTS = {
 
   // Full page slide
   pageSlideRight: {
-    initial: { x: "100%" },
+    initial: { x: '100%' },
     animate: { x: 0 },
-    exit: { x: "-100%" },
+    exit: { x: '-100%' },
   },
 
   pageSlideLeft: {
-    initial: { x: "-100%" },
+    initial: { x: '-100%' },
     animate: { x: 0 },
-    exit: { x: "100%" },
+    exit: { x: '100%' },
   },
 
   // Bottom sheet
   bottomSheet: {
-    initial: { y: "100%" },
+    initial: { y: '100%' },
     animate: { y: 0 },
-    exit: { y: "100%" },
+    exit: { y: '100%' },
   },
 
   // Pop (scale with bounce)
@@ -224,7 +224,7 @@ export const M3_VARIANTS = {
  */
 export const RIPPLE_CONFIG = {
   duration: 550,
-  color: "currentColor",
+  color: 'currentColor',
   opacity: 0.12,
 };
 
@@ -232,20 +232,20 @@ export const RIPPLE_CONFIG = {
  * Get motion preference
  */
 export const getMotionPreference = () => {
-  if (typeof window === "undefined") return "normal";
+  if (typeof window === 'undefined') return 'normal';
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return "reduced";
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return 'reduced';
   }
 
-  return "normal";
+  return 'normal';
 };
 
 /**
  * Create reduced motion variants
  */
 export const reduceMotion = (variants) => {
-  if (getMotionPreference() === "reduced") {
+  if (getMotionPreference() === 'reduced') {
     return {
       initial: { opacity: 0 },
       animate: { opacity: 1 },

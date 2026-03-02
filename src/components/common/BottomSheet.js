@@ -1,20 +1,8 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import {
-  motion,
-  AnimatePresence,
-  useDragControls,
-  useMotionValue,
-  animate,
-} from "framer-motion";
-import { X } from "lucide-react";
-import { createPortal } from "react-dom";
-import "./BottomSheet.css";
+import { motion, AnimatePresence, useDragControls, useMotionValue, animate } from 'framer-motion';
+import { X } from 'lucide-react';
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import './BottomSheet.css';
 
 /**
  * M3 Bottom Sheet Component
@@ -44,16 +32,16 @@ const BottomSheet = forwardRef(
       subtitle,
       showHandle = true,
       showCloseButton = true,
-      variant = "modal",
-      snapPoint = "expanded",
+      variant = 'modal',
+      snapPoint = 'expanded',
       dismissible = true,
       footer,
       noPadding = false,
       children,
-      className = "",
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isClosing, setIsClosing] = useState(false);
     const dragControls = useDragControls();
@@ -84,10 +72,10 @@ const BottomSheet = forwardRef(
           handleClose();
         } else {
           // Snap back to position
-          animate(y, 0, { type: "spring", stiffness: 400, damping: 40 });
+          animate(y, 0, { type: 'spring', stiffness: 400, damping: 40 });
         }
       },
-      [dismissible, handleClose, y],
+      [dismissible, handleClose, y]
     );
 
     // Handle backdrop click
@@ -97,7 +85,7 @@ const BottomSheet = forwardRef(
           handleClose();
         }
       },
-      [dismissible, handleClose],
+      [dismissible, handleClose]
     );
 
     // Handle escape key
@@ -105,20 +93,20 @@ const BottomSheet = forwardRef(
       if (!open) return;
 
       const handleKeyDown = (e) => {
-        if (e.key === "Escape" && dismissible) {
+        if (e.key === 'Escape' && dismissible) {
           handleClose();
         }
       };
 
-      document.addEventListener("keydown", handleKeyDown);
-      return () => document.removeEventListener("keydown", handleKeyDown);
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
     }, [open, dismissible, handleClose]);
 
     // Lock body scroll when open
     useEffect(() => {
-      if (open && variant === "modal") {
+      if (open && variant === 'modal') {
         const originalOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = 'hidden';
         return () => {
           document.body.style.overflow = originalOverflow;
         };
@@ -131,7 +119,7 @@ const BottomSheet = forwardRef(
 
       const sheet = sheetRef.current;
       const focusableElements = sheet.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
@@ -142,7 +130,7 @@ const BottomSheet = forwardRef(
       }
 
       const handleTab = (e) => {
-        if (e.key !== "Tab") return;
+        if (e.key !== 'Tab') return;
 
         if (e.shiftKey) {
           if (document.activeElement === firstElement) {
@@ -157,26 +145,26 @@ const BottomSheet = forwardRef(
         }
       };
 
-      sheet.addEventListener("keydown", handleTab);
-      return () => sheet.removeEventListener("keydown", handleTab);
+      sheet.addEventListener('keydown', handleTab);
+      return () => sheet.removeEventListener('keydown', handleTab);
     }, [open]);
 
     // Build class names
     const sheetClasses = [
-      "m3-bottom-sheet",
+      'm3-bottom-sheet',
       `m3-bottom-sheet--${variant}`,
       `m3-bottom-sheet--${snapPoint}`,
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const contentClasses = [
-      "m3-bottom-sheet__content",
-      noPadding && "m3-bottom-sheet__content--no-padding",
+      'm3-bottom-sheet__content',
+      noPadding && 'm3-bottom-sheet__content--no-padding',
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     // Animation variants
     const scrimVariants = {
@@ -185,17 +173,17 @@ const BottomSheet = forwardRef(
     };
 
     const sheetVariants = {
-      hidden: { y: "100%" },
+      hidden: { y: '100%' },
       visible: {
         y: 0,
         transition: {
-          type: "spring",
+          type: 'spring',
           stiffness: 400,
           damping: 40,
         },
       },
       exit: {
-        y: "100%",
+        y: '100%',
         transition: {
           duration: 0.2,
           ease: [0.3, 0, 0.8, 0.15],
@@ -208,7 +196,7 @@ const BottomSheet = forwardRef(
         {open && !isClosing && (
           <>
             {/* Scrim */}
-            {variant === "modal" && (
+            {variant === 'modal' && (
               <motion.div
                 className="m3-bottom-sheet-scrim"
                 variants={scrimVariants}
@@ -225,7 +213,7 @@ const BottomSheet = forwardRef(
             <motion.div
               ref={(node) => {
                 sheetRef.current = node;
-                if (typeof ref === "function") ref(node);
+                if (typeof ref === 'function') ref(node);
                 else if (ref) ref.current = node;
               }}
               className={sheetClasses}
@@ -234,14 +222,14 @@ const BottomSheet = forwardRef(
               animate="visible"
               exit="exit"
               style={{ y }}
-              drag={showHandle ? "y" : false}
+              drag={showHandle ? 'y' : false}
               dragControls={dragControls}
               dragConstraints={{ top: 0 }}
               dragElastic={0.2}
               onDragEnd={handleDragEnd}
               role="dialog"
-              aria-modal={variant === "modal"}
-              aria-labelledby={title ? "bottom-sheet-title" : undefined}
+              aria-modal={variant === 'modal'}
+              aria-labelledby={title ? 'bottom-sheet-title' : undefined}
               {...props}
             >
               {/* Handle */}
@@ -259,16 +247,11 @@ const BottomSheet = forwardRef(
                 <div className="m3-bottom-sheet__header">
                   <div className="m3-bottom-sheet__header-content">
                     {title && (
-                      <h2
-                        id="bottom-sheet-title"
-                        className="m3-bottom-sheet__title"
-                      >
+                      <h2 id="bottom-sheet-title" className="m3-bottom-sheet__title">
                         {title}
                       </h2>
                     )}
-                    {subtitle && (
-                      <p className="m3-bottom-sheet__subtitle">{subtitle}</p>
-                    )}
+                    {subtitle && <p className="m3-bottom-sheet__subtitle">{subtitle}</p>}
                   </div>
                   {showCloseButton && (
                     <button
@@ -289,9 +272,7 @@ const BottomSheet = forwardRef(
               </div>
 
               {/* Footer */}
-              {footer && (
-                <div className="m3-bottom-sheet__footer">{footer}</div>
-              )}
+              {footer && <div className="m3-bottom-sheet__footer">{footer}</div>}
             </motion.div>
           </>
         )}
@@ -299,15 +280,15 @@ const BottomSheet = forwardRef(
     );
 
     // Render in portal for modal variant
-    if (variant === "modal" && typeof document !== "undefined") {
+    if (variant === 'modal' && typeof document !== 'undefined') {
       return createPortal(sheetContent, document.body);
     }
 
     return sheetContent;
-  },
+  }
 );
 
-BottomSheet.displayName = "BottomSheet";
+BottomSheet.displayName = 'BottomSheet';
 
 /**
  * Bottom Sheet List Item
@@ -317,25 +298,21 @@ export const BottomSheetItem = ({
   title,
   subtitle,
   onClick,
-  as: Component = "button",
-  className = "",
+  as: Component = 'button',
+  className = '',
   ...props
 }) => {
   return (
     <Component
       className={`m3-bottom-sheet__list-item ${className}`}
       onClick={onClick}
-      type={Component === "button" ? "button" : undefined}
+      type={Component === 'button' ? 'button' : undefined}
       {...props}
     >
       {icon && <span className="m3-bottom-sheet__list-item-icon">{icon}</span>}
       <span className="m3-bottom-sheet__list-item-content">
         <span className="m3-bottom-sheet__list-item-title">{title}</span>
-        {subtitle && (
-          <span className="m3-bottom-sheet__list-item-subtitle">
-            {subtitle}
-          </span>
-        )}
+        {subtitle && <span className="m3-bottom-sheet__list-item-subtitle">{subtitle}</span>}
       </span>
     </Component>
   );
@@ -344,7 +321,7 @@ export const BottomSheetItem = ({
 /**
  * Bottom Sheet List
  */
-export const BottomSheetList = ({ children, className = "", ...props }) => {
+export const BottomSheetList = ({ children, className = '', ...props }) => {
   return (
     <ul className={`m3-bottom-sheet__list ${className}`} {...props}>
       {React.Children.map(children, (child) => (

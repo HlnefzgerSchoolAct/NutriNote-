@@ -8,9 +8,7 @@
   flex-direction: column;
   gap: var(--m3-spacing-md, 16px);
   padding: var(--m3-spacing-md, 16px);
-  padding-bottom: calc(
-    var(--m3-spacing-xl, 32px) + env(safe-area-inset-bottom)
-  );
+  padding-bottom: calc(var(--m3-spacing-xl, 32px) + env(safe-area-inset-bottom));
 }
 
 /* ===== Field ===== */
@@ -51,16 +49,22 @@
   border: none;
   color: var(--m3-on-surface, #1a1a1a);
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: all var(--duration-short, 100ms) var(--ease-emphasized, ease);
   -webkit-tap-highlight-color: transparent;
 }
 
 .edit-food-modal__qty-btn:hover {
   background: var(--m3-surface-container-highest, #e0e0e0);
+  transform: scale(1.05);
 }
 
 .edit-food-modal__qty-btn:active {
   transform: scale(0.95);
+}
+
+.edit-food-modal__qty-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--m3-focus-ring, 0 0 0 3px rgba(26, 115, 232, 0.4));
 }
 
 .edit-food-modal__qty-btn:disabled {
@@ -113,12 +117,18 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: all var(--duration-short, 100ms) var(--ease-emphasized, ease);
   -webkit-tap-highlight-color: transparent;
 }
 
 .edit-food-modal__preset:hover {
   background: var(--m3-surface-container-high, #f0f0f0);
+  transform: scale(1.02);
+}
+
+.edit-food-modal__preset:focus-visible {
+  outline: none;
+  box-shadow: var(--m3-focus-ring, 0 0 0 3px rgba(26, 115, 232, 0.4));
 }
 
 .edit-food-modal__preset--active {
@@ -149,8 +159,15 @@
 /* ===== Meals ===== */
 .edit-food-modal__meals {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--m3-spacing-xs, 8px);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--m3-spacing-sm, 12px);
+}
+
+@media (min-width: 480px) {
+  .edit-food-modal__meals {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--m3-spacing-xs, 8px);
+  }
 }
 
 .edit-food-modal__meal {
@@ -163,12 +180,18 @@
   border: 2px solid transparent;
   border-radius: var(--m3-shape-md, 12px);
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: all var(--duration-short, 100ms) var(--ease-emphasized, ease);
   -webkit-tap-highlight-color: transparent;
 }
 
 .edit-food-modal__meal:hover {
   background: var(--m3-surface-container-high, #f0f0f0);
+  transform: translateY(-1px);
+}
+
+.edit-food-modal__meal:focus-visible {
+  outline: none;
+  box-shadow: var(--m3-focus-ring, 0 0 0 3px rgba(26, 115, 232, 0.4));
 }
 
 .edit-food-modal__meal--active {
@@ -193,9 +216,15 @@
 
 .edit-food-modal__nutrition-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--m3-spacing-sm, 12px);
   text-align: center;
+}
+
+@media (min-width: 480px) {
+  .edit-food-modal__nutrition-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .edit-food-modal__nutrition-item {
@@ -367,5 +396,13 @@
   .quick-adjust-modal__btn,
   .quick-adjust-modal__preset {
     transition: none;
+  }
+
+  .edit-food-modal__qty-btn:hover,
+  .edit-food-modal__preset:hover,
+  .edit-food-modal__meal:hover,
+  .quick-adjust-modal__btn:hover,
+  .quick-adjust-modal__preset:hover {
+    transform: none;
   }
 }

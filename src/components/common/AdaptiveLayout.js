@@ -1,14 +1,7 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, X } from "lucide-react";
-import "../../styles/adaptive-layout.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, X } from 'lucide-react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import '../../styles/adaptive-layout.css';
 
 /**
  * M3 Breakpoints
@@ -25,7 +18,7 @@ export const BREAKPOINTS = {
  * Layout Context
  */
 const LayoutContext = createContext({
-  breakpoint: "compact",
+  breakpoint: 'compact',
   isPhone: true,
   isTablet: false,
   isDesktop: false,
@@ -44,22 +37,20 @@ export const useLayout = () => useContext(LayoutContext);
  * Use responsive breakpoint hook
  */
 export const useBreakpoint = () => {
-  const [width, setWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 0,
-  );
+  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const breakpoint = useMemo(() => {
-    if (width >= BREAKPOINTS.xlarge) return "xlarge";
-    if (width >= BREAKPOINTS.large) return "large";
-    if (width >= BREAKPOINTS.expanded) return "expanded";
-    if (width >= BREAKPOINTS.medium) return "medium";
-    return "compact";
+    if (width >= BREAKPOINTS.xlarge) return 'xlarge';
+    if (width >= BREAKPOINTS.large) return 'large';
+    if (width >= BREAKPOINTS.expanded) return 'expanded';
+    if (width >= BREAKPOINTS.medium) return 'medium';
+    return 'compact';
   }, [width]);
 
   return {
@@ -88,20 +79,16 @@ export const AdaptiveLayoutProvider = ({ children }) => {
       openSideSheet,
       closeSideSheet,
     }),
-    [breakpointData, sideSheetOpen, openSideSheet, closeSideSheet],
+    [breakpointData, sideSheetOpen, openSideSheet, closeSideSheet]
   );
 
-  return (
-    <LayoutContext.Provider value={contextValue}>
-      {children}
-    </LayoutContext.Provider>
-  );
+  return <LayoutContext.Provider value={contextValue}>{children}</LayoutContext.Provider>;
 };
 
 /**
  * Adaptive Container - Root layout wrapper
  */
-export const AdaptiveContainer = ({ children, className = "", ...props }) => {
+export const AdaptiveContainer = ({ children, className = '', ...props }) => {
   return (
     <div className={`m3-adaptive ${className}`} {...props}>
       {children}
@@ -112,13 +99,7 @@ export const AdaptiveContainer = ({ children, className = "", ...props }) => {
 /**
  * App Layout - Main layout with optional sidebar
  */
-export const AppLayout = ({
-  children,
-  nav,
-  sidebar,
-  className = "",
-  ...props
-}) => {
+export const AppLayout = ({ children, nav, sidebar, className = '', ...props }) => {
   const { isDesktop } = useLayout();
 
   return (
@@ -142,10 +123,10 @@ export const TopAppBar = ({
   title,
   leading,
   actions,
-  variant = "default",
+  variant = 'default',
   elevated = false,
   onBack,
-  className = "",
+  className = '',
   ...props
 }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -157,32 +138,28 @@ export const TopAppBar = ({
       setScrolled(window.scrollY > 0);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [elevated]);
 
   const barClasses = [
-    "m3-top-bar",
-    scrolled && "m3-top-bar--scrolled",
-    variant === "center" && "m3-top-bar--center",
-    variant === "large" && "m3-top-bar--large",
+    'm3-top-bar',
+    scrolled && 'm3-top-bar--scrolled',
+    variant === 'center' && 'm3-top-bar--center',
+    variant === 'large' && 'm3-top-bar--large',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <header className={barClasses} {...props}>
-      {variant === "large" ? (
+      {variant === 'large' ? (
         <>
           <div className="m3-top-bar__row">
             <div className="m3-top-bar__leading">
               {onBack && (
-                <button
-                  className="m3-top-bar__btn"
-                  onClick={onBack}
-                  aria-label="Go back"
-                >
+                <button className="m3-top-bar__btn" onClick={onBack} aria-label="Go back">
                   <ArrowLeft size={24} />
                 </button>
               )}
@@ -196,11 +173,7 @@ export const TopAppBar = ({
         <>
           <div className="m3-top-bar__leading">
             {onBack && (
-              <button
-                className="m3-top-bar__btn"
-                onClick={onBack}
-                aria-label="Go back"
-              >
+              <button className="m3-top-bar__btn" onClick={onBack} aria-label="Go back">
                 <ArrowLeft size={24} />
               </button>
             )}
@@ -217,7 +190,7 @@ export const TopAppBar = ({
 /**
  * Main Content Area
  */
-export const MainContent = ({ children, className = "", ...props }) => {
+export const MainContent = ({ children, className = '', ...props }) => {
   return (
     <div className={`m3-main__content ${className}`} {...props}>
       {children}
@@ -234,18 +207,14 @@ export const DualPane = ({
   overlay = false,
   showSecondary = true,
   onCloseSecondary,
-  className = "",
+  className = '',
   ...props
 }) => {
   const { isPhone } = useLayout();
 
-  const dualPaneClasses = [
-    "m3-dual-pane",
-    overlay && isPhone && "m3-dual-pane--overlay",
-    className,
-  ]
+  const dualPaneClasses = ['m3-dual-pane', overlay && isPhone && 'm3-dual-pane--overlay', className]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={dualPaneClasses} {...props}>
@@ -255,10 +224,10 @@ export const DualPane = ({
         {showSecondary && (
           <motion.div
             className="m3-dual-pane__secondary"
-            initial={isPhone && overlay ? { x: "100%" } : false}
+            initial={isPhone && overlay ? { x: '100%' } : false}
             animate={{ x: 0 }}
-            exit={isPhone && overlay ? { x: "100%" } : undefined}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            exit={isPhone && overlay ? { x: '100%' } : undefined}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
           >
             {isPhone && overlay && onCloseSecondary && (
               <TopAppBar title="" onBack={onCloseSecondary} />
@@ -280,58 +249,49 @@ export const SideSheet = ({
   title,
   docked = false,
   children,
-  className = "",
+  className = '',
   ...props
 }) => {
   const { isDesktop } = useLayout();
   const isDocked = docked && isDesktop;
 
   const sheetClasses = [
-    "m3-side-sheet",
-    open && "m3-side-sheet--open",
-    isDocked && "m3-side-sheet--docked",
+    'm3-side-sheet',
+    open && 'm3-side-sheet--open',
+    isDocked && 'm3-side-sheet--docked',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   // Close on escape
   useEffect(() => {
     if (!open || isDocked) return;
 
     const handleEscape = (e) => {
-      if (e.key === "Escape") onClose?.();
+      if (e.key === 'Escape') onClose?.();
     };
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [open, isDocked, onClose]);
 
   // Lock body scroll
   useEffect(() => {
     if (open && !isDocked) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
       return () => {
-        document.body.style.overflow = "";
+        document.body.style.overflow = '';
       };
     }
   }, [open, isDocked]);
 
   return (
     <>
-      <div
-        className={sheetClasses}
-        role="dialog"
-        aria-modal={!isDocked}
-        {...props}
-      >
+      <div className={sheetClasses} role="dialog" aria-modal={!isDocked} {...props}>
         <div className="m3-side-sheet__header">
           {!isDocked && (
-            <button
-              className="m3-top-bar__btn"
-              onClick={onClose}
-              aria-label="Close"
-            >
+            <button className="m3-top-bar__btn" onClick={onClose} aria-label="Close">
               <X size={24} />
             </button>
           )}
@@ -354,20 +314,14 @@ export const SideSheet = ({
 /**
  * Page Section Component
  */
-export const Section = ({
-  title,
-  action,
-  children,
-  className = "",
-  ...props
-}) => {
+export const Section = ({ title, action, children, className = '', ...props }) => {
   return (
     <section className={`m3-section ${className}`} {...props}>
       {(title || action) && (
         <div className="m3-section__header">
           {title && <h2 className="m3-section__title">{title}</h2>}
           {action &&
-            (typeof action === "string" ? (
+            (typeof action === 'string' ? (
               <span className="m3-section__action">{action}</span>
             ) : (
               action
@@ -382,32 +336,21 @@ export const Section = ({
 /**
  * Responsive Grid
  */
-export const Grid = ({
-  children,
-  columns,
-  minWidth = 280,
-  gap = 16,
-  className = "",
-  ...props
-}) => {
+export const Grid = ({ children, columns, minWidth = 280, gap = 16, className = '', ...props }) => {
   const gridClasses = [
-    "m3-grid",
-    columns === 2 && "m3-grid--2",
-    columns === 3 && "m3-grid--3",
-    columns === 4 && "m3-grid--4",
+    'm3-grid',
+    columns === 2 && 'm3-grid--2',
+    columns === 3 && 'm3-grid--3',
+    columns === 4 && 'm3-grid--4',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
-  const styles = columns ? {} : { "--grid-min-width": `${minWidth}px` };
+  const styles = columns ? {} : { '--grid-min-width': `${minWidth}px` };
 
   return (
-    <div
-      className={gridClasses}
-      style={{ ...styles, gap: `${gap}px` }}
-      {...props}
-    >
+    <div className={gridClasses} style={{ ...styles, gap: `${gap}px` }} {...props}>
       {children}
     </div>
   );
@@ -416,18 +359,9 @@ export const Grid = ({
 /**
  * Container with query support
  */
-export const Container = ({
-  children,
-  name = "main",
-  className = "",
-  ...props
-}) => {
+export const Container = ({ children, name = 'main', className = '', ...props }) => {
   return (
-    <div
-      className={`m3-container ${className}`}
-      style={{ containerName: name }}
-      {...props}
-    >
+    <div className={`m3-container ${className}`} style={{ containerName: name }} {...props}>
       {children}
     </div>
   );
@@ -436,22 +370,16 @@ export const Container = ({
 /**
  * Visibility components
  */
-export const PhoneOnly = ({ children }) => (
-  <div className="m3-phone-only">{children}</div>
-);
+export const PhoneOnly = ({ children }) => <div className="m3-phone-only">{children}</div>;
 
-export const TabletUp = ({ children }) => (
-  <div className="m3-tablet-up">{children}</div>
-);
+export const TabletUp = ({ children }) => <div className="m3-tablet-up">{children}</div>;
 
-export const DesktopUp = ({ children }) => (
-  <div className="m3-desktop-up">{children}</div>
-);
+export const DesktopUp = ({ children }) => <div className="m3-desktop-up">{children}</div>;
 
 /**
  * Scroll Area with styled scrollbar
  */
-export const ScrollArea = ({ children, className = "", ...props }) => {
+export const ScrollArea = ({ children, className = '', ...props }) => {
   return (
     <div className={`m3-scroll-area ${className}`} {...props}>
       {children}

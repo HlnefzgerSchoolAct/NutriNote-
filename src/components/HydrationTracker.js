@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  loadWaterLog,
-  saveWaterLog,
-  addWaterCup,
-  removeWaterCup,
-} from "../utils/localStorage";
-import "./HydrationTracker.css";
+import React, { useState, useEffect } from 'react';
+
+import { loadWaterLog, saveWaterLog, addWaterCup, removeWaterCup } from '../utils/localStorage';
+import './HydrationTracker.css';
 
 // SVG Icons
 const WaterDropIcon = () => (
@@ -102,7 +98,7 @@ function HydrationTracker({ userProfile }) {
             <svg width="180" height="180" viewBox="0 0 180 180">
               <circle className="water-progress-bg" cx="90" cy="90" r="72" />
               <circle
-                className={`water-progress-fill ${percentage >= 100 ? "complete" : ""}`}
+                className={`water-progress-fill ${percentage >= 100 ? 'complete' : ''}`}
                 cx="90"
                 cy="90"
                 r="72"
@@ -119,9 +115,7 @@ function HydrationTracker({ userProfile }) {
               <div className="water-count">{waterOunces}</div>
               <div className="water-label">oz today</div>
             </div>
-            <div
-              className={`progress-percentage ${percentage >= 100 ? "complete" : ""}`}
-            >
+            <div className={`progress-percentage ${percentage >= 100 ? 'complete' : ''}`}>
               {Math.round(percentage)}%
             </div>
           </div>
@@ -129,28 +123,21 @@ function HydrationTracker({ userProfile }) {
 
         <div className="hydration-status">
           {waterOunces >= DAILY_GOAL && (
-            <p className="status-message success">
-              Goal reached! Great job staying hydrated!
-            </p>
+            <p className="status-message success">Goal reached! Great job staying hydrated!</p>
           )}
           {waterOunces >= DAILY_GOAL * 0.75 && waterOunces < DAILY_GOAL && (
             <p className="status-message good">
               Almost there! {DAILY_GOAL - waterOunces} oz to go.
             </p>
           )}
-          {waterOunces >= DAILY_GOAL * 0.5 &&
-            waterOunces < DAILY_GOAL * 0.75 && (
-              <p className="status-message good">Good progress. Keep it up!</p>
-            )}
+          {waterOunces >= DAILY_GOAL * 0.5 && waterOunces < DAILY_GOAL * 0.75 && (
+            <p className="status-message good">Good progress. Keep it up!</p>
+          )}
           {waterOunces > 0 && waterOunces < DAILY_GOAL * 0.5 && (
-            <p className="status-message needs-more">
-              You're on track. Keep drinking!
-            </p>
+            <p className="status-message needs-more">You're on track. Keep drinking!</p>
           )}
           {waterOunces === 0 && (
-            <p className="status-message empty">
-              Start tracking your water intake.
-            </p>
+            <p className="status-message empty">Start tracking your water intake.</p>
           )}
         </div>
       </div>
@@ -169,11 +156,7 @@ function HydrationTracker({ userProfile }) {
       </div>
 
       <div className="quick-add-water">
-        <button
-          className="quick-water-btn"
-          onClick={handleAddWater}
-          title="Add 8 oz"
-        >
+        <button className="quick-water-btn" onClick={handleAddWater} title="Add 8 oz">
           +8 oz
         </button>
         <button
@@ -203,8 +186,7 @@ function HydrationTracker({ userProfile }) {
       </div>
 
       <p className="hydration-tip">
-        <strong>Tip:</strong> Drink water consistently throughout the day. A
-        standard glass is 8 oz.
+        <strong>Tip:</strong> Drink water consistently throughout the day. A standard glass is 8 oz.
       </p>
     </div>
   );

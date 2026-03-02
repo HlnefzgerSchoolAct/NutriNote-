@@ -18,7 +18,7 @@
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
 }
 
-[data-theme="dark"] .install-banner {
+[data-theme='dark'] .install-banner {
   background: var(--surface-glass, rgba(28, 27, 31, 0.95));
   border-top-color: var(--border-subtle, rgba(255, 255, 255, 0.1));
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
@@ -68,7 +68,9 @@
   font-size: var(--text-label-md, 12px);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 200ms ease, transform 100ms ease;
+  transition:
+    background-color 200ms ease,
+    transform 100ms ease;
   touch-action: manipulation;
   min-height: 44px;
 }
@@ -96,7 +98,7 @@
   color: var(--text-primary, #1c1b1f);
 }
 
-[data-theme="dark"] .install-banner__btn--secondary {
+[data-theme='dark'] .install-banner__btn--secondary {
   background: var(--surface-container-high, #2b2930);
   color: var(--text-on-surface-variant, #cac4d0);
 }
@@ -116,7 +118,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 200ms ease, color 200ms ease;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
   touch-action: manipulation;
 }
 
@@ -125,7 +129,7 @@
   color: var(--text-primary, #1c1b1f);
 }
 
-[data-theme="dark"] .install-banner__close:hover {
+[data-theme='dark'] .install-banner__close:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 

@@ -1,8 +1,8 @@
-import React from "react";
-import { Toaster, toast } from "react-hot-toast";
-import { CheckCircle, XCircle, AlertCircle, Info, X } from "lucide-react";
-import { motion } from "framer-motion";
-import "./Toast.css";
+import { motion } from 'framer-motion';
+import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react';
+import React from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+import './Toast.css';
 
 /**
  * Toast Configuration Component
@@ -17,7 +17,7 @@ export const ToastProvider = () => (
     }}
     toastOptions={{
       duration: 4000,
-      className: "ds-toast",
+      className: 'ds-toast',
     }}
   />
 );
@@ -31,7 +31,7 @@ const ToastContent = ({ icon, title, message, type, onDismiss }) => (
     initial={{ opacity: 0, y: -20, scale: 0.95 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
     exit={{ opacity: 0, y: -20, scale: 0.95 }}
-    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
   >
     <span className="ds-toast-content__icon">{icon}</span>
     <div className="ds-toast-content__text">
@@ -68,7 +68,7 @@ export const showToast = {
       ),
       {
         duration: 3000,
-      },
+      }
     );
 
     // Haptic feedback
@@ -90,7 +90,7 @@ export const showToast = {
       ),
       {
         duration: 5000,
-      },
+      }
     );
 
     if (navigator.vibrate) {
@@ -111,7 +111,7 @@ export const showToast = {
       ),
       {
         duration: 4000,
-      },
+      }
     );
   },
 
@@ -128,7 +128,7 @@ export const showToast = {
       ),
       {
         duration: 4000,
-      },
+      }
     );
   },
 
@@ -150,7 +150,7 @@ export const showToast = {
             onClick={() => {
               onUndo();
               toast.dismiss(t.id);
-              showToast.success("Undone!");
+              showToast.success('Undone!');
             }}
           >
             Undo
@@ -158,16 +158,16 @@ export const showToast = {
           <div className="ds-toast-content__progress">
             <motion.div
               className="ds-toast-content__progress-bar"
-              initial={{ width: "100%" }}
-              animate={{ width: "0%" }}
-              transition={{ duration: duration / 1000, ease: "linear" }}
+              initial={{ width: '100%' }}
+              animate={{ width: '0%' }}
+              transition={{ duration: duration / 1000, ease: 'linear' }}
             />
           </div>
         </motion.div>
       ),
       {
         duration,
-      },
+      }
     );
 
     return id;
@@ -190,7 +190,7 @@ export const showToast = {
       ),
       {
         duration: Infinity,
-      },
+      }
     );
   },
 

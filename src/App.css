@@ -233,7 +233,8 @@
 }
 
 @keyframes loading-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -267,20 +268,23 @@
   padding: var(--space-lg) var(--space-md) 80px;
 }
 
-/* Page wrapper — subtle fade-in, respects reduced motion */
+/* Page wrapper — subtle fade-in with slight lift, respects reduced motion */
 .page-wrapper {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  animation: page-fade-in var(--duration-medium, 200ms) var(--ease-emphasized, ease-out);
+  animation: page-fade-in var(--duration-medium, 250ms)
+    var(--ease-emphasized, cubic-bezier(0.2, 0, 0, 1)) both;
 }
 
 @keyframes page-fade-in {
   from {
     opacity: 0;
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -300,22 +304,31 @@
 }
 
 /* ===== Scrollbar ===== */
+/* Modern thin scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface-tertiary);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--border-strong);
   border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-tertiary);
+  background-clip: padding-box;
 }
 
 /* ===== Skip Link (Accessibility) ===== */

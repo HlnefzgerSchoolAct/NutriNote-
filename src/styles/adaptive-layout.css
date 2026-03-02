@@ -301,10 +301,7 @@
 .m3-grid {
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(var(--grid-min-width, 280px), 1fr)
-  );
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min-width, 280px), 1fr));
 }
 
 .m3-grid--2 {
@@ -425,27 +422,27 @@
 }
 
 /* ===== Dark Mode ===== */
-[data-theme="dark"] .m3-adaptive {
+[data-theme='dark'] .m3-adaptive {
   background-color: var(--m3-surface, #141218);
 }
 
-[data-theme="dark"] .m3-top-bar {
+[data-theme='dark'] .m3-top-bar {
   background-color: var(--m3-surface, #141218);
 }
 
-[data-theme="dark"] .m3-top-bar--scrolled {
+[data-theme='dark'] .m3-top-bar--scrolled {
   background-color: var(--m3-surface-container, #211f26);
 }
 
-[data-theme="dark"] .m3-top-bar__btn:hover {
+[data-theme='dark'] .m3-top-bar__btn:hover {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="dark"] .m3-side-sheet {
+[data-theme='dark'] .m3-side-sheet {
   background-color: var(--m3-surface, #141218);
 }
 
-[data-theme="dark"] .m3-dual-pane__secondary {
+[data-theme='dark'] .m3-dual-pane__secondary {
   background-color: var(--m3-surface-container-low, #1d1b20);
 }
 

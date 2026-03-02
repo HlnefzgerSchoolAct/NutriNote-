@@ -3,8 +3,7 @@
  * Displays helpful messages when there's no data
  */
 
-import React from "react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 import {
   Apple,
   ClipboardList,
@@ -15,8 +14,9 @@ import {
   TrendingUp,
   Utensils,
   Plus,
-} from "lucide-react";
-import "./EmptyState.css";
+} from 'lucide-react';
+import React from 'react';
+import './EmptyState.css';
 
 /**
  * Empty state configurations
@@ -24,47 +24,46 @@ import "./EmptyState.css";
 const EMPTY_STATE_CONFIG = {
   foodLog: {
     icon: Utensils,
-    title: "No foods logged today",
-    description: "Start tracking your meals by adding your first food entry.",
-    actionLabel: "Add Food",
+    title: 'No foods logged today',
+    description: 'Start tracking your meals by adding your first food entry.',
+    actionLabel: 'Add Food',
     actionIcon: Plus,
   },
   history: {
     icon: Calendar,
-    title: "No history yet",
-    description:
-      "Your nutrition history will appear here once you start logging.",
-    actionLabel: "Start Logging",
+    title: 'No history yet',
+    description: 'Your nutrition history will appear here once you start logging.',
+    actionLabel: 'Start Logging',
     actionIcon: ClipboardList,
   },
   recipes: {
     icon: BookOpen,
-    title: "No recipes saved",
-    description: "Create custom recipes to log complex meals with one tap.",
-    actionLabel: "Create Recipe",
+    title: 'No recipes saved',
+    description: 'Create custom recipes to log complex meals with one tap.',
+    actionLabel: 'Create Recipe',
     actionIcon: Plus,
   },
   search: {
     icon: Search,
-    title: "No results found",
-    description: "Try different keywords or check your spelling.",
+    title: 'No results found',
+    description: 'Try different keywords or check your spelling.',
   },
   favorites: {
     icon: Apple,
-    title: "No favorites yet",
-    description: "Star foods you eat frequently for quick access.",
+    title: 'No favorites yet',
+    description: 'Star foods you eat frequently for quick access.',
   },
   goals: {
     icon: Target,
-    title: "Set your goals",
-    description: "Define your daily calorie and macro targets to get started.",
-    actionLabel: "Set Goals",
+    title: 'Set your goals',
+    description: 'Define your daily calorie and macro targets to get started.',
+    actionLabel: 'Set Goals',
   },
   weight: {
     icon: TrendingUp,
-    title: "No weight entries",
-    description: "Track your progress by logging your weight regularly.",
-    actionLabel: "Log Weight",
+    title: 'No weight entries',
+    description: 'Track your progress by logging your weight regularly.',
+    actionLabel: 'Log Weight',
     actionIcon: Plus,
   },
 };
@@ -73,7 +72,7 @@ const EMPTY_STATE_CONFIG = {
  * Empty State Component
  */
 export const EmptyState = ({
-  type = "foodLog",
+  type = 'foodLog',
   title,
   description,
   icon,
@@ -92,7 +91,7 @@ export const EmptyState = ({
 
   return (
     <motion.div
-      className={`empty-state ${compact ? "empty-state--compact" : ""}`}
+      className={`empty-state ${compact ? 'empty-state--compact' : ''}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -101,16 +100,14 @@ export const EmptyState = ({
         className="empty-state__icon"
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
-        transition={{ delay: 0.1, type: "spring", stiffness: 300 }}
+        transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
       >
         <IconComponent size={compact ? 32 : 48} aria-hidden="true" />
       </motion.div>
 
       <h3 className="empty-state__title">{displayTitle}</h3>
 
-      {displayDescription && (
-        <p className="empty-state__description">{displayDescription}</p>
-      )}
+      {displayDescription && <p className="empty-state__description">{displayDescription}</p>}
 
       {(action || displayActionLabel) && (
         <motion.button
@@ -133,20 +130,20 @@ export const EmptyState = ({
  */
 export const MealEmptyState = ({ mealType, onAdd }) => {
   const mealLabels = {
-    breakfast: "breakfast",
-    lunch: "lunch",
-    dinner: "dinner",
-    snack: "snack",
-    other: "food",
+    breakfast: 'breakfast',
+    lunch: 'lunch',
+    dinner: 'dinner',
+    snack: 'snack',
+    other: 'food',
   };
 
   return (
     <div className="meal-empty-state">
-      <p>No {mealLabels[mealType] || "food"} logged yet</p>
+      <p>No {mealLabels[mealType] || 'food'} logged yet</p>
       {onAdd && (
         <button className="meal-empty-state__add" onClick={onAdd}>
           <Plus size={16} />
-          <span>Add {mealLabels[mealType] || "food"}</span>
+          <span>Add {mealLabels[mealType] || 'food'}</span>
         </button>
       )}
     </div>

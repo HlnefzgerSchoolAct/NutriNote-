@@ -1,6 +1,6 @@
-import React, { forwardRef, memo } from "react";
-import { motion } from "framer-motion";
-import "./Card.css";
+import { motion } from 'framer-motion';
+import React, { forwardRef, memo } from 'react';
+import './Card.css';
 
 /**
  * Professional Card Component
@@ -11,40 +11,40 @@ const Card = forwardRef(
   (
     {
       children,
-      variant = "default",
-      size = "md",
+      variant = 'default',
+      size = 'md',
       hoverable = false,
       pressable = false,
-      className = "",
+      className = '',
       onClick,
-      as = "div",
+      as = 'div',
       header,
       footer,
       noPadding = false,
       ...props
     },
-    ref,
+    ref
   ) => {
     const isInteractive = hoverable || pressable || onClick;
     const Component = isInteractive ? motion.div : as;
 
     const baseClasses = [
-      "ds-card",
+      'ds-card',
       `ds-card--${variant}`,
       `ds-card--${size}`,
-      hoverable && "ds-card--hoverable",
-      pressable && "ds-card--pressable",
-      noPadding && "ds-card--no-padding",
+      hoverable && 'ds-card--hoverable',
+      pressable && 'ds-card--pressable',
+      noPadding && 'ds-card--no-padding',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const motionProps = isInteractive
       ? {
           whileHover: hoverable ? { y: -2, scale: 1.01 } : undefined,
           whileTap: pressable ? { scale: 0.98 } : undefined,
-          transition: { type: "spring", stiffness: 400, damping: 17 },
+          transition: { type: 'spring', stiffness: 400, damping: 17 },
         }
       : {};
 
@@ -62,7 +62,7 @@ const Card = forwardRef(
         ref={ref}
         className={baseClasses}
         onClick={onClick ? handleClick : undefined}
-        role={onClick ? "button" : undefined}
+        role={onClick ? 'button' : undefined}
         tabIndex={onClick ? 0 : undefined}
         {...motionProps}
         {...props}
@@ -74,17 +74,13 @@ const Card = forwardRef(
         {footer && <div className="ds-card__footer">{footer}</div>}
       </Component>
     );
-  },
+  }
 );
 
-Card.displayName = "Card";
+Card.displayName = 'Card';
 
 // Sub-components for flexibility
-export const CardHeader = memo(function CardHeader({
-  children,
-  className = "",
-  ...props
-}) {
+export const CardHeader = memo(function CardHeader({ children, className = '', ...props }) {
   return (
     <div className={`ds-card__header ${className}`} {...props}>
       {children}
@@ -92,11 +88,7 @@ export const CardHeader = memo(function CardHeader({
   );
 });
 
-export const CardBody = memo(function CardBody({
-  children,
-  className = "",
-  ...props
-}) {
+export const CardBody = memo(function CardBody({ children, className = '', ...props }) {
   return (
     <div className={`ds-card__content ${className}`} {...props}>
       {children}
@@ -104,11 +96,7 @@ export const CardBody = memo(function CardBody({
   );
 });
 
-export const CardFooter = memo(function CardFooter({
-  children,
-  className = "",
-  ...props
-}) {
+export const CardFooter = memo(function CardFooter({ children, className = '', ...props }) {
   return (
     <div className={`ds-card__footer ${className}`} {...props}>
       {children}

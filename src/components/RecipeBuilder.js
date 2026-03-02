@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
   Minus,
@@ -11,32 +10,33 @@ import {
   Sun,
   Moon,
   Cookie,
-} from "lucide-react";
-import { Card, Button, Input, showToast, CompactMacros } from "./common";
-import { estimateNutrition } from "../services/aiNutritionService";
-import { saveRecipe, updateRecipe } from "../services/recipeDatabase";
-import "./RecipeBuilder.css";
+} from 'lucide-react';
+import React, { useState } from 'react';
+
+import { estimateNutrition } from '../services/aiNutritionService';
+import { saveRecipe, updateRecipe } from '../services/recipeDatabase';
+
+import { Card, Button, Input, showToast, CompactMacros } from './common';
+import './RecipeBuilder.css';
 
 const CATEGORIES = [
-  { id: "breakfast", label: "Breakfast", icon: Coffee },
-  { id: "lunch", label: "Lunch", icon: Sun },
-  { id: "dinner", label: "Dinner", icon: Moon },
-  { id: "snack", label: "Snack", icon: Cookie },
+  { id: 'breakfast', label: 'Breakfast', icon: Coffee },
+  { id: 'lunch', label: 'Lunch', icon: Sun },
+  { id: 'dinner', label: 'Dinner', icon: Moon },
+  { id: 'snack', label: 'Snack', icon: Cookie },
 ];
 
 function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
-  const [recipeName, setRecipeName] = useState(existingRecipe?.name || "");
-  const [category, setCategory] = useState(existingRecipe?.category || "snack");
+  const [recipeName, setRecipeName] = useState(existingRecipe?.name || '');
+  const [category, setCategory] = useState(existingRecipe?.category || 'snack');
   const [servings, setServings] = useState(existingRecipe?.servings || 1);
-  const [ingredients, setIngredients] = useState(
-    existingRecipe?.ingredients || [],
-  );
-  const [notes, setNotes] = useState(existingRecipe?.notes || "");
+  const [ingredients, setIngredients] = useState(existingRecipe?.ingredients || []);
+  const [notes, setNotes] = useState(existingRecipe?.notes || '');
 
   // Ingredient input state
-  const [ingredientSearch, setIngredientSearch] = useState("");
-  const [ingredientQuantity, setIngredientQuantity] = useState("1");
-  const [ingredientUnit, setIngredientUnit] = useState("serving");
+  const [ingredientSearch, setIngredientSearch] = useState('');
+  const [ingredientQuantity, setIngredientQuantity] = useState('1');
+  const [ingredientUnit, setIngredientUnit] = useState('serving');
   const [isEstimating, setIsEstimating] = useState(false);
   const [estimatedIngredient, setEstimatedIngredient] = useState(null);
 
@@ -50,7 +50,7 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
       carbs: acc.carbs + (ing.carbs || 0),
       fat: acc.fat + (ing.fat || 0),
     }),
-    { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 }
   );
 
   // Ensure servings is at least 1 to prevent division by zero
@@ -64,7 +64,7 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
 
   const handleEstimateIngredient = async () => {
     if (!ingredientSearch.trim()) {
-      showToast.error("Please enter an ingredient");
+      showToast.error('Please enter an ingredient');
       return;
     }
 
@@ -85,7 +85,7 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
         fat: Math.round(nutrition.fat * 10) / 10,
       });
     } catch (error) {
-      showToast.error("Failed to estimate nutrition");
+      showToast.error('Failed to estimate nutrition');
     } finally {
       setIsEstimating(false);
     }
@@ -102,12 +102,12 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
     setIngredients((prev) => [...prev, newIngredient]);
 
     // Reset input
-    setIngredientSearch("");
-    setIngredientQuantity("1");
-    setIngredientUnit("serving");
+    setIngredientSearch('');
+    setIngredientQuantity('1');
+    setIngredientUnit('serving');
     setEstimatedIngredient(null);
 
-    showToast.success("Ingredient added!");
+    showToast.success('Ingredient added!');
   };
 
   const handleRemoveIngredient = (id) => {
@@ -120,12 +120,12 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
 
   const handleSaveRecipe = async () => {
     if (!recipeName.trim()) {
-      showToast.error("Please enter a recipe name");
+      showToast.error('Please enter a recipe name');
       return;
     }
 
     if (ingredients.length === 0) {
-      showToast.error("Please add at least one ingredient");
+      showToast.error('Please add at least one ingredient');
       return;
     }
 
@@ -143,17 +143,17 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
       let savedRecipe;
       if (existingRecipe) {
         savedRecipe = await updateRecipe(existingRecipe.id, recipeData);
-        showToast.success("Recipe updated!");
+        showToast.success('Recipe updated!');
       } else {
         savedRecipe = await saveRecipe(recipeData);
-        showToast.success("Recipe saved!");
+        showToast.success('Recipe saved!');
       }
 
       if (onSave) {
         onSave(savedRecipe);
       }
     } catch (error) {
-      showToast.error("Failed to save recipe");
+      showToast.error('Failed to save recipe');
     } finally {
       setIsSaving(false);
     }
@@ -164,7 +164,7 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
       <Card variant="elevated" className="recipe-builder-card">
         <div className="recipe-builder-header">
           <ChefHat size={24} className="recipe-icon" />
-          <h2>{existingRecipe ? "Edit Recipe" : "Create Recipe"}</h2>
+          <h2>{existingRecipe ? 'Edit Recipe' : 'Create Recipe'}</h2>
         </div>
 
         {/* Recipe Name */}
@@ -188,7 +188,7 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
               return (
                 <button
                   key={cat.id}
-                  className={`category-btn ${category === cat.id ? "active" : ""}`}
+                  className={`category-btn ${category === cat.id ? 'active' : ''}`}
                   onClick={() => setCategory(cat.id)}
                 >
                   <Icon size={18} />
@@ -211,10 +211,7 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
               <Minus size={18} />
             </button>
             <span className="servings-value">{servings}</span>
-            <button
-              className="servings-btn"
-              onClick={() => handleServingsChange(1)}
-            >
+            <button className="servings-btn" onClick={() => handleServingsChange(1)}>
               <Plus size={18} />
             </button>
           </div>
@@ -281,28 +278,20 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
               <motion.div
                 className="estimated-ingredient"
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
+                animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
               >
                 <div className="estimated-header">
                   <span className="estimated-name">
-                    {estimatedIngredient.quantity} {estimatedIngredient.unit}{" "}
+                    {estimatedIngredient.quantity} {estimatedIngredient.unit}{' '}
                     {estimatedIngredient.name}
                   </span>
-                  <span className="estimated-calories">
-                    {estimatedIngredient.calories} cal
-                  </span>
+                  <span className="estimated-calories">{estimatedIngredient.calories} cal</span>
                 </div>
                 <div className="estimated-macros">
-                  <span className="macro protein">
-                    P: {estimatedIngredient.protein}g
-                  </span>
-                  <span className="macro carbs">
-                    C: {estimatedIngredient.carbs}g
-                  </span>
-                  <span className="macro fat">
-                    F: {estimatedIngredient.fat}g
-                  </span>
+                  <span className="macro protein">P: {estimatedIngredient.protein}g</span>
+                  <span className="macro carbs">C: {estimatedIngredient.carbs}g</span>
+                  <span className="macro fat">F: {estimatedIngredient.fat}g</span>
                 </div>
                 <Button
                   variant="success"
@@ -321,9 +310,7 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
         {/* Ingredients List */}
         {ingredients.length > 0 && (
           <div className="recipe-form-group">
-            <label className="recipe-label">
-              Ingredients ({ingredients.length})
-            </label>
+            <label className="recipe-label">Ingredients ({ingredients.length})</label>
             <div className="ingredients-list">
               {ingredients.map((ing) => (
                 <motion.div
@@ -401,16 +388,14 @@ function RecipeBuilder({ existingRecipe, onSave, onCancel }) {
           <Button
             variant="primary"
             onClick={handleSaveRecipe}
-            disabled={
-              isSaving || !recipeName.trim() || ingredients.length === 0
-            }
+            disabled={isSaving || !recipeName.trim() || ingredients.length === 0}
           >
             {isSaving ? (
-              "Saving..."
+              'Saving...'
             ) : (
               <>
                 <Save size={18} />
-                {existingRecipe ? "Update Recipe" : "Save Recipe"}
+                {existingRecipe ? 'Update Recipe' : 'Save Recipe'}
               </>
             )}
           </Button>

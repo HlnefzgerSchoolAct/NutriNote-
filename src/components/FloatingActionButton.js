@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Plus, X, Sparkles, ScanBarcode, Dumbbell } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
-import "./FloatingActionButton.css";
+import { Plus, X, Sparkles, ScanBarcode, Dumbbell } from 'lucide-react';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './FloatingActionButton.css';
 
 function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,31 +9,28 @@ function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
   const navigate = useNavigate();
 
   // Don't show FAB during onboarding or on log page (already has inputs)
-  if (
-    location.pathname.startsWith("/onboarding") ||
-    location.pathname === "/log"
-  ) {
+  if (location.pathname.startsWith('/onboarding') || location.pathname === '/log') {
     return null;
   }
 
   const handleAction = (action) => {
     setIsOpen(false);
-    if (action === "ai") {
-      navigate("/log", { state: { mode: "ai" } });
-    } else if (action === "scan") {
-      navigate("/log", { state: { mode: "scan" } });
-    } else if (action === "exercise") {
-      navigate("/log", { state: { mode: "exercise" } });
+    if (action === 'ai') {
+      navigate('/log', { state: { mode: 'ai' } });
+    } else if (action === 'scan') {
+      navigate('/log', { state: { mode: 'scan' } });
+    } else if (action === 'exercise') {
+      navigate('/log', { state: { mode: 'exercise' } });
     }
   };
 
   return (
-    <div className={`fab-container ${isOpen ? "open" : ""}`}>
+    <div className={`fab-container ${isOpen ? 'open' : ''}`}>
       {/* Speed dial options */}
       <div className="fab-options">
         <button
           className="fab-option"
-          onClick={() => handleAction("ai")}
+          onClick={() => handleAction('ai')}
           aria-label="AI Food Input"
         >
           <Sparkles size={20} />
@@ -41,7 +38,7 @@ function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
         </button>
         <button
           className="fab-option"
-          onClick={() => handleAction("scan")}
+          onClick={() => handleAction('scan')}
           aria-label="Scan Barcode"
         >
           <ScanBarcode size={20} />
@@ -49,7 +46,7 @@ function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
         </button>
         <button
           className="fab-option"
-          onClick={() => handleAction("exercise")}
+          onClick={() => handleAction('exercise')}
           aria-label="Add Exercise"
         >
           <Dumbbell size={20} />
@@ -61,7 +58,7 @@ function FloatingActionButton({ onOpenAI, onOpenScanner, onOpenExercise }) {
       <button
         className="fab-main"
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close menu" : "Add entry"}
+        aria-label={isOpen ? 'Close menu' : 'Add entry'}
         aria-expanded={isOpen}
       >
         {isOpen ? <X size={28} /> : <Plus size={28} />}

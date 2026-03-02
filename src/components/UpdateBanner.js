@@ -3,9 +3,9 @@
  * Dismissible banner with Refresh button instead of blocking confirm
  */
 
-import React, { useState, useEffect } from "react";
-import { RefreshCw, X } from "lucide-react";
-import "./UpdateBanner.css";
+import { RefreshCw, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import './UpdateBanner.css';
 
 export default function UpdateBanner() {
   const [registration, setRegistration] = useState(null);
@@ -16,13 +16,13 @@ export default function UpdateBanner() {
       setRegistration(e.detail?.registration ?? null);
       setDismissed(false);
     };
-    window.addEventListener("sw-update-available", handler);
-    return () => window.removeEventListener("sw-update-available", handler);
+    window.addEventListener('sw-update-available', handler);
+    return () => window.removeEventListener('sw-update-available', handler);
   }, []);
 
   const handleRefresh = () => {
     if (registration?.waiting) {
-      registration.waiting.postMessage({ type: "SKIP_WAITING" });
+      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
       window.location.reload();
     }
   };
@@ -35,9 +35,7 @@ export default function UpdateBanner() {
 
   return (
     <div className="update-banner" role="alert">
-      <span className="update-banner__text">
-        A new version is available.
-      </span>
+      <span className="update-banner__text">A new version is available.</span>
       <div className="update-banner__actions">
         <button
           type="button"

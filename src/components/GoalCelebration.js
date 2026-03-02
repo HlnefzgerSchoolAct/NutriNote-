@@ -3,35 +3,29 @@
  * Displays celebratory animations when goals are reached
  */
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Trophy,
-  Flame,
-  Target,
-  Star,
-  Sparkles,
-  Zap,
-  Award,
-} from "lucide-react";
-import { haptics } from "../utils/haptics";
-import { Confetti, Celebration } from "./common/Ripple";
-import "./GoalCelebration.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trophy, Flame, Target, Star, Sparkles, Zap, Award } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+import { haptics } from '../utils/haptics';
+
+import { Confetti, Celebration } from './common/Ripple';
+import './GoalCelebration.css';
 
 /**
  * Celebration types
  */
 export const CELEBRATION_TYPES = {
-  CALORIE_GOAL: "calorie_goal",
-  STREAK_7: "streak_7",
-  STREAK_14: "streak_14",
-  STREAK_30: "streak_30",
-  STREAK_100: "streak_100",
-  FIRST_LOG: "first_log",
-  WEIGHT_GOAL: "weight_goal",
-  HYDRATION_GOAL: "hydration_goal",
-  MACRO_BALANCE: "macro_balance",
-  WEEKLY_STREAK: "weekly_streak",
+  CALORIE_GOAL: 'calorie_goal',
+  STREAK_7: 'streak_7',
+  STREAK_14: 'streak_14',
+  STREAK_30: 'streak_30',
+  STREAK_100: 'streak_100',
+  FIRST_LOG: 'first_log',
+  WEIGHT_GOAL: 'weight_goal',
+  HYDRATION_GOAL: 'hydration_goal',
+  MACRO_BALANCE: 'macro_balance',
+  WEEKLY_STREAK: 'weekly_streak',
 };
 
 /**
@@ -40,81 +34,81 @@ export const CELEBRATION_TYPES = {
 const CELEBRATION_CONFIG = {
   [CELEBRATION_TYPES.CALORIE_GOAL]: {
     icon: Target,
-    title: "Daily Goal Reached!",
-    subtitle: "You hit your calorie target",
-    color: "#4CAF50",
+    title: 'Daily Goal Reached!',
+    subtitle: 'You hit your calorie target',
+    color: '#4CAF50',
     confetti: true,
     particles: 30,
   },
   [CELEBRATION_TYPES.STREAK_7]: {
     icon: Flame,
-    title: "7 Day Streak!",
-    subtitle: "One week of consistency",
-    color: "#FF9800",
+    title: '7 Day Streak!',
+    subtitle: 'One week of consistency',
+    color: '#FF9800',
     confetti: true,
     particles: 40,
   },
   [CELEBRATION_TYPES.STREAK_14]: {
     icon: Flame,
-    title: "14 Day Streak!",
-    subtitle: "Two weeks strong!",
-    color: "#FF5722",
+    title: '14 Day Streak!',
+    subtitle: 'Two weeks strong!',
+    color: '#FF5722',
     confetti: true,
     particles: 50,
   },
   [CELEBRATION_TYPES.STREAK_30]: {
     icon: Trophy,
-    title: "30 Day Streak!",
-    subtitle: "A month of dedication!",
-    color: "#FFD700",
+    title: '30 Day Streak!',
+    subtitle: 'A month of dedication!',
+    color: '#FFD700',
     confetti: true,
     particles: 60,
   },
   [CELEBRATION_TYPES.STREAK_100]: {
     icon: Award,
-    title: "100 Day Streak!",
-    subtitle: "Incredible achievement!",
-    color: "#9C27B0",
+    title: '100 Day Streak!',
+    subtitle: 'Incredible achievement!',
+    color: '#9C27B0',
     confetti: true,
     particles: 100,
   },
   [CELEBRATION_TYPES.FIRST_LOG]: {
     icon: Star,
-    title: "First Log!",
-    subtitle: "Your journey begins",
-    color: "#2196F3",
+    title: 'First Log!',
+    subtitle: 'Your journey begins',
+    color: '#2196F3',
     confetti: false,
     particles: 20,
   },
   [CELEBRATION_TYPES.WEIGHT_GOAL]: {
     icon: Target,
-    title: "Weight Goal Reached!",
-    subtitle: "You did it!",
-    color: "#E91E63",
+    title: 'Weight Goal Reached!',
+    subtitle: 'You did it!',
+    color: '#E91E63',
     confetti: true,
     particles: 50,
   },
   [CELEBRATION_TYPES.HYDRATION_GOAL]: {
     icon: Zap,
-    title: "Hydration Goal!",
-    subtitle: "Staying well hydrated",
-    color: "#00BCD4",
+    title: 'Hydration Goal!',
+    subtitle: 'Staying well hydrated',
+    color: '#00BCD4',
     confetti: false,
     particles: 25,
   },
   [CELEBRATION_TYPES.MACRO_BALANCE]: {
     icon: Sparkles,
-    title: "Perfect Macros!",
-    subtitle: "Balanced nutrition today",
-    color: "#8BC34A",
+    title: 'Perfect Macros!',
+    subtitle: 'Balanced nutrition today',
+    color: '#8BC34A',
     confetti: false,
     particles: 30,
   },
   [CELEBRATION_TYPES.WEEKLY_STREAK]: {
     icon: Star,
-    title: "Weekly Goal Complete!",
-    subtitle: "Crushed it this week",
-    color: "#673AB7",
+    title: 'Weekly Goal Complete!',
+    subtitle: 'Crushed it this week',
+    color: '#673AB7',
     confetti: true,
     particles: 40,
   },
@@ -136,9 +130,7 @@ export const GoalCelebration = ({
   const [showParticles, setShowParticles] = useState(false);
   const timeoutRef = useRef(null);
 
-  const config =
-    CELEBRATION_CONFIG[type] ||
-    CELEBRATION_CONFIG[CELEBRATION_TYPES.CALORIE_GOAL];
+  const config = CELEBRATION_CONFIG[type] || CELEBRATION_CONFIG[CELEBRATION_TYPES.CALORIE_GOAL];
   const IconComponent = config.icon;
 
   // Handle show/hide
@@ -177,14 +169,14 @@ export const GoalCelebration = ({
         <Confetti
           active={showParticles}
           pieceCount={config.particles}
-          colors={[config.color, "#FFD700", "#E8DEF8", "#B4E0FF", config.color]}
+          colors={[config.color, '#FFD700', '#E8DEF8', '#B4E0FF', config.color]}
           duration={2500}
         />
       ) : (
         <Celebration
           active={showParticles}
           particleCount={config.particles}
-          colors={[config.color, "#FFD700", "#FFFFFF"]}
+          colors={[config.color, '#FFD700', '#FFFFFF']}
           origin={{ x: 0.5, y: 0.4 }}
           duration={2000}
         />
@@ -206,7 +198,7 @@ export const GoalCelebration = ({
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0, y: -20 }}
               transition={{
-                type: "spring",
+                type: 'spring',
                 stiffness: 400,
                 damping: 20,
               }}
@@ -218,7 +210,7 @@ export const GoalCelebration = ({
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 300,
                   damping: 15,
                   delay: 0.1,
@@ -294,7 +286,7 @@ export const useGoalCelebration = () => {
       markAsShown(type);
       setCelebration({ type, ...options });
     },
-    [wasShownToday, markAsShown],
+    [wasShownToday, markAsShown]
   );
 
   // Clear celebration
@@ -310,7 +302,7 @@ export const useGoalCelebration = () => {
         celebrate(CELEBRATION_TYPES.CALORIE_GOAL);
       }
     },
-    [celebrate, wasShownToday],
+    [celebrate, wasShownToday]
   );
 
   // Check streak milestones
@@ -326,7 +318,7 @@ export const useGoalCelebration = () => {
         celebrate(CELEBRATION_TYPES.STREAK_100);
       }
     },
-    [celebrate],
+    [celebrate]
   );
 
   return {
@@ -343,12 +335,7 @@ export const useGoalCelebration = () => {
  * Streak Badge Component
  * Displays current streak with animation
  */
-export const StreakBadge = ({
-  days,
-  size = "medium",
-  showAnimation = true,
-  onClick,
-}) => {
+export const StreakBadge = ({ days, size = 'medium', showAnimation = true, onClick }) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Trigger animation on milestone
@@ -361,14 +348,14 @@ export const StreakBadge = ({
   }, [days]);
 
   const sizeClasses = {
-    small: "streak-badge--small",
-    medium: "streak-badge--medium",
-    large: "streak-badge--large",
+    small: 'streak-badge--small',
+    medium: 'streak-badge--medium',
+    large: 'streak-badge--large',
   };
 
   return (
     <motion.div
-      className={`streak-badge ${sizeClasses[size]} ${isAnimating ? "streak-badge--milestone" : ""}`}
+      className={`streak-badge ${sizeClasses[size]} ${isAnimating ? 'streak-badge--milestone' : ''}`}
       onClick={onClick}
       whileTap={{ scale: 0.95 }}
       animate={
@@ -376,9 +363,9 @@ export const StreakBadge = ({
           ? {
               scale: [1, 1.1, 1],
               boxShadow: [
-                "0 0 0 0 rgba(255, 152, 0, 0)",
-                "0 0 0 10px rgba(255, 152, 0, 0.3)",
-                "0 0 0 0 rgba(255, 152, 0, 0)",
+                '0 0 0 0 rgba(255, 152, 0, 0)',
+                '0 0 0 10px rgba(255, 152, 0, 0.3)',
+                '0 0 0 0 rgba(255, 152, 0, 0)',
               ],
             }
           : {}
@@ -387,14 +374,12 @@ export const StreakBadge = ({
     >
       <Flame
         className="streak-badge__icon"
-        size={size === "small" ? 16 : size === "large" ? 28 : 20}
+        size={size === 'small' ? 16 : size === 'large' ? 28 : 20}
         aria-hidden="true"
       />
       <span className="streak-badge__count">{days}</span>
-      {size !== "small" && (
-        <span className="streak-badge__label">
-          {days === 1 ? "day" : "days"}
-        </span>
+      {size !== 'small' && (
+        <span className="streak-badge__label">{days === 1 ? 'day' : 'days'}</span>
       )}
     </motion.div>
   );

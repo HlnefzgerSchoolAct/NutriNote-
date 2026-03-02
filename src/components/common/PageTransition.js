@@ -1,6 +1,6 @@
-import React, { memo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from 'framer-motion';
+import React, { memo } from 'react';
+import { useLocation } from 'react-router-dom';
 
 /**
  * Page Transition Wrapper
@@ -35,23 +35,23 @@ const pageVariants = {
 const slideVariants = {
   initial: {
     opacity: 0,
-    x: "100%",
+    x: '100%',
   },
   animate: {
     opacity: 1,
     x: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 300,
       damping: 30,
     },
   },
   exit: {
     opacity: 0,
-    x: "100%",
+    x: '100%',
     transition: {
       duration: 0.2,
-      ease: "easeIn",
+      ease: 'easeIn',
     },
   },
 };
@@ -79,7 +79,7 @@ const scaleVariants = {
     opacity: 1,
     scale: 1,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 400,
       damping: 25,
     },
@@ -97,32 +97,28 @@ const scaleVariants = {
 const slideUpVariants = {
   initial: {
     opacity: 0,
-    y: "100%",
+    y: '100%',
   },
   animate: {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 300,
       damping: 30,
     },
   },
   exit: {
     opacity: 0,
-    y: "100%",
+    y: '100%',
     transition: {
       duration: 0.25,
-      ease: "easeIn",
+      ease: 'easeIn',
     },
   },
 };
 
-export const PageTransition = ({
-  children,
-  variant = "default",
-  className = "",
-}) => {
+export const PageTransition = ({ children, variant = 'default', className = '' }) => {
   const variants = {
     default: pageVariants,
     slide: slideVariants,
@@ -159,7 +155,7 @@ export const AnimatedRoutes = ({ children }) => {
         initial="initial"
         animate="animate"
         exit="exit"
-        style={{ height: "100%" }}
+        style={{ height: '100%' }}
       >
         {children}
       </motion.div>
@@ -171,11 +167,7 @@ export const AnimatedRoutes = ({ children }) => {
  * Stagger Container
  * For animating lists of items
  */
-export const StaggerContainer = ({
-  children,
-  staggerDelay = 0.05,
-  className = "",
-}) => (
+export const StaggerContainer = ({ children, staggerDelay = 0.05, className = '' }) => (
   <motion.div
     className={className}
     initial="initial"
@@ -196,10 +188,7 @@ export const StaggerContainer = ({
  * Stagger Item
  * Use inside StaggerContainer
  */
-export const StaggerItem = memo(function StaggerItem({
-  children,
-  className = "",
-}) {
+export const StaggerItem = memo(function StaggerItem({ children, className = '' }) {
   return (
     <motion.div
       className={className}
@@ -209,7 +198,7 @@ export const StaggerItem = memo(function StaggerItem({
           opacity: 1,
           y: 0,
           transition: {
-            type: "spring",
+            type: 'spring',
             stiffness: 400,
             damping: 25,
           },
@@ -224,7 +213,7 @@ export const StaggerItem = memo(function StaggerItem({
 /**
  * Presence animation for conditional elements
  */
-export const FadePresence = ({ children, isVisible, className = "" }) => (
+export const FadePresence = ({ children, isVisible, className = '' }) => (
   <AnimatePresence>
     {isVisible && (
       <motion.div
@@ -249,7 +238,7 @@ export const AnimatedNumber = ({ value, duration = 0.5 }) => {
       key={value}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
     >
       {value}
     </motion.span>

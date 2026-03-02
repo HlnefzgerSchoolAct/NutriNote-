@@ -140,7 +140,7 @@
 
 /* State layer */
 .m3-nav-rail-item__icon-container::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: 16px;

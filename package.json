@@ -14,6 +14,11 @@
     "generate-sw": "node scripts/generate-sw.js",
     "postbuild": "node scripts/generate-sw.js",
     "test": "vitest",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "type-check": "tsc --noEmit",
     "eject": "echo 'No eject needed with Vite'"
   },
   "dependencies": {
@@ -48,6 +53,7 @@
     "workbox-build": "^7.4.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.28.6",
     "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -55,8 +61,10 @@
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/ui": "^4.0.18",
     "concurrently": "^9.2.1",
+    "eslint-config-prettier": "^10.1.8",
     "jsdom": "^28.1.0",
     "nodemon": "^3.1.11",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4.1.18",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"

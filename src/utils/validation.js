@@ -7,26 +7,23 @@
  * Sanitize string input - removes potentially dangerous characters
  */
 export function sanitizeString(input, maxLength = 200) {
-  if (typeof input !== "string") return "";
+  if (typeof input !== 'string') return '';
 
   return (
     input
       .trim()
       .slice(0, maxLength)
       // Remove any script tags or HTML
-      .replace(/<[^>]*>/g, "")
+      .replace(/<[^>]*>/g, '')
       // Remove any potential SQL injection attempts
-      .replace(/['";\\]/g, "")
+      .replace(/['";\\]/g, '')
   );
 }
 
 /**
  * Validate and sanitize a numeric input
  */
-export function sanitizeNumber(
-  input,
-  { min = 0, max = Infinity, defaultValue = 0 } = {},
-) {
+export function sanitizeNumber(input, { min = 0, max = Infinity, defaultValue = 0 } = {}) {
   const num = parseFloat(input);
 
   if (isNaN(num) || !isFinite(num)) {
@@ -43,11 +40,11 @@ export function validateFoodDescription(description) {
   const sanitized = sanitizeString(description, 200);
 
   if (!sanitized) {
-    return { valid: false, error: "Please enter a food description" };
+    return { valid: false, error: 'Please enter a food description' };
   }
 
   if (sanitized.length < 2) {
-    return { valid: false, error: "Description is too short" };
+    return { valid: false, error: 'Description is too short' };
   }
 
   return { valid: true, value: sanitized };
@@ -64,7 +61,7 @@ export function validateQuantity(quantity) {
   });
 
   if (num <= 0) {
-    return { valid: false, error: "Please enter a valid quantity" };
+    return { valid: false, error: 'Please enter a valid quantity' };
   }
 
   return { valid: true, value: num };
@@ -74,14 +71,14 @@ export function validateQuantity(quantity) {
  * Validate barcode input
  */
 export function validateBarcode(barcode) {
-  if (typeof barcode !== "string") {
-    return { valid: false, error: "Invalid barcode format" };
+  if (typeof barcode !== 'string') {
+    return { valid: false, error: 'Invalid barcode format' };
   }
 
-  const cleaned = barcode.replace(/\D/g, "");
+  const cleaned = barcode.replace(/\D/g, '');
 
   if (cleaned.length < 8 || cleaned.length > 14) {
-    return { valid: false, error: "Barcode must be 8-14 digits" };
+    return { valid: false, error: 'Barcode must be 8-14 digits' };
   }
 
   return { valid: true, value: cleaned };
@@ -94,7 +91,7 @@ export function validateWeight(weight) {
   const num = sanitizeNumber(weight, { min: 50, max: 700, defaultValue: 0 });
 
   if (num < 50 || num > 700) {
-    return { valid: false, error: "Weight must be between 50-700 lbs" };
+    return { valid: false, error: 'Weight must be between 50-700 lbs' };
   }
 
   return { valid: true, value: num };
@@ -112,7 +109,7 @@ export function validateHeight(feet, inches) {
   });
 
   if (feetNum < 3 || feetNum > 8) {
-    return { valid: false, error: "Height must be between 3-8 feet" };
+    return { valid: false, error: 'Height must be between 3-8 feet' };
   }
 
   return { valid: true, value: { feet: feetNum, inches: inchesNum } };
@@ -125,7 +122,7 @@ export function validateAge(age) {
   const num = sanitizeNumber(age, { min: 13, max: 120, defaultValue: 0 });
 
   if (num < 13 || num > 120) {
-    return { valid: false, error: "Age must be between 13-120 years" };
+    return { valid: false, error: 'Age must be between 13-120 years' };
   }
 
   return { valid: true, value: num };
@@ -144,7 +141,7 @@ export function validateCalorieTarget(calories) {
   if (num < 1000 || num > 10000) {
     return {
       valid: false,
-      error: "Calorie target must be between 1,000-10,000",
+      error: 'Calorie target must be between 1,000-10,000',
     };
   }
 
@@ -162,7 +159,7 @@ export function validateMacroPercentages(protein, carbs, fat) {
   const sum = p + c + f;
 
   if (sum < 95 || sum > 105) {
-    return { valid: false, error: "Macro percentages must add up to 100%" };
+    return { valid: false, error: 'Macro percentages must add up to 100%' };
   }
 
   return { valid: true, value: { protein: p, carbs: c, fat: f } };
@@ -172,7 +169,7 @@ export function validateMacroPercentages(protein, carbs, fat) {
  * Deep sanitize an object's string values
  */
 export function sanitizeObject(obj) {
-  if (obj === null || typeof obj !== "object") {
+  if (obj === null || typeof obj !== 'object') {
     return obj;
   }
 
@@ -182,9 +179,9 @@ export function sanitizeObject(obj) {
 
   const result = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       result[key] = sanitizeString(value);
-    } else if (typeof value === "object") {
+    } else if (typeof value === 'object') {
       result[key] = sanitizeObject(value);
     } else {
       result[key] = value;

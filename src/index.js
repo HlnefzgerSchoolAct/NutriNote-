@@ -1,11 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import * as Sentry from "@sentry/react";
-import "./tailwind.css";
-import "./index.css";
-import App from "./App";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import reportWebVitals from "./reportWebVitals";
+import * as Sentry from '@sentry/react';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+import './tailwind.css';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
 if (SENTRY_DSN) {
@@ -25,18 +26,16 @@ if (SENTRY_DSN) {
   });
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 serviceWorkerRegistration.register({
   onUpdate: (registration) => {
-    window.dispatchEvent(
-      new CustomEvent("sw-update-available", { detail: { registration } })
-    );
+    window.dispatchEvent(new CustomEvent('sw-update-available', { detail: { registration } }));
   },
 });
 reportWebVitals();

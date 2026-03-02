@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
   Trash2,
@@ -16,55 +15,48 @@ import {
   Dumbbell,
   Scale,
   Tag,
-} from "lucide-react";
-import { Card, Button, Input, showToast, CompactMacros } from "./common";
-import { estimateNutrition } from "../services/aiNutritionService";
-import {
-  saveTemplate,
-  updateTemplate,
-  calculateMealNutrition,
-} from "../services/templateDatabase";
-import { MEAL_TYPES } from "../data/templates";
-import "./TemplateBuilder.css";
+} from 'lucide-react';
+import React, { useState } from 'react';
+
+import { MEAL_TYPES } from '../data/templates';
+import { estimateNutrition } from '../services/aiNutritionService';
+import { saveTemplate, updateTemplate, calculateMealNutrition } from '../services/templateDatabase';
+
+import { Card, Button, Input, showToast, CompactMacros } from './common';
+import './TemplateBuilder.css';
 
 const CATEGORY_OPTIONS = [
-  { id: "weight_loss", label: "Weight Loss", icon: Scale, color: "#e74c3c" },
-  { id: "muscle_gain", label: "Muscle Gain", icon: Dumbbell, color: "#3498db" },
-  { id: "maintenance", label: "Maintenance", icon: Target, color: "#2ecc71" },
-  { id: "custom", label: "Custom", icon: Tag, color: "#9b59b6" },
+  { id: 'weight_loss', label: 'Weight Loss', icon: Scale, color: '#e74c3c' },
+  { id: 'muscle_gain', label: 'Muscle Gain', icon: Dumbbell, color: '#3498db' },
+  { id: 'maintenance', label: 'Maintenance', icon: Target, color: '#2ecc71' },
+  { id: 'custom', label: 'Custom', icon: Tag, color: '#9b59b6' },
 ];
 
 const MEAL_TYPE_OPTIONS = [
-  { id: "breakfast", label: "Breakfast", icon: Coffee },
-  { id: "lunch", label: "Lunch", icon: Sun },
-  { id: "dinner", label: "Dinner", icon: Moon },
-  { id: "snack", label: "Snack", icon: Cookie },
+  { id: 'breakfast', label: 'Breakfast', icon: Coffee },
+  { id: 'lunch', label: 'Lunch', icon: Sun },
+  { id: 'dinner', label: 'Dinner', icon: Moon },
+  { id: 'snack', label: 'Snack', icon: Cookie },
 ];
 
 function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
-  const [templateName, setTemplateName] = useState(
-    existingTemplate?.name || "",
-  );
-  const [description, setDescription] = useState(
-    existingTemplate?.description || "",
-  );
-  const [category, setCategory] = useState(
-    existingTemplate?.category || "custom",
-  );
+  const [templateName, setTemplateName] = useState(existingTemplate?.name || '');
+  const [description, setDescription] = useState(existingTemplate?.description || '');
+  const [category, setCategory] = useState(existingTemplate?.category || 'custom');
   const [meals, setMeals] = useState(existingTemplate?.meals || []);
   const [tags, setTags] = useState(existingTemplate?.tags || []);
-  const [tagInput, setTagInput] = useState("");
+  const [tagInput, setTagInput] = useState('');
 
   // Current meal being edited
   const [activeMealIndex, setActiveMealIndex] = useState(null);
   const [showMealEditor, setShowMealEditor] = useState(false);
-  const [currentMealType, setCurrentMealType] = useState("breakfast");
-  const [currentMealName, setCurrentMealName] = useState("");
+  const [currentMealType, setCurrentMealType] = useState('breakfast');
+  const [currentMealName, setCurrentMealName] = useState('');
 
   // Food input for current meal
-  const [foodSearch, setFoodSearch] = useState("");
-  const [foodQuantity, setFoodQuantity] = useState("1");
-  const [foodUnit, setFoodUnit] = useState("serving");
+  const [foodSearch, setFoodSearch] = useState('');
+  const [foodQuantity, setFoodQuantity] = useState('1');
+  const [foodUnit, setFoodUnit] = useState('serving');
   const [isEstimating, setIsEstimating] = useState(false);
   const [estimatedFood, setEstimatedFood] = useState(null);
 
@@ -82,12 +74,12 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
         fat: acc.fat + mealNutrition.fat,
       };
     },
-    { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 }
   );
 
   const handleEstimateFood = async () => {
     if (!foodSearch.trim()) {
-      showToast.error("Please enter a food item");
+      showToast.error('Please enter a food item');
       return;
     }
 
@@ -108,7 +100,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
         fat: Math.round(nutrition.fat * 10) / 10,
       });
     } catch (error) {
-      showToast.error("Failed to estimate nutrition");
+      showToast.error('Failed to estimate nutrition');
     } finally {
       setIsEstimating(false);
     }
@@ -124,34 +116,30 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
 
     setMeals((prev) =>
       prev.map((meal, idx) =>
-        idx === activeMealIndex
-          ? { ...meal, foods: [...meal.foods, newFood] }
-          : meal,
-      ),
+        idx === activeMealIndex ? { ...meal, foods: [...meal.foods, newFood] } : meal
+      )
     );
 
     // Reset input
-    setFoodSearch("");
-    setFoodQuantity("1");
-    setFoodUnit("serving");
+    setFoodSearch('');
+    setFoodQuantity('1');
+    setFoodUnit('serving');
     setEstimatedFood(null);
 
-    showToast.success("Food added!");
+    showToast.success('Food added!');
   };
 
   const handleRemoveFoodFromMeal = (mealIndex, foodId) => {
     setMeals((prev) =>
       prev.map((meal, idx) =>
-        idx === mealIndex
-          ? { ...meal, foods: meal.foods.filter((f) => f.id !== foodId) }
-          : meal,
-      ),
+        idx === mealIndex ? { ...meal, foods: meal.foods.filter((f) => f.id !== foodId) } : meal
+      )
     );
   };
 
   const handleAddNewMeal = () => {
     if (!currentMealName.trim()) {
-      showToast.error("Please enter a meal name");
+      showToast.error('Please enter a meal name');
       return;
     }
 
@@ -165,10 +153,10 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
     setMeals((prev) => [...prev, newMeal]);
     setActiveMealIndex(meals.length);
     setExpandedMeals((prev) => ({ ...prev, [meals.length]: true }));
-    setCurrentMealName("");
+    setCurrentMealName('');
     setShowMealEditor(false);
 
-    showToast.success("Meal added! Now add foods to it.");
+    showToast.success('Meal added! Now add foods to it.');
   };
 
   const handleRemoveMeal = (index) => {
@@ -181,11 +169,11 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
   const handleAddTag = () => {
     if (!tagInput.trim()) return;
     if (tags.includes(tagInput.trim().toLowerCase())) {
-      showToast.error("Tag already exists");
+      showToast.error('Tag already exists');
       return;
     }
     setTags((prev) => [...prev, tagInput.trim().toLowerCase()]);
-    setTagInput("");
+    setTagInput('');
   };
 
   const handleRemoveTag = (tagToRemove) => {
@@ -202,18 +190,18 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
 
   const handleSaveTemplate = async () => {
     if (!templateName.trim()) {
-      showToast.error("Please enter a template name");
+      showToast.error('Please enter a template name');
       return;
     }
 
     if (meals.length === 0) {
-      showToast.error("Please add at least one meal");
+      showToast.error('Please add at least one meal');
       return;
     }
 
     const hasEmptyMeals = meals.some((meal) => meal.foods.length === 0);
     if (hasEmptyMeals) {
-      showToast.error("All meals must have at least one food item");
+      showToast.error('All meals must have at least one food item');
       return;
     }
 
@@ -232,17 +220,17 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
       let savedTemplate;
       if (existingTemplate && !existingTemplate.isPrebuilt) {
         savedTemplate = await updateTemplate(existingTemplate.id, templateData);
-        showToast.success("Template updated!");
+        showToast.success('Template updated!');
       } else {
         savedTemplate = await saveTemplate(templateData);
-        showToast.success("Template saved!");
+        showToast.success('Template saved!');
       }
 
       if (onSave) {
         onSave(savedTemplate);
       }
     } catch (error) {
-      showToast.error("Failed to save template");
+      showToast.error('Failed to save template');
     } finally {
       setIsSaving(false);
     }
@@ -257,7 +245,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
     <div className="template-builder">
       {/* Header */}
       <div className="builder-header">
-        <h2>{existingTemplate ? "Edit Template" : "Create Template"}</h2>
+        <h2>{existingTemplate ? 'Edit Template' : 'Create Template'}</h2>
         <Button variant="ghost" size="sm" onClick={onCancel}>
           <X size={20} />
         </Button>
@@ -297,9 +285,9 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
               return (
                 <button
                   key={cat.id}
-                  className={`category-btn ${category === cat.id ? "active" : ""}`}
+                  className={`category-btn ${category === cat.id ? 'active' : ''}`}
                   onClick={() => setCategory(cat.id)}
-                  style={{ "--category-color": cat.color }}
+                  style={{ '--category-color': cat.color }}
                 >
                   <Icon size={16} />
                   <span>{cat.label}</span>
@@ -317,7 +305,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               placeholder="Add a tag"
-              onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
+              onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
             />
             <Button variant="secondary" size="sm" onClick={handleAddTag}>
               Add
@@ -342,9 +330,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
       <Card className="nutrition-preview">
         <div className="preview-header">
           <h3>Daily Totals</h3>
-          <span className="total-calories">
-            {Math.round(totalNutrition.calories)} cal
-          </span>
+          <span className="total-calories">{Math.round(totalNutrition.calories)} cal</span>
         </div>
         <CompactMacros
           protein={totalNutrition.protein}
@@ -357,11 +343,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
       <Card className="builder-section meals-section">
         <div className="section-header">
           <h3>Meals ({meals.length})</h3>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setShowMealEditor(true)}
-          >
+          <Button variant="secondary" size="sm" onClick={() => setShowMealEditor(true)}>
             <Plus size={16} />
             Add Meal
           </Button>
@@ -384,11 +366,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
               >
                 <div className="modal-header">
                   <h3>Add New Meal</h3>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowMealEditor(false)}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => setShowMealEditor(false)}>
                     <X size={20} />
                   </Button>
                 </div>
@@ -401,7 +379,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                       return (
                         <button
                           key={type.id}
-                          className={`meal-type-btn ${currentMealType === type.id ? "active" : ""}`}
+                          className={`meal-type-btn ${currentMealType === type.id ? 'active' : ''}`}
                           onClick={() => setCurrentMealType(type.id)}
                         >
                           <Icon size={18} />
@@ -423,10 +401,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                 </div>
 
                 <div className="modal-actions">
-                  <Button
-                    variant="secondary"
-                    onClick={() => setShowMealEditor(false)}
-                  >
+                  <Button variant="secondary" onClick={() => setShowMealEditor(false)}>
                     Cancel
                   </Button>
                   <Button variant="primary" onClick={handleAddNewMeal}>
@@ -441,10 +416,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
         {/* Meal List */}
         {meals.length === 0 ? (
           <div className="empty-meals">
-            <p>
-              No meals added yet. Click "Add Meal" to start building your
-              template.
-            </p>
+            <p>No meals added yet. Click "Add Meal" to start building your template.</p>
           </div>
         ) : (
           <div className="meals-list">
@@ -457,34 +429,23 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
               return (
                 <motion.div
                   key={meal.id}
-                  className={`meal-card ${isExpanded ? "expanded" : ""} ${isActive ? "active" : ""}`}
+                  className={`meal-card ${isExpanded ? 'expanded' : ''} ${isActive ? 'active' : ''}`}
                   layout
                 >
-                  <div
-                    className="meal-header"
-                    onClick={() => toggleMealExpanded(index)}
-                  >
+                  <div className="meal-header" onClick={() => toggleMealExpanded(index)}>
                     <div className="meal-info">
                       <MealIcon size={18} className="meal-icon" />
                       <div className="meal-details">
                         <span className="meal-name">{meal.name}</span>
-                        <span className="meal-type">
-                          {MEAL_TYPES[meal.mealType]?.label}
-                        </span>
+                        <span className="meal-type">{MEAL_TYPES[meal.mealType]?.label}</span>
                       </div>
                     </div>
                     <div className="meal-summary">
                       <span className="meal-calories">
                         {Math.round(mealNutrition.calories)} cal
                       </span>
-                      <span className="food-count">
-                        {meal.foods.length} items
-                      </span>
-                      {isExpanded ? (
-                        <ChevronUp size={18} />
-                      ) : (
-                        <ChevronDown size={18} />
-                      )}
+                      <span className="food-count">{meal.foods.length} items</span>
+                      {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                     </div>
                   </div>
 
@@ -493,7 +454,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                       <motion.div
                         className="meal-content"
                         initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
+                        animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                       >
                         {/* Foods in this meal */}
@@ -511,9 +472,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                                   <span>{food.calories} cal</span>
                                   <button
                                     className="remove-food"
-                                    onClick={() =>
-                                      handleRemoveFoodFromMeal(index, food.id)
-                                    }
+                                    onClick={() => handleRemoveFoodFromMeal(index, food.id)}
                                   >
                                     <Trash2 size={14} />
                                   </button>
@@ -537,9 +496,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                               <Input
                                 type="number"
                                 value={foodQuantity}
-                                onChange={(e) =>
-                                  setFoodQuantity(e.target.value)
-                                }
+                                onChange={(e) => setFoodQuantity(e.target.value)}
                                 placeholder="Qty"
                                 className="food-qty-input"
                                 min="0.25"
@@ -568,7 +525,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                               className="estimate-btn"
                             >
                               {isEstimating ? (
-                                "Estimating..."
+                                'Estimating...'
                               ) : (
                                 <>
                                   <Sparkles size={14} />
@@ -586,8 +543,8 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                               >
                                 <div className="preview-info">
                                   <span className="preview-name">
-                                    {estimatedFood.quantity}{" "}
-                                    {estimatedFood.unit} {estimatedFood.name}
+                                    {estimatedFood.quantity} {estimatedFood.unit}{' '}
+                                    {estimatedFood.name}
                                   </span>
                                   <CompactMacros
                                     calories={estimatedFood.calories}
@@ -598,11 +555,7 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
                                     compact
                                   />
                                 </div>
-                                <Button
-                                  variant="primary"
-                                  size="sm"
-                                  onClick={handleAddFoodToMeal}
-                                >
+                                <Button variant="primary" size="sm" onClick={handleAddFoodToMeal}>
                                   <Plus size={14} />
                                   Add
                                 </Button>
@@ -637,13 +590,9 @@ function TemplateBuilder({ existingTemplate, onSave, onCancel }) {
         <Button variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button
-          variant="primary"
-          onClick={handleSaveTemplate}
-          disabled={isSaving}
-        >
+        <Button variant="primary" onClick={handleSaveTemplate} disabled={isSaving}>
           {isSaving ? (
-            "Saving..."
+            'Saving...'
           ) : (
             <>
               <Save size={18} />

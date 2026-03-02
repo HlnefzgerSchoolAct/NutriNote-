@@ -1,7 +1,9 @@
-import React, { memo } from "react";
-import MacroBar from "./MacroBar";
-import { MICRONUTRIENT_INFO } from "../../utils/localStorage";
-import "./MicronutrientBar.css";
+import React, { memo } from 'react';
+
+import { MICRONUTRIENT_INFO } from '../../utils/localStorage';
+
+import MacroBar from './MacroBar';
+import './MicronutrientBar.css';
 
 /**
  * Micronutrient Progress Bar
@@ -12,12 +14,12 @@ const MicronutrientBar = memo(function MicronutrientBar({
   value = 0,
   goal = 100,
   showWarning = true,
-  size = "sm",
-  className = "",
+  size = 'sm',
+  className = '',
 }) {
   const info = MICRONUTRIENT_INFO[nutrient] || {
     label: nutrient,
-    unit: "",
+    unit: '',
     warnHigh: false,
     warnLow: false,
   };
@@ -25,30 +27,33 @@ const MicronutrientBar = memo(function MicronutrientBar({
   // Determine color based on status
   const getColor = () => {
     const percentage = (value / goal) * 100;
-    
+
     // For nutrients we want to limit (sodium, sugar, cholesterol)
     if (info.warnHigh && !info.warnLow) {
-      if (percentage > 100) return "danger";
-      if (percentage > 80) return "warning";
-      return "success";
+      if (percentage > 100) return 'danger';
+      if (percentage > 80) return 'warning';
+      return 'success';
     }
-    
+
     // For nutrients we want to get enough of (fiber, vitamins, minerals)
     if (info.warnLow) {
-      if (percentage < 50) return "warning";
-      if (percentage >= 100) return "success";
-      return "primary";
+      if (percentage < 50) return 'warning';
+      if (percentage >= 100) return 'success';
+      return 'primary';
     }
-    
-    return "primary";
+
+    return 'primary';
   };
 
   // Get category-based color if no warning state
   const getCategoryColor = () => {
     switch (info.category) {
-      case "vitamins": return "vitamin";
-      case "minerals": return "mineral";
-      default: return "primary";
+      case 'vitamins':
+        return 'vitamin';
+      case 'minerals':
+        return 'mineral';
+      default:
+        return 'primary';
     }
   };
 
@@ -57,7 +62,9 @@ const MicronutrientBar = memo(function MicronutrientBar({
   const isLow = info.warnLow && value < goal * 0.5;
 
   return (
-    <div className={`ds-micronutrient-bar ${isOverLimit ? "ds-micronutrient-bar--over" : ""} ${isLow ? "ds-micronutrient-bar--low" : ""} ${className}`}>
+    <div
+      className={`ds-micronutrient-bar ${isOverLimit ? 'ds-micronutrient-bar--over' : ''} ${isLow ? 'ds-micronutrient-bar--low' : ''} ${className}`}
+    >
       <MacroBar
         value={value}
         max={goal}
@@ -91,15 +98,15 @@ export const CompactMicronutrients = memo(function CompactMicronutrients({
   sodium,
   sugar,
   goals = {},
-  className = "",
+  className = '',
 }) {
-  const formatVal = (val) => val !== null && val !== undefined ? Math.round(val) : "-";
-  
+  const formatVal = (val) => (val !== null && val !== undefined ? Math.round(val) : '-');
+
   const getSodiumStatus = () => {
-    if (!sodium || !goals.sodium) return "";
-    if (sodium > goals.sodium) return "ds-compact-micro--danger";
-    if (sodium > goals.sodium * 0.8) return "ds-compact-micro--warning";
-    return "";
+    if (!sodium || !goals.sodium) return '';
+    if (sodium > goals.sodium) return 'ds-compact-micro--danger';
+    if (sodium > goals.sodium * 0.8) return 'ds-compact-micro--warning';
+    return '';
   };
 
   return (
@@ -136,28 +143,28 @@ export const CompactMicronutrients = memo(function CompactMicronutrients({
 export const MicronutrientSummary = memo(function MicronutrientSummary({
   totals = {},
   goals = {},
-  className = "",
+  className = '',
 }) {
   const getStatus = (current, goal, warnHigh = false) => {
-    if (!goal || current === null) return "neutral";
+    if (!goal || current === null) return 'neutral';
     const pct = (current / goal) * 100;
     if (warnHigh) {
-      if (pct > 100) return "danger";
-      if (pct > 80) return "warning";
-      return "success";
+      if (pct > 100) return 'danger';
+      if (pct > 80) return 'warning';
+      return 'success';
     }
-    if (pct < 50) return "low";
-    if (pct >= 100) return "complete";
-    return "partial";
+    if (pct < 50) return 'low';
+    if (pct >= 100) return 'complete';
+    return 'partial';
   };
 
   const keyNutrients = [
-    { key: "fiber", icon: "🌾", warnHigh: false },
-    { key: "sodium", icon: "🧂", warnHigh: true },
-    { key: "sugar", icon: "🍬", warnHigh: true },
-    { key: "vitaminC", icon: "🍊", warnHigh: false },
-    { key: "calcium", icon: "🦴", warnHigh: false },
-    { key: "iron", icon: "💪", warnHigh: false },
+    { key: 'fiber', icon: '🌾', warnHigh: false },
+    { key: 'sodium', icon: '🧂', warnHigh: true },
+    { key: 'sugar', icon: '🍬', warnHigh: true },
+    { key: 'vitaminC', icon: '🍊', warnHigh: false },
+    { key: 'calcium', icon: '🦴', warnHigh: false },
+    { key: 'iron', icon: '💪', warnHigh: false },
   ];
 
   return (
@@ -167,15 +174,16 @@ export const MicronutrientSummary = memo(function MicronutrientSummary({
         const value = totals[key];
         const goal = goals[key];
         const status = getStatus(value, goal, warnHigh);
-        
+
         if (value === null || value === undefined) return null;
-        
+
         return (
           <div key={key} className={`ds-micro-summary__item ds-micro-summary__item--${status}`}>
             <span className="ds-micro-summary__icon">{icon}</span>
             <span className="ds-micro-summary__label">{info?.label || key}</span>
             <span className="ds-micro-summary__value">
-              {Math.round(value)}/{goal ? Math.round(goal) : "?"}{info?.unit || ""}
+              {Math.round(value)}/{goal ? Math.round(goal) : '?'}
+              {info?.unit || ''}
             </span>
           </div>
         );

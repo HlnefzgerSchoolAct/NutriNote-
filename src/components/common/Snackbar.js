@@ -1,15 +1,8 @@
-import React, {
-  forwardRef,
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useRef,
-} from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from "lucide-react";
-import { createPortal } from "react-dom";
-import "./Snackbar.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'lucide-react';
+import React, { forwardRef, createContext, useContext, useState, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import './Snackbar.css';
 
 /**
  * M3 Snackbar Component
@@ -36,26 +29,26 @@ const Snackbar = forwardRef(
       onClose,
       showClose = false,
       duration = 4000,
-      variant = "default",
+      variant = 'default',
       icon,
       showProgress = false,
       twoLine = false,
       longerAction = false,
-      className = "",
+      className = '',
       ...props
     },
-    ref,
+    ref
   ) => {
     const progressRef = useRef(null);
 
     // Get default icon based on variant
     const getDefaultIcon = () => {
       switch (variant) {
-        case "success":
+        case 'success':
           return <CheckCircle size={24} />;
-        case "error":
+        case 'error':
           return <AlertCircle size={24} />;
-        case "warning":
+        case 'warning':
           return <AlertTriangle size={24} />;
         default:
           return null;
@@ -66,28 +59,20 @@ const Snackbar = forwardRef(
 
     // Build classes
     const snackbarClasses = [
-      "m3-snackbar",
-      variant !== "default" && `m3-snackbar--${variant}`,
-      twoLine && "m3-snackbar--two-line",
-      longerAction && "m3-snackbar--longer-action",
-      !action && !showClose && "m3-snackbar--single-line",
+      'm3-snackbar',
+      variant !== 'default' && `m3-snackbar--${variant}`,
+      twoLine && 'm3-snackbar--two-line',
+      longerAction && 'm3-snackbar--longer-action',
+      !action && !showClose && 'm3-snackbar--single-line',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     return (
-      <div
-        ref={ref}
-        className={snackbarClasses}
-        role="alert"
-        aria-live="polite"
-        {...props}
-      >
+      <div ref={ref} className={snackbarClasses} role="alert" aria-live="polite" {...props}>
         {/* Icon */}
-        {displayIcon && (
-          <span className="m3-snackbar__icon">{displayIcon}</span>
-        )}
+        {displayIcon && <span className="m3-snackbar__icon">{displayIcon}</span>}
 
         {/* Message */}
         <span className="m3-snackbar__message">{message}</span>
@@ -95,11 +80,7 @@ const Snackbar = forwardRef(
         {/* Actions */}
         <div className="m3-snackbar__actions">
           {action && (
-            <button
-              className="m3-snackbar__action"
-              onClick={onAction}
-              type="button"
-            >
+            <button className="m3-snackbar__action" onClick={onAction} type="button">
               {action}
             </button>
           )}
@@ -124,16 +105,16 @@ const Snackbar = forwardRef(
               className="m3-snackbar__progress-bar"
               initial={{ scaleX: 1 }}
               animate={{ scaleX: 0 }}
-              transition={{ duration: duration / 1000, ease: "linear" }}
+              transition={{ duration: duration / 1000, ease: 'linear' }}
             />
           </div>
         )}
       </div>
     );
-  },
+  }
 );
 
-Snackbar.displayName = "Snackbar";
+Snackbar.displayName = 'Snackbar';
 
 /**
  * Snackbar Context for global snackbar management
@@ -145,7 +126,7 @@ const SnackbarContext = createContext(null);
  */
 export const SnackbarProvider = ({
   children,
-  position = "bottom-center",
+  position = 'bottom-center',
   withNav = false,
   maxSnackbars = 3,
 }) => {
@@ -158,12 +139,12 @@ export const SnackbarProvider = ({
 
       const snackbar = {
         id,
-        message: typeof options === "string" ? options : options.message,
+        message: typeof options === 'string' ? options : options.message,
         action: options.action,
         onAction: options.onAction,
         showClose: options.showClose ?? false,
         duration: options.duration ?? 4000,
-        variant: options.variant ?? "default",
+        variant: options.variant ?? 'default',
         icon: options.icon,
         showProgress: options.showProgress ?? false,
         twoLine: options.twoLine ?? false,
@@ -189,7 +170,7 @@ export const SnackbarProvider = ({
       return id;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [maxSnackbars],
+    [maxSnackbars]
   );
 
   const dismiss = useCallback((id) => {
@@ -203,30 +184,30 @@ export const SnackbarProvider = ({
   // Convenience methods
   const success = useCallback(
     (message, options = {}) => {
-      return show({ message, variant: "success", ...options });
+      return show({ message, variant: 'success', ...options });
     },
-    [show],
+    [show]
   );
 
   const error = useCallback(
     (message, options = {}) => {
-      return show({ message, variant: "error", duration: 6000, ...options });
+      return show({ message, variant: 'error', duration: 6000, ...options });
     },
-    [show],
+    [show]
   );
 
   const warning = useCallback(
     (message, options = {}) => {
-      return show({ message, variant: "warning", ...options });
+      return show({ message, variant: 'warning', ...options });
     },
-    [show],
+    [show]
   );
 
   const info = useCallback(
     (message, options = {}) => {
       return show({ message, icon: <Info size={24} />, ...options });
     },
-    [show],
+    [show]
   );
 
   // Undo snackbar helper
@@ -234,7 +215,7 @@ export const SnackbarProvider = ({
     (message, onUndo, options = {}) => {
       return show({
         message,
-        action: "Undo",
+        action: 'Undo',
         onAction: () => {
           onUndo?.();
           // Dismiss is handled by action click
@@ -244,7 +225,7 @@ export const SnackbarProvider = ({
         ...options,
       });
     },
-    [show],
+    [show]
   );
 
   const contextValue = {
@@ -259,18 +240,18 @@ export const SnackbarProvider = ({
   };
 
   const containerClasses = [
-    "m3-snackbar-container",
+    'm3-snackbar-container',
     `m3-snackbar-container--${position}`,
-    withNav && "m3-snackbar-container--with-nav",
+    withNav && 'm3-snackbar-container--with-nav',
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   // Animation variants
   const snackbarVariants = {
     initial: {
       opacity: 0,
-      y: position.includes("bottom") ? 50 : -50,
+      y: position.includes('bottom') ? 50 : -50,
       scale: 0.9,
     },
     animate: {
@@ -278,7 +259,7 @@ export const SnackbarProvider = ({
       y: 0,
       scale: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 400,
         damping: 30,
       },
@@ -293,7 +274,7 @@ export const SnackbarProvider = ({
   return (
     <SnackbarContext.Provider value={contextValue}>
       {children}
-      {typeof document !== "undefined" &&
+      {typeof document !== 'undefined' &&
         createPortal(
           <div className={containerClasses}>
             <AnimatePresence>
@@ -326,7 +307,7 @@ export const SnackbarProvider = ({
               ))}
             </AnimatePresence>
           </div>,
-          document.body,
+          document.body
         )}
     </SnackbarContext.Provider>
   );
@@ -338,7 +319,7 @@ export const SnackbarProvider = ({
 export const useSnackbar = () => {
   const context = useContext(SnackbarContext);
   if (!context) {
-    throw new Error("useSnackbar must be used within a SnackbarProvider");
+    throw new Error('useSnackbar must be used within a SnackbarProvider');
   }
   return context;
 };
@@ -348,9 +329,7 @@ export const useSnackbar = () => {
  * These create their own portal
  */
 export const showSnackbar = () => {
-  console.warn(
-    "showSnackbar is deprecated. Use SnackbarProvider and useSnackbar hook instead.",
-  );
+  console.warn('showSnackbar is deprecated. Use SnackbarProvider and useSnackbar hook instead.');
 };
 
 export default Snackbar;

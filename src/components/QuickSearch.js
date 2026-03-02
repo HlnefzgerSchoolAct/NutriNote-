@@ -3,15 +3,7 @@
  * Command palette style search for foods, recipes, and navigation
  */
 
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  useMemo,
-} from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
   X,
@@ -26,35 +18,38 @@ import {
   User,
   History,
   MessageCircle,
-} from "lucide-react";
-import { haptics } from "../utils/haptics";
-import { loadRecentFoods } from "../utils/localStorage";
-import { foodsDatabaseUSDA } from "../data/foods_usda_accurate";
-import { foodsDatabaseExtended } from "../data/foods_extended_categories";
-import "./QuickSearch.css";
+} from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { foodsDatabaseExtended } from '../data/foods_extended_categories';
+import { foodsDatabaseUSDA } from '../data/foods_usda_accurate';
+import { haptics } from '../utils/haptics';
+import { loadRecentFoods } from '../utils/localStorage';
+import './QuickSearch.css';
 
 /**
  * Search result categories
  */
 const CATEGORIES = {
-  NAVIGATION: "navigation",
-  RECENT: "recent",
-  FREQUENT: "frequent",
-  FOOD: "food",
-  RECIPE: "recipe",
+  NAVIGATION: 'navigation',
+  RECENT: 'recent',
+  FREQUENT: 'frequent',
+  FOOD: 'food',
+  RECIPE: 'recipe',
 };
 
 /**
  * Navigation items
  */
 const NAVIGATION_ITEMS = [
-  { id: "home", name: "Home", path: "/", icon: Home },
-  { id: "log", name: "Food Log", path: "/log", icon: ClipboardList },
-  { id: "coach", name: "AI Coach", path: "/coach", icon: MessageCircle },
-  { id: "history", name: "History", path: "/history", icon: History },
-  { id: "recipes", name: "Recipes", path: "/recipes", icon: BookOpen },
-  { id: "profile", name: "Profile", path: "/profile", icon: User },
-  { id: "settings", name: "Settings", path: "/settings", icon: Settings },
+  { id: 'home', name: 'Home', path: '/', icon: Home },
+  { id: 'log', name: 'Food Log', path: '/log', icon: ClipboardList },
+  { id: 'coach', name: 'AI Coach', path: '/coach', icon: MessageCircle },
+  { id: 'history', name: 'History', path: '/history', icon: History },
+  { id: 'recipes', name: 'Recipes', path: '/recipes', icon: BookOpen },
+  { id: 'profile', name: 'Profile', path: '/profile', icon: User },
+  { id: 'settings', name: 'Settings', path: '/settings', icon: Settings },
 ];
 
 /**
@@ -79,20 +74,20 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
 
   const defaultHandleSelect = useCallback(
     (item) => {
-      if (item.type === "navigation") {
+      if (item.type === 'navigation') {
         navigate(item.path);
-      } else if (item.type === "food") {
+      } else if (item.type === 'food') {
         onSelectFood?.(item);
       }
     },
-    [navigate, onSelectFood],
+    [navigate, onSelectFood]
   );
 
   const handleItemSelect = onSelect || defaultHandleSelect;
   const inputRef = useRef(null);
   const listRef = useRef(null);
 
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const debouncedQuery = useDebounce(query, 150);
 
@@ -120,7 +115,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
       const navItems = NAVIGATION_ITEMS.slice(0, 3).map((item) => ({
         ...item,
         category: CATEGORIES.NAVIGATION,
-        type: "navigation",
+        type: 'navigation',
       }));
       items.push(...navItems);
 
@@ -130,7 +125,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
           ...food,
           id: `recent-${food.id || food.name}`,
           category: CATEGORIES.RECENT,
-          type: "food",
+          type: 'food',
         }));
         items.push(...recent);
       }
@@ -141,7 +136,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
           ...food,
           id: `frequent-${food.id || food.name}`,
           category: CATEGORIES.FREQUENT,
-          type: "food",
+          type: 'food',
         }));
         items.push(...frequent);
       }
@@ -151,25 +146,20 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
 
     // Search navigation
     const matchingNav = NAVIGATION_ITEMS.filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchTerm) ||
-        item.path.includes(searchTerm),
+      (item) => item.name.toLowerCase().includes(searchTerm) || item.path.includes(searchTerm)
     ).map((item) => ({
       ...item,
       category: CATEGORIES.NAVIGATION,
-      type: "navigation",
+      type: 'navigation',
     }));
     items.push(...matchingNav);
 
     // Search foods
-    const allFoods = [
-      ...(foodsDatabaseUSDA || []),
-      ...(foodsDatabaseExtended || []),
-    ];
+    const allFoods = [...(foodsDatabaseUSDA || []), ...(foodsDatabaseExtended || [])];
     const matchingFoods = allFoods
       .filter((food) => {
-        const name = (food.name || food.food_name || "").toLowerCase();
-        const category = (food.category || "").toLowerCase();
+        const name = (food.name || food.food_name || '').toLowerCase();
+        const category = (food.category || '').toLowerCase();
         return name.includes(searchTerm) || category.includes(searchTerm);
       })
       .slice(0, 15)
@@ -178,7 +168,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
         id: `food-${food.id || food.name || food.food_name}`,
         name: food.name || food.food_name,
         category: CATEGORIES.FOOD,
-        type: "food",
+        type: 'food',
       }));
     items.push(...matchingFoods);
 
@@ -188,7 +178,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
   // Focus input on open
   useEffect(() => {
     if (isOpen) {
-      setQuery("");
+      setQuery('');
       setSelectedIndex(0);
       setTimeout(() => inputRef.current?.focus(), 100);
     }
@@ -203,7 +193,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
   useEffect(() => {
     if (!listRef.current) return;
     const selectedItem = listRef.current.children[selectedIndex];
-    selectedItem?.scrollIntoView({ block: "nearest" });
+    selectedItem?.scrollIntoView({ block: 'nearest' });
   }, [selectedIndex]);
 
   // Handle item selection
@@ -213,32 +203,30 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
       handleItemSelect(item);
       onClose();
     },
-    [handleItemSelect, onClose],
+    [handleItemSelect, onClose]
   );
 
   // Keyboard navigation
   const handleKeyDown = useCallback(
     (event) => {
       switch (event.key) {
-        case "ArrowDown":
+        case 'ArrowDown':
           event.preventDefault();
-          setSelectedIndex((prev) =>
-            prev < results.length - 1 ? prev + 1 : prev,
-          );
+          setSelectedIndex((prev) => (prev < results.length - 1 ? prev + 1 : prev));
           haptics.selection();
           break;
-        case "ArrowUp":
+        case 'ArrowUp':
           event.preventDefault();
           setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
           haptics.selection();
           break;
-        case "Enter":
+        case 'Enter':
           event.preventDefault();
           if (results[selectedIndex]) {
             handleSelect(results[selectedIndex]);
           }
           break;
-        case "Escape":
+        case 'Escape':
           event.preventDefault();
           onClose();
           break;
@@ -246,7 +234,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
           break;
       }
     },
-    [results, selectedIndex, handleSelect, onClose],
+    [results, selectedIndex, handleSelect, onClose]
   );
 
   // Group results by category
@@ -266,17 +254,17 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
   const getCategoryLabel = (category) => {
     switch (category) {
       case CATEGORIES.NAVIGATION:
-        return "Navigation";
+        return 'Navigation';
       case CATEGORIES.RECENT:
-        return "Recently Added";
+        return 'Recently Added';
       case CATEGORIES.FREQUENT:
-        return "Frequently Used";
+        return 'Frequently Used';
       case CATEGORIES.FOOD:
-        return "Foods";
+        return 'Foods';
       case CATEGORIES.RECIPE:
-        return "Recipes";
+        return 'Recipes';
       default:
-        return "";
+        return '';
     }
   };
 
@@ -298,16 +286,12 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
             initial={{ scale: 0.95, y: -20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.95, y: -20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 400 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 400 }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Search Input */}
             <div className="quick-search__input-wrapper">
-              <Search
-                size={20}
-                className="quick-search__icon"
-                aria-hidden="true"
-              />
+              <Search size={20} className="quick-search__icon" aria-hidden="true" />
               <input
                 ref={inputRef}
                 type="text"
@@ -323,7 +307,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
               {query && (
                 <button
                   className="quick-search__clear"
-                  onClick={() => setQuery("")}
+                  onClick={() => setQuery('')}
                   aria-label="Clear search"
                 >
                   <X size={18} />
@@ -346,9 +330,7 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
 
               {Object.entries(groupedResults).map(([category, group]) => (
                 <div key={category} className="quick-search__group">
-                  <div className="quick-search__group-label">
-                    {getCategoryLabel(category)}
-                  </div>
+                  <div className="quick-search__group-label">{getCategoryLabel(category)}</div>
                   {group.items.map((item) => (
                     <SearchResultItem
                       key={item.id}
@@ -386,26 +368,25 @@ export const QuickSearch = ({ isOpen, onClose, onSelect, onSelectFood }) => {
  */
 const SearchResultItem = ({ item, isSelected, onSelect, onHover }) => {
   const getIcon = () => {
-    if (item.type === "navigation") {
+    if (item.type === 'navigation') {
       const Icon = item.icon || ChevronRight;
       return <Icon size={18} />;
     }
     if (item.category === CATEGORIES.RECENT) return <Clock size={18} />;
     if (item.category === CATEGORIES.FREQUENT) return <Star size={18} />;
-    if (item.type === "recipe") return <BookOpen size={18} />;
+    if (item.type === 'recipe') return <BookOpen size={18} />;
     return <Apple size={18} />;
   };
 
   const getDetail = () => {
-    if (item.type === "navigation") return item.path;
-    if (item.calories)
-      return `${item.calories} cal • ${item.serving || "1 serving"}`;
-    return item.serving || "";
+    if (item.type === 'navigation') return item.path;
+    if (item.calories) return `${item.calories} cal • ${item.serving || '1 serving'}`;
+    return item.serving || '';
   };
 
   return (
     <div
-      className={`quick-search__item ${isSelected ? "selected" : ""}`}
+      className={`quick-search__item ${isSelected ? 'selected' : ''}`}
       onClick={onSelect}
       onMouseEnter={onHover}
       role="option"
@@ -414,9 +395,7 @@ const SearchResultItem = ({ item, isSelected, onSelect, onHover }) => {
       <div className="quick-search__item-icon">{getIcon()}</div>
       <div className="quick-search__item-content">
         <span className="quick-search__item-name">{item.name}</span>
-        {getDetail() && (
-          <span className="quick-search__item-detail">{getDetail()}</span>
-        )}
+        {getDetail() && <span className="quick-search__item-detail">{getDetail()}</span>}
       </div>
       <ChevronRight size={16} className="quick-search__item-arrow" />
     </div>
@@ -441,8 +420,8 @@ export const useQuickSearch = () => {
   // Listen for keyboard shortcut
   useEffect(() => {
     const handler = () => open();
-    document.addEventListener("shortcut:search", handler);
-    return () => document.removeEventListener("shortcut:search", handler);
+    document.addEventListener('shortcut:search', handler);
+    return () => document.removeEventListener('shortcut:search', handler);
   }, [open]);
 
   return { isOpen, open, close };

@@ -1,6 +1,6 @@
-import React, { forwardRef } from "react";
-import { motion } from "framer-motion";
-import "./Button.css";
+import { motion } from 'framer-motion';
+import React, { forwardRef } from 'react';
+import './Button.css';
 
 /**
  * Professional Button Component
@@ -11,38 +11,38 @@ const Button = forwardRef(
   (
     {
       children,
-      variant = "primary",
-      size = "md",
+      variant = 'primary',
+      size = 'md',
       fullWidth = false,
       disabled = false,
       loading = false,
       leftIcon,
       rightIcon,
       iconOnly = false,
-      className = "",
+      className = '',
       onClick,
-      type = "button",
-      as = "button",
+      type = 'button',
+      as = 'button',
       href,
       ariaLabel,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const Component = as === "a" ? motion.a : motion.button;
+    const Component = as === 'a' ? motion.a : motion.button;
 
     const baseClasses = [
-      "ds-btn",
+      'ds-btn',
       `ds-btn--${variant}`,
       `ds-btn--${size}`,
-      fullWidth && "ds-btn--full-width",
-      iconOnly && "ds-btn--icon-only",
-      loading && "ds-btn--loading",
-      disabled && "ds-btn--disabled",
+      fullWidth && 'ds-btn--full-width',
+      iconOnly && 'ds-btn--icon-only',
+      loading && 'ds-btn--loading',
+      disabled && 'ds-btn--disabled',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const handleClick = (e) => {
       if (disabled || loading) {
@@ -64,23 +64,19 @@ const Button = forwardRef(
         className={baseClasses}
         onClick={handleClick}
         disabled={disabled || loading}
-        type={as === "button" ? type : undefined}
-        href={as === "a" ? href : undefined}
+        type={as === 'button' ? type : undefined}
+        href={as === 'a' ? href : undefined}
         aria-label={ariaLabel || (iconOnly ? undefined : undefined)}
         aria-disabled={disabled || loading}
         aria-busy={loading}
         whileTap={{ scale: disabled || loading ? 1 : 0.97 }}
         whileHover={{ scale: disabled || loading ? 1 : 1.02 }}
-        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         {...props}
       >
         {loading && (
           <span className="ds-btn__spinner" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              className="ds-btn__spinner-icon"
-            >
+            <svg viewBox="0 0 24 24" fill="none" className="ds-btn__spinner-icon">
               <circle
                 cx="12"
                 cy="12"
@@ -112,9 +108,9 @@ const Button = forwardRef(
         )}
       </Component>
     );
-  },
+  }
 );
 
-Button.displayName = "Button";
+Button.displayName = 'Button';
 
 export default Button;

@@ -14,7 +14,7 @@
 }
 
 .ai-food-input::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -156,6 +156,7 @@
 .ai-estimate-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: var(--shadow-glow-blue);
+  filter: brightness(1.05);
 }
 
 .ai-estimate-btn:focus-visible {
@@ -284,9 +285,15 @@
 
 .ai-nutrition-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-sm);
   margin-bottom: var(--space-lg);
+}
+
+@media (min-width: 480px) {
+  .ai-nutrition-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .ai-nutrition-item {
@@ -295,6 +302,14 @@
   background: var(--surface-base);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
+  transition:
+    transform var(--duration-short, 100ms) var(--ease-emphasized, ease),
+    box-shadow var(--duration-short, 100ms) var(--ease-emphasized, ease);
+}
+
+.ai-nutrition-item:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .ai-nutrition-value {
@@ -335,12 +350,27 @@
   font-weight: var(--font-semibold);
   cursor: pointer;
   transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-add-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--duration-short, 100ms) ease;
 }
 
 .ai-add-btn:hover {
   background: var(--color-success-dark);
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow-success-lg);
+}
+
+.ai-add-btn:hover::after {
+  opacity: 1;
 }
 
 .ai-add-btn:focus-visible {
@@ -352,15 +382,11 @@
 @media (max-width: 480px) {
   .ai-food-input {
     padding: var(--space-lg);
+    border-radius: var(--radius-md);
   }
 
   .ai-form-row {
     grid-template-columns: 1fr;
-  }
-
-  .ai-nutrition-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-sm);
   }
 
   .ai-nutrition-item {
@@ -369,6 +395,14 @@
 
   .ai-nutrition-value {
     font-size: var(--text-lg);
+  }
+
+  .ai-food-title {
+    font-size: var(--text-base);
+  }
+
+  .ai-result-container {
+    padding: var(--space-md);
   }
 }
 

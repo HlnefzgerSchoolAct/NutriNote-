@@ -2,43 +2,56 @@
  * LoginPage - Sign in with Google or Email for cloud sync
  */
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { LogIn, Loader2 } from "lucide-react";
-import { M3Button, Main } from "../components/common";
-import { useAuth } from "../contexts/AuthContext";
-import ThemedLogo from "../components/ThemedLogo";
-import "./LoginPage.css";
+import { motion } from 'framer-motion';
+import { LogIn, Loader2, Cloud, Mail, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+import { M3Button, Main } from '../components/common';
+import ThemedLogo from '../components/ThemedLogo';
+import { useAuth } from '../contexts/AuthContext';
+import { getAuthErrorMessage } from '../utils/authErrors';
+import './LoginPage.css';
 
 function LoginPage() {
   const {
+    user,
     signInWithGoogle,
     signInWithEmail,
     signUpWithEmail,
     resetPassword,
     isFirebaseConfigured,
   } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
-  const [mode, setMode] = useState("google"); // google | email | forgot
+  const returnTo = location.state?.returnTo || '/';
+
+  // Redirect if already signed in
+  useEffect(() => {
+    if (user) {
+      navigate(returnTo, { replace: true });
+    }
+  }, [user, navigate, returnTo]);
+
+  const [mode, setMode] = useState('google'); // google | email | forgot | signup
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [passwordResetSent, setPasswordResetSent] = useState(false);
 
   const handleGoogleSignIn = async () => {
     if (!isFirebaseConfigured()) {
-      setError("Sign-in is not configured.");
+      setError('Sign-in is not configured.');
       return;
     }
     setError(null);
     setLoading(true);
     try {
       await signInWithGoogle();
-      navigate("/", { replace: true });
+      navigate(returnTo, { replace: true });
     } catch (err) {
-      setError(err.message || "Sign-in failed. Please try again.");
+      setError(getAuthErrorMessage(err, 'Sign-in failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -47,16 +60,16 @@ function LoginPage() {
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     if (!email.trim() || !password) {
-      setError("Please enter email and password.");
+      setError('Please enter email and password.');
       return;
     }
     setError(null);
     setLoading(true);
     try {
       await signInWithEmail(email.trim(), password);
-      navigate("/", { replace: true });
+      navigate(returnTo, { replace: true });
     } catch (err) {
-      setError(err.message || "Sign-in failed. Please try again.");
+      setError(getAuthErrorMessage(err, 'Sign-in failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -65,20 +78,20 @@ function LoginPage() {
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
     if (!email.trim() || !password) {
-      setError("Please enter email and password.");
+      setError('Please enter email and password.');
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError('Password must be at least 6 characters.');
       return;
     }
     setError(null);
     setLoading(true);
     try {
       await signUpWithEmail(email.trim(), password);
-      navigate("/", { replace: true });
+      navigate(returnTo, { replace: true });
     } catch (err) {
-      setError(err.message || "Sign-up failed. Please try again.");
+      setError(getAuthErrorMessage(err, 'Sign-up failed. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -87,7 +100,7 @@ function LoginPage() {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     if (!email.trim()) {
-      setError("Please enter your email address.");
+      setError('Please enter your email address.');
       return;
     }
     setError(null);
@@ -96,7 +109,7 @@ function LoginPage() {
       await resetPassword(email.trim());
       setPasswordResetSent(true);
     } catch (err) {
-      setError(err.message || "Failed to send reset email.");
+      setError(getAuthErrorMessage(err, 'Failed to send reset email.'));
     } finally {
       setLoading(false);
     }
@@ -113,17 +126,11 @@ function LoginPage() {
         >
           <Cloud size={48} className="login-icon" aria-hidden />
           <h1>Cloud Sync</h1>
-          <p className="login-subtitle">
-            Sign in with Google to sync your data across devices.
-          </p>
+          <p className="login-subtitle">Sign in with Google to sync your data across devices.</p>
           <div className="login-unavailable" role="alert">
-            <p>
-              Firebase is not configured. Add environment variables to enable
-              accounts:
-            </p>
+            <p>Firebase is not configured. Add environment variables to enable accounts:</p>
             <code>
-              VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN,
-              VITE_FIREBASE_PROJECT_ID, ...
+              VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID, ...
             </code>
           </div>
           <M3Button variant="outlined" onClick={() => navigate(-1)}>
@@ -142,7 +149,7 @@ function LoginPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <ThemedLogo className="login-brand-logo" height={120} ariaHidden />
+        <ThemedLogo className="login-brand-logo" height={240} ariaHidden />
         <h1>Sign in to NutriNote+</h1>
         <p className="login-subtitle">
           Sync your food logs, recipes, and preferences across all your devices.
@@ -151,9 +158,9 @@ function LoginPage() {
         <div className="login-tabs" role="tablist">
           <button
             type="button"
-            className={`login-tab ${mode === "google" ? "active" : ""}`}
+            className={`login-tab ${mode === 'google' ? 'active' : ''}`}
             onClick={() => {
-              setMode("google");
+              setMode('google');
               setError(null);
             }}
             role="tab"
@@ -162,9 +169,9 @@ function LoginPage() {
           </button>
           <button
             type="button"
-            className={`login-tab ${mode === "email" || mode === "forgot" || mode === "signup" ? "active" : ""}`}
+            className={`login-tab ${mode === 'email' || mode === 'forgot' || mode === 'signup' ? 'active' : ''}`}
             onClick={() => {
-              setMode("email");
+              setMode('email');
               setError(null);
               setPasswordResetSent(false);
             }}
@@ -186,33 +193,27 @@ function LoginPage() {
           </div>
         )}
 
-        {mode === "google" && (
+        {mode === 'google' && (
           <>
             <M3Button
               variant="filled"
               fullWidth
-              leadingIcon={
-                loading ? (
-                  <Loader2 size={20} className="spin" />
-                ) : (
-                  <LogIn size={20} />
-                )
-              }
+              leadingIcon={loading ? <Loader2 size={20} className="spin" /> : <LogIn size={20} />}
               onClick={handleGoogleSignIn}
               disabled={loading}
-              aria-label={loading ? "Signing in..." : "Sign in with Google"}
+              aria-label={loading ? 'Signing in...' : 'Sign in with Google'}
             >
-              {loading ? "Signing in..." : "Sign in with Google"}
+              {loading ? 'Signing in...' : 'Sign in with Google'}
             </M3Button>
           </>
         )}
 
-        {(mode === "email" || mode === "forgot" || mode === "signup") && (
+        {(mode === 'email' || mode === 'forgot' || mode === 'signup') && (
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (mode === "forgot") handleForgotPassword(e);
-              else if (mode === "email") handleEmailSubmit(e);
+              if (mode === 'forgot') handleForgotPassword(e);
+              else if (mode === 'email') handleEmailSubmit(e);
               else handleSignUpSubmit(e);
             }}
             className="login-form"
@@ -226,45 +227,29 @@ function LoginPage() {
               autoComplete="email"
               required
             />
-            {mode !== "forgot" && (
+            {mode !== 'forgot' && (
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="login-input"
-                autoComplete={
-                  mode === "email" ? "current-password" : "new-password"
-                }
+                autoComplete={mode === 'email' ? 'current-password' : 'new-password'}
                 required
               />
             )}
-            {mode === "forgot" && (
-              <M3Button
-                type="submit"
-                variant="filled"
-                fullWidth
-                disabled={loading}
-              >
-                {loading ? "Sending…" : "Send reset link"}
+            {mode === 'forgot' && (
+              <M3Button type="submit" variant="filled" fullWidth disabled={loading}>
+                {loading ? 'Sending…' : 'Send reset link'}
               </M3Button>
             )}
-            {mode === "email" && (
+            {mode === 'email' && (
               <>
-                <M3Button
-                  type="submit"
-                  variant="filled"
-                  fullWidth
-                  disabled={loading}
-                >
-                  {loading ? "Signing in…" : "Sign in"}
+                <M3Button type="submit" variant="filled" fullWidth disabled={loading}>
+                  {loading ? 'Signing in…' : 'Sign in'}
                 </M3Button>
                 <div className="login-email-links">
-                  <button
-                    type="button"
-                    className="login-link"
-                    onClick={() => setMode("forgot")}
-                  >
+                  <button type="button" className="login-link" onClick={() => setMode('forgot')}>
                     Forgot password?
                   </button>
                   <button
@@ -272,7 +257,7 @@ function LoginPage() {
                     className="login-link"
                     onClick={(e) => {
                       e.preventDefault();
-                      setMode("signup");
+                      setMode('signup');
                       setError(null);
                     }}
                   >
@@ -281,21 +266,16 @@ function LoginPage() {
                 </div>
               </>
             )}
-            {mode === "signup" && (
+            {mode === 'signup' && (
               <>
-                <M3Button
-                  type="submit"
-                  variant="filled"
-                  fullWidth
-                  disabled={loading}
-                >
-                  {loading ? "Creating account…" : "Create account"}
+                <M3Button type="submit" variant="filled" fullWidth disabled={loading}>
+                  {loading ? 'Creating account…' : 'Create account'}
                 </M3Button>
                 <button
                   type="button"
                   className="login-link"
                   onClick={() => {
-                    setMode("email");
+                    setMode('email');
                     setError(null);
                   }}
                 >
@@ -306,11 +286,7 @@ function LoginPage() {
           </form>
         )}
 
-        <button
-          type="button"
-          className="login-skip"
-          onClick={() => navigate(-1)}
-        >
+        <button type="button" className="login-skip" onClick={() => navigate(-1)}>
           Continue without account
         </button>
       </motion.div>

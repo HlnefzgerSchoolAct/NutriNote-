@@ -3,9 +3,7 @@
  * Food & exercise logging with AI input, barcode scanner, quick add, and meal grouping
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
   Utensils,
@@ -16,10 +14,15 @@ import {
   Sparkles,
   ScanLine,
   Copy,
-} from "lucide-react";
-import "./LogPage.css";
+  Droplets,
+} from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import './LogPage.css';
 
 // M3 Design System Components
+import AIFoodInput from '../components/AIFoodInput';
+import BarcodeScanner from '../components/BarcodeScanner';
 import {
   M3Card,
   M3CardContent,
@@ -39,14 +42,14 @@ import {
   CompactMicronutrients,
   VisuallyHidden,
   useAnnounce,
-} from "../components/common";
-
-import SegmentedButtonGroup from "../components/common/SegmentedButton";
-import AIFoodInput from "../components/AIFoodInput";
-import BarcodeScanner from "../components/BarcodeScanner";
-import EditFoodModal from "../components/EditFoodModal";
-import CopyMealsSheet from "../components/CopyMealsSheet";
-import { quickAddFoods, foodsDatabase } from "../data/foods";
+} from '../components/common';
+import SegmentedButtonGroup from '../components/common/SegmentedButton';
+import CopyMealsSheet from '../components/CopyMealsSheet';
+import EditFoodModal from '../components/EditFoodModal';
+import HydrationTracker from '../components/HydrationTracker';
+import { FeatureHighlight, APP_TOOLTIPS } from '../components/OnboardingTooltips';
+import { quickAddFoods, foodsDatabase } from '../data/foods';
+import { haptics } from '../utils/haptics';
 import {
   loadFoodLog,
   loadExerciseLog,
@@ -65,50 +68,45 @@ import {
   toggleFavoriteFood,
   isFavoriteFood,
   getMealTypeByTime,
-} from "../utils/localStorage";
-import { haptics } from "../utils/haptics";
-import { FeatureHighlight, APP_TOOLTIPS } from "../components/OnboardingTooltips";
+} from '../utils/localStorage';
 
 const TAB_SEGMENTS = [
-  { value: "food", label: "Food", icon: <Utensils size={18} /> },
-  { value: "exercise", label: "Exercise", icon: <Dumbbell size={18} /> },
+  { value: 'food', label: 'Food', icon: <Utensils size={18} /> },
+  { value: 'exercise', label: 'Exercise', icon: <Dumbbell size={18} /> },
+  { value: 'hydration', label: 'Hydration', icon: <Droplets size={18} /> },
 ];
 
 const INPUT_MODE_SEGMENTS = [
-  { value: "ai", label: "AI Estimator", icon: <Sparkles size={16} /> },
-  { value: "scan", label: "Scan Barcode", icon: <ScanLine size={16} /> },
+  { value: 'ai', label: 'AI Estimator', icon: <Sparkles size={16} /> },
+  { value: 'scan', label: 'Scan Barcode', icon: <ScanLine size={16} /> },
 ];
 
-const MEAL_ORDER = ["breakfast", "lunch", "dinner", "snack", "other"];
+const MEAL_ORDER = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
 
 function LogPage({ userProfile, dailyTarget }) {
   const location = useLocation();
   const announce = useAnnounce();
-  const initialMode = location.state?.mode || "ai";
+  const initialMode = location.state?.mode || 'ai';
 
-  const [activeTab, setActiveTab] = useState(
-    initialMode === "exercise" ? "exercise" : "food",
-  );
-  const [inputMode, setInputMode] = useState(
-    initialMode === "scan" ? "scan" : "ai",
-  );
-  const [prefillFoodDescription, setPrefillFoodDescription] = useState("");
+  const [activeTab, setActiveTab] = useState(initialMode === 'exercise' ? 'exercise' : 'food');
+  const [inputMode, setInputMode] = useState(initialMode === 'scan' ? 'scan' : 'ai');
+  const [prefillFoodDescription, setPrefillFoodDescription] = useState('');
 
   // Food state
   const [foodLog, setFoodLog] = useState([]);
-  const [foodName, setFoodName] = useState("");
-  const [foodCalories, setFoodCalories] = useState("");
+  const [foodName, setFoodName] = useState('');
+  const [foodCalories, setFoodCalories] = useState('');
 
   // Exercise state
   const [exerciseLog, setExerciseLog] = useState([]);
-  const [exerciseName, setExerciseName] = useState("");
-  const [exerciseCalories, setExerciseCalories] = useState("");
+  const [exerciseName, setExerciseName] = useState('');
+  const [exerciseCalories, setExerciseCalories] = useState('');
 
   // Quick add state
   const [recentFoods, setRecentFoods] = useState([]);
   const [favoriteFoods, setFavoriteFoods] = useState([]);
-  const [quickAddTab, setQuickAddTab] = useState("recent");
-  const [quickAddSearch, setQuickAddSearch] = useState("");
+  const [quickAddTab, setQuickAddTab] = useState('recent');
+  const [quickAddSearch, setQuickAddSearch] = useState('');
 
   // Edit/Copy state
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -119,8 +117,7 @@ function LogPage({ userProfile, dailyTarget }) {
   const [showQuickAdd, setShowQuickAdd] = useState(true);
   const [showFoodLog, setShowFoodLog] = useState(true);
 
-  const isMobile =
-    window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768;
+  const isMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 768;
   const preferences = loadPreferences();
 
   // ===== Data Loading =====
@@ -136,14 +133,16 @@ function LogPage({ userProfile, dailyTarget }) {
   }, [loadData]);
 
   useEffect(() => {
-    if (location.state?.mode === "scan") {
-      setActiveTab("food");
-      setInputMode("scan");
-    } else if (location.state?.mode === "ai") {
-      setActiveTab("food");
-      setInputMode("ai");
-    } else if (location.state?.mode === "exercise") {
-      setActiveTab("exercise");
+    if (location.state?.mode === 'scan') {
+      setActiveTab('food');
+      setInputMode('scan');
+    } else if (location.state?.mode === 'ai') {
+      setActiveTab('food');
+      setInputMode('ai');
+    } else if (location.state?.mode === 'exercise') {
+      setActiveTab('exercise');
+    } else if (location.state?.mode === 'hydration') {
+      setActiveTab('hydration');
     }
   }, [location.state]);
 
@@ -157,7 +156,7 @@ function LogPage({ userProfile, dailyTarget }) {
 
   const groupedFood = useMemo(() => {
     return foodLog.reduce((acc, entry) => {
-      const meal = entry.mealType || "other";
+      const meal = entry.mealType || 'other';
       if (!acc[meal]) acc[meal] = [];
       acc[meal].push(entry);
       return acc;
@@ -169,9 +168,7 @@ function LogPage({ userProfile, dailyTarget }) {
     const allFoods = [...quickAddFoods, ...foodsDatabase];
     const term = quickAddSearch.toLowerCase();
     return allFoods.filter(
-      (f) =>
-        f.name.toLowerCase().includes(term) ||
-        f.category.toLowerCase().includes(term),
+      (f) => f.name.toLowerCase().includes(term) || f.category.toLowerCase().includes(term)
     );
   }, [quickAddSearch]);
 
@@ -189,24 +186,28 @@ function LogPage({ userProfile, dailyTarget }) {
         fat: foodEntry.fat || 0,
       });
       setRecentFoods(loadRecentFoods());
-      showToast.success("Food logged!", `${foodEntry.name} - ${foodEntry.calories} cal`);
-      announce(`Logged ${foodEntry.name}, ${foodEntry.calories} calories`, "assertive");
+      showToast.success('Food logged!', `${foodEntry.name} - ${foodEntry.calories} cal`);
+      announce(`Logged ${foodEntry.name}, ${foodEntry.calories} calories`, 'assertive');
     },
-    [announce],
+    [announce]
   );
 
   const handleAddFood = useCallback(
     (e) => {
       e.preventDefault();
       if (!foodName || !foodCalories || foodCalories <= 0) return;
-      const entry = { name: foodName, calories: parseInt(foodCalories), mealType: getMealTypeByTime() };
+      const entry = {
+        name: foodName,
+        calories: parseInt(foodCalories),
+        mealType: getMealTypeByTime(),
+      };
       const saved = addFoodEntry(entry);
       setFoodLog((prev) => [...prev, saved]);
-      setFoodName("");
-      setFoodCalories("");
-      showToast.success("Food logged!", `${foodName} - ${foodCalories} cal`);
+      setFoodName('');
+      setFoodCalories('');
+      showToast.success('Food logged!', `${foodName} - ${foodCalories} cal`);
     },
-    [foodName, foodCalories],
+    [foodName, foodCalories]
   );
 
   const handleAddExercise = useCallback(
@@ -218,11 +219,11 @@ function LogPage({ userProfile, dailyTarget }) {
         calories: parseInt(exerciseCalories),
       });
       setExerciseLog((prev) => [...prev, saved]);
-      setExerciseName("");
-      setExerciseCalories("");
-      showToast.success("Exercise logged!", `${exerciseName} - ${exerciseCalories} cal burned`);
+      setExerciseName('');
+      setExerciseCalories('');
+      showToast.success('Exercise logged!', `${exerciseName} - ${exerciseCalories} cal burned`);
     },
-    [exerciseName, exerciseCalories],
+    [exerciseName, exerciseCalories]
   );
 
   const handleDeleteFood = useCallback((entry) => {
@@ -247,7 +248,7 @@ function LogPage({ userProfile, dailyTarget }) {
     toggleFavoriteFood(food);
     setFavoriteFoods(loadFavoriteFoods());
     if (isFavoriteFood(food.name)) {
-      showToast.success("Added to favorites", food.name);
+      showToast.success('Added to favorites', food.name);
     }
   }, []);
 
@@ -260,7 +261,7 @@ function LogPage({ userProfile, dailyTarget }) {
     const saved = updateFoodEntry(updatedEntry.id, updatedEntry);
     if (saved) {
       setFoodLog((prev) => prev.map((e) => (e.id === updatedEntry.id ? saved : e)));
-      showToast.success("Entry updated", updatedEntry.name);
+      showToast.success('Entry updated', updatedEntry.name);
     }
     setEditModalOpen(false);
     setEditingEntry(null);
@@ -269,7 +270,7 @@ function LogPage({ userProfile, dailyTarget }) {
   const handleDuplicateFood = useCallback((newEntry) => {
     const saved = addFoodEntry(newEntry);
     setFoodLog((prev) => [...prev, saved]);
-    showToast.success("Entry duplicated", newEntry.name);
+    showToast.success('Entry duplicated', newEntry.name);
     setEditModalOpen(false);
     setEditingEntry(null);
   }, []);
@@ -279,25 +280,22 @@ function LogPage({ userProfile, dailyTarget }) {
       setCopySheetOpen(false);
       if (success) {
         loadData();
-        showToast.success("Meals copied!", "Food entries added to today");
+        showToast.success('Meals copied!', 'Food entries added to today');
       }
     },
-    [loadData],
+    [loadData]
   );
 
-  const addQuickFood = useCallback(
-    (food, multiplier = 1) => {
-      const entry = addFoodEntry({
-        name: multiplier !== 1 ? `${food.name} x${multiplier}` : food.name,
-        calories: Math.round(food.cal * multiplier),
-        mealType: getMealTypeByTime(),
-      });
-      setFoodLog((prev) => [...prev, entry]);
-      setQuickAddSearch("");
-      showToast.success("Food logged!", `${food.name} - ${food.cal} cal`);
-    },
-    [],
-  );
+  const addQuickFood = useCallback((food, multiplier = 1) => {
+    const entry = addFoodEntry({
+      name: multiplier !== 1 ? `${food.name} x${multiplier}` : food.name,
+      calories: Math.round(food.cal * multiplier),
+      mealType: getMealTypeByTime(),
+    });
+    setFoodLog((prev) => [...prev, entry]);
+    setQuickAddSearch('');
+    showToast.success('Food logged!', `${food.name} - ${food.cal} cal`);
+  }, []);
 
   // ===== Render =====
   return (
@@ -321,7 +319,7 @@ function LogPage({ userProfile, dailyTarget }) {
 
       {/* ===== Food Tab ===== */}
       <AnimatePresence mode="wait">
-        {activeTab === "food" && (
+        {activeTab === 'food' && (
           <motion.div
             key="food-tab"
             initial={{ opacity: 0, x: -10 }}
@@ -347,45 +345,45 @@ function LogPage({ userProfile, dailyTarget }) {
 
             {/* AI Food Input */}
             <AnimatePresence mode="wait">
-              {(inputMode === "ai" || !isMobile) && (
+              {(inputMode === 'ai' || !isMobile) && (
                 <FeatureHighlight tooltip={APP_TOOLTIPS.AI_SEARCH} showBadge={false}>
-                <motion.div
-                  key="ai-input"
-                  className="mb-4 overflow-hidden"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  <AIFoodInput
-                    onAddFood={handleAddAIFood}
-                    userWeight={userProfile?.weight}
-                    prefillDescription={prefillFoodDescription}
-                    onDescriptionUsed={() => setPrefillFoodDescription("")}
-                  />
-                </motion.div>
+                  <motion.div
+                    key="ai-input"
+                    className="mb-4 overflow-hidden"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                  >
+                    <AIFoodInput
+                      onAddFood={handleAddAIFood}
+                      userWeight={userProfile?.weight}
+                      prefillDescription={prefillFoodDescription}
+                      onDescriptionUsed={() => setPrefillFoodDescription('')}
+                    />
+                  </motion.div>
                 </FeatureHighlight>
               )}
             </AnimatePresence>
 
             {/* Barcode Scanner */}
             <AnimatePresence mode="wait">
-              {inputMode === "scan" && isMobile && (
+              {inputMode === 'scan' && isMobile && (
                 <FeatureHighlight tooltip={APP_TOOLTIPS.BARCODE_SCAN} showBadge={false}>
-                <motion.div
-                  key="scan-input"
-                  className="mb-4 overflow-hidden"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  <BarcodeScanner
-                    onAddFood={handleAddAIFood}
-                    onSwitchToAI={(productName) => {
-                      setInputMode("ai");
-                      if (productName) setPrefillFoodDescription(productName);
-                    }}
-                  />
-                </motion.div>
+                  <motion.div
+                    key="scan-input"
+                    className="mb-4 overflow-hidden"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                  >
+                    <BarcodeScanner
+                      onAddFood={handleAddAIFood}
+                      onSwitchToAI={(productName) => {
+                        setInputMode('ai');
+                        if (productName) setPrefillFoodDescription(productName);
+                      }}
+                    />
+                  </motion.div>
                 </FeatureHighlight>
               )}
             </AnimatePresence>
@@ -423,7 +421,7 @@ function LogPage({ userProfile, dailyTarget }) {
               onDeleteFood={handleDeleteFood}
               onToggleFavorite={handleToggleFavorite}
               onCopyMeals={() => setCopySheetOpen(true)}
-              onEmptyAction={() => setInputMode("ai")}
+              onEmptyAction={() => setInputMode('ai')}
             />
 
             {/* Manual Entry */}
@@ -440,7 +438,7 @@ function LogPage({ userProfile, dailyTarget }) {
 
       {/* ===== Exercise Tab ===== */}
       <AnimatePresence mode="wait">
-        {activeTab === "exercise" && (
+        {activeTab === 'exercise' && (
           <motion.div
             key="exercise-tab"
             initial={{ opacity: 0, x: 10 }}
@@ -458,6 +456,21 @@ function LogPage({ userProfile, dailyTarget }) {
               onAddExercise={handleAddExercise}
               onDeleteExercise={handleDeleteExercise}
             />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ===== Hydration Tab ===== */}
+      <AnimatePresence mode="wait">
+        {activeTab === 'hydration' && (
+          <motion.div
+            key="hydration-tab"
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <HydrationTracker userProfile={userProfile} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -505,7 +518,7 @@ function QuickAddSection({
 }) {
   if (recentFoods.length === 0 && favoriteFoods.length === 0) return null;
 
-  const foods = quickAddTab === "recent" ? recentFoods : favoriteFoods;
+  const foods = quickAddTab === 'recent' ? recentFoods : favoriteFoods;
 
   return (
     <M3Card variant="filled" className="mb-4">
@@ -515,9 +528,7 @@ function QuickAddSection({
         onClick={() => setShowQuickAdd(!showQuickAdd)}
         aria-expanded={showQuickAdd}
       >
-        <span className="flex items-center gap-2 text-title-sm font-semibold">
-          Quick Add
-        </span>
+        <span className="flex items-center gap-2 text-title-sm font-semibold">Quick Add</span>
         <motion.div animate={{ rotate: showQuickAdd ? 180 : 0 }} transition={{ duration: 0.2 }}>
           <ChevronDown size={18} />
         </motion.div>
@@ -528,7 +539,7 @@ function QuickAddSection({
           <motion.div
             className="overflow-hidden"
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
@@ -536,15 +547,15 @@ function QuickAddSection({
             <div className="flex gap-2 px-4 pb-3 border-b border-outline-variant">
               <Chip
                 variant="filter"
-                selected={quickAddTab === "recent"}
-                onClick={() => setQuickAddTab("recent")}
+                selected={quickAddTab === 'recent'}
+                onClick={() => setQuickAddTab('recent')}
               >
                 Recent
               </Chip>
               <Chip
                 variant="filter"
-                selected={quickAddTab === "favorites"}
-                onClick={() => setQuickAddTab("favorites")}
+                selected={quickAddTab === 'favorites'}
+                onClick={() => setQuickAddTab('favorites')}
               >
                 <Star size={14} className="mr-1" /> Favorites
               </Chip>
@@ -554,32 +565,30 @@ function QuickAddSection({
             <div className="px-3 py-3 max-h-80 overflow-y-auto">
               {foods.length > 0 ? (
                 <StaggerContainer staggerDelay={0.03}>
-                  {(quickAddTab === "recent" ? foods.slice(0, 8) : foods).map(
-                    (food, index) => (
-                      <StaggerItem key={`${quickAddTab}-${index}`}>
-                        <QuickFoodItem
-                          food={food}
-                          onAdd={() =>
-                            onQuickAdd({
-                              name: food.name,
-                              calories: food.calories,
-                              protein: food.protein,
-                              carbs: food.carbs,
-                              fat: food.fat,
-                            })
-                          }
-                          onToggleFavorite={() => onToggleFavorite(food)}
-                          isFavorite={isFavoriteFood(food.name)}
-                        />
-                      </StaggerItem>
-                    ),
-                  )}
+                  {(quickAddTab === 'recent' ? foods.slice(0, 8) : foods).map((food, index) => (
+                    <StaggerItem key={`${quickAddTab}-${index}`}>
+                      <QuickFoodItem
+                        food={food}
+                        onAdd={() =>
+                          onQuickAdd({
+                            name: food.name,
+                            calories: food.calories,
+                            protein: food.protein,
+                            carbs: food.carbs,
+                            fat: food.fat,
+                          })
+                        }
+                        onToggleFavorite={() => onToggleFavorite(food)}
+                        isFavorite={isFavoriteFood(food.name)}
+                      />
+                    </StaggerItem>
+                  ))}
                 </StaggerContainer>
               ) : (
                 <p className="text-center text-on-surface-variant text-body-sm py-4">
-                  {quickAddTab === "recent"
-                    ? "Log foods to see them here"
-                    : "Star foods to add them here"}
+                  {quickAddTab === 'recent'
+                    ? 'Log foods to see them here'
+                    : 'Star foods to add them here'}
                 </p>
               )}
             </div>
@@ -599,9 +608,7 @@ function QuickFoodItem({ food, onAdd, onToggleFavorite, isFavorite }) {
       whileTap={{ scale: 0.98 }}
     >
       <div className="flex flex-col gap-1 min-w-0 flex-1">
-        <span className="text-body-sm font-medium text-on-surface truncate">
-          {food.name}
-        </span>
+        <span className="text-body-sm font-medium text-on-surface truncate">{food.name}</span>
         <CompactMacros
           calories={food.calories}
           protein={food.protein}
@@ -612,16 +619,16 @@ function QuickFoodItem({ food, onAdd, onToggleFavorite, isFavorite }) {
       <button
         className={`flex items-center justify-center w-9 h-9 bg-transparent border-none rounded-md cursor-pointer shrink-0 ml-2 transition-colors duration-150 ${
           isFavorite
-            ? "text-warning"
-            : "text-on-surface-variant hover:text-warning hover:bg-surface-container-high"
+            ? 'text-warning'
+            : 'text-on-surface-variant hover:text-warning hover:bg-surface-container-high'
         }`}
         onClick={(e) => {
           e.stopPropagation();
           onToggleFavorite();
         }}
-        aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
       >
-        <Star size={16} fill={isFavorite ? "currentColor" : "none"} />
+        <Star size={16} fill={isFavorite ? 'currentColor' : 'none'} />
       </button>
     </motion.button>
   );
@@ -647,7 +654,7 @@ function DatabaseSearch({ search, setSearch, results, onAdd }) {
           <motion.div
             className="border-t border-outline-variant max-h-75 overflow-y-auto"
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
           >
             {results.length === 0 ? (
@@ -665,7 +672,8 @@ function DatabaseSearch({ search, setSearch, results, onAdd }) {
                   <div className="flex flex-col gap-0.5">
                     <span className="text-body-sm font-medium">{food.name}</span>
                     <span className="text-label-sm text-on-surface-variant">
-                      {food.cal} cal • P:{food.protein}g C:{food.carbs}g F:{food.fat}g
+                      {food.cal} cal • P:{food.protein}g C:{food.carbs}g F:
+                      {food.fat}g
                     </span>
                   </div>
                   <Plus size={18} className="text-primary shrink-0" />
@@ -697,33 +705,33 @@ function FoodLogSection({
       {/* Header row */}
       <div className="flex items-center">
         <FeatureHighlight tooltip={APP_TOOLTIPS.MEAL_SECTIONS} showBadge={false}>
-        <button
-          className="flex-1 flex items-center justify-between px-4 py-3 bg-transparent border-none cursor-pointer text-on-surface min-w-0"
-          onClick={() => setShowFoodLog(!showFoodLog)}
-          aria-expanded={showFoodLog}
-        >
-          <span className="flex items-center gap-2 text-title-sm font-semibold">
-            <Utensils size={18} aria-hidden="true" />
-            Today's Food
-            <span className="inline-flex items-center justify-center min-w-6 h-6 px-2 bg-surface-container-high rounded-full text-label-sm font-medium text-on-surface-variant">
-              {foodLog.length}
+          <button
+            className="flex-1 flex items-center justify-between px-4 py-3 bg-transparent border-none cursor-pointer text-on-surface min-w-0"
+            onClick={() => setShowFoodLog(!showFoodLog)}
+            aria-expanded={showFoodLog}
+          >
+            <span className="flex items-center gap-2 text-title-sm font-semibold">
+              <Utensils size={18} aria-hidden="true" />
+              Today's Food
+              <span className="inline-flex items-center justify-center min-w-6 h-6 px-2 bg-surface-container-high rounded-full text-label-sm font-medium text-on-surface-variant">
+                {foodLog.length}
+              </span>
             </span>
-          </span>
-          <motion.div animate={{ rotate: showFoodLog ? 180 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronDown size={18} />
-          </motion.div>
-        </button>
+            <motion.div animate={{ rotate: showFoodLog ? 180 : 0 }} transition={{ duration: 0.2 }}>
+              <ChevronDown size={18} />
+            </motion.div>
+          </button>
         </FeatureHighlight>
 
         <FeatureHighlight tooltip={APP_TOOLTIPS.COPY_MEALS} showBadge={false}>
-        <button
-          className="flex items-center justify-center w-10 h-10 mr-2 bg-transparent border border-outline-variant rounded-md text-on-surface-variant cursor-pointer shrink-0 transition-colors duration-150 hover:bg-surface-container hover:text-on-surface hover:border-primary focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
-          onClick={onCopyMeals}
-          aria-label="Copy meals from another day"
-          title="Copy meals from another day"
-        >
-          <Copy size={16} />
-        </button>
+          <button
+            className="flex items-center justify-center w-10 h-10 mr-2 bg-transparent border border-outline-variant rounded-md text-on-surface-variant cursor-pointer shrink-0 transition-colors duration-150 hover:bg-surface-container hover:text-on-surface hover:border-primary focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+            onClick={onCopyMeals}
+            aria-label="Copy meals from another day"
+            title="Copy meals from another day"
+          >
+            <Copy size={16} />
+          </button>
         </FeatureHighlight>
       </div>
 
@@ -732,7 +740,7 @@ function FoodLogSection({
           <motion.div
             className="overflow-hidden"
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
@@ -751,7 +759,7 @@ function FoodLogSection({
                       onToggleFavorite={onToggleFavorite}
                       showSwipeTooltip={mealIndex === 0}
                     />
-                  ) : null,
+                  ) : null
                 )}
                 <div className="flex items-center justify-between px-4 py-3 border-t border-outline-variant text-body-sm font-medium text-on-surface-variant">
                   <span>Total</span>
@@ -778,53 +786,61 @@ function MealGroup({ meal, entries, onEdit, onDelete, onToggleFavorite, showSwip
       <div className="flex flex-col gap-2">
         {entries.map((entry, entryIndex) => {
           const item = (
-          <SwipeableItem
-            key={entry.id}
-            onDelete={() => onDelete(entry)}
-            onFavorite={() =>
-              onToggleFavorite({
-                name: entry.name,
-                calories: entry.calories,
-                protein: entry.protein || 0,
-                carbs: entry.carbs || 0,
-                fat: entry.fat || 0,
-              })
-            }
-          >
-            <div
-              className="flex items-center justify-between px-3 py-3 bg-surface-container rounded-lg cursor-pointer transition-colors duration-150 hover:bg-surface-container-high focus-visible:outline-2 focus-visible:outline-primary focus-visible:-outline-offset-2 focus-visible:rounded-sm"
-              onClick={() => onEdit(entry)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && onEdit(entry)}
-              aria-label={`Edit ${entry.name}`}
+            <SwipeableItem
+              key={entry.id}
+              onDelete={() => onDelete(entry)}
+              onFavorite={() =>
+                onToggleFavorite({
+                  name: entry.name,
+                  calories: entry.calories,
+                  protein: entry.protein || 0,
+                  carbs: entry.carbs || 0,
+                  fat: entry.fat || 0,
+                })
+              }
             >
-              <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                <span className="text-body-sm font-medium text-on-surface truncate">
-                  {entry.name}
-                </span>
-                <span className="text-label-sm text-on-surface-variant">
-                  {entry.calories} cal
-                  {(entry.protein || entry.carbs || entry.fat) && (
-                    <> • P:{entry.protein || 0}g C:{entry.carbs || 0}g F:{entry.fat || 0}g</>
+              <div
+                className="flex items-center justify-between px-3 py-3 bg-surface-container rounded-lg cursor-pointer transition-colors duration-150 hover:bg-surface-container-high focus-visible:outline-2 focus-visible:outline-primary focus-visible:-outline-offset-2 focus-visible:rounded-sm"
+                onClick={() => onEdit(entry)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && onEdit(entry)}
+                aria-label={`Edit ${entry.name}`}
+              >
+                <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                  <span className="text-body-sm font-medium text-on-surface truncate">
+                    {entry.name}
+                  </span>
+                  <span className="text-label-sm text-on-surface-variant">
+                    {entry.calories} cal
+                    {(entry.protein || entry.carbs || entry.fat) && (
+                      <>
+                        {' '}
+                        • P:{entry.protein || 0}g C:{entry.carbs || 0}g F:
+                        {entry.fat || 0}g
+                      </>
+                    )}
+                  </span>
+                  {(entry.fiber || entry.sodium || entry.sugar) && (
+                    <CompactMicronutrients
+                      fiber={entry.fiber}
+                      sodium={entry.sodium}
+                      sugar={entry.sugar}
+                    />
                   )}
+                </div>
+                <span className="text-body-sm font-semibold text-primary ml-3 tabular-nums shrink-0">
+                  {entry.calories}
                 </span>
-                {(entry.fiber || entry.sodium || entry.sugar) && (
-                  <CompactMicronutrients
-                    fiber={entry.fiber}
-                    sodium={entry.sodium}
-                    sugar={entry.sugar}
-                  />
-                )}
               </div>
-              <span className="text-body-sm font-semibold text-primary ml-3 tabular-nums shrink-0">
-                {entry.calories}
-              </span>
-            </div>
-          </SwipeableItem>
+            </SwipeableItem>
           );
           return showSwipeTooltip && entryIndex === 0 ? (
-            <FeatureHighlight key={entry.id} tooltip={APP_TOOLTIPS.SWIPE_TO_DELETE} showBadge={false}>
+            <FeatureHighlight
+              key={entry.id}
+              tooltip={APP_TOOLTIPS.SWIPE_TO_DELETE}
+              showBadge={false}
+            >
               {item}
             </FeatureHighlight>
           ) : (
@@ -841,9 +857,7 @@ function ManualEntry({ foodName, setFoodName, foodCalories, setFoodCalories, onS
   return (
     <M3Card variant="outlined" className="mb-4">
       <M3CardContent>
-        <h4 className="text-title-sm font-semibold text-on-surface-variant mb-3">
-          Manual Entry
-        </h4>
+        <h4 className="text-title-sm font-semibold text-on-surface-variant mb-3">Manual Entry</h4>
         <form onSubmit={onSubmit} className="flex gap-2 items-stretch flex-wrap">
           <input
             type="text"
@@ -885,9 +899,7 @@ function ExerciseSection({
       {/* Input */}
       <M3Card variant="filled" className="mb-4">
         <M3CardContent>
-          <h3 className="text-title-md font-semibold text-on-surface mb-4">
-            Log Exercise
-          </h3>
+          <h3 className="text-title-md font-semibold text-on-surface mb-4">Log Exercise</h3>
           <form onSubmit={onAddExercise} className="flex flex-col gap-3">
             <input
               type="text"
@@ -914,9 +926,7 @@ function ExerciseSection({
       {/* Log */}
       <M3Card variant="filled" className="mb-4">
         <div className="px-4 py-3 border-b border-outline-variant">
-          <h4 className="text-title-sm font-semibold text-on-surface m-0">
-            Today's Exercise
-          </h4>
+          <h4 className="text-title-sm font-semibold text-on-surface m-0">Today's Exercise</h4>
         </div>
 
         {exerciseLog.length === 0 ? (

@@ -140,8 +140,7 @@
   display: flex;
   flex-direction: column;
   padding: 24px;
-  animation: m3-onboarding-slide-in 400ms
-    var(--m3-motion-easing-emphasized, ease);
+  animation: m3-onboarding-slide-in 400ms var(--m3-motion-easing-emphasized, ease);
 }
 
 @keyframes m3-onboarding-slide-in {
@@ -156,8 +155,7 @@
 }
 
 .m3-onboarding__step--exiting {
-  animation: m3-onboarding-slide-out 300ms
-    var(--m3-motion-easing-emphasized, ease) forwards;
+  animation: m3-onboarding-slide-out 300ms var(--m3-motion-easing-emphasized, ease) forwards;
 }
 
 @keyframes m3-onboarding-slide-out {
@@ -177,9 +175,9 @@
 }
 
 .m3-onboarding__brand-logo {
-  height: 140px;
+  height: 280px;
   width: auto;
-  max-width: 420px;
+  max-width: 840px;
   object-fit: contain;
 }
 
@@ -531,8 +529,7 @@
   width: 10px;
   height: 10px;
   border-radius: 2px;
-  animation: m3-confetti-fall 1.5s var(--m3-motion-easing-standard, ease)
-    forwards;
+  animation: m3-confetti-fall 1.5s var(--m3-motion-easing-standard, ease) forwards;
 }
 
 @keyframes m3-confetti-fall {
@@ -547,24 +544,24 @@
 }
 
 /* ===== Dark Mode ===== */
-[data-theme="dark"] .m3-onboarding {
+[data-theme='dark'] .m3-onboarding {
   background-color: var(--m3-surface, #141218);
 }
 
-[data-theme="dark"] .m3-onboarding__back:hover,
-[data-theme="dark"] .m3-onboarding__selection:hover {
+[data-theme='dark'] .m3-onboarding__back:hover,
+[data-theme='dark'] .m3-onboarding__selection:hover {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="dark"] .m3-onboarding__selection--selected {
+[data-theme='dark'] .m3-onboarding__selection--selected {
   background-color: var(--m3-primary-container, #004a12);
 }
 
-[data-theme="dark"] .m3-onboarding__goal--selected {
+[data-theme='dark'] .m3-onboarding__goal--selected {
   background-color: var(--m3-primary-container, #004a12);
 }
 
-[data-theme="dark"] .m3-onboarding__btn--secondary {
+[data-theme='dark'] .m3-onboarding__btn--secondary {
   background-color: var(--m3-surface-container-high, #2b2930);
 }
 
@@ -625,7 +622,7 @@
     flex-direction: column;
   }
 
-  [data-theme="dark"] .m3-onboarding__container {
+  [data-theme='dark'] .m3-onboarding__container {
     background-color: var(--m3-surface-container, #211f26);
   }
 }

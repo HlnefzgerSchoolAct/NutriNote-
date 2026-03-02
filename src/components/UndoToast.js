@@ -3,11 +3,12 @@
  * Shows a dismissible toast with undo action after destructive operations
  */
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Undo2, X, CheckCircle } from "lucide-react";
-import { haptics } from "../utils/haptics";
-import "./UndoToast.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Undo2, X, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+
+import { haptics } from '../utils/haptics';
+import './UndoToast.css';
 
 /**
  * Undo Toast Component
@@ -18,7 +19,7 @@ export const UndoToast = ({
   duration = 5000,
   onUndo,
   onDismiss,
-  undoLabel = "Undo",
+  undoLabel = 'Undo',
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [progress, setProgress] = useState(100);
@@ -83,31 +84,20 @@ export const UndoToast = ({
           initial={{ opacity: 0, y: 50, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.95 }}
-          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           role="alert"
           aria-live="polite"
         >
-          <div
-            className="undo-toast__progress"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="undo-toast__progress" style={{ width: `${progress}%` }} />
 
           <span className="undo-toast__message">{message}</span>
 
-          <button
-            className="undo-toast__undo"
-            onClick={handleUndo}
-            aria-label={undoLabel}
-          >
+          <button className="undo-toast__undo" onClick={handleUndo} aria-label={undoLabel}>
             <Undo2 size={16} />
             <span>{undoLabel}</span>
           </button>
 
-          <button
-            className="undo-toast__dismiss"
-            onClick={handleDismiss}
-            aria-label="Dismiss"
-          >
+          <button className="undo-toast__dismiss" onClick={handleDismiss} aria-label="Dismiss">
             <X size={16} />
           </button>
         </motion.div>
@@ -138,11 +128,11 @@ export const useUndo = (maxHistory = 10) => {
 
       // Show toast
       setToast({
-        message: action.message || "Action completed",
+        message: action.message || 'Action completed',
         show: true,
       });
     },
-    [maxHistory],
+    [maxHistory]
   );
 
   // Undo last action
@@ -177,12 +167,7 @@ export const useUndo = (maxHistory = 10) => {
  * Success Toast Component
  * Shows a brief success message
  */
-export const SuccessToast = ({
-  message,
-  show = false,
-  duration = 2000,
-  onDismiss,
-}) => {
+export const SuccessToast = ({ message, show = false, duration = 2000, onDismiss }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

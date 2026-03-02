@@ -3,21 +3,82 @@
   Minimal: only animations Tailwind can't express
 */
 
-.tabular-nums { font-variant-numeric: tabular-nums; }
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
 
 /* Streak icon flicker */
 @keyframes flicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
-.streak-icon { animation: flicker 2s ease-in-out infinite; }
+.streak-icon {
+  animation: flicker 2s ease-in-out infinite;
+}
+
+/* Achievement badge unlock glow */
+@keyframes achievement-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+  }
+  50% {
+    box-shadow: 0 0 12px 4px rgba(255, 193, 7, 0.2);
+  }
+}
+.achievement-badge--unlocked {
+  animation: achievement-glow 3s ease-in-out infinite;
+}
+.achievement-badge--unlocked:hover {
+  animation: none;
+}
+
+/* Detail row hover transition */
+.profile-detail-row {
+  transition:
+    background 200ms ease,
+    padding-left 200ms ease;
+}
+.profile-detail-row:hover {
+  background: var(--m3-surface-container, #f3edf7);
+  padding-left: 1.25rem;
+}
+
+/* Quick stat card hover */
+.profile-quick-stat {
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+.profile-quick-stat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .streak-icon { animation: none; }
+  .streak-icon {
+    animation: none;
+  }
+  .achievement-badge--unlocked {
+    animation: none;
+  }
+  .profile-detail-row {
+    transition-duration: 0.01ms !important;
+  }
+  .profile-quick-stat {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Print */
 @media print {
-  button { display: none; }
+  button {
+    display: none;
+  }
 }

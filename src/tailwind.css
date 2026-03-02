@@ -3,15 +3,15 @@
    Bridges M3 design tokens into Tailwind
    ======================================== */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Import M3 Design System Tokens */
-@import "./styles/m3-tokens.css";
-@import "./styles/typography.css";
-@import "./styles/elevation.css";
-@import "./styles/breakpoints.css";
-@import "./styles/adaptive-layout.css";
-@import "./styles/a11y.css";
+@import './styles/m3-tokens.css';
+@import './styles/typography.css';
+@import './styles/elevation.css';
+@import './styles/breakpoints.css';
+@import './styles/adaptive-layout.css';
+@import './styles/a11y.css';
 
 /* ========================================
    TAILWIND THEME — M3 Token Bridge
@@ -139,8 +139,8 @@
   --spacing-24: 96px;
 
   /* ===== Font Family ===== */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
   /* ===== Font Size (M3 Type Scale) ===== */
   --text-display-lg: 3.5625rem;
@@ -322,7 +322,7 @@
 @layer utilities {
   /* M3 state layer overlay */
   .state-hover::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
@@ -332,7 +332,7 @@
   }
 
   .state-pressed::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;

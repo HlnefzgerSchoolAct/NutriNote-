@@ -1,7 +1,7 @@
-import React, { forwardRef, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Check, X } from "lucide-react";
-import "./Chip.css";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, X } from 'lucide-react';
+import React, { forwardRef, useState, useCallback } from 'react';
+import './Chip.css';
 
 /**
  * M3 Chip Component
@@ -30,8 +30,8 @@ import "./Chip.css";
 const Chip = forwardRef(
   (
     {
-      variant = "assist",
-      size = "md",
+      variant = 'assist',
+      size = 'md',
       selected = false,
       disabled = false,
       leadingIcon,
@@ -40,11 +40,11 @@ const Chip = forwardRef(
       onRemove,
       onClick,
       color,
-      className = "",
+      className = '',
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isAnimating, setIsAnimating] = useState(false);
 
@@ -53,14 +53,14 @@ const Chip = forwardRef(
         if (disabled) return;
 
         // Trigger selection animation for filter/suggestion chips
-        if (variant === "filter" || variant === "suggestion") {
+        if (variant === 'filter' || variant === 'suggestion') {
           setIsAnimating(true);
           setTimeout(() => setIsAnimating(false), 200);
         }
 
         onClick?.(e);
       },
-      [disabled, variant, onClick],
+      [disabled, variant, onClick]
     );
 
     const handleRemove = useCallback(
@@ -69,25 +69,25 @@ const Chip = forwardRef(
         if (disabled) return;
         onRemove?.(e);
       },
-      [disabled, onRemove],
+      [disabled, onRemove]
     );
 
     // Build class names
     const chipClasses = [
-      "m3-chip",
+      'm3-chip',
       `m3-chip--${variant}`,
-      size !== "md" && `m3-chip--${size}`,
-      selected && "m3-chip--selected",
-      disabled && "m3-chip--disabled",
+      size !== 'md' && `m3-chip--${size}`,
+      selected && 'm3-chip--selected',
+      disabled && 'm3-chip--disabled',
       color && `m3-chip--${color}`,
-      isAnimating && "m3-chip--animate-selection",
+      isAnimating && 'm3-chip--animate-selection',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     // Determine if we should show checkmark
-    const showCheckmark = variant === "filter" && selected;
+    const showCheckmark = variant === 'filter' && selected;
 
     // Determine if we should show leading icon
     const showLeadingIcon = leadingIcon && !showCheckmark && !avatar;
@@ -103,7 +103,7 @@ const Chip = forwardRef(
         {...props}
       >
         {/* Avatar for input chips */}
-        {avatar && variant === "input" && (
+        {avatar && variant === 'input' && (
           <span className="m3-chip__avatar">
             <img src={avatar} alt="" />
           </span>
@@ -125,15 +125,13 @@ const Chip = forwardRef(
         </AnimatePresence>
 
         {/* Leading icon */}
-        {showLeadingIcon && (
-          <span className="m3-chip__leading">{leadingIcon}</span>
-        )}
+        {showLeadingIcon && <span className="m3-chip__leading">{leadingIcon}</span>}
 
         {/* Label */}
         <span className="m3-chip__label">{children}</span>
 
         {/* Remove button for input chips */}
-        {removable && variant === "input" && (
+        {removable && variant === 'input' && (
           <span
             className="m3-chip__trailing"
             onClick={handleRemove}
@@ -146,10 +144,10 @@ const Chip = forwardRef(
         )}
       </motion.button>
     );
-  },
+  }
 );
 
-Chip.displayName = "Chip";
+Chip.displayName = 'Chip';
 
 /**
  * Chip Group - Container for multiple chips
@@ -158,17 +156,17 @@ export const ChipGroup = ({
   children,
   scroll = false,
   vertical = false,
-  className = "",
+  className = '',
   ...props
 }) => {
   const groupClasses = [
-    "m3-chip-group",
-    scroll && "m3-chip-group--scroll",
-    vertical && "m3-chip-group--vertical",
+    'm3-chip-group',
+    scroll && 'm3-chip-group--scroll',
+    vertical && 'm3-chip-group--vertical',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={groupClasses} role="group" {...props}>
@@ -185,7 +183,7 @@ export const FilterChipGroup = ({
   selected = [],
   onChange,
   multiple = true,
-  className = "",
+  className = '',
   ...props
 }) => {
   const handleChipClick = useCallback(
@@ -201,15 +199,15 @@ export const FilterChipGroup = ({
         onChange?.(selected.includes(value) ? [] : [value]);
       }
     },
-    [selected, onChange, multiple],
+    [selected, onChange, multiple]
   );
 
   return (
     <ChipGroup className={className} {...props}>
       {options.map((option) => {
-        const value = typeof option === "string" ? option : option.value;
-        const label = typeof option === "string" ? option : option.label;
-        const icon = typeof option === "object" ? option.icon : null;
+        const value = typeof option === 'string' ? option : option.value;
+        const label = typeof option === 'string' ? option : option.label;
+        const icon = typeof option === 'object' ? option.icon : null;
 
         return (
           <Chip
@@ -235,7 +233,7 @@ export const InputChipGroup = ({
   onRemove,
   getLabel = (item) => item.label || item,
   getAvatar = (item) => item.avatar,
-  className = "",
+  className = '',
   ...props
 }) => {
   return (

@@ -1,6 +1,6 @@
-import React, { forwardRef } from "react";
-import { motion } from "framer-motion";
-import "./M3Button.css";
+import { motion } from 'framer-motion';
+import React, { forwardRef } from 'react';
+import './M3Button.css';
 
 /**
  * Material Design 3 Button Component
@@ -27,9 +27,9 @@ const M3Button = forwardRef(
   (
     {
       children,
-      variant = "filled",
-      size = "medium",
-      color = "primary",
+      variant = 'filled',
+      size = 'medium',
+      color = 'primary',
       fullWidth = false,
       disabled = false,
       loading = false,
@@ -37,32 +37,32 @@ const M3Button = forwardRef(
       leadingIcon,
       trailingIcon,
       active = false,
-      className = "",
+      className = '',
       onClick,
-      type = "button",
-      as = "button",
+      type = 'button',
+      as = 'button',
       href,
       ariaLabel,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const Component = as === "a" ? motion.a : motion.button;
+    const Component = as === 'a' ? motion.a : motion.button;
 
     // Build class list
     const buttonClasses = [
-      "m3-btn",
+      'm3-btn',
       `m3-btn--${variant}`,
-      size !== "medium" && `m3-btn--${size}`,
-      color !== "primary" && `m3-btn--${color}`,
-      fullWidth && "m3-btn--full-width",
-      iconButton && "m3-btn--icon",
-      loading && "m3-btn--loading",
-      active && "m3-btn--active",
+      size !== 'medium' && `m3-btn--${size}`,
+      color !== 'primary' && `m3-btn--${color}`,
+      fullWidth && 'm3-btn--full-width',
+      iconButton && 'm3-btn--icon',
+      loading && 'm3-btn--loading',
+      active && 'm3-btn--active',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const handleClick = (e) => {
       if (disabled || loading) {
@@ -71,7 +71,7 @@ const M3Button = forwardRef(
       }
 
       // Haptic feedback for supported devices
-      if ("vibrate" in navigator) {
+      if ('vibrate' in navigator) {
         navigator.vibrate(10);
       }
 
@@ -82,7 +82,7 @@ const M3Button = forwardRef(
     const motionProps = {
       whileTap: disabled || loading ? undefined : { scale: 0.97 },
       whileHover: disabled || loading ? undefined : { scale: 1.01 },
-      transition: { type: "spring", stiffness: 500, damping: 30 },
+      transition: { type: 'spring', stiffness: 500, damping: 30 },
     };
 
     return (
@@ -91,23 +91,19 @@ const M3Button = forwardRef(
         className={buttonClasses}
         onClick={handleClick}
         disabled={disabled || loading}
-        type={as === "button" ? type : undefined}
-        href={as === "a" ? href : undefined}
+        type={as === 'button' ? type : undefined}
+        href={as === 'a' ? href : undefined}
         aria-label={ariaLabel}
         aria-disabled={disabled || loading}
         aria-busy={loading}
-        aria-pressed={active ? "true" : undefined}
+        aria-pressed={active ? 'true' : undefined}
         {...motionProps}
         {...props}
       >
         {/* Loading spinner */}
         {loading && (
           <span className="m3-btn__spinner" aria-hidden="true">
-            <svg
-              className="m3-btn__spinner-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
+            <svg className="m3-btn__spinner-icon" viewBox="0 0 24 24" fill="none">
               <circle
                 cx="12"
                 cy="12"
@@ -125,10 +121,7 @@ const M3Button = forwardRef(
         {/* Button content */}
         <span className="m3-btn__content" style={{ opacity: loading ? 0 : 1 }}>
           {leadingIcon && (
-            <span
-              className="m3-btn__icon m3-btn__icon--leading"
-              aria-hidden="true"
-            >
+            <span className="m3-btn__icon m3-btn__icon--leading" aria-hidden="true">
               {leadingIcon}
             </span>
           )}
@@ -137,20 +130,17 @@ const M3Button = forwardRef(
           {iconButton && children}
 
           {trailingIcon && (
-            <span
-              className="m3-btn__icon m3-btn__icon--trailing"
-              aria-hidden="true"
-            >
+            <span className="m3-btn__icon m3-btn__icon--trailing" aria-hidden="true">
               {trailingIcon}
             </span>
           )}
         </span>
       </Component>
     );
-  },
+  }
 );
 
-M3Button.displayName = "M3Button";
+M3Button.displayName = 'M3Button';
 
 /**
  * Material Design 3 Floating Action Button
@@ -166,26 +156,26 @@ export const FAB = forwardRef(
     {
       children,
       icon,
-      size = "medium",
-      color = "primary",
+      size = 'medium',
+      color = 'primary',
       extended = false,
-      className = "",
+      className = '',
       onClick,
       ariaLabel,
       disabled = false,
       ...props
     },
-    ref,
+    ref
   ) => {
     const fabClasses = [
-      "m3-fab",
-      size !== "medium" && `m3-fab--${size}`,
+      'm3-fab',
+      size !== 'medium' && `m3-fab--${size}`,
       `m3-fab--${color}`,
-      extended && "m3-fab--extended",
+      extended && 'm3-fab--extended',
       className,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const handleClick = (e) => {
       if (disabled) {
@@ -194,7 +184,7 @@ export const FAB = forwardRef(
       }
 
       // Haptic feedback
-      if ("vibrate" in navigator) {
+      if ('vibrate' in navigator) {
         navigator.vibrate(15);
       }
 
@@ -207,10 +197,10 @@ export const FAB = forwardRef(
         className={fabClasses}
         onClick={handleClick}
         disabled={disabled}
-        aria-label={ariaLabel || (extended ? undefined : "Action")}
+        aria-label={ariaLabel || (extended ? undefined : 'Action')}
         whileTap={disabled ? undefined : { scale: 0.95 }}
         whileHover={disabled ? undefined : { scale: 1.03 }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
         {...props}
       >
         {icon && (
@@ -218,15 +208,13 @@ export const FAB = forwardRef(
             {icon}
           </span>
         )}
-        {extended && children && (
-          <span className="m3-fab__label">{children}</span>
-        )}
+        {extended && children && <span className="m3-fab__label">{children}</span>}
       </motion.button>
     );
-  },
+  }
 );
 
-FAB.displayName = "FAB";
+FAB.displayName = 'FAB';
 
 /**
  * Button Group Component
@@ -237,19 +225,19 @@ FAB.displayName = "FAB";
  */
 export const ButtonGroup = ({
   children,
-  direction = "horizontal",
+  direction = 'horizontal',
   fullWidth = false,
-  className = "",
+  className = '',
   ...props
 }) => {
   const groupClasses = [
-    "m3-btn-group",
-    direction === "vertical" && "m3-btn-group--vertical",
-    fullWidth && "m3-btn-group--full-width",
+    'm3-btn-group',
+    direction === 'vertical' && 'm3-btn-group--vertical',
+    fullWidth && 'm3-btn-group--full-width',
     className,
   ]
     .filter(Boolean)
-    .join(" ");
+    .join(' ');
 
   return (
     <div className={groupClasses} role="group" {...props}>

@@ -38,16 +38,17 @@
   -webkit-tap-highlight-color: transparent;
 
   transition:
-    background-color 200ms var(--m3-motion-easing-standard, ease),
-    box-shadow 200ms var(--m3-motion-easing-standard, ease),
-    transform 100ms var(--m3-motion-easing-standard, ease);
+    background-color 200ms var(--ease-emphasized, cubic-bezier(0.2, 0, 0, 1)),
+    box-shadow 200ms var(--ease-emphasized, cubic-bezier(0.2, 0, 0, 1)),
+    transform 100ms var(--ease-emphasized, cubic-bezier(0.2, 0, 0, 1)),
+    border-color 200ms var(--ease-emphasized, cubic-bezier(0.2, 0, 0, 1));
 
   overflow: hidden;
 }
 
 /* State layer (overlay for hover/focus/pressed) */
 .m3-btn::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -59,7 +60,7 @@
 
 /* Ripple container */
 .m3-btn::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -305,7 +306,7 @@
 }
 
 .m3-fab::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -516,7 +517,7 @@
 
 /* ===== Active/Selected State ===== */
 .m3-btn--active,
-.m3-btn[aria-pressed="true"] {
+.m3-btn[aria-pressed='true'] {
   background-color: var(--m3-secondary-container, #a4f5a6);
   color: var(--m3-on-secondary-container, #002107);
 }
@@ -565,10 +566,10 @@
 }
 
 /* ===== Dark Mode Adjustments ===== */
-[data-theme="dark"] .m3-btn--elevated {
+[data-theme='dark'] .m3-btn--elevated {
   background-color: var(--m3-surface-container-low, #1d1b20);
 }
 
-[data-theme="dark"] .m3-fab--surface {
+[data-theme='dark'] .m3-fab--surface {
   background-color: var(--m3-surface-container-high, #2b2930);
 }

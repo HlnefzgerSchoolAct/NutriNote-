@@ -189,14 +189,14 @@
 @keyframes dots {
   0%,
   20% {
-    content: ".";
+    content: '.';
   }
   40% {
-    content: "..";
+    content: '..';
   }
   60%,
   100% {
-    content: "...";
+    content: '...';
   }
 }
 

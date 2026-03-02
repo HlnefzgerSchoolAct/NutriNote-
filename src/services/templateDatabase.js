@@ -40,11 +40,11 @@
  * }
  */
 
-import devLog from "../utils/devLog";
+import devLog from '../utils/devLog';
 
-const DB_NAME = "nutrinoteplus_templates_db";
+const DB_NAME = 'nutrinoteplus_templates_db';
 const DB_VERSION = 2; // Bumped for micronutrient support
-const STORE_NAME = "templates";
+const STORE_NAME = 'templates';
 
 let db = null;
 
@@ -55,7 +55,9 @@ export const setTemplateSyncCallback = (cb) => {
 
 const triggerTemplateSync = () => {
   if (syncCallback) {
-    getAllTemplates().then(syncCallback).catch(() => {});
+    getAllTemplates()
+      .then(syncCallback)
+      .catch(() => {});
   }
 };
 
@@ -72,13 +74,13 @@ export const initTemplateDB = () => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onerror = (event) => {
-      devLog.error("Failed to open template database:", event.target.error);
+      devLog.error('Failed to open template database:', event.target.error);
       reject(event.target.error);
     };
 
     request.onsuccess = (event) => {
       db = event.target.result;
-      devLog.log("Template database initialized successfully");
+      devLog.log('Template database initialized successfully');
       resolve(db);
     };
 
@@ -87,15 +89,15 @@ export const initTemplateDB = () => {
 
       // Create templates object store
       if (!database.objectStoreNames.contains(STORE_NAME)) {
-        const store = database.createObjectStore(STORE_NAME, { keyPath: "id" });
+        const store = database.createObjectStore(STORE_NAME, { keyPath: 'id' });
 
         // Create indexes for searching
-        store.createIndex("name", "name", { unique: false });
-        store.createIndex("category", "category", { unique: false });
-        store.createIndex("isPrebuilt", "isPrebuilt", { unique: false });
-        store.createIndex("createdAt", "createdAt", { unique: false });
+        store.createIndex('name', 'name', { unique: false });
+        store.createIndex('category', 'category', { unique: false });
+        store.createIndex('isPrebuilt', 'isPrebuilt', { unique: false });
+        store.createIndex('createdAt', 'createdAt', { unique: false });
 
-        devLog.log("Template store created with indexes");
+        devLog.log('Template store created with indexes');
       }
     };
   });
@@ -251,7 +253,7 @@ export const calculateMealNutrition = (foods) => {
       magnesium: 0,
       zinc: 0,
       potassium: 0,
-    },
+    }
   );
 };
 
@@ -262,7 +264,7 @@ export const saveTemplate = async (templateData) => {
   await initTemplateDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readwrite");
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
 
     const totalNutrition = calculateTotalNutrition(templateData.meals || []);
@@ -270,8 +272,8 @@ export const saveTemplate = async (templateData) => {
     const template = {
       id: templateData.id || Date.now(),
       name: templateData.name,
-      description: templateData.description || "",
-      category: templateData.category || "custom",
+      description: templateData.description || '',
+      category: templateData.category || 'custom',
       meals: templateData.meals || [],
       totalNutrition,
       isPrebuilt: templateData.isPrebuilt || false,
@@ -283,13 +285,13 @@ export const saveTemplate = async (templateData) => {
     const request = store.put(template);
 
     request.onsuccess = () => {
-      devLog.log("Template saved:", template.name);
+      devLog.log('Template saved:', template.name);
       triggerTemplateSync();
       resolve(template);
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to save template:", event.target.error);
+      devLog.error('Failed to save template:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -302,19 +304,19 @@ export const getAllTemplates = async () => {
   await initTemplateDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
     const request = store.getAll();
 
     request.onsuccess = () => {
       const templates = request.result.sort(
-        (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt),
+        (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
       );
       resolve(templates);
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get templates:", event.target.error);
+      devLog.error('Failed to get templates:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -327,7 +329,7 @@ export const getTemplateById = async (id) => {
   await initTemplateDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
     const request = store.get(id);
 
@@ -336,7 +338,7 @@ export const getTemplateById = async (id) => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get template:", event.target.error);
+      devLog.error('Failed to get template:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -349,9 +351,9 @@ export const getTemplatesByCategory = async (category) => {
   await initTemplateDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
-    const index = store.index("category");
+    const index = store.index('category');
     const request = index.getAll(category);
 
     request.onsuccess = () => {
@@ -359,7 +361,7 @@ export const getTemplatesByCategory = async (category) => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get templates by category:", event.target.error);
+      devLog.error('Failed to get templates by category:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -372,9 +374,9 @@ export const getPrebuiltTemplates = async () => {
   await initTemplateDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
-    const index = store.index("isPrebuilt");
+    const index = store.index('isPrebuilt');
     const request = index.getAll(true);
 
     request.onsuccess = () => {
@@ -382,7 +384,7 @@ export const getPrebuiltTemplates = async () => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get prebuilt templates:", event.target.error);
+      devLog.error('Failed to get prebuilt templates:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -395,9 +397,9 @@ export const getCustomTemplates = async () => {
   await initTemplateDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readonly");
+    const transaction = db.transaction([STORE_NAME], 'readonly');
     const store = transaction.objectStore(STORE_NAME);
-    const index = store.index("isPrebuilt");
+    const index = store.index('isPrebuilt');
     const request = index.getAll(false);
 
     request.onsuccess = () => {
@@ -405,7 +407,7 @@ export const getCustomTemplates = async () => {
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to get custom templates:", event.target.error);
+      devLog.error('Failed to get custom templates:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -422,7 +424,7 @@ export const searchTemplates = async (searchTerm) => {
     (template) =>
       template.name.toLowerCase().includes(term) ||
       template.description.toLowerCase().includes(term) ||
-      template.tags.some((tag) => tag.toLowerCase().includes(term)),
+      template.tags.some((tag) => tag.toLowerCase().includes(term))
   );
 };
 
@@ -433,18 +435,18 @@ export const deleteTemplate = async (id) => {
   await initTemplateDB();
 
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([STORE_NAME], "readwrite");
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
     const store = transaction.objectStore(STORE_NAME);
     const request = store.delete(id);
 
     request.onsuccess = () => {
-      devLog.log("Template deleted:", id);
+      devLog.log('Template deleted:', id);
       triggerTemplateSync();
       resolve(true);
     };
 
     request.onerror = (event) => {
-      devLog.error("Failed to delete template:", event.target.error);
+      devLog.error('Failed to delete template:', event.target.error);
       reject(event.target.error);
     };
   });
@@ -457,7 +459,7 @@ export const updateTemplate = async (id, updates) => {
   const existingTemplate = await getTemplateById(id);
 
   if (!existingTemplate) {
-    throw new Error("Template not found");
+    throw new Error('Template not found');
   }
 
   const updatedTemplate = {
@@ -497,7 +499,7 @@ export const exportTemplates = async (templateIds = null) => {
 export const exportTemplate = async (templateId) => {
   const template = await getTemplateById(templateId);
   if (!template) {
-    throw new Error("Template not found");
+    throw new Error('Template not found');
   }
   return JSON.stringify(template, null, 2);
 };
@@ -513,7 +515,7 @@ export const importTemplates = async (jsonString) => {
     // Handle both single template and array of templates
     templates = Array.isArray(parsed) ? parsed : [parsed];
   } catch (error) {
-    throw new Error("Invalid JSON format");
+    throw new Error('Invalid JSON format');
   }
 
   const imported = [];
@@ -546,7 +548,7 @@ export const duplicateTemplate = async (templateId, newName = null) => {
   const original = await getTemplateById(templateId);
 
   if (!original) {
-    throw new Error("Template not found");
+    throw new Error('Template not found');
   }
 
   const duplicate = {
@@ -569,7 +571,7 @@ export const createTemplateFromMeals = async (foods, templateName) => {
   const mealGroups = {};
 
   foods.forEach((food) => {
-    const mealType = food.mealType || "snack";
+    const mealType = food.mealType || 'snack';
     if (!mealGroups[mealType]) {
       mealGroups[mealType] = {
         id: Date.now() + Math.random(),
@@ -582,7 +584,7 @@ export const createTemplateFromMeals = async (foods, templateName) => {
       id: Date.now() + Math.random(),
       name: food.name,
       quantity: 1,
-      unit: "serving",
+      unit: 'serving',
       calories: food.calories || 0,
       protein: food.protein || 0,
       carbs: food.carbs || 0,
@@ -592,11 +594,11 @@ export const createTemplateFromMeals = async (foods, templateName) => {
 
   const template = {
     name: templateName || `Custom Template ${new Date().toLocaleDateString()}`,
-    description: "Created from logged meals",
-    category: "custom",
+    description: 'Created from logged meals',
+    category: 'custom',
     meals: Object.values(mealGroups),
     isPrebuilt: false,
-    tags: ["from-log"],
+    tags: ['from-log'],
   };
 
   return saveTemplate(template);

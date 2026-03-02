@@ -3,8 +3,7 @@
  * Browse, create, edit, and log custom recipes
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChefHat,
   Plus,
@@ -18,7 +17,9 @@ import {
   UtensilsCrossed,
   BookOpen,
   Minus,
-} from "lucide-react";
+} from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+
 import {
   M3Card,
   M3CardContent,
@@ -34,11 +35,11 @@ import {
   Main,
   VisuallyHidden,
   useAnnounce,
-} from "../components/common";
-import RecipeBuilder from "../components/RecipeBuilder";
-import { getAllRecipes, deleteRecipe } from "../services/recipeDatabase";
-import { addFoodEntry, getMealTypeByTime } from "../utils/localStorage";
-import "./RecipesPage.css";
+} from '../components/common';
+import RecipeBuilder from '../components/RecipeBuilder';
+import { getAllRecipes, deleteRecipe } from '../services/recipeDatabase';
+import { addFoodEntry, getMealTypeByTime } from '../utils/localStorage';
+import './RecipesPage.css';
 
 const CATEGORY_ICONS = {
   breakfast: Coffee,
@@ -48,19 +49,19 @@ const CATEGORY_ICONS = {
 };
 
 const CATEGORY_LABELS = {
-  all: "All",
-  breakfast: "Breakfast",
-  lunch: "Lunch",
-  dinner: "Dinner",
-  snack: "Snack",
+  all: 'All',
+  breakfast: 'Breakfast',
+  lunch: 'Lunch',
+  dinner: 'Dinner',
+  snack: 'Snack',
 };
 
-const CATEGORIES = ["all", "breakfast", "lunch", "dinner", "snack"];
+const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'snack'];
 
 function RecipesPage() {
   const [recipes, setRecipes] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [showBuilder, setShowBuilder] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState(null);
@@ -73,7 +74,7 @@ function RecipesPage() {
       const allRecipes = await getAllRecipes();
       setRecipes(allRecipes);
     } catch (error) {
-      showToast.error("Failed to load recipes");
+      showToast.error('Failed to load recipes');
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +88,7 @@ function RecipesPage() {
   const filteredRecipes = useMemo(() => {
     let filtered = recipes;
 
-    if (selectedCategory !== "all") {
+    if (selectedCategory !== 'all') {
       filtered = filtered.filter((r) => r.category === selectedCategory);
     }
 
@@ -96,7 +97,7 @@ function RecipesPage() {
       filtered = filtered.filter(
         (r) =>
           r.name.toLowerCase().includes(query) ||
-          r.ingredients.some((ing) => ing.name.toLowerCase().includes(query)),
+          r.ingredients.some((ing) => ing.name.toLowerCase().includes(query))
       );
     }
 
@@ -110,12 +111,12 @@ function RecipesPage() {
         await deleteRecipe(recipe.id);
         setRecipes((prev) => prev.filter((r) => r.id !== recipe.id));
         showToast.success(`Deleted "${recipe.name}"`);
-        announce(`Deleted recipe ${recipe.name}`, "assertive");
+        announce(`Deleted recipe ${recipe.name}`, 'assertive');
       } catch (error) {
-        showToast.error("Failed to delete recipe");
+        showToast.error('Failed to delete recipe');
       }
     },
-    [announce],
+    [announce]
   );
 
   const handleEditRecipe = useCallback((recipe) => {
@@ -127,7 +128,7 @@ function RecipesPage() {
     (recipe, servings = 1) => {
       const foodEntry = {
         id: Date.now(),
-        name: `${recipe.name} (${servings} serving${servings > 1 ? "s" : ""})`,
+        name: `${recipe.name} (${servings} serving${servings > 1 ? 's' : ''})`,
         calories: Math.round(recipe.nutritionPerServing.calories * servings),
         protein: Math.round(recipe.nutritionPerServing.protein * servings * 10) / 10,
         carbs: Math.round(recipe.nutritionPerServing.carbs * servings * 10) / 10,
@@ -139,25 +140,23 @@ function RecipesPage() {
       };
 
       addFoodEntry(foodEntry);
-      showToast.success("Recipe logged!", `${recipe.name} added to food log`);
-      announce(`Logged ${recipe.name}, ${foodEntry.calories} calories`, "assertive");
+      showToast.success('Recipe logged!', `${recipe.name} added to food log`);
+      announce(`Logged ${recipe.name}, ${foodEntry.calories} calories`, 'assertive');
     },
-    [announce],
+    [announce]
   );
 
   const handleSaveRecipe = useCallback(
     (savedRecipe) => {
       if (editingRecipe) {
-        setRecipes((prev) =>
-          prev.map((r) => (r.id === savedRecipe.id ? savedRecipe : r)),
-        );
+        setRecipes((prev) => prev.map((r) => (r.id === savedRecipe.id ? savedRecipe : r)));
       } else {
         setRecipes((prev) => [savedRecipe, ...prev]);
       }
       setShowBuilder(false);
       setEditingRecipe(null);
     },
-    [editingRecipe],
+    [editingRecipe]
   );
 
   const handleCancelBuilder = useCallback(() => {
@@ -215,15 +214,19 @@ function RecipesPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search recipes..."
-          className="w-full pl-10 pr-4 py-3 bg-surface-container border border-outline-variant rounded-xl text-body-md text-on-surface outline-none transition-colors duration-150 focus:border-primary placeholder:text-on-surface-variant"
+          className="recipes-search-input w-full pl-10 pr-4 py-3 bg-surface-container border border-outline-variant rounded-xl text-body-md text-on-surface outline-none placeholder:text-on-surface-variant"
           aria-label="Search recipes"
         />
       </div>
 
       {/* Category Filter */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-none" role="tablist" aria-label="Filter by category">
+      <div
+        className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-none"
+        role="tablist"
+        aria-label="Filter by category"
+      >
         {CATEGORIES.map((cat) => {
-          const Icon = cat === "all" ? BookOpen : CATEGORY_ICONS[cat];
+          const Icon = cat === 'all' ? BookOpen : CATEGORY_ICONS[cat];
           return (
             <Chip
               key={cat}
@@ -247,13 +250,13 @@ function RecipesPage() {
         ) : filteredRecipes.length === 0 ? (
           <EmptyState
             icon={<ChefHat />}
-            title={recipes.length === 0 ? "No recipes yet" : "No matching recipes"}
+            title={recipes.length === 0 ? 'No recipes yet' : 'No matching recipes'}
             description={
               recipes.length === 0
-                ? "Create your first recipe to quickly log your favorite meals"
-                : "Try a different search or category"
+                ? 'Create your first recipe to quickly log your favorite meals'
+                : 'Try a different search or category'
             }
-            actionLabel={recipes.length === 0 ? "Create Recipe" : undefined}
+            actionLabel={recipes.length === 0 ? 'Create Recipe' : undefined}
             onAction={recipes.length === 0 ? () => setShowBuilder(true) : undefined}
           />
         ) : (
@@ -312,14 +315,20 @@ function RecipeCard({ recipe, onLog, onEdit, onDelete }) {
             <div className="flex gap-1">
               <button
                 className="flex items-center justify-center w-8 h-8 bg-transparent border-none rounded-md text-on-surface-variant cursor-pointer transition-colors duration-150 hover:bg-info/10 hover:text-info"
-                onClick={(e) => { e.stopPropagation(); onEdit(recipe); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(recipe);
+                }}
                 aria-label={`Edit ${recipe.name}`}
               >
                 <Edit3 size={16} />
               </button>
               <button
                 className="flex items-center justify-center w-8 h-8 bg-transparent border-none rounded-md text-on-surface-variant cursor-pointer transition-colors duration-150 hover:bg-error/10 hover:text-error"
-                onClick={(e) => { e.stopPropagation(); onDelete(recipe); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(recipe);
+                }}
                 aria-label={`Delete ${recipe.name}`}
               >
                 <Trash2 size={16} />
@@ -328,18 +337,17 @@ function RecipeCard({ recipe, onLog, onEdit, onDelete }) {
           </div>
 
           {/* Name */}
-          <h3 className="text-title-md font-semibold text-on-surface m-0 mb-2">
-            {recipe.name}
-          </h3>
+          <h3 className="text-title-md font-semibold text-on-surface m-0 mb-2">{recipe.name}</h3>
 
           {/* Meta */}
           <p className="flex items-center gap-2 text-label-sm text-on-surface-variant mb-3 m-0">
             <span>
-              {recipe.ingredients.length} ingredient{recipe.ingredients.length !== 1 ? "s" : ""}
+              {recipe.ingredients.length} ingredient
+              {recipe.ingredients.length !== 1 ? 's' : ''}
             </span>
             <span className="text-outline-variant">•</span>
             <span>
-              {recipe.servings} serving{recipe.servings !== 1 ? "s" : ""}
+              {recipe.servings} serving{recipe.servings !== 1 ? 's' : ''}
             </span>
           </p>
 

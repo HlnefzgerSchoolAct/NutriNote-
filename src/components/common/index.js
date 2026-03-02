@@ -3,12 +3,12 @@
 // Material Design 3 Component Library
 
 // Core UI Components (Legacy)
-export { default as Button } from "./Button";
-export { default as Card, CardHeader, CardBody, CardFooter } from "./Card";
-export { default as Input } from "./Input";
+export { default as Button } from './Button';
+export { default as Card, CardHeader, CardBody, CardFooter } from './Card';
+export { default as Input } from './Input';
 
 // M3 Core Components (New)
-export { default as M3Button, FAB, ButtonGroup } from "./M3Button";
+export { default as M3Button, FAB, ButtonGroup } from './M3Button';
 export {
   default as M3Card,
   M3CardHeader,
@@ -19,44 +19,45 @@ export {
   M3CardDivider,
   M3CardStack,
   M3CardGrid,
-} from "./M3Card";
+} from './M3Card';
 export {
   default as M3TextField,
   M3SearchField,
   M3PasswordField,
   M3NumberField,
   M3TextArea,
-} from "./M3TextField";
+} from './M3TextField';
 
 // M3 Interactive Components
-export { default as Chip, ChipGroup, FilterChipGroup } from "./Chip";
+export { default as Chip, ChipGroup, FilterChipGroup } from './Chip';
 export {
   default as SegmentedButtonGroup,
   SegmentedButton,
   ToggleButtonGroup,
-} from "./SegmentedButton";
+} from './SegmentedButton';
 
 // M3 Feedback Components
-export { default as ToastProvider, showToast } from "./Toast";
-export {
-  default as Snackbar,
-  SnackbarProvider,
-  useSnackbar,
-} from "./Snackbar";
+export { default as ToastProvider, showToast } from './Toast';
+export { default as Snackbar, SnackbarProvider, useSnackbar } from './Snackbar';
 export {
   default as Dialog,
   AlertDialog,
   ConfirmDialog,
   InputDialog,
   SelectionDialog,
-} from "./Dialog";
-export { default as Tooltip, RichTooltip, IconTooltip } from "./Tooltip";
-export { default as Badge, StatusBadge, NotificationBadge, PresenceBadge } from "./Badge";
-export { default as EmptyState } from "./EmptyState";
+} from './Dialog';
+export { default as Tooltip, RichTooltip, IconTooltip } from './Tooltip';
+export { default as Badge, StatusBadge, NotificationBadge, PresenceBadge } from './Badge';
+export { default as EmptyState } from './EmptyState';
 
 // M3 Navigation Components
-export { default as BottomSheet, BottomSheetItem, BottomSheetList, BottomSheetDivider } from "./BottomSheet";
-export { default as NavigationRail, NavigationRailItem } from "./NavigationRail";
+export {
+  default as BottomSheet,
+  BottomSheetItem,
+  BottomSheetList,
+  BottomSheetDivider,
+} from './BottomSheet';
+export { default as NavigationRail, NavigationRailItem } from './NavigationRail';
 export {
   default as Skeleton,
   SkeletonText,
@@ -65,7 +66,7 @@ export {
   SkeletonStats,
   SkeletonProgressRing,
   SkeletonPage,
-} from "./Skeleton";
+} from './Skeleton';
 
 // M3 Dashboard Widgets
 export {
@@ -88,7 +89,7 @@ export {
   WeightWidget,
   ActivityWidget,
   MealsWidget,
-} from "./Widget";
+} from './Widget';
 
 // M3 Data Visualization
 export {
@@ -101,18 +102,18 @@ export {
   ChartLegend,
   MacroRings,
   WeekChart,
-} from "./Chart";
+} from './Chart';
 
 // Progress & Data Display
-export { default as ProgressRing, MiniProgressRing } from "./ProgressRing";
-export { default as MacroBar, MacroBarGroup, CompactMacros } from "./MacroBar";
+export { default as ProgressRing, MiniProgressRing } from './ProgressRing';
+export { default as MacroBar, MacroBarGroup, CompactMacros } from './MacroBar';
 export {
   default as MicronutrientBar,
   CompactMicronutrients,
   MicronutrientSummary,
-} from "./MicronutrientBar";
-export { default as MicronutrientPanel } from "./MicronutrientPanel";
-export { default as NutrientWarnings, NutrientTip } from "./NutrientWarnings";
+} from './MicronutrientBar';
+export { default as MicronutrientPanel } from './MicronutrientPanel';
+export { default as NutrientWarnings, NutrientTip } from './NutrientWarnings';
 
 // Animation & Transitions
 export {
@@ -122,10 +123,10 @@ export {
   StaggerItem,
   FadePresence,
   AnimatedNumber,
-} from "./PageTransition";
+} from './PageTransition';
 
 // Interactive Components
-export { default as SwipeableItem, SwipeHint } from "./SwipeableItem";
+export { default as SwipeableItem, SwipeHint } from './SwipeableItem';
 
 // M3 Adaptive Layout
 export {
@@ -145,7 +146,7 @@ export {
   ScrollArea,
   useLayout,
   useBreakpoint,
-} from "./AdaptiveLayout";
+} from './AdaptiveLayout';
 
 // M3 Micro-interactions
 export {
@@ -158,7 +159,7 @@ export {
   Shake,
   Bounce,
   useProgressFill,
-} from "./Ripple";
+} from './Ripple';
 
 // M3 Accessibility Components
 export {
@@ -182,4 +183,4 @@ export {
   Nav,
   useId,
   useReducedMotion,
-} from "./A11y";
+} from './A11y';

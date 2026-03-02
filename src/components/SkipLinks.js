@@ -3,12 +3,12 @@
  * Provides keyboard users a way to skip navigation and go directly to main content
  */
 
-import React from "react";
-import "./SkipLinks.css";
+import React from 'react';
+import './SkipLinks.css';
 
 const DEFAULT_LINKS = [
-  { target: "main-content", label: "Skip to main content" },
-  { target: "navigation", label: "Skip to navigation" },
+  { target: 'main-content', label: 'Skip to main content' },
+  { target: 'navigation', label: 'Skip to navigation' },
 ];
 
 /**
@@ -23,11 +23,7 @@ export const SkipLinks = ({ links = DEFAULT_LINKS }) => {
   return (
     <nav className="skip-links" aria-label="Skip links">
       {items.map((link) => (
-        <a
-          key={link.target}
-          href={`#${link.target}`}
-          className="skip-link"
-        >
+        <a key={link.target} href={`#${link.target}`} className="skip-link">
           {link.label}
         </a>
       ))}
@@ -39,14 +35,9 @@ export const SkipLinks = ({ links = DEFAULT_LINKS }) => {
  * Main content landmark wrapper
  * Use this to wrap your main page content
  */
-export const MainContent = ({ children, className = "" }) => {
+export const MainContent = ({ children, className = '' }) => {
   return (
-    <main
-      id="main-content"
-      className={`main-content ${className}`}
-      tabIndex={-1}
-      role="main"
-    >
+    <main id="main-content" className={`main-content ${className}`} tabIndex={-1} role="main">
       {children}
     </main>
   );
@@ -56,14 +47,9 @@ export const MainContent = ({ children, className = "" }) => {
  * Live Region for Screen Reader Announcements
  * Announces dynamic content changes to screen readers
  */
-export const LiveRegion = ({ message, politeness = "polite" }) => {
+export const LiveRegion = ({ message, politeness = 'polite' }) => {
   return (
-    <div
-      role="status"
-      aria-live={politeness}
-      aria-atomic="true"
-      className="sr-only live-region"
-    >
+    <div role="status" aria-live={politeness} aria-atomic="true" className="sr-only live-region">
       {message}
     </div>
   );
@@ -73,11 +59,11 @@ export const LiveRegion = ({ message, politeness = "polite" }) => {
  * Hook to announce messages to screen readers
  */
 export const useAnnounce = () => {
-  const [announcement, setAnnouncement] = React.useState("");
+  const [announcement, setAnnouncement] = React.useState('');
 
   const announce = React.useCallback((message, clearAfter = 1000) => {
     // Clear first to ensure re-announcement of same message
-    setAnnouncement("");
+    setAnnouncement('');
 
     // Small delay to ensure screen reader picks up change
     setTimeout(() => {
@@ -85,7 +71,7 @@ export const useAnnounce = () => {
 
       // Clear after timeout
       if (clearAfter > 0) {
-        setTimeout(() => setAnnouncement(""), clearAfter);
+        setTimeout(() => setAnnouncement(''), clearAfter);
       }
     }, 50);
   }, []);
@@ -115,7 +101,7 @@ export const FocusTrap = ({ children, active = true, restoreFocus = true }) => {
 
     // Handle tab key
     const handleKeyDown = (event) => {
-      if (event.key !== "Tab") return;
+      if (event.key !== 'Tab') return;
 
       const focusable = getFocusableElements(containerRef.current);
       if (focusable.length === 0) return;
@@ -138,10 +124,10 @@ export const FocusTrap = ({ children, active = true, restoreFocus = true }) => {
       }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
 
       // Restore focus
       if (restoreFocus && previousFocusRef.current) {
@@ -164,16 +150,16 @@ const getFocusableElements = (container) => {
   if (!container) return [];
 
   const selector = [
-    "a[href]",
-    "button:not([disabled])",
-    "input:not([disabled])",
-    "textarea:not([disabled])",
-    "select:not([disabled])",
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled])',
+    'textarea:not([disabled])',
+    'select:not([disabled])',
     '[tabindex]:not([tabindex="-1"])',
-  ].join(", ");
+  ].join(', ');
 
   return Array.from(container.querySelectorAll(selector)).filter(
-    (el) => !el.closest("[aria-hidden='true']"),
+    (el) => !el.closest("[aria-hidden='true']")
   );
 };
 
@@ -181,7 +167,7 @@ const getFocusableElements = (container) => {
  * Visually Hidden Text Component
  * Text that is hidden visually but accessible to screen readers
  */
-export const VisuallyHidden = ({ children, as: Component = "span" }) => {
+export const VisuallyHidden = ({ children, as: Component = 'span' }) => {
   return <Component className="sr-only">{children}</Component>;
 };
 

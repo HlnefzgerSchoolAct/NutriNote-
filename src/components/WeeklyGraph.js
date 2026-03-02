@@ -1,5 +1,3 @@
-import React, { useState, useEffect, useRef } from "react";
-import html2canvas from "html2canvas";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,11 +8,14 @@ import {
   Tooltip,
   Legend,
   Filler,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-import { getWeeklyGraphData } from "../utils/localStorage";
-import devLog from "../utils/devLog";
-import "./WeeklyGraph.css";
+} from 'chart.js';
+import html2canvas from 'html2canvas';
+import React, { useState, useEffect, useRef } from 'react';
+import { Line } from 'react-chartjs-2';
+
+import devLog from '../utils/devLog';
+import { getWeeklyGraphData } from '../utils/localStorage';
+import './WeeklyGraph.css';
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +25,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler,
+  Filler
 );
 
 function WeeklyGraph({ onRefresh }) {
@@ -48,14 +49,14 @@ function WeeklyGraph({ onRefresh }) {
 
     try {
       const canvas = await html2canvas(graphRef.current, {
-        backgroundColor: "#0A0A0A",
+        backgroundColor: '#0A0A0A',
         scale: 2,
       });
 
       canvas.toBlob((blob) => {
         const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        const date = new Date().toLocaleDateString("en-US").replace(/\//g, "-");
+        const link = document.createElement('a');
+        const date = new Date().toLocaleDateString('en-US').replace(/\//g, '-');
         link.download = `nutrinoteplus-progress-${date}.png`;
         link.href = url;
         link.click();
@@ -64,8 +65,8 @@ function WeeklyGraph({ onRefresh }) {
         setExporting(false);
       });
     } catch (error) {
-      devLog.error("Error exporting graph:", error);
-      alert("Failed to export graph. Please try again.");
+      devLog.error('Error exporting graph:', error);
+      alert('Failed to export graph. Please try again.');
       setExporting(false);
     }
   };
@@ -77,23 +78,23 @@ function WeeklyGraph({ onRefresh }) {
 
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
         labels: {
           usePointStyle: true,
           padding: 15,
           font: {
             size: 12,
-            weight: "500",
+            weight: '500',
           },
         },
       },
 
       title: {
         display: true,
-        text: "7-Day Calorie Trends",
+        text: '7-Day Calorie Trends',
         font: {
           size: 18,
-          weight: "bold",
+          weight: 'bold',
         },
         padding: {
           top: 10,
@@ -102,22 +103,22 @@ function WeeklyGraph({ onRefresh }) {
       },
 
       tooltip: {
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: {
           size: 14,
-          weight: "bold",
+          weight: 'bold',
         },
         bodyFont: {
           size: 13,
         },
         callbacks: {
           label: function (context) {
-            let label = context.dataset.label || "";
+            let label = context.dataset.label || '';
             if (label) {
-              label += ": ";
+              label += ': ';
             }
-            label += context.parsed.y.toLocaleString() + " cal";
+            label += context.parsed.y.toLocaleString() + ' cal';
             return label;
           },
         },
@@ -129,14 +130,14 @@ function WeeklyGraph({ onRefresh }) {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            return value.toLocaleString() + " cal";
+            return value.toLocaleString() + ' cal';
           },
           font: {
             size: 11,
           },
         },
         grid: {
-          color: "rgba(0, 0, 0, 0.05)",
+          color: 'rgba(0, 0, 0, 0.05)',
         },
       },
 
@@ -144,7 +145,7 @@ function WeeklyGraph({ onRefresh }) {
         ticks: {
           font: {
             size: 12,
-            weight: "500",
+            weight: '500',
           },
         },
         grid: {
@@ -154,7 +155,7 @@ function WeeklyGraph({ onRefresh }) {
     },
 
     interaction: {
-      mode: "index",
+      mode: 'index',
       intersect: false,
     },
   };
@@ -163,12 +164,8 @@ function WeeklyGraph({ onRefresh }) {
     <div className="weekly-graph" ref={graphRef}>
       <div className="graph-header-with-export">
         <h3>7-Day Calorie Trends</h3>
-        <button
-          className="btn-export"
-          onClick={exportToImage}
-          disabled={exporting}
-        >
-          {exporting ? "Exporting..." : "Save as Image"}
+        <button className="btn-export" onClick={exportToImage} disabled={exporting}>
+          {exporting ? 'Exporting...' : 'Save as Image'}
         </button>
       </div>
 
@@ -191,8 +188,7 @@ function WeeklyGraph({ onRefresh }) {
           </div>
           <div className="legend-item">
             <span className="legend-color burned"></span>
-            <strong>Orange Line (Burned):</strong> Calories burned through
-            exercise
+            <strong>Orange Line (Burned):</strong> Calories burned through exercise
           </div>
           <div className="legend-item">
             <span className="legend-color target"></span>
