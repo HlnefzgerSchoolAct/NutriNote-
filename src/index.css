@@ -899,3 +899,46 @@ a:hover {
     width: 100%;
   }
 }
+
+/* ===== Buy Me a Coffee Widget Theme Customization ===== */
+/* Override widget button color for dark mode */
+[data-theme='dark'] .bmc-btn {
+  background-color: #60a5fa !important;
+}
+
+[data-theme='dark'] .bmc-btn:hover {
+  background-color: #3b82f6 !important;
+}
+
+/* Light mode color (matches primary blue) */
+[data-theme='light'] .bmc-btn {
+  background-color: #1a73e8 !important;
+}
+
+[data-theme='light'] .bmc-btn:hover {
+  background-color: #1557b0 !important;
+}
+
+/* Ensure widget respects app's border radius for consistency */
+.bmc-btn {
+  border-radius: 6px !important;
+}
+
+/* Adjust z-index to ensure widget appears above content but below modals */
+.bmc-btn-container {
+  z-index: 999 !important;
+}
+
+/* Mobile responsiveness - adjust margins for smaller screens */
+@media (max-width: 640px) {
+  .bmc-btn-container {
+    /* Ensure widget doesn't overlap with bottom navigation */
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* Ensure widget is accessible and shows proper focus states */
+.bmc-btn:focus-visible {
+  outline: 2px solid var(--color-primary, #1a73e8);
+  outline-offset: 2px;
+}

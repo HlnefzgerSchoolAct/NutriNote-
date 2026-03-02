@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useScript } from '../hooks/useScript';
 import './BuyMeACoffeeWidget.css';
@@ -8,18 +8,50 @@ import './BuyMeACoffeeWidget.css';
  * Only loads the widget when component is mounted
  */
 export function BuyMeACoffeeWidget() {
-  const scriptStatus = useScript('https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js', {
-    'data-cfasync': 'false',
-    'data-name': 'BMC-Widget',
-  });
+  // Memoize attributes to prevent recreating object on every render
+  const scriptAttributes = useMemo(
+    () => ({
+      'data-cfasync': 'false',
+      'data-name': 'BMC-Widget',
+      'data-id': 'HarrisonNef',
+      'data-description': 'Support me on Buy me a coffee!',
+      'data-message': "Support NutriNote's development!",
+      'data-color': '#1a73e8',
+      'data-position': 'Right',
+      'data-x_margin': '18',
+      'data-y_margin': '18',
+    }),
+    []
+  );
+
+  // Load script with all configuration attributes upfront
+  // The widget reads these when it first loads
+  const scriptStatus = useScript(
+    'https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js',
+    scriptAttributes
+  );
+
+  // Debug logging
+  useEffect(() => {
+    console.log('BuyMeACoffee Widget - Script Status:', scriptStatus);
+    if (scriptStatus === 'ready') {
+      console.log('BuyMeACoffee Widget - Script loaded successfully');
+      const script = document.querySelector('script[data-name="BMC-Widget"]');
+      if (script) {
+        console.log('BuyMeACoffee Widget - Script element found with attributes:', {
+          id: script.getAttribute('data-id'),
+          color: script.getAttribute('data-color'),
+          position: script.getAttribute('data-position'),
+        });
+      }
+    } else if (scriptStatus === 'error') {
+      console.error('BuyMeACoffee Widget - Failed to load script');
+    }
+  }, [scriptStatus]);
 
   useEffect(() => {
-    // Initialize widget configuration after script loads
-    if (scriptStatus === 'ready' && window.BMC) {
-      // Widget automatically initializes from data attributes in script tag
-      // The CSS file (BuyMeACoffeeWidget.css) handles theme-based color changes
-
-      // Listen for theme changes to trigger any necessary updates
+    // Listen for theme changes
+    if (scriptStatus === 'ready') {
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           if (mutation.attributeName === 'data-theme') {
@@ -34,20 +66,6 @@ export function BuyMeACoffeeWidget() {
       });
 
       return () => observer.disconnect();
-    }
-  }, [scriptStatus]);
-
-  useEffect(() => {
-    // Add data attributes to the script element for widget configuration
-    const script = document.querySelector('script[data-name="BMC-Widget"]');
-    if (script && !script.hasAttribute('data-id')) {
-      script.setAttribute('data-id', 'HarrisonNef');
-      script.setAttribute('data-description', 'Support me on Buy me a coffee!');
-      script.setAttribute('data-message', "Support NutriNote's development!");
-      script.setAttribute('data-color', '#1a73e8');
-      script.setAttribute('data-position', 'Right');
-      script.setAttribute('data-x_margin', '18');
-      script.setAttribute('data-y_margin', '18');
     }
   }, [scriptStatus]);
 
