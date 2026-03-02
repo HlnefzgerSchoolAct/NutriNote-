@@ -31,24 +31,6 @@ export function BuyMeACoffeeWidget() {
     scriptAttributes
   );
 
-  // Debug logging
-  useEffect(() => {
-    console.log('BuyMeACoffee Widget - Script Status:', scriptStatus);
-    if (scriptStatus === 'ready') {
-      console.log('BuyMeACoffee Widget - Script loaded successfully');
-      const script = document.querySelector('script[data-name="BMC-Widget"]');
-      if (script) {
-        console.log('BuyMeACoffee Widget - Script element found with attributes:', {
-          id: script.getAttribute('data-id'),
-          color: script.getAttribute('data-color'),
-          position: script.getAttribute('data-position'),
-        });
-      }
-    } else if (scriptStatus === 'error') {
-      console.error('BuyMeACoffee Widget - Failed to load script');
-    }
-  }, [scriptStatus]);
-
   useEffect(() => {
     // Listen for theme changes
     if (scriptStatus === 'ready') {

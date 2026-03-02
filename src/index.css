@@ -908,6 +908,13 @@ a:hover {
   }
 }
 
+/* Hide widget on touch/coarse-pointer devices (tablets/phones) */
+@media (hover: none), (pointer: coarse) {
+  .bmc-btn-container {
+    display: none !important;
+  }
+}
+
 /* Override widget button color for dark mode */
 [data-theme='dark'] .bmc-btn {
   background-color: #60a5fa !important;
@@ -934,6 +941,14 @@ a:hover {
 /* Adjust z-index to ensure widget appears above content but below modals */
 .bmc-btn-container {
   z-index: 999 !important;
+}
+
+/* Desktop placement */
+@media (min-width: 769px) {
+  .bmc-btn-container {
+    right: 18px !important;
+    bottom: 88px !important;
+  }
 }
 
 /* Mobile responsiveness - adjust margins for smaller screens */
